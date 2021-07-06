@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Domain.Pacient
+
+    <h1>Modifica pacient</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="PacientId" />
+                <input type="hidden" asp-for="FisaPacientId" />
+                <div class="form-group">
+                    <label asp-for="Nume" class="control-label"></label>
+                    <input asp-for="Nume" class="form-control" />
+                    <span asp-validation-for="Nume" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Prenume" class="control-label"></label>
+                    <input asp-for="Prenume" class="form-control" />
+                    <span asp-validation-for="Prenume" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NrDeTelefon" class="control-label"></label>
+                    <input asp-for="NrDeTelefon" class="form-control" />
+                    <span asp-validation-for="NrDeTelefon" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Mail" class="control-label"></label>
+                    <input asp-for="Mail" class="form-control" />
+                    <span asp-validation-for="Mail" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Blacklist" class="control-label"></label>
+                    <select asp-for="Blacklist" class="form-control">
+                        <option value="0">Nu</option>
+                        <option value="1">Da</option>
+                    </select>
+                    <span asp-validation-for="Blacklist" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Salveaza" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+
+        <a asp-action="Details" asp-controller="Pacienti" asp-route-id="@Model.PacientId">Inapoi</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+}

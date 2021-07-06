@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @model IEnumerable<MVCAgenda.Domain.FisaPacient>
+
+    <h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.AntecedenteH)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AntecedenteP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CNP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sexul)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Localitatea)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Strada)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataNasterii)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AntecedenteH)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AntecedenteP)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CNP)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sexul)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Localitatea)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Strada)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataNasterii)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.FisaPacientId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.FisaPacientId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.FisaPacientId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

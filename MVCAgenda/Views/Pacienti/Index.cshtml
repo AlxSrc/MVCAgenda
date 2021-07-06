@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Lista cu pacienti";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Models.ListeViewModel
+    <h1>Lista cu pacienti</h1>
+
+    <p>
+        <a asp-action="Create">Adauga un nou pacient</a>
+        &#8226;
+        <a asp-action="Index" asp-route-includeBlackList="false">Black list</a>
+        &#8226;
+        <a asp-action="Deleted">Pacienti stersi</a>
+    </p>
+
+
+    <form asp-controller="Pacienti" asp-action="Index" method="get">
+        <p>
+            <input placeholder="Nume"
+                   asp-for="SearchStringNume" />
+            &#8226;
+            <input placeholder="Numar de telefon"
+                   asp-for="SearchStringNumarDeTelefon" />
+            &#8226;
+            <input placeholder="Adresa de e-mail"
+                   asp-for="SearchStringEmail" />
+
+
+            <input type="submit" value="Filter" />
+            <a asp-action="Index">Inapoi</a>
+        </p>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].Nume)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].Prenume)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].NrDeTelefon)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].Mail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].Blacklist)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Pacienti)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nume)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Prenume)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NrDeTelefon)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mail)
+                    </td>
+                    <td>
+                        @Html.Raw(item.Blacklist)
+                    </td>
+                    <td>
+                        <a asp-action="Create" asp-controller="Programari" asp-route-id="@item.PacientId">Adauga programare</a> |
+                        <a asp-action="Details" asp-route-id="@item.PacientId">Detalii</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

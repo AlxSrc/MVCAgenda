@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Domain.Medic
+
+    <h1>Modifica</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="MedicId" />
+                <div class="form-group">
+                    <label asp-for="DenumireMedic" class="control-label"></label>
+                    <input asp-for="DenumireMedic" class="form-control" />
+                    <span asp-validation-for="DenumireMedic" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Manage" asp-controller="Home">Inapoi</a>
+    </div>
+}

@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Lista";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Models.ManageViewModel
+
+    <h1>Lista cu medici</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Medici[0].DenumireMedic)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Medici)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DenumireMedic)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="Medici" asp-route-id="@item.MedicId">Modifica</a> |
+                        <a asp-action="Delete" asp-controller="Medici" asp-route-id="@item.MedicId">Sterge</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>
+        <a asp-action="Create" asp-controller="Medici">Adauga un medic nou</a>
+    </p>
+
+    <h1>Lista cu camere</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Camere[0].DenumireCamera)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Camere)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DenumireCamera)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="Camere" asp-route-id="@item.CameraId">Modifica</a> |
+                        <a asp-action="Delete" asp-controller="Camere" asp-route-id="@item.CameraId">Sterge</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>
+        <a asp-action="Create" asp-controller="Camere">Adauga o camera noua</a>
+    </p>
+
+
+}

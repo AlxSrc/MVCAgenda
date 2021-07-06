@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewData["Title"] = "Blacklist";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Models.ListeViewModel
+
+    <h1>Lista cu pacienti stersi</h1>
+
+    <p>
+        <a asp-action="Index">Lista cu pacienti</a>
+    </p>
+
+
+    <form asp-controller="Persoane" asp-action="Blacklist" method="get">
+        <p>
+            Numar de telefon: <input type="text" name="SearchString" />
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].Nume)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].Prenume)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].NrDeTelefon)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].Mail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pacienti[0].Blacklist)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Pacienti)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nume)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Prenume)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NrDeTelefon)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mail)
+                    </td>
+                    <td>
+                        @Html.Raw(item.Blacklist)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.PacientId">Editeaza</a> |
+                        <a asp-action="Details" asp-route-id="@item.PacientId">Detalii</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PacientId">Sterge</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @model MVCAgenda.Domain.Camera
+
+    <h1>Adauga o camera noua</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="DenumireCamera" class="control-label"></label>
+                    <input asp-for="DenumireCamera" class="form-control" />
+                    <span asp-validation-for="DenumireCamera" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Manage" asp-controller="Home">Inapoi</a>
+    </div>
+}
