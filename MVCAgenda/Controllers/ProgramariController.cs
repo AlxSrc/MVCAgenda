@@ -31,6 +31,7 @@ namespace MVCAgenda.Controllers
         public ProgramariController(AgendaContext context)
         {
             _context = context;
+            /// asd
         }
 
 
