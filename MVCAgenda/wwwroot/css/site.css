@@ -4,7 +4,8 @@ for details on configuring this project to bundle and minify static web assets. 
 /*#region Custom*/
 
 .table.fixed-layout {
-  table-layout: fixed;
+    table-layout: fixed;
+    word-break: break-word;
 }
 
 /*#endregion Custom*/
