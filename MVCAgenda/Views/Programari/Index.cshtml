@@ -33,6 +33,14 @@
             &#8226;
             <input placeholder="Data"
                    asp-for="SearchStringData" />
+            &#8226;
+            <select placeholder="Medic"
+                    asp-for="SearchMedic"
+                    asp-items="ViewBag.MedicId"></select>
+            &#8226;
+            <select placeholder="Camera"
+                    asp-for="SearchCamera" 
+                    asp-items="ViewBag.CameraId"></select>
 
             <input type="submit" value="Filter" />
             <a asp-action="Index">Inapoi</a>
@@ -54,10 +62,10 @@
                     @Html.DisplayNameFor(model => model.ProgramariComplete[0].NrDeTelefon)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProgramariComplete[0].MedicId)
+                    @Html.DisplayNameFor(model => model.ProgramariComplete[0].Medic)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProgramariComplete[0].CameraId)
+                    @Html.DisplayNameFor(model => model.ProgramariComplete[0].Camera)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ProgramariComplete[0].DataConsultatie)
@@ -88,10 +96,10 @@
                         @Html.DisplayFor(modelItem => item.NrDeTelefon)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.MedicId)
+                        @Html.DisplayFor(modelItem => item.Medic)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CameraId)
+                        @Html.DisplayFor(modelItem => item.Camera)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DataConsultatie)
