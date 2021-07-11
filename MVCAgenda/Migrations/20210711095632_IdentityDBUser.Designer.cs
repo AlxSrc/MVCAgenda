@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20210702153616_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210711095632_IdentityDBUser")]
+    partial class IdentityDBUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,9 +105,6 @@ namespace MVCAgenda.Migrations
                     b.Property<string>("Localitatea")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("NumePacient")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Sexul")
                         .HasColumnType("int");

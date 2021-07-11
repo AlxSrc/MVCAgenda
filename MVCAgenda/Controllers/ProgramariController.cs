@@ -26,29 +26,34 @@ namespace MVCAgenda.Controllers
         private string _dataCreeareConsultatie = ActualDateTime.ToString("U");
 
         private string _responsabilProgramare = "Administrator";
-        
+
 
         public ProgramariController(AgendaContext context)
         {
             _context = context;
-            /// asd
         }
 
 
         // GET: Programari
-        public async Task<IActionResult> Index(string SearchStringOra, string SearchStringData)
+        public async Task<IActionResult> Index(string SearchStringOra, string SearchStringData,int SearchCamera, int SearchMedic)
         {
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
+                ViewData["CameraId"] = new SelectList(_context.Camera.Where(c => c.Visible == 1), "CameraId", "DenumireCamera");
+                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Visible == 1), "MedicId", "DenumireMedic");
 
                 var queryProgramariComplete = await (
                     from pacient in _context.Pacient
                     join programare in _context.Programare
+                        .Where(p => SearchMedic != 0 ? p.MedicId == SearchMedic : true)
+                        .Where(p => SearchCamera != 0 ? p.CameraId == SearchCamera : true)
                         .Where(p => !string.IsNullOrEmpty(SearchStringOra) ? p.OraConsultatie.Contains(SearchStringOra) : true)
                         .Where(p => !string.IsNullOrEmpty(SearchStringData) ? p.DataConsultatie.Contains(SearchStringData) : true)
                             on pacient.PacientId equals programare.PacientId
+                    join camera in _context.Camera on programare.CameraId equals camera.CameraId
+                    join medic in _context.Medic on programare.MedicId equals medic.MedicId
                     orderby (programare.DataConsultatie)
-                    select AgendaFactory.PrepareProgramareCompletaViewModel(programare, pacient)
+                    select AgendaFactory.PrepareAfisareProgramareViewModel(programare, pacient, camera, medic)
                     ).ToListAsync();
 
                 var model = new ListeViewModel
@@ -62,7 +67,7 @@ namespace MVCAgenda.Controllers
             }
             else
             {
-                return RedirectToAction("Login","Account");
+                return RedirectToAction("Login", "Account");
             }
 
         }// GET: Programari
@@ -73,9 +78,13 @@ namespace MVCAgenda.Controllers
                 var queryProgramariComplete = await (
                     from pacient in _context.Pacient
                     join programare in _context.Programare
-                        .Where(p => p.PacientId == id)
                             on pacient.PacientId equals programare.PacientId
-                    select AgendaFactory.PrepareProgramareCompletaViewModel(programare, pacient)
+                    join camera in _context.Camera
+                            on programare.CameraId equals camera.CameraId
+                    join medic in _context.Medic
+                            on programare.MedicId equals medic.MedicId
+                    orderby (programare.DataConsultatie)
+                    select AgendaFactory.PrepareAfisareProgramareViewModel(programare, pacient, camera, medic)
                     ).ToListAsync();
 
                 var model = new ListeViewModel
@@ -103,8 +112,10 @@ namespace MVCAgenda.Controllers
                         .Where(p => !string.IsNullOrEmpty(SearchStringOra) ? p.OraConsultatie.Contains(SearchStringOra) : true)
                         .Where(p => !string.IsNullOrEmpty(SearchStringData) ? p.DataConsultatie.Contains(SearchStringData) : true)
                             on pacient.PacientId equals programare.PacientId
-                    orderby (programare.OraConsultatie)
-                    select AgendaFactory.PrepareProgramareCompletaViewModel(programare, pacient)
+                    join camera in _context.Camera on programare.CameraId equals camera.CameraId
+                    join medic in _context.Medic on programare.MedicId equals medic.MedicId
+                    orderby (programare.DataConsultatie)
+                    select AgendaFactory.PrepareAfisareProgramareViewModel(programare, pacient, camera, medic)
                     ).ToListAsync();
 
                 var model = new ListeViewModel
@@ -133,8 +144,10 @@ namespace MVCAgenda.Controllers
                         .Where(p => !string.IsNullOrEmpty(SearchStringOra) ? p.OraConsultatie.Contains(SearchStringOra) : true)
                         .Where(p => !string.IsNullOrEmpty(SearchStringData) ? p.DataConsultatie.Contains(SearchStringData) : true)
                             on pacient.PacientId equals programare.PacientId
+                    join camera in _context.Camera on programare.CameraId equals camera.CameraId
+                    join medic in _context.Medic on programare.MedicId equals medic.MedicId
                     orderby (programare.DataConsultatie)
-                    select AgendaFactory.PrepareProgramareCompletaViewModel(programare, pacient)
+                    select AgendaFactory.PrepareAfisareProgramareViewModel(programare, pacient, camera, medic)
                     ).ToListAsync();
 
                 var model = new ListeViewModel
@@ -384,7 +397,7 @@ namespace MVCAgenda.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,Programare programare)
+        public async Task<IActionResult> Edit(int id, Programare programare)
         {
             if (User.Identity.IsAuthenticated)
             {

@@ -66,7 +66,6 @@ namespace MVCAgenda.Migrations
                 {
                     FisaPacientId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NumePacient = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AntecedenteH = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     AntecedenteP = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     CNP = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),

@@ -104,9 +104,6 @@ namespace MVCAgenda.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<string>("NumePacient")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Sexul")
                         .HasColumnType("int");
 

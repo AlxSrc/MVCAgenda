@@ -142,8 +142,63 @@ namespace MVCAgenda.Factories
 
             return programareCompletaViewModel;
         }
+        public static AfisareProgramareViewModel PrepareAfisareProgramareViewModel(Programare programare, Pacient pacient, Camera camera, Medic medic)
+        {
+            var programareCompletaViewModel = new AfisareProgramareViewModel
+            {
+                ProgramareId = programare.ProgramareId,
+                PacientId = programare.PacientId,
+                Nume = pacient.Nume,
+                Prenume = pacient.Prenume,
+                NrDeTelefon = pacient.NrDeTelefon,
+                Mail = pacient.Mail,
+                Medic = medic.DenumireMedic,
+                Camera = camera.DenumireCamera,
+                DataConsultatie = programare.DataConsultatie.ToString(),
+                OraConsultatie = programare.OraConsultatie.ToString(),
+                Procedura = programare.Procedura,
+                ResponsabilProgramare = programare.ResponsabilProgramare,
+                DataCreeareConsultatie = programare.DataCreeareConsultatie
+            };
 
-        public static FisaPacientViewModel PrepareFisaPacientViewModel(FisaPacient fisaPacient,List<Consultatie> consultatii)
+            if (programare.Efectuata == 1)
+            {
+                programareCompletaViewModel.EfectuataText = "<span class=\"badge bg-success\">Da</span>";
+            }
+            else if (programare.Efectuata == 0)
+            {
+                programareCompletaViewModel.EfectuataText = "<span class=\"badge bg-danger\">Nu</span>";
+            }
+            else
+            {
+                programareCompletaViewModel.EfectuataText = "-";
+            }
+
+            if (pacient.Blacklist == 1)
+            {
+                programareCompletaViewModel.Blacklist = "<span class=\"badge bg-Danger\">Da</span>";
+            }
+            else if (pacient.Blacklist == 0)
+            {
+                programareCompletaViewModel.Blacklist = "<span class=\"badge bg-success\">Nu</span>";
+            }
+            else
+            {
+                programareCompletaViewModel.Blacklist = "-";
+            }
+
+            if (programare.Visible >= 1)
+            {
+                programareCompletaViewModel.Visible = true;
+            }
+            else if (programare.Visible == 0)
+            {
+                programareCompletaViewModel.Visible = false;
+            }
+
+            return programareCompletaViewModel;
+        }
+        public static FisaPacientViewModel PrepareFisaPacientViewModel(FisaPacient fisaPacient, List<Consultatie> consultatii)
         {
             //List<Consultatie> consultatiiModel = new List<Consultatie>();
             var fisaPacientViewModel = new FisaPacientViewModel

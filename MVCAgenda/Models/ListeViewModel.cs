@@ -10,15 +10,24 @@ namespace MVCAgenda.Models
     public class ListeViewModel
     {
         public List<PacientViewModel> Pacienti { get; set; }
+
         public List<ProgramareViewModel> Programari { get; set; }
-        public List<ProgramareCompletaViewModel> ProgramariComplete { get; set; }
+
+        public List<AfisareProgramareViewModel> ProgramariComplete { get; set; }
+
 
         public string SearchStringNume { get; set; }
+
         public string SearchStringNumarDeTelefon { get; set; }
+
         public string SearchStringEmail { get; set; }
+
         public string SearchStringOra { get; set; }
+
         public string SearchStringData { get; set; }
-        public string SearchStringMedic { get; set; }
+
+        public int SearchMedic { get; set; }
+        public int SearchCamera { get; set; }
 
         public ListeViewModel()
         {
@@ -26,7 +35,7 @@ namespace MVCAgenda.Models
 
             Programari = new List<ProgramareViewModel>();
 
-            ProgramariComplete = new List<ProgramareCompletaViewModel>();
+            ProgramariComplete = new List<AfisareProgramareViewModel>();
         }
 
     }
