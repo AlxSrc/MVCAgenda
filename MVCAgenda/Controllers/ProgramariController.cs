@@ -17,25 +17,28 @@ namespace MVCAgenda.Controllers
 {
     public class ProgramariController : Controller
     {
+        #region Services
         private readonly AgendaContext _context;
+        #endregion
 
-
+        #region Fields
         private static DateTime ActualDateTime = DateTime.Now;
 
         private string DayTime = ActualDateTime.ToString("yyyy-MM-dd");
         private string _dataCreeareConsultatie = ActualDateTime.ToString("U");
 
         private string _responsabilProgramare = "Administrator";
+        #endregion
 
-
+        #region C-tor
         public ProgramariController(AgendaContext context)
         {
             _context = context;
         }
-
+        #endregion
 
         // GET: Programari
-        public async Task<IActionResult> Index(string SearchStringOra, string SearchStringData,int SearchCamera, int SearchMedic)
+        public async Task<IActionResult> Index(string SearchOraConsultatie, string SearchDataConsultatie, int SearchCamera, int SearchMedic)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -45,14 +48,16 @@ namespace MVCAgenda.Controllers
                 var queryProgramariComplete = await (
                     from pacient in _context.Pacient
                     join programare in _context.Programare
+
                         .Where(p => SearchMedic != 0 ? p.MedicId == SearchMedic : true)
                         .Where(p => SearchCamera != 0 ? p.CameraId == SearchCamera : true)
-                        .Where(p => !string.IsNullOrEmpty(SearchStringOra) ? p.OraConsultatie.Contains(SearchStringOra) : true)
-                        .Where(p => !string.IsNullOrEmpty(SearchStringData) ? p.DataConsultatie.Contains(SearchStringData) : true)
+                        .Where(p => !string.IsNullOrEmpty(SearchOraConsultatie) ? p.OraConsultatie.Contains(SearchOraConsultatie) : true)
+                        .Where(p => !string.IsNullOrEmpty(SearchDataConsultatie) ? p.DataConsultatie.Contains(SearchDataConsultatie) : true)
                             on pacient.PacientId equals programare.PacientId
+
                     join camera in _context.Camera on programare.CameraId equals camera.CameraId
                     join medic in _context.Medic on programare.MedicId equals medic.MedicId
-                    orderby (programare.DataConsultatie)
+                    orderby (programare.OraConsultatie)
                     select AgendaFactory.PrepareAfisareProgramareViewModel(programare, pacient, camera, medic)
                     ).ToListAsync();
 
@@ -71,26 +76,31 @@ namespace MVCAgenda.Controllers
             }
 
         }// GET: Programari
-        public async Task<IActionResult> AllProgram(int id)
+        public async Task<IActionResult> AllProgram(int id, string SearchOraConsultatie, string SearchDataConsultatie, int SearchCamera, int SearchMedic)
         {
             if (User.Identity.IsAuthenticated)
             {
+                ViewData["CameraId"] = new SelectList(_context.Camera.Where(c => c.Visible == 1), "CameraId", "DenumireCamera");
+                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Visible == 1), "MedicId", "DenumireMedic");
+
+
                 var queryProgramariComplete = await (
                     from pacient in _context.Pacient
                     join programare in _context.Programare
+                        .Where(p => p.PacientId == id)
+                        .Where(p => SearchMedic != 0 ? p.MedicId == SearchMedic : true)
+                        .Where(p => SearchCamera != 0 ? p.CameraId == SearchCamera : true)
+                        .Where(p => !string.IsNullOrEmpty(SearchOraConsultatie) ? p.OraConsultatie.Contains(SearchOraConsultatie) : true)
+                        .Where(p => !string.IsNullOrEmpty(SearchDataConsultatie) ? p.DataConsultatie.Contains(SearchDataConsultatie) : true)
                             on pacient.PacientId equals programare.PacientId
-                    join camera in _context.Camera
-                            on programare.CameraId equals camera.CameraId
-                    join medic in _context.Medic
-                            on programare.MedicId equals medic.MedicId
+                    join camera in _context.Camera on programare.CameraId equals camera.CameraId
+                    join medic in _context.Medic on programare.MedicId equals medic.MedicId
                     orderby (programare.DataConsultatie)
                     select AgendaFactory.PrepareAfisareProgramareViewModel(programare, pacient, camera, medic)
                     ).ToListAsync();
 
                 var model = new ListeViewModel
                 {
-                    //Programari = programariModel
-
                     ProgramariComplete = queryProgramariComplete
                 };
 
@@ -101,27 +111,30 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
-        public async Task<IActionResult> DailyIndex(string SearchStringOra, string SearchStringData, string SearchStringMedic)
+        public async Task<IActionResult> DailyIndex(string SearchOraConsultatie, string SearchDataConsultatie, int SearchCamera, int SearchMedic)
         {
             if (User.Identity.IsAuthenticated)
             {
+                ViewData["CameraId"] = new SelectList(_context.Camera.Where(c => c.Visible == 1), "CameraId", "DenumireCamera");
+                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Visible == 1), "MedicId", "DenumireMedic");
+
                 var queryProgramariComplete = await (
                     from pacient in _context.Pacient
                     join programare in _context.Programare
                         .Where(p => p.DataConsultatie.Contains(DayTime))
-                        .Where(p => !string.IsNullOrEmpty(SearchStringOra) ? p.OraConsultatie.Contains(SearchStringOra) : true)
-                        .Where(p => !string.IsNullOrEmpty(SearchStringData) ? p.DataConsultatie.Contains(SearchStringData) : true)
+                        .Where(p => SearchMedic != 0 ? p.MedicId == SearchMedic : true)
+                        .Where(p => SearchCamera != 0 ? p.CameraId == SearchCamera : true)
+                        .Where(p => !string.IsNullOrEmpty(SearchOraConsultatie) ? p.OraConsultatie.Contains(SearchOraConsultatie) : true)
+                        .Where(p => !string.IsNullOrEmpty(SearchDataConsultatie) ? p.DataConsultatie.Contains(SearchDataConsultatie) : true)
                             on pacient.PacientId equals programare.PacientId
                     join camera in _context.Camera on programare.CameraId equals camera.CameraId
                     join medic in _context.Medic on programare.MedicId equals medic.MedicId
-                    orderby (programare.DataConsultatie)
+                    orderby (programare.OraConsultatie)
                     select AgendaFactory.PrepareAfisareProgramareViewModel(programare, pacient, camera, medic)
                     ).ToListAsync();
 
                 var model = new ListeViewModel
                 {
-                    //Programari = programariModel
-
                     ProgramariComplete = queryProgramariComplete
                 };
 
@@ -133,16 +146,21 @@ namespace MVCAgenda.Controllers
             }
         }
         // GET: Programari
-        public async Task<IActionResult> Deleted(string SearchStringOra, string SearchStringData, string SearchStringMedic)
+        public async Task<IActionResult> Deleted(string SearchOraConsultatie, string SearchDataConsultatie, int SearchCamera, int SearchMedic)
         {
             if (User.Identity.IsAuthenticated)
             {
+                ViewData["CameraId"] = new SelectList(_context.Camera.Where(c => c.Visible == 1), "CameraId", "DenumireCamera");
+                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Visible == 1), "MedicId", "DenumireMedic");
+
                 var queryProgramariComplete = await (
                     from pacient in _context.Pacient
                     join programare in _context.Programare
                         .Where(p => p.Visible == 0)
-                        .Where(p => !string.IsNullOrEmpty(SearchStringOra) ? p.OraConsultatie.Contains(SearchStringOra) : true)
-                        .Where(p => !string.IsNullOrEmpty(SearchStringData) ? p.DataConsultatie.Contains(SearchStringData) : true)
+                        .Where(p => SearchMedic != 0 ? p.MedicId == SearchMedic : true)
+                        .Where(p => SearchCamera != 0 ? p.CameraId == SearchCamera : true)
+                        .Where(p => !string.IsNullOrEmpty(SearchOraConsultatie) ? p.OraConsultatie.Contains(SearchOraConsultatie) : true)
+                        .Where(p => !string.IsNullOrEmpty(SearchDataConsultatie) ? p.DataConsultatie.Contains(SearchDataConsultatie) : true)
                             on pacient.PacientId equals programare.PacientId
                     join camera in _context.Camera on programare.CameraId equals camera.CameraId
                     join medic in _context.Medic on programare.MedicId equals medic.MedicId

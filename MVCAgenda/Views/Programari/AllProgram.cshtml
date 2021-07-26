@@ -7,7 +7,47 @@
 {
     @model MVCAgenda.Models.ListeViewModel
 
-    <h1>Lista cu programari</h1>
+    <h1>Istoria pacientului</h1>
+
+    <form asp-controller="Programari" asp-action="Index" method="get">
+
+        <p>
+            <input placeholder="Nume"
+                   asp-for="SearchStringNume" />
+            &#8226;
+            <input placeholder="Numar de telefon"
+                   asp-for="SearchStringNumarDeTelefon" />
+            &#8226;
+            <input placeholder="Adresa de e-mail"
+                   asp-for="SearchStringEmail" />
+        </p>
+
+        <p>
+            <select placeholder="Medic"
+                    asp-for="SearchMedic"
+                    asp-items="ViewBag.MedicId">
+                <option disabled selected>Medic</option>
+            </select>
+            &#8226;
+            <select placeholder="Camera"
+                    asp-for="SearchCamera"
+                    asp-items="ViewBag.CameraId">
+                <option disabled selected>Camera</option>
+            </select>
+            &#8226;
+            <input placeholder="Data"
+                   asp-for="SearchDataConsultatie" />
+            &#8226;
+            <input placeholder="Ora"
+                   asp-for="SearchOraConsultatie" />
+
+
+            <input type="submit" value="Filter" />
+            <a asp-action="Index">Inapoi</a>
+        </p>
+
+    </form>
+
 
     <table class="table">
         <thead>
@@ -22,10 +62,10 @@
                     @Html.DisplayNameFor(model => model.ProgramariComplete[0].NrDeTelefon)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProgramariComplete[0].MedicId)
+                    @Html.DisplayNameFor(model => model.ProgramariComplete[0].Medic)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProgramariComplete[0].CameraId)
+                    @Html.DisplayNameFor(model => model.ProgramariComplete[0].Camera)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ProgramariComplete[0].DataConsultatie)
@@ -56,10 +96,10 @@
                         @Html.DisplayFor(modelItem => item.NrDeTelefon)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.MedicId)
+                        @Html.DisplayFor(modelItem => item.Medic)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CameraId)
+                        @Html.DisplayFor(modelItem => item.Camera)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DataConsultatie)
@@ -74,8 +114,8 @@
                         @Html.Raw(item.EfectuataText)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.ProgramareId">Detalii</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ProgramareId">Sterge</a>
+                        <a asp-action="Details" asp-controller="Pacienti" asp-route-id="@item.PacientId">Vezi pacient</a>|
+                        <a asp-action="Details" asp-route-id="@item.ProgramareId">Detalii</a>
                     </td>
                 </tr>
             }

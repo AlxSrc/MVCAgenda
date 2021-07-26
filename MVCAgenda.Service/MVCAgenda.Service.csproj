@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -13,12 +13,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MVCAgenda.Core\MVCAgenda.Core.csproj" />
-    <ProjectReference Include="..\MVCAgenda.Service\MVCAgenda.Service.csproj" />
+    <ProjectReference Include="..\MVCAgenda.Data\MVCAgenda.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -132,19 +132,19 @@ namespace MVCAgenda.Data
                     context.SaveChanges();
 
                     string date;
-                    for (int i = 1; i < 600; i++)
-                    {
-                        date = GetRandomDate();
-                        context.Consultatie.AddRange(
-                            new Consultatie
-                            {
-                                FisaPacientId = i,
-                                Prescriptii = "sample text Prescriptii 2",
-                                Diagnostic = "sample text Diagnostic 2",
-                                Simptome = "sample text Simptome 2",
-                                DataCreeare = DateTime.Parse(date)
-                            });
-                    }
+                    //for (int i = 1; i < 600; i++)
+                    //{
+                    //    date = GetRandomDate();
+                    //    context.Consultatie.AddRange(
+                    //        new Consultatie
+                    //        {
+                    //            FisaPacientId = i,
+                    //            Prescriptii = "sample text Prescriptii 2",
+                    //            Diagnostic = "sample text Diagnostic 2",
+                    //            Simptome = "sample text Simptome 2",
+                    //            DataCreeare = DateTime.Parse(date)
+                    //        });
+                    //}
                 }
 
                 if (context.FisaPacient.Any() == false)
@@ -206,21 +206,21 @@ namespace MVCAgenda.Data
                         DataNasterii = DateTime.Parse("2000-07-24")
                     });
 
-                    for (int i = 1; i < 400; i++)
-                    {
-                        context.FisaPacient.AddRange(
-                            new FisaPacient
-                            {
-                                CNP = GetRandomCNP(),
-                                ExamenFizic = "Clinic sanatos",
-                                AntecedenteH = "sample text",
-                                AntecedenteP = "acnee",
-                                Localitatea = "Falticeni",
-                                Strada = "Calea Unirii numarul 55",
-                                Sexul = rand.Next(0, 1),
-                                DataNasterii = DateTime.Parse(GetRandomDate())
-                            });
-                    }
+                    //for (int i = 1; i < 400; i++)
+                    //{
+                    //    context.FisaPacient.AddRange(
+                    //        new FisaPacient
+                    //        {
+                    //            CNP = GetRandomCNP(),
+                    //            ExamenFizic = "Clinic sanatos",
+                    //            AntecedenteH = "sample text",
+                    //            AntecedenteP = "acnee",
+                    //            Localitatea = "Falticeni",
+                    //            Strada = "Calea Unirii numarul 55",
+                    //            Sexul = rand.Next(0, 1),
+                    //            DataNasterii = DateTime.Parse(GetRandomDate())
+                    //        });
+                    //}
                 }
 
                 if (context.Pacient.Any() == false)
@@ -277,20 +277,20 @@ namespace MVCAgenda.Data
                         Visible = 1
                     });
 
-                    for (int i = 6; i < 400; i++)
-                    {
-                        context.Pacient.AddRange(
-                            new Pacient
-                            {
-                                FisaPacientId = i,
-                                Nume = $"Test{i}",
-                                Prenume = $"PreTest{i}",
-                                NrDeTelefon = GetRandomNumber(),
-                                Mail = $"Test{i}@mail.com",
-                                Blacklist = 0,
-                                Visible = 1
-                            });
-                    }
+                    //for (int i = 6; i < 400; i++)
+                    //{
+                    //    context.Pacient.AddRange(
+                    //        new Pacient
+                    //        {
+                    //            FisaPacientId = i,
+                    //            Nume = $"Test{i}",
+                    //            Prenume = $"PreTest{i}",
+                    //            NrDeTelefon = GetRandomNumber(),
+                    //            Mail = $"Test{i}@mail.com",
+                    //            Blacklist = 0,
+                    //            Visible = 1
+                    //        });
+                    //}
                 }
 
                 if (context.Programare.Any() == false)
@@ -350,23 +350,23 @@ namespace MVCAgenda.Data
                     });
 
                     context.SaveChanges();
-                    for (int i = 6; i < 1600; i++)
-                    {
-                        context.Programare.AddRange(
-                        new Programare
-                        {
-                            PacientId = rand.Next(1,399),
-                            MedicId = rand.Next(1, 4),
-                            CameraId = rand.Next(1, 8),
-                            DataConsultatie = GetRandomDate(),
-                            OraConsultatie = GetRandomOra(),
-                            Procedura = $"Sample text{i}",
-                            Efectuata = 1,
-                            ResponsabilProgramare = "Administrator",
-                            DataCreeareConsultatie = GetRandomFullDate(),
-                            Visible = 1
-                        });
-                    }
+                    //for (int i = 6; i < 1600; i++)
+                    //{
+                    //    context.Programare.AddRange(
+                    //    new Programare
+                    //    {
+                    //        PacientId = rand.Next(1,399),
+                    //        MedicId = rand.Next(1, 4),
+                    //        CameraId = rand.Next(1, 8),
+                    //        DataConsultatie = GetRandomDate(),
+                    //        OraConsultatie = GetRandomOra(),
+                    //        Procedura = $"Sample text{i}",
+                    //        Efectuata = 1,
+                    //        ResponsabilProgramare = "Administrator",
+                    //        DataCreeareConsultatie = GetRandomFullDate(),
+                    //        Visible = 1
+                    //    });
+                    //}
 
                 }
                 try

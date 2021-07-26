@@ -6,21 +6,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Data;
 using MVCAgenda.Domain;
 using MVCAgenda.Factories;
 using MVCAgenda.Models;
+using MVCAgenda.Service.PatientServices;
 
 namespace MVCAgenda.Controllers
 {
     public class PacientiController : Controller
     {
         private readonly AgendaContext _context;
+        private readonly IPatientServices _patientServices;
 
-        public PacientiController(AgendaContext context)
+        public object PacientDto { get; private set; }
+
+        public PacientiController(AgendaContext context,
+            IPatientServices patientServices)
         {
             _context = context;
+            _patientServices = patientServices;
         }
 
         // GET: Pacienti
@@ -158,29 +164,44 @@ namespace MVCAgenda.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var persoane = await _context.Pacient
-                            .Where(p => p.Nume.Contains(pacient.Nume))
-                            .Where(p => p.Prenume.Contains(pacient.Prenume))
-                            .Where(p => p.NrDeTelefon.Contains(pacient.NrDeTelefon))
-                            .ToListAsync();
+                    //var persoane = await _context.Pacient
+                    //        .Where(p => p.Nume.Contains(pacient.Nume))
+                    //        .Where(p => p.Prenume.Contains(pacient.Prenume))
+                    //        .Where(p => p.NrDeTelefon.Contains(pacient.NrDeTelefon))
+                    //        .ToListAsync();
 
-                    if (persoane.Count >= 1)
-                    {
-                        string msg = $"Exista un pacient cu numele: {pacient.Nume}, prenumele: {pacient.Prenume} si numarul de telefon: {pacient.NrDeTelefon}";
-                        ModelState.AddModelError(string.Empty, msg);
-                    }
-                    else
-                    {
-                        FisaPacient FisaPacientCurent = new FisaPacient();
-                        _context.Add(FisaPacientCurent);
-                        await _context.SaveChangesAsync();
+                    //if (persoane.Count >= 1)
+                    //{
+                    //    string msg = $"Exista un pacient cu numele: {pacient.Nume}, prenumele: {pacient.Prenume} si numarul de telefon: {pacient.NrDeTelefon}";
+                    //    ModelState.AddModelError(string.Empty, msg);
+                    //}
+                    //else
+                    //{
+                    //    FisaPacient FisaPacientCurent = new FisaPacient();
+                    //    _context.Add(FisaPacientCurent);
+                    //    await _context.SaveChangesAsync();
 
-                        int lastID = _context.FisaPacient.Count();
-                        pacient.FisaPacientId = lastID;
-                        _context.Add(pacient);
-                        await _context.SaveChangesAsync();
+                    //    int lastID = _context.FisaPacient.Count();
+                    //    pacient.FisaPacientId = lastID;
+                    //    _context.Add(pacient);
+                    //    await _context.SaveChangesAsync();
+                    //    return RedirectToAction(nameof(Index));
+                    //}
+
+                    PatientDto pacientDto = new PatientDto()
+                    {
+                        FirstName = pacient.Nume,
+                        SecondName = pacient.Prenume,
+                        PhonNumber = pacient.NrDeTelefon,
+                        Mail = pacient.Mail,
+                        Blacklist = pacient.Blacklist
+                    };
+
+                    string result = await _patientServices.CreatePatientAsync(pacientDto);
+                    if(result == "Ok")
                         return RedirectToAction(nameof(Index));
-                    }
+                    else
+                        ModelState.AddModelError(string.Empty, result); 
                 }
                 return View(pacient);
             }

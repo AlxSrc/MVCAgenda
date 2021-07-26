@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,6 +26,12 @@ namespace MVCAgenda.Models
         public string SearchStringOra { get; set; }
 
         public string SearchStringData { get; set; }
+
+        [DataType(DataType.Date)]
+        public string SearchDataConsultatie { get; set; }
+
+        [DataType(DataType.Time)]
+        public string SearchOraConsultatie { get; set; }
 
         public int SearchMedic { get; set; }
         public int SearchCamera { get; set; }

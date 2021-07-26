@@ -6,7 +6,7 @@
 {
     @model MVCAgenda.Models.ListeViewModel
 
-    <h1>Lista cu programari</h1>
+    <h1>Programari</h1>
 
     <p>
         <a asp-action="Create">Adauga o programare</a>
@@ -28,19 +28,24 @@
         </p>
 
         <p>
-            <input placeholder="Ora"
-                   asp-for="SearchStringOra" />
-            &#8226;
-            <input placeholder="Data"
-                   asp-for="SearchStringData" />
-            &#8226;
             <select placeholder="Medic"
                     asp-for="SearchMedic"
-                    asp-items="ViewBag.MedicId"></select>
+                    asp-items="ViewBag.MedicId">
+            <option disabled selected>Medic</option>
+            </select>
             &#8226;
             <select placeholder="Camera"
-                    asp-for="SearchCamera" 
-                    asp-items="ViewBag.CameraId"></select>
+                    asp-for="SearchCamera"
+                    asp-items="ViewBag.CameraId">
+                <option disabled selected>Camera</option>
+            </select>
+            &#8226;
+            <input placeholder="Data"
+                   asp-for="SearchDataConsultatie" />
+            &#8226;
+            <input placeholder="Ora"
+                   asp-for="SearchOraConsultatie" />
+
 
             <input type="submit" value="Filter" />
             <a asp-action="Index">Inapoi</a>
@@ -114,6 +119,7 @@
                         @Html.Raw(item.EfectuataText)
                     </td>
                     <td>
+                        <a asp-action="Details" asp-controller="Pacienti" asp-route-id="@item.PacientId">Vezi pacient</a>|
                         <a asp-action="Details" asp-route-id="@item.ProgramareId">Detalii</a>
                     </td>
                 </tr>
