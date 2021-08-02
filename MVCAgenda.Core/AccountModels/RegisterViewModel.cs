@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MVCAgenda.Models.AccountModels
+namespace MVCAgenda.Core.AccountModels
 {
     public class RegisterViewModel
     {

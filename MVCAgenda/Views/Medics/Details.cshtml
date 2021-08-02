@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @model MVCAgenda.Core.Domain.Medic
+
+    <h1>Detalii</h1>
+
+    <div>
+        <h4>Medic</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MedicName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MedicName)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> |
+        <a asp-action="Manage" asp-controller="Home">Inapoi</a>
+    </div>
+}

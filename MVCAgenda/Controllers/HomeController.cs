@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MVCAgenda.Data;
-using MVCAgenda.Domain;
-using MVCAgenda.Models;
-using System;
-using System.Collections.Generic;
+using MVCAgenda.Core.AccountModels;
+using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.MVCAgendaManagement;
+using MVCAgenda.Data.DataBaseManager;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,15 +36,15 @@ namespace MVCAgenda.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 IQueryable<Medic> queryMedici = _context.Medic.Where(m => m.Visible == 1);
-                var medici = await queryMedici.ToListAsync();
+                var medics = await queryMedici.ToListAsync();
 
-                IQueryable<Camera> queryCamere = _context.Camera.Where(c => c.Visible == 1);
-                var camere = await queryCamere.ToListAsync();
+                IQueryable<Room> queryCamere = _context.Room.Where(c => c.Visible == 1);
+                var rooms = await queryCamere.ToListAsync();
 
                 var model = new ManageViewModel
                 {
-                    Medici = medici,
-                    Camere = camere
+                    Medics = medics,
+                    Rooms = rooms
                 };
 
                 return View(model);

@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Core.Domain.Appointment
+
+    <h3>Sunteti sigur ca doriti sa stergeti aceasta programare?</h3>
+    <div>
+        <h4>Programare</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Patient)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Patient.PhonNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Medic)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Medic)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Room)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Room)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AppointmentDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AppointmentDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AppointmentHour)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AppointmentHour)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Procedure)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Procedure)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Made)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Made)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ResponsibleForAppointment)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ResponsibleForAppointment)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AppointmentCreationDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AppointmentCreationDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Visible)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Visible)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Sterge" class="btn btn-danger" /> |
+            <a asp-action="Index">Inapoi la lista cu programari</a>
+        </form>
+    </div>
+}

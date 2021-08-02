@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Detalii pacient";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Core.Domain.Patient
+
+    <h1>Detalii pacient</h1>
+
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SecondName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SecondName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PhonNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PhonNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Mail)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Mail)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Blacklist)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.Raw(Model.Blacklist)
+            </dd>
+        </dl>
+    </div>
+    <div>
+
+        <hr />
+        <input type="hidden" asp-for="Id" />
+        <a asp-action="AllProgram" asp-controller="Programari" asp-route-id="@Model.Id">Vizualizeaza istoria pacientului</a> |
+        <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id">Vizualizeaza fisa pacientului</a>
+
+        <hr />
+        <form asp-action="Delete">
+            <a asp-action="Edit" asp-route-id="@Model.Id">Editeaza</a> |
+            <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a>
+
+            <input type="hidden" asp-for="Id" />
+        </form>
+
+        <hr />
+        <a asp-action="Index">Inapoi la lista cu pacienti</a>
+    </div>
+}

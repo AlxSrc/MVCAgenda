@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
 
-namespace MVCAgenda.Data
+namespace MVCAgenda.Data.DataBaseManager
 {
     public class AgendaContext : IdentityDbContext
     {
@@ -19,11 +19,11 @@ namespace MVCAgenda.Data
 
         }
 
-        public DbSet<PatientDto> PatientDto { get; set; }
-        public DbSet<SheetPatientDto> SheetPatientDto { get; set; }
-        public DbSet<AppointmentDto> AppointmentDto { get; set; }
-        public DbSet<ConsultationDto> ConsultationDto { get; set; }
-        public DbSet<RoomDto> RoomDto { get; set; }
-        public DbSet<MedicDto> MedicDto { get; set; }
+        public DbSet<Patient> Patient { get; set; }
+        public DbSet<SheetPatient> SheetPatient { get; set; }
+        public DbSet<Appointment> Appointment { get; set; }
+        public DbSet<Consultation> Consultation { get; set; }
+        public DbSet<Room> Room { get; set; }
+        public DbSet<Medic> Medic { get; set; }
     }
 }

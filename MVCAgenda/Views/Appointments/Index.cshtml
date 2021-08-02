@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewData["Title"] = "Lista cu programari";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
+
+    <h1>Programari</h1>
+
+    <p>
+        <a asp-action="Create">Adauga o programare</a>
+        &#8226;
+        <a asp-action="Deleted">Programari sterse</a>
+    </p>
+
+    <form asp-controller="Appointments" asp-action="AllAppointments" method="get">
+
+        <p>
+            <input placeholder="Nume"
+                   asp-for="SearchByName" />
+            &#8226;
+            <input placeholder="Numar de telefon"
+                   asp-for="SearchByPhoneNumber" />
+            &#8226;
+            <input placeholder="Adresa de e-mail"
+                   asp-for="SearchByEmail" />
+        </p>
+
+        <p>
+            <select placeholder="Medic"
+                    asp-for="SearchByMedic"
+                    asp-items="ViewBag.MedicId">
+                <option disabled selected>Medic</option>
+            </select>
+            &#8226;
+            <select placeholder="Camera"
+                    asp-for="SearchByRoom"
+                    asp-items="ViewBag.CameraId">
+                <option disabled selected>Camera</option>
+            </select>
+            &#8226;
+            <input placeholder="Data"
+                   asp-for="SearchByAppointmentDate" />
+            &#8226;
+            <input placeholder="Ora"
+                   asp-for="SearchByAppointmentHour" />
+
+
+            <input type="submit" value="Filter" />
+            <a asp-action="Index">Inapoi</a>
+        </p>
+
+    </form>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].SecondName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].PhonNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Medic)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Camera)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentHour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Procedure)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Made)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AppointmentsList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SecondName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhonNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Medic)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Camera)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppointmentDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppointmentHour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Procedure)
+                    </td>
+                    <td>
+                        @Html.Raw(item.Made)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Vezi pacient</a>|
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

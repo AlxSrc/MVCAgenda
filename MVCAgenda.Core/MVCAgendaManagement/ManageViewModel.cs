@@ -1,11 +1,13 @@
-﻿using MVCAgenda.Core.DomainModels;
+﻿using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.ViewModels;
 using System.Collections.Generic;
 
-namespace MVCAgenda.Models.MVCAgendaManagement
+namespace MVCAgenda.Core.MVCAgendaManagement
 {
     public class ManageViewModel
     {
-        public List<RoomModel> Rooms { get; set; }
-        public List<MedicModel> Medics { get; set; }
+        //To Do sa schimb cu modele din viewModel
+        public List<Room> Rooms { get; set; }
+        public List<Medic> Medics { get; set; }
     }
 }

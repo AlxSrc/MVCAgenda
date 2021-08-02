@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Core.Domain.Consultation
+
+    <h1>Detalii</h1>
+
+    <div>
+        <h4>Consultatie</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CreationDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Symptoms)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Symptoms)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Diagnostic)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Diagnostic)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Prescriptions)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Prescriptions)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Details" asp-controller="FisePacienti" asp-route-id="@Model.SheetPatientId">Inapoi</a>
+    </div>
+}

@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MVCAgenda.Data;
 
+using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Service.Factories;
+using MVCAgenda.Service.Patients;
 
 namespace MVCAgenda
 {
@@ -32,6 +35,10 @@ namespace MVCAgenda
             services.AddDbContext<AgendaContext>(c => c.UseSqlServer(connectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AgendaContext>();
+
+            //services
+            services.AddScoped<IPatientServices, PatientServices>();
+            services.AddScoped<IAgendaViewsFactory, AgendaViewsFactory>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

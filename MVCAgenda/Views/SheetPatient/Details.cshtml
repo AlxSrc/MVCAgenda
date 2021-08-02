@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewData["Title"] = "Detalii";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @model MVCAgenda.Core.ViewModels.SheetPatientViewModel
+
+    <h1>Detalii</h1>
+
+    <div>
+        <h4>Fisa pacient</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AntecedentsH)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AntecedentsH)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AntecedentsP)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AntecedentsP)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PhysicalExamination)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PhysicalExamination)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CNP)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CNP)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Gender)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Town)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Town)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Street)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Street)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateOfBirth)
+            </dd>
+        </dl>
+
+        <table class="table fixed-layout">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Consultations[0].Symptoms)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Consultations[0].Diagnostic)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Consultations[0].Prescriptions)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Consultations)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Symptoms)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Diagnostic)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Prescriptions)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Consultatii" asp-route-id="@item.Id">Detalii</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-action="Create" asp-controller="Consultatii" asp-route-id="@Model.Id">Adauga o consultatie noua </a>
+        <hr />
+
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Modifica fisa pacientului</a> |
+        <a asp-action="Details" asp-controller="Pacienti" asp-route-id="@Model.Id">Inapoi</a>
+    </div>
+
+}

@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "Blacklist";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
+
+    <h1>Lista cu pacienti stersi</h1>
+
+    <p>
+        <a asp-action="Index">Lista cu pacienti</a>
+    </p>
+
+
+    <form asp-controller="Patients" asp-action="Deleted" method="get">
+        <p>
+            <input placeholder="Nume"
+                   asp-for="SearchByName" />
+            &#8226;
+            <input placeholder="Numar de telefon"
+                   asp-for="SearchByPhoneNumber" />
+            &#8226;
+            <input placeholder="Adresa de e-mail"
+                   asp-for="SearchByEmail" />
+
+            <input type="submit" value="Filter" />
+            <a asp-action="Index">Inapoi</a>
+        </p>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PatientsList[0].FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PatientsList[0].SecondName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PatientsList[0].PhonNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PatientsList[0].Mail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PatientsList[0].Blacklist)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PatientsList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SecondName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhonNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Blacklist)
+                    </td>
+                    <td>
+                        <a asp-action="Create" asp-controller="Programari" asp-route-id="@item.Id">Adauga programare</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

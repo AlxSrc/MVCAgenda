@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @model MVCAgenda.Core.Domain.SheetPatient
+
+    <h1>Create</h1>
+
+    <h4>FisaPacient</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="AntecedentsH" class="control-label"></label>
+                    <input asp-for="AntecedentsH" class="form-control" />
+                    <span asp-validation-for="AntecedentsH" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AntecedentsP" class="control-label"></label>
+                    <input asp-for="AntecedentsP" class="form-control" />
+                    <span asp-validation-for="AntecedentsP" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CNP" class="control-label"></label>
+                    <input asp-for="CNP" class="form-control" />
+                    <span asp-validation-for="CNP" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <input asp-for="Gender" class="form-control" />
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Town" class="control-label"></label>
+                    <input asp-for="Town" class="form-control" />
+                    <span asp-validation-for="Town" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Street" class="control-label"></label>
+                    <input asp-for="Street" class="form-control" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateOfBirth" class="control-label"></label>
+                    <input asp-for="DateOfBirth" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Details" asp-controller="Pacienti" asp-route-id="@Model.Id">Inapoi</a>
+    </div>
+}
