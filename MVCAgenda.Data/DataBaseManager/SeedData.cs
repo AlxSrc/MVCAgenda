@@ -71,76 +71,6 @@ namespace MVCAgenda.Data
                         });
                     }
 
-                    if (context.Consultation.Any() == false)
-                    {
-                        context.Consultation.AddRange(
-                        new Consultation
-                        {
-                            SheetPatientId = 1,
-                            Prescriptions = "sample text Prescriptii 1",
-                            Diagnostic = "sample text Diagnostic 1",
-                            Symptoms = "sample text Simptome 1",
-                            CreationDate = DateTime.Parse("2000-07-24")
-                        },
-                        new Consultation
-                        {
-                            SheetPatientId = 1,
-                            Prescriptions = "sample text Prescriptii 2",
-                            Diagnostic = "sample text Diagnostic 2",
-                            Symptoms = "sample text Simptome 2",
-                            CreationDate = DateTime.Parse("2000-07-24")
-                        },
-                        new Consultation
-                        {
-                            SheetPatientId = 1,
-                            Prescriptions = "sample text Prescriptii 3",
-                            Diagnostic = "sample text Diagnostic 3",
-                            Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24")
-                        },
-                        new Consultation
-                        {
-                            SheetPatientId = 2,
-                            Prescriptions = "sample text Prescriptii 3",
-                            Diagnostic = "sample text Diagnostic 3",
-                            Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24")
-                        },
-                        new Consultation
-                        {
-                            SheetPatientId = 3,
-                            Prescriptions = "sample text Prescriptii 3",
-                            Diagnostic = "sample text Diagnostic 3",
-                            Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24")
-                        },
-                        new Consultation
-                        {
-                            SheetPatientId = 4,
-                            Prescriptions = "sample text Prescriptii 3",
-                            Diagnostic = "sample text Diagnostic 3",
-                            Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24")
-                        },
-                        new Consultation
-                        {
-                            SheetPatientId = 5,
-                            Prescriptions = "sample text Prescriptii 1",
-                            Diagnostic = "sample text Diagnostic 1",
-                            Symptoms = "sample text Simptome 1",
-                            CreationDate = DateTime.Parse("2000-07-24")
-                        },
-                        new Consultation
-                        {
-                            SheetPatientId = 5,
-                            Prescriptions = "sample text Prescriptii 2",
-                            Diagnostic = "sample text Diagnostic 2",
-                            Symptoms = "sample text Simptome 2",
-                            CreationDate = DateTime.Parse("2000-07-24")
-                        });
-                        //context.SaveChanges();
-                    }
-
                     if (context.SheetPatient.Any() == false)
                     {
                         context.SheetPatient.AddRange(
@@ -201,6 +131,80 @@ namespace MVCAgenda.Data
                         });
                     }
 
+                    context.SaveChanges();
+
+                    if (context.Consultation.Any() == false)
+                    {
+                        context.Consultation.AddRange(
+                        new Consultation
+                        {
+                            SheetPatientId = 1,
+                            Prescriptions = "sample text Prescriptii 1",
+                            Diagnostic = "sample text Diagnostic 1",
+                            Symptoms = "sample text Simptome 1",
+                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 1,
+                            Prescriptions = "sample text Prescriptii 2",
+                            Diagnostic = "sample text Diagnostic 2",
+                            Symptoms = "sample text Simptome 2",
+                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 1,
+                            Prescriptions = "sample text Prescriptii 3",
+                            Diagnostic = "sample text Diagnostic 3",
+                            Symptoms = "sample text Simptome 3",
+                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 2,
+                            Prescriptions = "sample text Prescriptii 3",
+                            Diagnostic = "sample text Diagnostic 3",
+                            Symptoms = "sample text Simptome 3",
+                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 3,
+                            Prescriptions = "sample text Prescriptii 3",
+                            Diagnostic = "sample text Diagnostic 3",
+                            Symptoms = "sample text Simptome 3",
+                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 4,
+                            Prescriptions = "sample text Prescriptii 3",
+                            Diagnostic = "sample text Diagnostic 3",
+                            Symptoms = "sample text Simptome 3",
+                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 5,
+                            Prescriptions = "sample text Prescriptii 1",
+                            Diagnostic = "sample text Diagnostic 1",
+                            Symptoms = "sample text Simptome 1",
+                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 5,
+                            Prescriptions = "sample text Prescriptii 2",
+                            Diagnostic = "sample text Diagnostic 2",
+                            Symptoms = "sample text Simptome 2",
+                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                        });
+                        //context.SaveChanges();
+                    }
+
+                    context.SaveChanges();
+
                     if (context.Patient.Any() == false)
                     {
                         context.Patient.AddRange(
@@ -255,6 +259,8 @@ namespace MVCAgenda.Data
                             Visible = 1
                         });
                     }
+
+                    context.SaveChanges();
 
                     if (context.Appointment.Any() == false)
                     {

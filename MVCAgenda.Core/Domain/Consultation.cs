@@ -10,7 +10,6 @@ namespace MVCAgenda.Core.Domain
         [DisplayName("Fisa Pacient")] 
         public int SheetPatientId { get; set; }
 
-
         [ForeignKey("SheetPatientId")] 
         public virtual SheetPatient SheetPatient { get; set; }
 
