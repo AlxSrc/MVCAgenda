@@ -7,7 +7,7 @@ namespace MVCAgenda.Service.Factories
 {
     public class AgendaViewsFactory : IAgendaViewsFactory
     {
-        public PatientViewModel PreperePatientViewModel(Patient model)
+        public PatientViewModel PreperePatientViewModel(Core.Domain.Patient model)
         {
             PatientViewModel viewModel = new PatientViewModel()
             {
@@ -73,7 +73,7 @@ namespace MVCAgenda.Service.Factories
             return preparedView;
         }
 
-        public AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room)
+        public AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Core.Domain.Patient patient, Medic medic, Room room)
         {
             AppointmentViewModel viewModel = new AppointmentViewModel()
             {

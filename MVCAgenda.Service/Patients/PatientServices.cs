@@ -18,7 +18,7 @@ namespace MVCAgenda.Service.Patients
             _context = context;
         }
 
-        public async Task<string> CreatePatientAsync(Patient PatientModel)
+        public async Task<string> CreatePatientAsync(Core.Domain.Patient PatientModel)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public Task<bool> EditPatientAsync(Patient PatientModel)
+        public Task<bool> EditPatientAsync(Core.Domain.Patient PatientModel)
         {
             throw new System.NotImplementedException();
         }
@@ -92,12 +92,12 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public Task<List<Patient>> GetPatientAsync()
+        public Task<List<Core.Domain.Patient>> GetPatientAsync()
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Patient> GetPatientByIdAsync(int Id)
+        public Task<Core.Domain.Patient> GetPatientByIdAsync(int Id)
         {
             throw new System.NotImplementedException();
         }

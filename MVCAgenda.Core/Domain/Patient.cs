@@ -12,7 +12,6 @@ namespace MVCAgenda.Core.Domain
 
         [ForeignKey("SheetPatientId")] 
         public virtual SheetPatient SheetPatient { get; set; }
-        public virtual Appointment Appointment { get; set; }
 
 
         [StringLength(60, MinimumLength = 1)]

@@ -8,13 +8,13 @@ namespace MVCAgenda.Service.Factories
     public interface IAgendaViewsFactory
     {
         //Patient
-        PatientViewModel PreperePatientViewModel(Patient model);
+        PatientViewModel PreperePatientViewModel(Core.Domain.Patient model);
 
         //SheetPatient
         Task<SheetPatientViewModel> PrepereSheetPatientViewModel(SheetPatient model, List
             <Consultation> consultations);
 
         //Appointment
-        AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room);
+        AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Core.Domain.Patient patient, Medic medic, Room room);
     }
 }

@@ -11,320 +11,314 @@ namespace MVCAgenda.Data
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-
-            var rand = new Random();
-            using (var context = new AgendaContext(
+            try
+            {
+                using (var context = new AgendaContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<AgendaContext>>()))
+                {
+                    if (context.Room.Any() == false)
+                    {
+                        context.Room.AddRange(
+                        new Room
+                        {
+                            RoomName = "Camera 1 medical"
+                        },
+                        new Room
+                        {
+                            RoomName = "Camera 2 medical"
+                        },
+                        new Room
+                        {
+                            RoomName = "Camera 3 medical"
+                        },
+                        new Room
+                        {
+                            RoomName = "Camera 1 corporal"
+                        },
+                        new Room
+                        {
+                            RoomName = "Camera 2 corporal"
+                        },
+                        new Room
+                        {
+                            RoomName = "Camera 3 corporal"
+                        },
+                        new Room
+                        {
+                            RoomName = "Camera 4 corporal"
+                        },
+                        new Room
+                        {
+                            RoomName = "Sala de sport"
+                        });
+                    }
+
+                    if (context.Medic.Any() == false)
+                    {
+                        context.Medic.AddRange(
+                        new Medic
+                        {
+                            MedicName = "Doctor Ana-Maria"
+                        },
+                        new Medic
+                        {
+                            MedicName = "Asistent Andrei"
+                        },
+                        new Medic
+                        {
+                            MedicName = "Asistent Ionela"
+                        });
+                    }
+
+                    if (context.Consultation.Any() == false)
+                    {
+                        context.Consultation.AddRange(
+                        new Consultation
+                        {
+                            SheetPatientId = 1,
+                            Prescriptions = "sample text Prescriptii 1",
+                            Diagnostic = "sample text Diagnostic 1",
+                            Symptoms = "sample text Simptome 1",
+                            CreationDate = DateTime.Parse("2000-07-24")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 1,
+                            Prescriptions = "sample text Prescriptii 2",
+                            Diagnostic = "sample text Diagnostic 2",
+                            Symptoms = "sample text Simptome 2",
+                            CreationDate = DateTime.Parse("2000-07-24")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 1,
+                            Prescriptions = "sample text Prescriptii 3",
+                            Diagnostic = "sample text Diagnostic 3",
+                            Symptoms = "sample text Simptome 3",
+                            CreationDate = DateTime.Parse("2000-07-24")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 2,
+                            Prescriptions = "sample text Prescriptii 3",
+                            Diagnostic = "sample text Diagnostic 3",
+                            Symptoms = "sample text Simptome 3",
+                            CreationDate = DateTime.Parse("2000-07-24")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 3,
+                            Prescriptions = "sample text Prescriptii 3",
+                            Diagnostic = "sample text Diagnostic 3",
+                            Symptoms = "sample text Simptome 3",
+                            CreationDate = DateTime.Parse("2000-07-24")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 4,
+                            Prescriptions = "sample text Prescriptii 3",
+                            Diagnostic = "sample text Diagnostic 3",
+                            Symptoms = "sample text Simptome 3",
+                            CreationDate = DateTime.Parse("2000-07-24")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 5,
+                            Prescriptions = "sample text Prescriptii 1",
+                            Diagnostic = "sample text Diagnostic 1",
+                            Symptoms = "sample text Simptome 1",
+                            CreationDate = DateTime.Parse("2000-07-24")
+                        },
+                        new Consultation
+                        {
+                            SheetPatientId = 5,
+                            Prescriptions = "sample text Prescriptii 2",
+                            Diagnostic = "sample text Diagnostic 2",
+                            Symptoms = "sample text Simptome 2",
+                            CreationDate = DateTime.Parse("2000-07-24")
+                        });
+                        //context.SaveChanges();
+                    }
+
+                    if (context.SheetPatient.Any() == false)
+                    {
+                        context.SheetPatient.AddRange(
+                        new SheetPatient
+                        {
+                            CNP = "1990713123123",
+                            PhysicalExamination = "Clinic sanatos",
+                            AntecedentsH = "antecedente de la parinti lipsa",
+                            AntecedentsP = "acnee",
+                            Town = "Suceava",
+                            Street = "Calea Unirii numarul 12",
+                            Gender = 1,
+                            DateOfBirth = DateTime.Parse("1989-02-12")
+                        },
+                        new SheetPatient
+                        {
+                            CNP = "1990713123321",
+                            PhysicalExamination = "Clinic sanatos",
+                            AntecedentsH = "",
+                            AntecedentsP = "",
+                            Town = "Suceava",
+                            Street = "Calea Unirii numarul 21",
+                            Gender = 1,
+                            DateOfBirth = DateTime.Parse("1934-05-12")
+                        },
+                        new SheetPatient
+                        {
+                            CNP = "1990713123098",
+                            PhysicalExamination = "Clinic sanatos",
+                            AntecedentsH = "",
+                            AntecedentsP = "acnee",
+                            Town = "Suceava",
+                            Street = "Calea Unirii numarul 44",
+                            Gender = 1,
+                            DateOfBirth = DateTime.Parse("1929-02-12")
+                        },
+                        new SheetPatient
+                        {
+                            CNP = "2990713123322",
+                            PhysicalExamination = "Clinic sanatos",
+                            AntecedentsH = "antecedente de la parinti lipsa",
+                            AntecedentsP = "",
+                            Town = "Plopeni",
+                            Street = "Calea Unirii numarul 12",
+                            Gender = 0,
+                            DateOfBirth = DateTime.Parse("1989-03-12")
+                        },
+                        new SheetPatient
+                        {
+                            CNP = "2990713123123",
+                            PhysicalExamination = "Clinic sanatos",
+                            AntecedentsH = "",
+                            AntecedentsP = "acnee",
+                            Town = "Falticeni",
+                            Street = "Calea Unirii numarul 55",
+                            Gender = 0,
+                            DateOfBirth = DateTime.Parse("2000-07-24")
+                        });
+                    }
+
+                    if (context.Patient.Any() == false)
+                    {
+                        context.Patient.AddRange(
+                        new Patient
+                        {
+                            SheetPatientId = 1,
+                            FirstName = "Serediuc",
+                            SecondName = "Alexandru",
+                            PhonNumber = "0757541521",
+                            Mail = "",
+                            Blacklist = 1,
+                            Visible = 1
+                        },
+                        new Patient
+                        {
+                            SheetPatientId = 2,
+                            FirstName = "Serediuc",
+                            SecondName = "Constantin",
+                            PhonNumber = "0741241712",
+                            Mail = "Alex.gsa@yahoo.com",
+                            Blacklist = 0,
+                            Visible = 1
+                        },
+                        new Patient
+                        {
+                            SheetPatientId = 3,
+                            FirstName = "Mircea",
+                            SecondName = "Andrei",
+                            PhonNumber = "0757616511",
+                            Mail = "mirceaand@gmail.com",
+                            Blacklist = 0,
+                            Visible = 1
+                        },
+                        new Patient
+                        {
+                            SheetPatientId = 4,
+                            FirstName = "Rotaru",
+                            SecondName = "Andreea",
+                            PhonNumber = "0757254785",
+                            Mail = "androt@yahoo.com",
+                            Blacklist = 0,
+                            Visible = 1
+                        },
+                        new Patient
+                        {
+                            SheetPatientId = 5,
+                            FirstName = "Andreea",
+                            SecondName = "Ana",
+                            PhonNumber = "0755767254",
+                            Mail = "andana@gmail.com",
+                            Blacklist = 0,
+                            Visible = 1
+                        });
+                    }
+
+                    if (context.Appointment.Any() == false)
+                    {
+                        context.Appointment.AddRange(
+                        new Appointment
+                        {
+                            PatientId = 1,
+                            MedicId = 1,
+                            RoomId = 1,
+                            AppointmentDate = "2021-02-12",
+                            AppointmentHour = "12-00",
+                            Procedure = "Anestezie",
+                            Made = 1,
+                            ResponsibleForAppointment = "Administrator",
+                            AppointmentCreationDate = "2021-04-14T09:35",
+                            Visible = 1
+                        },
+                        new Appointment
+                        {
+                            PatientId = 4,
+                            MedicId = 3,
+                            RoomId = 5,
+                            AppointmentDate = "2021-02-12",
+                            AppointmentHour = "13-00",
+                            Procedure = "Apucuntura",
+                            Made = 1,
+                            ResponsibleForAppointment = "Administrator",
+                            AppointmentCreationDate = "2021-04-14T09:35",
+                            Visible = 1
+                        },
+                        new Appointment
+                        {
+                            PatientId = 3,
+                            MedicId = 2,
+                            RoomId = 4,
+                            AppointmentDate = "2021-03-12",
+                            AppointmentHour = "14-30",
+                            Procedure = "Anestezie",
+                            Made = 1,
+                            ResponsibleForAppointment = "Administrator",
+                            AppointmentCreationDate = "2021-04-14T09:35",
+                            Visible = 1
+                        },
+                        new Appointment
+                        {
+                            PatientId = 2,
+                            MedicId = 1,
+                            RoomId = 2,
+                            AppointmentDate = "2021-02-02",
+                            AppointmentHour = "12-00",
+                            Procedure = "Anestezie",
+                            Made = 1,
+                            ResponsibleForAppointment = "Administrator",
+                            AppointmentCreationDate = "2021-04-14T09:35",
+                            Visible = 1
+                        });
+                    }
+
+                    context.SaveChanges();
+                }
+            }
+            catch(Exception ex)
             {
-                if (context.Room.Any() == false)
-                {   
-                    context.Room.AddRange(
-                    new Room
-                    {
-                        RoomName = "Camera 1 medical"
-                    }, 
-                    new Room
-                    {
-                        RoomName = "Camera 2 medical"
-                    }, 
-                    new Room
-                    {
-                        RoomName = "Camera 3 medical"
-                    }, 
-                    new Room
-                    {
-                        RoomName = "Camera 1 corporal"
-                    }, 
-                    new Room
-                    {
-                        RoomName = "Camera 2 corporal"
-                    }, 
-                    new Room
-                    {
-                        RoomName = "Camera 3 corporal"
-                    }, 
-                    new Room
-                    {
-                        RoomName = "Camera 4 corporal"
-                    }, 
-                    new Room
-                    {
-                        RoomName = "Sala de sport"
-                    });
-                }
-                context.SaveChanges();
-
-                if (context.Medic.Any() == false)
-                {
-                    context.Medic.AddRange(
-                    new Medic
-                    {
-                        MedicName = "Doctor Ana-Maria"
-                    }, 
-                    new Medic
-                    {
-                        MedicName = "Asistent Andrei"
-                    }, 
-                    new Medic
-                    {
-                        MedicName = "Asistent Ionela"
-                    });
-                }
-                context.SaveChanges();
-
-                if (context.Consultation.Any() == false)
-                {
-                    context.Consultation.AddRange(
-                    new Consultation
-                    {
-                        Id = 1,
-                        Prescriptions= "sample text Prescriptii 1",
-                        Diagnostic = "sample text Diagnostic 1",
-                        Symptoms = "sample text Simptome 1",
-                        CreationDate = DateTime.Parse("2000-07-24")
-                    }, 
-                    new Consultation
-                    {
-                        Id = 1,
-                        Prescriptions = "sample text Prescriptii 2",
-                        Diagnostic = "sample text Diagnostic 2",
-                        Symptoms = "sample text Simptome 2",
-                        CreationDate = DateTime.Parse("2000-07-24")
-                    }, 
-                    new Consultation
-                    {
-                        Id = 1,
-                        Prescriptions = "sample text Prescriptii 3",
-                        Diagnostic = "sample text Diagnostic 3",
-                        Symptoms = "sample text Simptome 3",
-                        CreationDate = DateTime.Parse("2000-07-24")
-                    }, 
-                    new Consultation
-                    {
-                        Id = 2,
-                        Prescriptions = "sample text Prescriptii 3",
-                        Diagnostic = "sample text Diagnostic 3",
-                        Symptoms = "sample text Simptome 3",
-                        CreationDate = DateTime.Parse("2000-07-24")
-                    }, 
-                    new Consultation
-                    {
-                        Id = 3,
-                        Prescriptions = "sample text Prescriptii 3",
-                        Diagnostic = "sample text Diagnostic 3",
-                        Symptoms = "sample text Simptome 3",
-                        CreationDate = DateTime.Parse("2000-07-24")
-                    }, 
-                    new Consultation
-                    {
-                        Id = 4,
-                        Prescriptions = "sample text Prescriptii 3",
-                        Diagnostic = "sample text Diagnostic 3",
-                        Symptoms = "sample text Simptome 3",
-                        CreationDate = DateTime.Parse("2000-07-24")
-                    }, 
-                    new Consultation
-                    {
-                        Id = 5 ,
-                        Prescriptions = "sample text Prescriptii 1",
-                        Diagnostic = "sample text Diagnostic 1",
-                        Symptoms = "sample text Simptome 1",
-                        CreationDate = DateTime.Parse("2000-07-24")
-                    }, 
-                    new Consultation
-                    {
-                        Id = 5,
-                        Prescriptions = "sample text Prescriptii 2",
-                        Diagnostic = "sample text Diagnostic 2",
-                        Symptoms = "sample text Simptome 2",
-                        CreationDate = DateTime.Parse("2000-07-24")
-                    });
-                    context.SaveChanges();
-
-                    string date;
-                }
-
-                if (context.SheetPatient.Any() == false)
-                {
-                    context.SheetPatient.AddRange(
-                    new SheetPatient
-                    {
-                        CNP = "1990713123123",
-                        PhysicalExamination = "Clinic sanatos",
-                        AntecedentsH = "antecedente de la parinti lipsa",
-                        AntecedentsP = "acnee",
-                        Town = "Suceava",
-                        Street = "Calea Unirii numarul 12",
-                        Gender = 1,
-                        DateOfBirth = DateTime.Parse("1989-02-12")
-                    },
-                    new SheetPatient
-                    {
-                        CNP = "1990713123321",
-                        PhysicalExamination = "Clinic sanatos",
-                        AntecedentsH = "",
-                        AntecedentsP = "",
-                        Town = "Suceava",
-                        Street = "Calea Unirii numarul 21",
-                        Gender = 1,
-                        DateOfBirth = DateTime.Parse("1934-05-12")
-                    },
-                    new SheetPatient
-                    {
-                        CNP = "1990713123098",
-                        PhysicalExamination = "Clinic sanatos",
-                        AntecedentsH = "",
-                        AntecedentsP = "acnee",
-                        Town = "Suceava",
-                        Street = "Calea Unirii numarul 44",
-                        Gender = 1,
-                        DateOfBirth = DateTime.Parse("1929-02-12")
-                    },
-                    new SheetPatient
-                    {
-                        CNP = "2990713123322",
-                        PhysicalExamination = "Clinic sanatos",
-                        AntecedentsH = "antecedente de la parinti lipsa",
-                        AntecedentsP = "",
-                        Town = "Plopeni",
-                        Street = "Calea Unirii numarul 12",
-                        Gender = 0,
-                        DateOfBirth = DateTime.Parse("1989-03-12")
-                    },
-                    new SheetPatient
-                    {
-                        CNP = "2990713123123",
-                        PhysicalExamination = "Clinic sanatos",
-                        AntecedentsH = "",
-                        AntecedentsP = "acnee",
-                        Town = "Falticeni",
-                        Street = "Calea Unirii numarul 55",
-                        Gender = 0,
-                        DateOfBirth = DateTime.Parse("2000-07-24")
-                    });
-                }
-
-                if (context.Patient.Any() == false)
-                {
-                    context.Patient.AddRange(
-                    new Patient
-                    {
-                        SheetPatientId = 1,
-                        FirstName = "Serediuc",
-                        SecondName = "Alexandru",
-                        PhonNumber = "0757541521",
-                        Mail = "",
-                        Blacklist = 1,
-                        Visible = 1
-                    },
-                    new Patient
-                    {
-                        SheetPatientId = 2,
-                        FirstName = "Serediuc",
-                        SecondName = "Constantin",
-                        PhonNumber = "0741241712",
-                        Mail = "Alex.gsa@yahoo.com",
-                        Blacklist = 0,
-                        Visible = 1
-                    },
-                    new Patient
-                    {
-                        SheetPatientId = 3,
-                        FirstName = "Mircea",
-                        SecondName = "Andrei",
-                        PhonNumber = "0757616511",
-                        Mail = "mirceaand@gmail.com",
-                        Blacklist = 0,
-                        Visible = 1
-                    },
-                    new Patient
-                    {
-                        SheetPatientId = 4,
-                        FirstName = "Rotaru",
-                        SecondName = "Andreea",
-                        PhonNumber = "0757254785",
-                        Mail = "androt@yahoo.com",
-                        Blacklist = 0,
-                        Visible = 1
-                    },
-                    new Patient
-                    {
-                        SheetPatientId = 5,
-                        FirstName = "Andreea",
-                        SecondName = "Ana",
-                        PhonNumber = "0755767254",
-                        Mail = "andana@gmail.com",
-                        Blacklist = 0,
-                        Visible = 1
-                    });
-                }
-
-                if (context.Appointment.Any() == false)
-                {
-                    context.Appointment.AddRange(
-                    new Appointment
-                    {
-                        PatientId = 1,
-                        MedicId = 1,
-                        RoomId = 1,
-                        AppointmentDate = "2021-02-12",
-                        AppointmentHour = "12-00",
-                        Procedure = "Anestezie",
-                        Made = 1,
-                        ResponsibleForAppointment = "Administrator",
-                        AppointmentCreationDate = "2021-04-14T09:35",
-                        Visible = 1
-                    },
-                    new Appointment
-                    {
-                        PatientId = 4,
-                        MedicId = 3,
-                        RoomId = 5,
-                        AppointmentDate = "2021-02-12",
-                        AppointmentHour = "13-00",
-                        Procedure = "Apucuntura",
-                        Made = 1,
-                        ResponsibleForAppointment = "Administrator",
-                        AppointmentCreationDate = "2021-04-14T09:35",
-                        Visible = 1
-                    },
-                    new Appointment
-                    {
-                        PatientId = 3,
-                        MedicId = 2,
-                        RoomId = 4,
-                        AppointmentDate = "2021-03-12",
-                        AppointmentHour = "14-30",
-                        Procedure = "Anestezie",
-                        Made = 1,
-                        ResponsibleForAppointment = "Administrator",
-                        AppointmentCreationDate = "2021-04-14T09:35",
-                        Visible = 1
-                    },
-                    new Appointment
-                    {
-                        PatientId = 2,
-                        MedicId = 1,
-                        RoomId = 2,
-                        AppointmentDate = "2021-02-02",
-                        AppointmentHour = "12-00",
-                        Procedure = "Anestezie",
-                        Made = 1,
-                        ResponsibleForAppointment = "Administrator",
-                        AppointmentCreationDate = "2021-04-14T09:35",
-                        Visible = 1
-                    });
-
-                    context.SaveChanges();
-                }
-                try
-                {
-                    context.SaveChanges();
-                }catch(Exception ex)
-                {
-                    var msg = ex.Message;
-                }
+                var msg = ex.Message;
             }
         }
 

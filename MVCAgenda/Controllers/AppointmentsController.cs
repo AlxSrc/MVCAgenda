@@ -43,8 +43,8 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Visible == 1), "RoomId", "RoomName");
-                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Visible == 1), "MedicId", "MedicName");
+                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Visible == 1), "Id", "RoomName");
+                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Visible == 1), "Id", "MedicName");
 
                 var queryProgramariComplete = await (
                     from patient in _context.Patient
@@ -79,8 +79,8 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Visible == 1), "RoomId", "RoomName");
-                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Visible == 1), "MedicId", "MedicName");
+                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Visible == 1), "Id", "RoomName");
+                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Visible == 1), "Id", "MedicName");
 
 
                 var queryProgramariComplete = await (
