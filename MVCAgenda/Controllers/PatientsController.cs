@@ -50,24 +50,11 @@ namespace MVCAgenda.Controllers
         #endregion
         /*********************************************************************************/
         #region Details
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var patient = await _context.Patient.FirstOrDefaultAsync(m => m.Id == id);
-                if (patient == null)
-                {
-                    return NotFound();
-                }
-
-                var patientViewModel = _agendaViewsFactory.PreperePatientViewModel(patient);
-
-                return View(patientViewModel);
+                return View(await _patientServices.GetPatientViewModelByIdAsync(await _patientServices.GetPatientByIdAsync(id)));
             }
             else
             {
@@ -97,16 +84,7 @@ namespace MVCAgenda.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Patient _patient = new Patient()
-                    {
-                        FirstName = patient.FirstName,
-                        SecondName = patient.SecondName,
-                        PhonNumber = patient.PhonNumber,
-                        Mail = patient.Mail,
-                        Blacklist = patient.Blacklist
-                    };
-
-                    string result = await _patientServices.CreatePatientAsync(_patient);
+                    string result = await _patientServices.CreatePatientAsync(patient);
                     if (result == "Ok")
                         return RedirectToAction(nameof(Index));
                     else
@@ -122,21 +100,11 @@ namespace MVCAgenda.Controllers
         #endregion
         /*********************************************************************************/
         #region Edit
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var patient = await _context.Patient.FindAsync(id);
-                if (patient == null)
-                {
-                    return NotFound();
-                }
-                return View(patient);
+                return View(await _patientServices.GetPatientByIdAsync(id));
             }
             else
             {
@@ -185,23 +153,11 @@ namespace MVCAgenda.Controllers
         #endregion
         /*********************************************************************************/
         #region Delete
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var _patient = await _context.Patient
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (_patient == null)
-                {
-                    return NotFound();
-                }
-
-                return View(_patient);
+                return View(await _patientServices.GetPatientByIdAsync(id));
             }
             else
             {
@@ -238,7 +194,5 @@ namespace MVCAgenda.Controllers
             return _context.Patient.Any(e => e.Id == id);
         }
         #endregion
-
-
     }
 }

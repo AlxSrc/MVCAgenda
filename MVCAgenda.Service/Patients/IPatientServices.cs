@@ -14,5 +14,6 @@ namespace MVCAgenda.Service.Patients
         Task<string> HidePatientAsync(int id);
         Task<MVCAgendaViewsManager> GetPatientAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isDeleted);
         Task<Patient> GetPatientByIdAsync(int Id);
+        Task<PatientViewModel> GetPatientViewModelByIdAsync(Patient patient);
     }
 }

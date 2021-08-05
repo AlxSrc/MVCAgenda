@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Factories;
 using MVCAgenda.Service.Patients;
+using MVCAgenda.Service.SheetPatients;
 
 namespace MVCAgenda
 {
@@ -38,6 +39,7 @@ namespace MVCAgenda
 
             //services
             services.AddScoped<IPatientServices, PatientServices>();
+            services.AddScoped<ISheetPatientServices, SheetPatientServices>(); 
             services.AddScoped<IAgendaViewsFactory, AgendaViewsFactory>(); 
         }
 

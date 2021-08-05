@@ -42,8 +42,8 @@ namespace MVCAgenda.Service.Patients
                 }
                 else
                 {
-                    SheetPatient SheetCurrentPatient = new SheetPatient();
-                    _context.Add(SheetCurrentPatient);
+                    SheetPatient CurrentSheetPatient = new SheetPatient();
+                    _context.Add(CurrentSheetPatient);
                     await _context.SaveChangesAsync();
 
                     int lastID = _context.SheetPatient.Count();
@@ -136,9 +136,43 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public Task<Patient> GetPatientByIdAsync(int Id)
+        public async Task<Patient> GetPatientByIdAsync(int Id)
         {
-            throw new System.NotImplementedException();
+            Patient patient = new Patient();
+            Patient emptyPatient = new Patient();
+            try
+            {
+                if (Id == null)
+                {
+                    return emptyPatient;
+                }
+
+                patient = await _context.Patient.FirstOrDefaultAsync(m => m.Id == Id);
+
+                if (patient == null)
+                {
+                    return emptyPatient;
+                }
+
+                return patient;
+            }
+            catch
+            {
+                return emptyPatient;
+            }
+        }
+        public async Task<PatientViewModel> GetPatientViewModelByIdAsync(Patient patient)
+        {
+            PatientViewModel patientViewModel = new PatientViewModel();
+            PatientViewModel emptyPatientViewModel = new PatientViewModel();
+            try
+            {
+                return _agendaViewsFactory.PreperePatientViewModel(patient);
+            }
+            catch
+            {
+                return emptyPatientViewModel;
+            }
         }
     }
 }

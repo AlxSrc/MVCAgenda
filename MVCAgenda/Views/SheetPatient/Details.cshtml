@@ -93,19 +93,19 @@
                         @Html.DisplayFor(modelItem => item.Prescriptions)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-controller="Consultatii" asp-route-id="@item.Id">Detalii</a>
+                        <a asp-action="Details" asp-controller="Consultations" asp-route-id="@item.Id">Detalii</a>
                     </td>
                 </tr>
                 }
             </tbody>
         </table>
-        <a asp-action="Create" asp-controller="Consultatii" asp-route-id="@Model.Id">Adauga o consultatie noua </a>
+        <a asp-action="Create" asp-controller="Consultations" asp-route-id="@Model.Id">Adauga o consultatie noua </a>
         <hr />
 
     </div>
     <div>
         <a asp-action="Edit" asp-route-id="@Model.Id">Modifica fisa pacientului</a> |
-        <a asp-action="Details" asp-controller="Pacienti" asp-route-id="@Model.Id">Inapoi</a>
+        <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id">Inapoi</a>
     </div>
 
 }
