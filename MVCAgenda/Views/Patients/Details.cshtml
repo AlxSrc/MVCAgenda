@@ -3,7 +3,7 @@
 }
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.Domain.Patient
+    @model MVCAgenda.Core.ViewModels.PatientViewModel
 
     <h1>Detalii pacient</h1>
 
@@ -45,7 +45,7 @@
 
         <hr />
         <input type="hidden" asp-for="Id" />
-        <a asp-action="AllProgram" asp-controller="Programari" asp-route-id="@Model.Id">Vizualizeaza istoria pacientului</a> |
+        <a asp-action="AllProgram" asp-controller="Appointments" asp-route-id="@Model.Id">Vizualizeaza istoria pacientului</a> |
         <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id">Vizualizeaza fisa pacientului</a>
 
         <hr />

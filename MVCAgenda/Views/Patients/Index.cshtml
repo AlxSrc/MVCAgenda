@@ -10,9 +10,9 @@
     <p>
         <a asp-action="Create">Adauga un nou pacient</a>
         &#8226;
-        <a asp-action="Index" asp-route-includeBlackList="false">Black list</a>
+        <a asp-action="Index" asp-route-includeBlackList="true">Lista neagra cu pacienti</a>
         &#8226;
-        <a asp-action="Deleted">Pacienti stersi</a>
+        <a asp-action="Index" asp-route-isDeleted="true">Pacienti stersi</a>
     </p>
 
     <form asp-controller="Patients" asp-action="Index" method="get">
@@ -69,10 +69,10 @@
                     @Html.DisplayFor(modelItem => item.Mail)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Blacklist)
+                    @Html.Raw(item.Blacklist)
                 </td>
                 <td>
-                    <a asp-action="Create" asp-controller="Programari" asp-route-id="@item.Id">Adauga programare</a> |
+                    <a asp-action="Create" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>
                 </td>
             </tr>

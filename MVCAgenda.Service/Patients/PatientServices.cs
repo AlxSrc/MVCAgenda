@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.MVCAgendaManagement;
+using MVCAgenda.Core.ViewModels;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Service.Factories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +16,14 @@ namespace MVCAgenda.Service.Patients
     {
         private readonly AgendaContext _context;
 
-        public PatientServices(AgendaContext context)
+        private readonly IAgendaViewsFactory _agendaViewsFactory;
+        public PatientServices(AgendaContext context, IAgendaViewsFactory agendaViewsFactory)
         {
             _context = context;
+            _agendaViewsFactory = agendaViewsFactory;
         }
 
-        public async Task<string> CreatePatientAsync(Core.Domain.Patient PatientModel)
+        public async Task<string> CreatePatientAsync(Patient PatientModel)
         {
             try
             {
@@ -55,7 +60,7 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public Task<bool> EditPatientAsync(Core.Domain.Patient PatientModel)
+        public Task<string> EditPatientAsync(Patient PatientModel)
         {
             throw new System.NotImplementedException();
         }
@@ -75,29 +80,63 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public async Task<bool> HidePatientAsync(int id)
+        public async Task<string> HidePatientAsync(int id)
         {
             try
             {
                 var patient = await _context.Patient.FindAsync(id);
                 patient.Visible = 0;
                 _context.Patient.Update(patient);
-                //_context.Pacient.Remove(pacient);
                 await _context.SaveChangesAsync();
-                return true;
+                return "";
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<MVCAgendaViewsManager> GetPatientAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isDeleted)
+        {
+            List<PatientViewModel> patientsList = new List<PatientViewModel>();
+            var model = new MVCAgendaViewsManager{ PatientsList = patientsList };
+            try
+            {
+                IQueryable<Patient> query = _context.Patient;
+
+                if (isDeleted)
+                    query = query.Where(p => p.Visible == 0);
+                else
+                    query = query.Where(p => p.Visible == 1);
+
+                if (includeBlackList)
+                    query = query.Where(p => p.Blacklist == 1);
+
+                if (!string.IsNullOrEmpty(SearchByName))
+                    query = query.Where(p => p.FirstName.Contains(SearchByName));
+
+                if (!string.IsNullOrEmpty(SearchByPhoneNumber))
+                    query = query.Where(p => p.PhonNumber.Contains(SearchByPhoneNumber));
+
+                if (!string.IsNullOrEmpty(SearchByEmail))
+                    query = query.Where(p => p.Mail.Contains(SearchByEmail));
+
+                var patients = await query.ToListAsync(); // aici aducem datele despre pacienti prin sintaxa SQL
+
+                var patientsModel = patients // lista de pacient adusa
+                    .Select(patient => _agendaViewsFactory.PreperePatientViewModel(patient))
+                    .ToList();
+
+                model.PatientsList = patientsModel;
+                return model;
             }
             catch
             {
-                return false;
+                return model;
             }
         }
 
-        public Task<List<Core.Domain.Patient>> GetPatientAsync()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<Core.Domain.Patient> GetPatientByIdAsync(int Id)
+        public Task<Patient> GetPatientByIdAsync(int Id)
         {
             throw new System.NotImplementedException();
         }

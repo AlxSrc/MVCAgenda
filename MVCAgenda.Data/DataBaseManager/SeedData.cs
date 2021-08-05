@@ -130,7 +130,6 @@ namespace MVCAgenda.Data
                             DateOfBirth = DateTime.Parse("2000-07-24")
                         });
                     }
-
                     context.SaveChanges();
 
                     if (context.Consultation.Any() == false)
@@ -202,7 +201,6 @@ namespace MVCAgenda.Data
                         });
                         //context.SaveChanges();
                     }
-
                     context.SaveChanges();
 
                     if (context.Patient.Any() == false)
@@ -259,7 +257,6 @@ namespace MVCAgenda.Data
                             Visible = 1
                         });
                     }
-
                     context.SaveChanges();
 
                     if (context.Appointment.Any() == false)
@@ -318,7 +315,6 @@ namespace MVCAgenda.Data
                             Visible = 1
                         });
                     }
-
                     context.SaveChanges();
                 }
             }

@@ -15,6 +15,7 @@ namespace MVCAgenda.Service.Factories
                 FirstName = model.FirstName,
                 SecondName = model.SecondName,
                 PhonNumber = model.PhonNumber,
+                Mail = model.Mail,
                 SheetPatientId = model.SheetPatientId
             };
             if (model.Blacklist == 1)
