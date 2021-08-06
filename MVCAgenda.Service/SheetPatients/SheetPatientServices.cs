@@ -2,6 +2,7 @@
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.ViewModels;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Service.Consultations;
 using MVCAgenda.Service.Factories;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace MVCAgenda.Service.SheetPatients
     {
         private readonly AgendaContext _context;
         private readonly IAgendaViewsFactory _agendaViewsFactory;
+        private readonly IConsultationServices _consultationServices; 
 
-        public SheetPatientServices(AgendaContext context, IAgendaViewsFactory agendaViewsFactory)
+        public SheetPatientServices(AgendaContext context, IAgendaViewsFactory agendaViewsFactory, IConsultationServices consultationServices)
         {
             _context = context;
             _agendaViewsFactory = agendaViewsFactory;
+            _consultationServices = consultationServices;
         }
 
         public Task<string> EditSheetPatientAsync(SheetPatient SheetPatientModel)
@@ -61,11 +64,8 @@ namespace MVCAgenda.Service.SheetPatients
                 {
                     return emptySheetPatientModel;
                 }
-
-                IQueryable<Consultation> query = _context.Consultation;
-                query = query.Where(p => p.SheetPatientId == Id);
-
-                var consultations = await query.OrderByDescending(c => c.CreationDate).ToListAsync();
+                
+                var consultations = await _consultationServices.GetConsultationsAsync(Id);
 
                 sheetPatientModel = await _agendaViewsFactory.PrepereSheetPatientViewModel(sheetPatient, consultations);
 

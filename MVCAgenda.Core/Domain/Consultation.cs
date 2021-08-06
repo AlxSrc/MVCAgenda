@@ -32,5 +32,9 @@ namespace MVCAgenda.Core.Domain
         [StringLength(450, MinimumLength = 1)]
         [DisplayName("Prescriptii")]
         public string Prescriptions { get; set; }
+
+        //[DisplayName("Sters")]
+        //public int Visible { get; set; }
+
     }
 }

@@ -17,7 +17,7 @@ namespace MVCAgenda.Core.ViewModels
 
         [StringLength(450, MinimumLength = 1)]
         [DisplayName("Simptome")]
-        public string Symptom { get; set; }
+        public string Symptoms { get; set; }
 
 
         [StringLength(450, MinimumLength = 1)]

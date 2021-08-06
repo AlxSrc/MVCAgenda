@@ -6,7 +6,7 @@
 @if (User.Identity.IsAuthenticated)
 {
 
-    @model MVCAgenda.Core.Domain.Consultation
+    @model MVCAgenda.Core.ViewModels.ConsultationViewModel
 
     <h1>Adauga o consultatie</h1>
 
@@ -41,6 +41,6 @@
     </div>
 
     <div>
-        <a asp-action="Details" asp-controller="FisePacienti" asp-route-id="@Model.SheetPatientId">Inapoi</a>
+        <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.SheetPatientId">Inapoi</a>
     </div>
 }

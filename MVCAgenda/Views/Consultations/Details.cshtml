@@ -4,13 +4,11 @@
 }
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.Domain.Consultation
+    @model MVCAgenda.Core.ViewModels.ConsultationViewModel
 
-    <h1>Detalii</h1>
+    <h1>Detalii consultatie</h1>
 
     <div>
-        <h4>Consultatie</h4>
-        <hr />
         <dl class="row">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.CreationDate)
