@@ -68,7 +68,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(new Patient());
+                return View(new PatientViewModel());
             }
             else
             {
@@ -78,7 +78,7 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Patient patient)
+        public async Task<IActionResult> Create(PatientViewModel patient)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -104,7 +104,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _patientServices.GetPatientByIdAsync(id));
+                return View(await _patientServices.GetPatientViewModelByIdAsync(await _patientServices.GetPatientByIdAsync(id)));
             }
             else
             {
@@ -114,7 +114,7 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Patient patient)
+        public async Task<IActionResult> Edit(int id, PatientViewModel patient)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -125,23 +125,9 @@ namespace MVCAgenda.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    try
-                    {
-                        _context.Update(patient);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!PatientExists(patient.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return RedirectToAction(nameof(Index));
+                    var result = await _patientServices.EditPatientAsync(patient);
+                    if(result == "Succes")
+                        return RedirectToAction(nameof(Index));
                 }
                 return View(patient);
             }

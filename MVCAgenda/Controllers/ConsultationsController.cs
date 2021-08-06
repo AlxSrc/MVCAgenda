@@ -28,7 +28,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(new ConsultationViewModel() { SheetPatientId = id, CreationDate = DateTime.Parse(_dataCreeareConsultatie) });
+                return View(new ConsultationViewModel() { SheetPatientId = id, CreationDate = DateTime.Now});
             }
             else
             {

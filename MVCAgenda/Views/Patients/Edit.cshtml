@@ -4,7 +4,7 @@
 }
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.Domain.Patient
+    @model MVCAgenda.Core.ViewModels.PatientViewModel
 
     <h1>Modifica pacient</h1>
 
@@ -43,6 +43,7 @@
                     </select>
                     <span asp-validation-for="Blacklist" class="text-danger"></span>
                 </div>
+                <input type="hidden" asp-for="Visible" />
                 <div class="form-group">
                     <input type="submit" value="Salveaza" class="btn btn-primary" />
                 </div>

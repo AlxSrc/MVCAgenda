@@ -6,8 +6,8 @@ namespace MVCAgenda.Service.SheetPatients
 {
     public interface ISheetPatientServices
     {
-        Task<string> EditSheetPatientAsync(SheetPatient SheetPatientModel);
+        Task<string> EditSheetPatientAsync(SheetPatientViewModel SheetPatientModel);
         Task<SheetPatientViewModel> GetSheetPatientViewModelByIdAsync(int Id);
-        Task<SheetPatient> GetSheetPatientByIdAsync(int Id);
+        Task<SheetPatientViewModel> GetSheetPatientByIdAsync(int Id);
     }
 }

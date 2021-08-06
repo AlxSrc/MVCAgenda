@@ -23,7 +23,7 @@ namespace MVCAgenda.Service.Patients
             _agendaViewsFactory = agendaViewsFactory;
         }
 
-        public async Task<string> CreatePatientAsync(Patient PatientModel)
+        public async Task<string> CreatePatientAsync(PatientViewModel PatientModel)
         {
             try
             {
@@ -47,8 +47,16 @@ namespace MVCAgenda.Service.Patients
                     await _context.SaveChangesAsync();
 
                     int lastID = _context.SheetPatient.Count();
-                    PatientModel.SheetPatientId = lastID;
-                    _context.Add(PatientModel);
+
+                    _context.Add(new Patient()
+                    {
+                        SheetPatientId = lastID,
+                        FirstName = PatientModel.FirstName,
+                        SecondName = PatientModel.SecondName,
+                        PhonNumber = PatientModel.PhonNumber,
+                        Mail = PatientModel.Mail,
+                        Blacklist = int.Parse(PatientModel.Blacklist),
+                    });
                     await _context.SaveChangesAsync();
 
                     return "Ok";
@@ -60,9 +68,35 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public Task<string> EditPatientAsync(Patient PatientModel)
+        public async Task<string> EditPatientAsync(PatientViewModel PatientModel)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _context.Update(new Patient() 
+                { 
+                    Id= PatientModel.Id,
+                    SheetPatientId = PatientModel.SheetPatientId,
+                    FirstName = PatientModel.FirstName,
+                    SecondName = PatientModel.SecondName,
+                    PhonNumber = PatientModel.PhonNumber,
+                    Mail = PatientModel.Mail,
+                    Blacklist = int.Parse(PatientModel.Blacklist),
+                    Visible = PatientModel.Visible? 1:0
+                });
+                await _context.SaveChangesAsync();
+                return "Succes";
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_context.Patient.Any(p => p.Id == PatientModel.Id))
+                {
+                    return "Error, Not Found";
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         public async Task<bool> DeletePatientAsync(int id)

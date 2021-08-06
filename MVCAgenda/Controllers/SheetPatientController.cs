@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.ViewModels;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Factories;
 using MVCAgenda.Service.SheetPatients;
@@ -50,7 +51,7 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, SheetPatient sheetPatient)
+        public async Task<IActionResult> Edit(int id, SheetPatientViewModel sheetPatient)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -61,23 +62,9 @@ namespace MVCAgenda.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    try
-                    {
-                        _context.Update(sheetPatient);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!SheetPatientExists(sheetPatient.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return RedirectToAction("Details", "Patients", new { id = sheetPatient.Id });
+                    var result = await _sheetPatientServices.EditSheetPatientAsync(sheetPatient);
+                    if(result == "")
+                        return RedirectToAction("Details", "Patients", new { id = sheetPatient.Id });
                 }
                 return View(sheetPatient);
             }

@@ -8,8 +8,8 @@ namespace MVCAgenda.Service.Patients
 {
     public interface IPatientServices
     {
-        Task<string> CreatePatientAsync(Patient PatientModel);
-        Task<string> EditPatientAsync(Patient PatientModel);
+        Task<string> CreatePatientAsync(PatientViewModel PatientModel);
+        Task<string> EditPatientAsync(PatientViewModel PatientModel);
         Task<bool> DeletePatientAsync(int id);
         Task<string> HidePatientAsync(int id);
         Task<MVCAgendaViewsManager> GetPatientAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isDeleted);
