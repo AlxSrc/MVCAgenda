@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Service.Appointments;
 using MVCAgenda.Service.Consultations;
 using MVCAgenda.Service.Factories;
 using MVCAgenda.Service.Patients;
@@ -41,7 +42,8 @@ namespace MVCAgenda
             //services
             services.AddScoped<IPatientServices, PatientServices>();
             services.AddScoped<ISheetPatientServices, SheetPatientServices>();
-            services.AddScoped<IConsultationServices, ConsultationServices>(); 
+            services.AddScoped<IConsultationServices, ConsultationServices>();
+            services.AddScoped<IAppointmentServices, AppointmentServices>(); 
             services.AddScoped<IAgendaViewsFactory, AgendaViewsFactory>(); 
         }
 

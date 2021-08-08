@@ -8,6 +8,7 @@
     <h1>Detalii pacient</h1>
 
     <div>
+
         <dl class="row">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.FirstName)
@@ -40,23 +41,17 @@
                 @Html.Raw(Model.Blacklist)
             </dd>
         </dl>
-    </div>
-    <div>
-
-        <hr />
-        <input type="hidden" asp-for="Id" />
-        <a asp-action="AllProgram" asp-controller="Appointments" asp-route-id="@Model.Id">Vizualizeaza istoria pacientului</a> |
-        <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id">Vizualizeaza fisa pacientului</a>
-
-        <hr />
-        <form asp-action="Delete">
-            <a asp-action="Edit" asp-route-id="@Model.Id">Editeaza</a> |
-            <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a>
-
+        <div>
             <input type="hidden" asp-for="Id" />
-        </form>
+            <ul>
+                
+                <li> <a asp-action="Index" asp-controller="Appointments" asp-route-Id="@Model.Id">Vizualizeaza istoria pacientului</a> </li>
+                <li> <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id">Vizualizeaza fisa pacientului</a> </li>
+                <li> <a asp-action="Edit" asp-route-id="@Model.Id">Editeaza</a> </li>
+                <li> <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a> </li>
+                <li> <a asp-action="Index">Inapoi la lista cu pacienti</a> </li>
 
-        <hr />
-        <a asp-action="Index">Inapoi la lista cu pacienti</a>
+            </ul>
+        </div>
     </div>
 }

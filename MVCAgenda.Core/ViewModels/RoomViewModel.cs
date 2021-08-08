@@ -3,13 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.ViewModels
 {
-    public class RoomViewModel : BaseModel
+    public class RoomViewModel : BaseEntityModel
     {
         [DisplayName("Denumire camera")]
         [Required]
         public string RoomName { get; set; }
-
-        [DisplayName("Sters")]
-        public int Visible { get; set; } = 1;
     }
 }

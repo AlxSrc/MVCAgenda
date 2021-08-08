@@ -40,7 +40,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _patientServices.GetPatientAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, includeBlackList, isDeleted));
+                return View(await _patientServices.GetPatientsAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, includeBlackList, isDeleted));
             }
             else
             {

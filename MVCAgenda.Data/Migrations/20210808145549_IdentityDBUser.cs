@@ -53,7 +53,7 @@ namespace MVCAgenda.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MedicName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    Visible = table.Column<int>(type: "int", nullable: false)
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +67,7 @@ namespace MVCAgenda.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoomName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    Visible = table.Column<int>(type: "int", nullable: false)
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,7 +87,8 @@ namespace MVCAgenda.Data.Migrations
                     Town = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     Street = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     PhysicalExamination = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,7 +211,8 @@ namespace MVCAgenda.Data.Migrations
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Symptoms = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     Diagnostic = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    Prescriptions = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true)
+                    Prescriptions = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -234,8 +236,8 @@ namespace MVCAgenda.Data.Migrations
                     SecondName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     PhonNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Mail = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Blacklist = table.Column<int>(type: "int", nullable: false),
-                    Visible = table.Column<int>(type: "int", nullable: false)
+                    Blacklist = table.Column<bool>(type: "bit", nullable: false),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -260,11 +262,11 @@ namespace MVCAgenda.Data.Migrations
                     AppointmentDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AppointmentHour = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Procedure = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
-                    Made = table.Column<int>(type: "int", nullable: false),
+                    Made = table.Column<bool>(type: "bit", nullable: false),
                     ResponsibleForAppointment = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     AppointmentCreationDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Visible = table.Column<int>(type: "int", nullable: false),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

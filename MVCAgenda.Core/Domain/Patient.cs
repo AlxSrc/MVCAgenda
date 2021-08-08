@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Patient : BaseModel
+    public class Patient : BaseEntityModel
     {
         [DisplayName("Detalii Pacient")] 
         public int SheetPatientId { get; set; }
@@ -39,11 +39,6 @@ namespace MVCAgenda.Core.Domain
 
         [DisplayName("Lista neagra")]
         [Required] 
-        public int Blacklist { get; set; }
-
-
-        [DisplayName("Sters")]
-        [Required] 
-        public int Visible { get; set; } = 1;
+        public bool Blacklist { get; set; }
     }
 }

@@ -77,19 +77,24 @@ namespace MVCAgenda.Service.Consultations
                 return new ConsultationViewModel();
             }
         }
-        public async Task<List<Consultation>> GetConsultationsAsync(int id)
+        public async Task<List<ConsultationViewModel>> GetConsultationsAsync(int id)
         {
             try
             {
+                var consultationViewModel = new List<ConsultationViewModel>();
                 IQueryable<Consultation> query = _context.Consultation;
                 query = query.Where(p => p.SheetPatientId == id);
 
-                var consultations = await query.OrderByDescending(c => c.CreationDate).ToListAsync();
-                return consultations;
+                var consultations = await query.OrderByDescending(c => c.CreationDate).Where(c => c.Hidden == false).ToListAsync();
+
+                foreach (var consul in consultations)
+                    consultationViewModel.Add(await _agendaViewsFactory.PrepereConsultationViewModel(consul));
+
+                return consultationViewModel;
             }
             catch
             {
-                return new List<Consultation>();
+                return new List<ConsultationViewModel>();
             }
         }
         #endregion
@@ -128,10 +133,10 @@ namespace MVCAgenda.Service.Consultations
         {
             try
             {
-                //var consultation = await _context.Consultation.FindAsync(id);
-                //consultation.
-                //_context.Consultation.Remove(consultation);
-                //await _context.SaveChangesAsync();
+                var consultation = await _context.Consultation.FindAsync(id);
+                consultation.Hidden = true;
+                _context.Consultation.Update(consultation);
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch

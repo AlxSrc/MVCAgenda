@@ -188,7 +188,7 @@ namespace MVCAgenda.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var medic = await _context.Medic.FindAsync(id);
-                medic.Visible = 0;
+                medic.Hidden = true;
                 _context.Medic.Update(medic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Manage", "Home");

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Consultation : BaseModel
+    public class Consultation : BaseEntityModel
     {
         [DisplayName("Fisa Pacient")] 
         public int SheetPatientId { get; set; }
@@ -32,9 +32,5 @@ namespace MVCAgenda.Core.Domain
         [StringLength(450, MinimumLength = 1)]
         [DisplayName("Prescriptii")]
         public string Prescriptions { get; set; }
-
-        //[DisplayName("Sters")]
-        //public int Visible { get; set; }
-
     }
 }

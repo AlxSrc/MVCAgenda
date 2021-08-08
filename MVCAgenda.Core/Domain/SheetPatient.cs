@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class SheetPatient : BaseModel
+    public class SheetPatient : BaseEntityModel
     {
         public virtual Patient Patient { get; set; }
 

@@ -12,17 +12,18 @@ namespace MVCAgenda.Service.Factories
             PatientViewModel viewModel = new PatientViewModel()
             {
                 Id = model.Id,
+                SheetPatientId = model.SheetPatientId,
                 FirstName = model.FirstName,
                 SecondName = model.SecondName,
                 PhonNumber = model.PhonNumber,
                 Mail = model.Mail,
-                SheetPatientId = model.SheetPatientId
+                Hidden = model.Hidden
             };
-            if (model.Blacklist == 1)
+            if (model.Blacklist == true)
             {
                 viewModel.Blacklist = "<span class=\"badge bg-danger\">Da</span>";
             }
-            else if (model.Blacklist == 0)
+            else if (model.Blacklist == false)
             {
                 viewModel.Blacklist = "<span class=\"badge bg-success\">Nu</span>";
             }
@@ -31,19 +32,11 @@ namespace MVCAgenda.Service.Factories
                 viewModel.Blacklist = "-";
             }
 
-            if (model.Visible >= 1)
-            {
-                viewModel.Visible = true;
-            }
-            else if (model.Visible == 0)
-            {
-                viewModel.Visible = false;
-            }
             return viewModel;
         }
 
         public async Task<SheetPatientViewModel> PrepereSheetPatientViewModel(SheetPatient model, List
-            <Consultation> consultations)
+            <ConsultationViewModel> consultations)
         {
             SheetPatientViewModel preparedView = new SheetPatientViewModel()
             {
@@ -55,7 +48,8 @@ namespace MVCAgenda.Service.Factories
                 DateOfBirth = model.DateOfBirth,
                 Town = model.Town,
                 Street = model.Street,
-                Consultations = consultations
+                Consultations = consultations,
+                Hidden = model.Hidden
             };
 
             if (model.Gender == 1)
@@ -82,12 +76,13 @@ namespace MVCAgenda.Service.Factories
                 Symptoms = consultation.Symptoms,
                 Diagnostic = consultation.Diagnostic,
                 Prescriptions = consultation.Prescriptions,
-                CreationDate = consultation.CreationDate
+                CreationDate = consultation.CreationDate,
+                Hidden = consultation.Hidden
             };
             return consultationViewModel;
         }
 
-        public AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Core.Domain.Patient patient, Medic medic, Room room)
+        public AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room)
         {
             AppointmentViewModel viewModel = new AppointmentViewModel()
             {
@@ -98,51 +93,36 @@ namespace MVCAgenda.Service.Factories
                 PhonNumber = patient.PhonNumber,
                 Mail = patient.Mail,
                 Medic = medic.MedicName,
-                Camera = room.RoomName,
+                Room = room.RoomName,
                 AppointmentDate = model.AppointmentDate,
                 AppointmentHour = model.AppointmentHour,
                 Procedure = model.Procedure,
                 ResponsibleForAppointment = model.ResponsibleForAppointment,
                 AppointmentCreationDate = model.AppointmentCreationDate,
-                Comments = model.Comments
+                Comments = model.Comments,
+                Hidden = model.Hidden
             };
 
-            if (model.Made == 1)
+            if (model.Made == true)
             {
                 viewModel.Made = true;
                 viewModel.MadeText = "<span class=\"badge bg-success\">Da</span>";
             }
-            else if (model.Made == 0)
+            else
             {
                 viewModel.Made = false;
                 viewModel.MadeText = "<span class=\"badge bg-danger\">Nu</span>";
             }
-            else
-            {
-                viewModel.MadeText = "-";
-            }
 
-            if (patient.Blacklist == 1)
+            if (patient.Blacklist == true)
             {
                 viewModel.Blacklist = "<span class=\"badge bg-Danger\">Da</span>";
             }
-            else if (patient.Blacklist == 0)
+            else if (patient.Blacklist == false)
             {
                 viewModel.Blacklist = "<span class=\"badge bg-success\">Nu</span>";
             }
-            else
-            {
-                viewModel.Blacklist = "-";
-            }
 
-            if (model.Visible >= 1)
-            {
-                viewModel.Visible = true;
-            }
-            else if (model.Visible == 0)
-            {
-                viewModel.Visible = false;
-            }
             return viewModel;
         }
 

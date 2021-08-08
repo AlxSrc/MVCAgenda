@@ -27,6 +27,11 @@ namespace MVCAgenda.Service.Patients
         {
             try
             {
+                bool blacklist;
+                if (PatientModel.Blacklist == "Da")
+                    blacklist = true;
+                else
+                    blacklist = false;
                 string msg;
 
                 var patients = await _context.Patient
@@ -55,7 +60,8 @@ namespace MVCAgenda.Service.Patients
                         SecondName = PatientModel.SecondName,
                         PhonNumber = PatientModel.PhonNumber,
                         Mail = PatientModel.Mail,
-                        Blacklist = int.Parse(PatientModel.Blacklist),
+                        Blacklist = blacklist,
+                        Hidden = PatientModel.Hidden
                     });
                     await _context.SaveChangesAsync();
 
@@ -72,6 +78,12 @@ namespace MVCAgenda.Service.Patients
         {
             try
             {
+                bool blacklist;
+                if (PatientModel.Blacklist == "Da")
+                    blacklist = true;
+                else
+                    blacklist = false;
+
                 _context.Update(new Patient() 
                 { 
                     Id= PatientModel.Id,
@@ -80,8 +92,8 @@ namespace MVCAgenda.Service.Patients
                     SecondName = PatientModel.SecondName,
                     PhonNumber = PatientModel.PhonNumber,
                     Mail = PatientModel.Mail,
-                    Blacklist = int.Parse(PatientModel.Blacklist),
-                    Visible = PatientModel.Visible? 1:0
+                    Blacklist = blacklist,
+                    Hidden = PatientModel.Hidden
                 });
                 await _context.SaveChangesAsync();
                 return "Succes";
@@ -119,7 +131,7 @@ namespace MVCAgenda.Service.Patients
             try
             {
                 var patient = await _context.Patient.FindAsync(id);
-                patient.Visible = 0;
+                patient.Hidden = true;
                 _context.Patient.Update(patient);
                 await _context.SaveChangesAsync();
                 return "";
@@ -130,7 +142,7 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public async Task<MVCAgendaViewsManager> GetPatientAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isDeleted)
+        public async Task<MVCAgendaViewsManager> GetPatientsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isHidden)
         {
             List<PatientViewModel> patientsList = new List<PatientViewModel>();
             var model = new MVCAgendaViewsManager{ PatientsList = patientsList };
@@ -138,13 +150,13 @@ namespace MVCAgenda.Service.Patients
             {
                 IQueryable<Patient> query = _context.Patient;
 
-                if (isDeleted)
-                    query = query.Where(p => p.Visible == 0);
+                if (isHidden)
+                    query = query.Where(p => p.Hidden == true);
                 else
-                    query = query.Where(p => p.Visible == 1);
+                    query = query.Where(p => p.Hidden == false);
 
                 if (includeBlackList)
-                    query = query.Where(p => p.Blacklist == 1);
+                    query = query.Where(p => p.Blacklist == true);
 
                 if (!string.IsNullOrEmpty(SearchByName))
                     query = query.Where(p => p.FirstName.Contains(SearchByName));
@@ -160,8 +172,9 @@ namespace MVCAgenda.Service.Patients
                 var patientsModel = patients // lista de pacient adusa
                     .Select(patient => _agendaViewsFactory.PreperePatientViewModel(patient))
                     .ToList();
-
+                model.Hidden = isHidden;
                 model.PatientsList = patientsModel;
+
                 return model;
             }
             catch
@@ -197,15 +210,13 @@ namespace MVCAgenda.Service.Patients
         }
         public async Task<PatientViewModel> GetPatientViewModelByIdAsync(Patient patient)
         {
-            PatientViewModel patientViewModel = new PatientViewModel();
-            PatientViewModel emptyPatientViewModel = new PatientViewModel();
             try
             {
                 return _agendaViewsFactory.PreperePatientViewModel(patient);
             }
             catch
             {
-                return emptyPatientViewModel;
+                return new PatientViewModel();
             }
         }
     }

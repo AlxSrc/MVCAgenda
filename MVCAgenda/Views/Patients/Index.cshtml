@@ -11,8 +11,13 @@
         <a asp-action="Create">Adauga un nou pacient</a>
         &#8226;
         <a asp-action="Index" asp-route-includeBlackList="true">Lista neagra cu pacienti</a>
-        &#8226;
-        <a asp-action="Index" asp-route-isDeleted="true">Pacienti stersi</a>
+        @if (Model.Hidden == false)
+        {
+            <text>
+                &#8226;
+                <a asp-action="Index" asp-route-isDeleted="true">Pacienti stersi</a>
+            </text>
+         }
     </p>
 
     <form asp-controller="Patients" asp-action="Index" method="get">
@@ -55,27 +60,27 @@
         <tbody>
             @foreach (var item in Model.PatientsList)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SecondName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhonNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Mail)
-                </td>
-                <td>
-                    @Html.Raw(item.Blacklist)
-                </td>
-                <td>
-                    <a asp-action="Create" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SecondName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhonNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mail)
+                    </td>
+                    <td>
+                        @Html.Raw(item.Blacklist)
+                    </td>
+                    <td>
+                        <a asp-action="Create" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

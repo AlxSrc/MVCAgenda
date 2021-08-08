@@ -92,32 +92,27 @@ namespace MVCAgenda.Service.SheetPatients
 
         public async Task<SheetPatientViewModel> GetSheetPatientViewModelByIdAsync(int Id)
         {
-            List<Consultation> consultationsList = new List<Consultation>();
-            SheetPatientViewModel emptySheetPatientModel = new SheetPatientViewModel() { Consultations = consultationsList };
-            SheetPatientViewModel sheetPatientModel = new SheetPatientViewModel() { Consultations = consultationsList };
             try
             {
                 if (Id == null)
                 {
-                    return emptySheetPatientModel;
+                    return new SheetPatientViewModel() { Consultations = new List<ConsultationViewModel>() };
                 }
 
                 var sheetPatient = await _context.SheetPatient.FirstOrDefaultAsync(m => m.Id == Id);
 
                 if (sheetPatient == null)
                 {
-                    return emptySheetPatientModel;
+                    return new SheetPatientViewModel() { Consultations = new List<ConsultationViewModel>() };
                 }
                 
                 var consultations = await _consultationServices.GetConsultationsAsync(Id);
 
-                sheetPatientModel = await _agendaViewsFactory.PrepereSheetPatientViewModel(sheetPatient, consultations);
-
-                return sheetPatientModel;
+                return await _agendaViewsFactory.PrepereSheetPatientViewModel(sheetPatient, consultations);
             }
             catch
             {
-                return emptySheetPatientModel;
+                return new SheetPatientViewModel() { Consultations = new List<ConsultationViewModel>() };
             }
             
         }

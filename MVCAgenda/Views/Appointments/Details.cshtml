@@ -5,7 +5,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.Domain.Appointment
+    @model MVCAgenda.Core.ViewModels.AppointmentViewModel
 
 
     <h1>Detalii</h1>
@@ -20,41 +20,34 @@
         <dl class="row">
 
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Patient.FirstName)
+                @Html.DisplayNameFor(model => model.FirstName)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Patient.FirstName)
+                @Html.DisplayFor(model => model.FirstName)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Patient.SecondName)
+                @Html.DisplayNameFor(model => model.SecondName)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Patient.SecondName)
+                @Html.DisplayFor(model => model.SecondName)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Patient.PhonNumber)
+                @Html.DisplayNameFor(model => model.PhonNumber)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Patient.PhonNumber)
+                @Html.DisplayFor(model => model.PhonNumber)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Patient.Mail)
+                @Html.DisplayNameFor(model => model.Mail)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Patient.Mail)
+                @Html.DisplayFor(model => model.Mail)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Patient.Blacklist)
+                @Html.DisplayNameFor(model => model.Blacklist)
             </dt>
             <dd class="col-sm-10">
-                @if (Model.Patient.Blacklist == 1)
-                {
-                    <span class="badge bg-Dangersuccess">Da</span>
-                }
-                else if (Model.Patient.Blacklist == 0)
-                {
-                    <span class="badge bg-success">Nu</span>
-                }
+                @Html.Raw(Model.Blacklist)
             </dd>
         </dl>
 
@@ -68,13 +61,13 @@
                 @Html.DisplayNameFor(model => model.Medic)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Medic.MedicName)
+                @Html.DisplayFor(model => model.Medic)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Room)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Room.RoomName)
+                @Html.DisplayFor(model => model.Room)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.AppointmentDate)
@@ -98,14 +91,7 @@
                 @Html.DisplayNameFor(model => model.Made)
             </dt>
             <dd class="col-sm-10">
-                @if (Model.Made == 1)
-                {
-                    <span class="badge bg-success">Da</span>
-                }
-                else if (Model.Made == 0)
-                {
-                    <span class="badge bg-danger">Nu</span>
-                }
+                @Html.Raw(Model.MadeText)
             </dd>
 
             <dt class="col-sm-2">
@@ -119,6 +105,12 @@
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.AppointmentCreationDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Comments)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Comments)
             </dd>
         </dl>
     </div>

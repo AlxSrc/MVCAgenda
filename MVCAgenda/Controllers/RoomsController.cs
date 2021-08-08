@@ -7,11 +7,11 @@ using MVCAgenda.Data.DataBaseManager;
 
 namespace MVCAgenda.Controllers
 {
-    public class RoomController : Controller
+    public class RoomsController : Controller
     {
         private readonly AgendaContext _context;
 
-        public RoomController(AgendaContext context)
+        public RoomsController(AgendaContext context)
         {
             _context = context;
         }
@@ -188,7 +188,7 @@ namespace MVCAgenda.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var camera = await _context.Room.FindAsync(id);
-                camera.Visible = 0;
+                camera.Hidden = true;
                 _context.Room.Update(camera);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Manage", "Home");

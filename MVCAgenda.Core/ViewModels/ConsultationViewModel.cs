@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.ViewModels
 {
-    public class ConsultationViewModel : BaseModel
+    public class ConsultationViewModel : BaseEntityModel
     {
         [DisplayName("Fisa Pacient")] 
         public int SheetPatientId { get; set; }

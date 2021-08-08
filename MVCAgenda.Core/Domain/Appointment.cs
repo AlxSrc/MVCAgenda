@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Appointment : BaseModel
+    public class Appointment : BaseEntityModel
     {
         [DisplayName("Pacient")]
         public int PatientId { get; set; }
@@ -50,7 +50,7 @@ namespace MVCAgenda.Core.Domain
 
         [DisplayName("Efectuata")]
         [Required]
-        public int Made { get; set; } = 1;
+        public bool Made { get; set; } = true;
 
 
         [StringLength(30, MinimumLength = 1)]
@@ -65,38 +65,7 @@ namespace MVCAgenda.Core.Domain
         public string AppointmentCreationDate { get; set; }
 
 
-        [DisplayName("Sters")]
-        [Required]
-        public int Visible { get; set; }
-
-
         [DisplayName("Comentarii")]
         public string Comments { get; set; }
     }
 }
-
-/*
-Tabelul Programare:
-    Nume
-    Prenume
-    Numar de telefon
-    Mail
-
-
-    Data programare
-    Ora ora programare
-    Medic care efectueaza procedura
-    Room
- unde se efectueaza procedura
-    Procedura(Denumire)
-    Efectuat(daca bifati ca o programare nu s-a efectuat
-            se subintelege ca pacientul nu s-a prezentat
-            si se trece pacientul la blacklist)
-    _Cel ce efectueaza programarea
-    _Data la care s-a facut programarea
-    _vizibilitate
-
-Medic
-
-Camere:
-*/

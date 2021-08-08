@@ -38,12 +38,12 @@
                 <div class="form-group">
                     <label asp-for="Blacklist" class="control-label"></label>
                     <select asp-for="Blacklist" class="form-control">
-                        <option value="0">Nu</option>
-                        <option value="1">Da</option>
+                        <option value="Nu">Nu</option>
+                        <option value="Da">Da</option>
                     </select>
                     <span asp-validation-for="Blacklist" class="text-danger"></span>
                 </div>
-                <input type="hidden" asp-for="Visible" />
+                <input type="hidden" asp-for="Hidden" />
                 <div class="form-group">
                     <input type="submit" value="Salveaza" class="btn btn-primary" />
                 </div>

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.ViewModels
 {
-    public class AppointmentViewModel : BaseModel
+    public class AppointmentViewModel : BaseEntityModel
     {
         [DisplayName("Pacient")]
         public int PatientId { get; set; }
@@ -48,7 +48,7 @@ namespace MVCAgenda.Core.ViewModels
         public int RoomId { get; set; }
 
         [DisplayName("Camera")]
-        public string Camera { get; set; }
+        public string Room { get; set; }
 
 
         //Details about Appoitment
@@ -72,6 +72,8 @@ namespace MVCAgenda.Core.ViewModels
         [DisplayName("Efectuata")]
         [Required] 
         public bool Made { get; set; }
+
+        [DisplayName("Efectuata")]
         public string MadeText { get; set; }
 
         [StringLength(30, MinimumLength = 1)]
@@ -84,11 +86,6 @@ namespace MVCAgenda.Core.ViewModels
         [DataType(DataType.DateTime)]
         [Required] 
         public string AppointmentCreationDate { get; set; }
-
-
-        [DisplayName("Sters")]
-        [Required] 
-        public bool Visible { get; set; }
 
 
         [DisplayName("Comentarii")]

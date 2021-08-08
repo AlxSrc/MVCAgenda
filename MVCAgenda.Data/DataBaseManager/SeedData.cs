@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MVCAgenda.Core.AccountModels;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Data.DataBaseManager;
 using System;
@@ -9,6 +11,9 @@ namespace MVCAgenda.Data
 {
     public class SeedData
     {
+        //private readonly UserManager<IdentityUser> _userManager;
+        //private readonly SignInManager<IdentityUser> _signInManager;
+
         public static void Initialize(IServiceProvider serviceProvider)
         {
             try
@@ -52,6 +57,8 @@ namespace MVCAgenda.Data
                         {
                             RoomName = "Sala de sport"
                         });
+
+                        context.SaveChanges();
                     }
 
                     if (context.Medic.Any() == false)
@@ -69,6 +76,8 @@ namespace MVCAgenda.Data
                         {
                             MedicName = "Asistent Ionela"
                         });
+
+                        context.SaveChanges();
                     }
 
                     if (context.SheetPatient.Any() == false)
@@ -129,8 +138,9 @@ namespace MVCAgenda.Data
                             Gender = 0,
                             DateOfBirth = DateTime.Parse("2000-07-24")
                         });
+
+                        context.SaveChanges();
                     }
-                    context.SaveChanges();
 
                     if (context.Consultation.Any() == false)
                     {
@@ -199,9 +209,9 @@ namespace MVCAgenda.Data
                             Symptoms = "sample text Simptome 2",
                             CreationDate = DateTime.Parse("2000-07-24T09:35")
                         });
-                        //context.SaveChanges();
+
+                        context.SaveChanges();
                     }
-                    context.SaveChanges();
 
                     if (context.Patient.Any() == false)
                     {
@@ -213,8 +223,8 @@ namespace MVCAgenda.Data
                             SecondName = "Alexandru",
                             PhonNumber = "0757541521",
                             Mail = "",
-                            Blacklist = 1,
-                            Visible = 1
+                            Blacklist = false,
+                            Hidden = false
                         },
                         new Patient
                         {
@@ -223,8 +233,8 @@ namespace MVCAgenda.Data
                             SecondName = "Constantin",
                             PhonNumber = "0741241712",
                             Mail = "Alex.gsa@yahoo.com",
-                            Blacklist = 0,
-                            Visible = 1
+                            Blacklist = false,
+                            Hidden = false
                         },
                         new Patient
                         {
@@ -233,8 +243,8 @@ namespace MVCAgenda.Data
                             SecondName = "Andrei",
                             PhonNumber = "0757616511",
                             Mail = "mirceaand@gmail.com",
-                            Blacklist = 0,
-                            Visible = 1
+                            Blacklist = false,
+                            Hidden = false
                         },
                         new Patient
                         {
@@ -243,8 +253,8 @@ namespace MVCAgenda.Data
                             SecondName = "Andreea",
                             PhonNumber = "0757254785",
                             Mail = "androt@yahoo.com",
-                            Blacklist = 0,
-                            Visible = 1
+                            Blacklist = false,
+                            Hidden = false
                         },
                         new Patient
                         {
@@ -253,11 +263,12 @@ namespace MVCAgenda.Data
                             SecondName = "Ana",
                             PhonNumber = "0755767254",
                             Mail = "andana@gmail.com",
-                            Blacklist = 0,
-                            Visible = 1
+                            Blacklist = false,
+                            Hidden = true
                         });
+
+                        context.SaveChanges();
                     }
-                    context.SaveChanges();
 
                     if (context.Appointment.Any() == false)
                     {
@@ -270,10 +281,10 @@ namespace MVCAgenda.Data
                             AppointmentDate = "2021-02-12",
                             AppointmentHour = "12-00",
                             Procedure = "Anestezie",
-                            Made = 1,
+                            Made = true,
                             ResponsibleForAppointment = "Administrator",
                             AppointmentCreationDate = "2021-04-14T09:35",
-                            Visible = 1
+                            Hidden = false
                         },
                         new Appointment
                         {
@@ -283,10 +294,10 @@ namespace MVCAgenda.Data
                             AppointmentDate = "2021-02-12",
                             AppointmentHour = "13-00",
                             Procedure = "Apucuntura",
-                            Made = 1,
+                            Made = true,
                             ResponsibleForAppointment = "Administrator",
                             AppointmentCreationDate = "2021-04-14T09:35",
-                            Visible = 1
+                            Hidden = false
                         },
                         new Appointment
                         {
@@ -296,10 +307,10 @@ namespace MVCAgenda.Data
                             AppointmentDate = "2021-03-12",
                             AppointmentHour = "14-30",
                             Procedure = "Anestezie",
-                            Made = 1,
+                            Made = true,
                             ResponsibleForAppointment = "Administrator",
                             AppointmentCreationDate = "2021-04-14T09:35",
-                            Visible = 1
+                            Hidden = false
                         },
                         new Appointment
                         {
@@ -309,13 +320,24 @@ namespace MVCAgenda.Data
                             AppointmentDate = "2021-02-02",
                             AppointmentHour = "12-00",
                             Procedure = "Anestezie",
-                            Made = 1,
+                            Made = true,
                             ResponsibleForAppointment = "Administrator",
                             AppointmentCreationDate = "2021-04-14T09:35",
-                            Visible = 1
+                            Hidden = false
                         });
+
+                        context.SaveChanges();
                     }
-                    context.SaveChanges();
+
+                    //RegisterViewModel model = new RegisterViewModel() { Email = "admin@agenda-online.com", Password = "admiN!23", ConfirmPassword = "admiN!23" };
+
+                    //var user = new IdentityUser
+                    //{
+                    //    UserName = model.Email,
+                    //    Email = model.Email,
+                    //};
+
+                    //var result = _userManager.CreateAsync(user, model.Password);
                 }
             }
             catch(Exception ex)

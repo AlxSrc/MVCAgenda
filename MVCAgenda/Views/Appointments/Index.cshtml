@@ -11,10 +11,10 @@
     <p>
         <a asp-action="Create">Adauga o programare</a>
         &#8226;
-        <a asp-action="Deleted">Programari sterse</a>
+        <a asp-action="Index" asp-route-Hiden="true">Programari sterse</a>
     </p>
 
-    <form asp-controller="Appointments" asp-action="AllAppointments" method="get">
+    <form asp-controller="Appointments" asp-action="Index" method="get">
 
         <p>
             <input placeholder="Nume"
@@ -70,7 +70,7 @@
                     @Html.DisplayNameFor(model => model.AppointmentsList[0].Medic)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Camera)
+                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Room)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentDate)
@@ -104,7 +104,7 @@
                         @Html.DisplayFor(modelItem => item.Medic)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Camera)
+                        @Html.DisplayFor(modelItem => item.Room)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.AppointmentDate)
@@ -116,7 +116,7 @@
                         @Html.DisplayFor(modelItem => item.Procedure)
                     </td>
                     <td>
-                        @Html.Raw(item.Made)
+                        @Html.Raw(item.MadeText)
                     </td>
                     <td>
                         <a asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Vezi pacient</a>|

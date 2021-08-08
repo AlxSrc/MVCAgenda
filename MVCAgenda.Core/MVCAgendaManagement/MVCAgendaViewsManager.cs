@@ -18,6 +18,12 @@ namespace MVCAgenda.Core.MVCAgendaManagement
         public List<AppointmentViewModel> AppointmentsList { get; set; }
         #endregion
 
+        #region ViewControllers
+
+        public bool Hidden { get; set; }
+
+        #endregion
+
         #region Param for search
         public string SearchByName { get; set; }
 

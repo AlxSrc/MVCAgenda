@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.ViewModels
 {
-    public class SheetPatientViewModel : BaseModel
+    public class SheetPatientViewModel : BaseEntityModel
     {
         [DisplayName("Antecedente: heredo-colaterale")] 
         public string AntecedentsH { get; set; }
@@ -39,6 +39,6 @@ namespace MVCAgenda.Core.ViewModels
         [DisplayName("Data nasterii")] 
         public DateTime DateOfBirth { get; set; }
 
-        public List<Consultation> Consultations { get; set; }
+        public List<ConsultationViewModel> Consultations { get; set; }
     }
 }

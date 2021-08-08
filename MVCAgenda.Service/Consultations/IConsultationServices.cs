@@ -8,8 +8,8 @@ namespace MVCAgenda.Service.Consultations
     public interface IConsultationServices
     {
         Task<bool> CreateConsultationAsync(ConsultationViewModel consultationModel);
-        Task<List<Consultation>> GetConsultationsAsync(int id);
         Task<ConsultationViewModel> GetConsultationAsync(int id);
+        Task<List<ConsultationViewModel>> GetConsultationsAsync(int id);
         Task<bool> EditConsultationAsync(ConsultationViewModel consultationModel);
         Task<bool> HideConsultationAsync(int id);
         Task<bool> DeleteConsultationAsync(int id);

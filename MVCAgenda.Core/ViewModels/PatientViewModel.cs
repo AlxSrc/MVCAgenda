@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.ViewModels
 {
-    public class PatientViewModel : BaseModel
+    public class PatientViewModel : BaseEntityModel
     {
         [DisplayName("Detalii Pacient")] 
         public int SheetPatientId { get; set; }
@@ -34,10 +34,5 @@ namespace MVCAgenda.Core.ViewModels
 
         [DisplayName("Lista neagra")]
         public string Blacklist { get; set; }
-
-
-        [DisplayName("Sters")]
-        [Required] 
-        public bool Visible { get; set; }
     }
 }

@@ -5,7 +5,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.Domain.Appointment
+    @model MVCAgenda.Core.ViewModels.AppointmentViewModel
 
     <h3>Sunteti sigur ca doriti sa stergeti aceasta programare?</h3>
     <div>
@@ -13,22 +13,22 @@
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Patient)
+                @Html.DisplayNameFor(model => model.FirstName)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Patient.PhonNumber)
+                @Html.DisplayFor(model => model.FirstName)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Medic)
+                @Html.DisplayNameFor(model => model.SecondName)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Medic)
+                @Html.DisplayFor(model => model.SecondName)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Room)
+                @Html.DisplayNameFor(model => model.PhonNumber)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Room)
+                @Html.DisplayFor(model => model.PhonNumber)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.AppointmentDate)
@@ -65,12 +65,6 @@
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.AppointmentCreationDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Visible)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Visible)
             </dd>
         </dl>
 

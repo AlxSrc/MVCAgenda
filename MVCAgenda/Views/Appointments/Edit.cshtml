@@ -14,9 +14,12 @@
             <form asp-action="Edit">
                 <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="PatientId" />
+                <input type="hidden" asp-for="FirstName" />
+                <input type="hidden" asp-for="SecondName" />
+                <input type="hidden" asp-for="PhonNumber" />
                 <div class="form-group">
                     <label asp-for="RoomId" class="control-label"></label>
-                    <select asp-for="RoomId" class="form-control" asp-items="ViewBag.CameraId"></select>
+                    <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
                     <span asp-validation-for="RoomId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -42,10 +45,15 @@
                 <div class="form-group">
                     <label asp-for="Made" class="control-label"></label>
                     <select asp-for="Made" class="form-control">
-                        <option value="1">Da</option>
-                        <option value="0">Nu</option>
+                        <option value="true">Da</option>
+                        <option value="false">Nu</option>
                     </select>
                     <span asp-validation-for="Made" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Comments" class="control-label"></label>
+                    <textarea asp-for="Comments" class="form-control resizable"></textarea>
+                    <span asp-validation-for="Comments" class="text-danger"></span>
                 </div>
                 <input type="hidden" asp-for="ResponsibleForAppointment" />
                 <input type="hidden" asp-for="AppointmentCreationDate" />

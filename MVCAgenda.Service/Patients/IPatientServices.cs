@@ -12,7 +12,7 @@ namespace MVCAgenda.Service.Patients
         Task<string> EditPatientAsync(PatientViewModel PatientModel);
         Task<bool> DeletePatientAsync(int id);
         Task<string> HidePatientAsync(int id);
-        Task<MVCAgendaViewsManager> GetPatientAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isDeleted);
+        Task<MVCAgendaViewsManager> GetPatientsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isDeleted);
         Task<Patient> GetPatientByIdAsync(int Id);
         Task<PatientViewModel> GetPatientViewModelByIdAsync(Patient patient);
     }

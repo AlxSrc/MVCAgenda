@@ -35,10 +35,10 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                IQueryable<Medic> queryMedici = _context.Medic.Where(m => m.Visible == 1);
+                IQueryable<Medic> queryMedici = _context.Medic.Where(m => m.Hidden == false);
                 var medics = await queryMedici.ToListAsync();
 
-                IQueryable<Room> queryCamere = _context.Room.Where(c => c.Visible == 1);
+                IQueryable<Room> queryCamere = _context.Room.Where(c => c.Hidden == false);
                 var rooms = await queryCamere.ToListAsync();
 
                 var model = new ManageViewModel
