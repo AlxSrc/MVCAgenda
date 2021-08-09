@@ -132,6 +132,10 @@ namespace MVCAgenda.Service.Patients
             {
                 var patient = await _context.Patient.FindAsync(id);
                 patient.Hidden = true;
+
+                //var appointments = _context.Appointment.Where(a => a.PatientId == patient.Id);
+
+
                 _context.Patient.Update(patient);
                 await _context.SaveChangesAsync();
                 return "";

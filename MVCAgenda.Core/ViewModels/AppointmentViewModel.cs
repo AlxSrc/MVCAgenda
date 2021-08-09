@@ -38,6 +38,7 @@ namespace MVCAgenda.Core.ViewModels
 
 
         //Details about Medic
+        [DisplayName("Medic")]
         public int MedicId { get; set; }
 
         [DisplayName("Medic")]
@@ -45,6 +46,8 @@ namespace MVCAgenda.Core.ViewModels
 
 
         //Details about Room
+
+        [DisplayName("Room")]
         public int RoomId { get; set; }
 
         [DisplayName("Camera")]
