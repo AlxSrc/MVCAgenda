@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Data.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20210808145601_InitialCreate")]
+    [Migration("20210810132442_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,7 +162,6 @@ namespace MVCAgenda.Data.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("SecondName")
-                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 

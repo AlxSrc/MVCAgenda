@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.ViewModels;
 using MVCAgenda.Data.DataBaseManager;
 
 namespace MVCAgenda.Controllers
@@ -16,20 +17,6 @@ namespace MVCAgenda.Controllers
             _context = context;
         }
 
-        // GET: Camere
-        public async Task<IActionResult> Index()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _context.Room.ToListAsync());
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
-
-        // GET: Camere/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -39,14 +26,15 @@ namespace MVCAgenda.Controllers
                     return NotFound();
                 }
 
-                var camera = await _context.Room
+                var room = await _context.Room
                     .FirstOrDefaultAsync(m => m.Id == id);
-                if (camera == null)
+                if (room == null)
                 {
                     return NotFound();
                 }
 
-                return View(camera);
+                RoomViewModel Room = new RoomViewModel() { Id = room.Id, RoomName = room.RoomName, Hidden = room.Hidden };
+                return View(Room);
             }
             else
             {
@@ -54,7 +42,6 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // GET: Camere/Create
         public IActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
@@ -67,18 +54,15 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // POST: Camere/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CameraId,DenumireCamera")] Room room)
+        public async Task<IActionResult> Create(RoomViewModel room)
         {
             if (User.Identity.IsAuthenticated)
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(room);
+                    _context.Add(new Room() {RoomName = room.RoomName, Hidden = false});
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Manage", "Home");
                 }
@@ -90,7 +74,6 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // GET: Camere/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -105,7 +88,9 @@ namespace MVCAgenda.Controllers
                 {
                     return NotFound();
                 }
-                return View(room);
+
+                RoomViewModel Room = new RoomViewModel() { Id = room.Id, RoomName = room.RoomName, Hidden = room.Hidden };
+                return View(Room);
             }
             else
             {
@@ -113,12 +98,9 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // POST: Camere/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CameraId,DenumireCamera")] Room room)
+        public async Task<IActionResult> Edit(int id,RoomViewModel room)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -131,7 +113,8 @@ namespace MVCAgenda.Controllers
                 {
                     try
                     {
-                        _context.Update(room);
+                        Room Room = new Room() { Id = room.Id, RoomName = room.RoomName, Hidden = room.Hidden };
+                        _context.Update(Room);
                         await _context.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
@@ -155,7 +138,6 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // GET: Camere/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -165,14 +147,16 @@ namespace MVCAgenda.Controllers
                     return NotFound();
                 }
 
-                var camera = await _context.Room
+                var room = await _context.Room
                     .FirstOrDefaultAsync(m => m.Id == id);
-                if (camera == null)
+
+                if (room == null)
                 {
                     return NotFound();
                 }
 
-                return View(camera);
+                RoomViewModel Room = new RoomViewModel() { Id = room.Id, RoomName = room.RoomName, Hidden = room.Hidden };
+                return View(Room);
             }
             else
             {
@@ -180,7 +164,7 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // POST: Camere/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

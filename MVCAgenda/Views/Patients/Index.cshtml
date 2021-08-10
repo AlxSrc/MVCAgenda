@@ -5,20 +5,30 @@
 @if (User.Identity.IsAuthenticated)
 {
     @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
-    <h1>Lista cu pacienti</h1>
 
-    <p>
-        <a asp-action="Create">Adauga un nou pacient</a>
-        &#8226;
-        <a asp-action="Index" asp-route-includeBlackList="true">Lista neagra cu pacienti</a>
-        @if (Model.Hidden == false)
-        {
-            <text>
-                &#8226;
-                <a asp-action="Index" asp-route-isDeleted="true">Pacienti stersi</a>
-            </text>
-         }
-    </p>
+    @if (Model.Blacklist == true)
+        {<text><h1>Lista neagra cu pacienti</h1></text>}
+    else @if (Model.Hidden == true)
+        {<text><h1>Lista cu pacienti stersi</h1></text>}
+    else
+        {<text><h1>Pacienti</h1></text>}
+
+<p>
+    <button type="button" class="btn btn-outline-primary" asp-action="Create">Adauga un nou pacient</button>
+    
+    @if (Model.Blacklist == false)
+    {
+        <text>
+            <button type="button" class="btn btn-outline-danger" asp-action="Index" asp-route-includeBlackList="true">Lista neagra cu pacienti</button>
+        </text>
+    }
+    @if (Model.Hidden == false)
+    {
+        <text>
+            <button type="button" class="btn btn-outline-secondary" asp-action="Index" asp-route-isDeleted="true">Pacienti stersi</button>
+        </text>
+    }
+</p>
 
     <form asp-controller="Patients" asp-action="Index" method="get">
         <p>
@@ -51,9 +61,14 @@
                 <th>
                     @Html.DisplayNameFor(model => model.PatientsList[0].Mail)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PatientsList[0].Blacklist)
-                </th>
+                @if (Model.Blacklist == false)
+                {
+                    <text>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PatientsList[0].BlacklistText)
+                        </th>
+                    </text>
+                }
                 <th></th>
             </tr>
         </thead>
@@ -73,9 +88,14 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Mail)
                     </td>
-                    <td>
-                        @Html.Raw(item.Blacklist)
-                    </td>
+                    @if (Model.Blacklist == false)
+                    {
+                        <text>
+                            <td>
+                                @Html.Raw(item.BlacklistText)
+                            </td>
+                        </text>
+                    }
                     <td>
                         <a asp-action="Create" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a> |
                         <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>

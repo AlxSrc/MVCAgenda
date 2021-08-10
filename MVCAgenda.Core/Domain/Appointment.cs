@@ -30,13 +30,13 @@ namespace MVCAgenda.Core.Domain
         public virtual Medic Medic { get; set; }
 
 
-        [DisplayName("Data consultatie")]
+        [DisplayName("Data")]
         [DataType(DataType.Date)]
         [Required]
         public string AppointmentDate { get; set; }
 
 
-        [DisplayName("Ora consultatie")]
+        [DisplayName("Ora")]
         [DataType(DataType.Time)]
         [Required]
         public string AppointmentHour { get; set; }

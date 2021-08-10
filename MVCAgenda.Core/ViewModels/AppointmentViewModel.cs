@@ -55,13 +55,13 @@ namespace MVCAgenda.Core.ViewModels
 
 
         //Details about Appoitment
-        [DisplayName("Data consultatie")]
+        [DisplayName("Data")]
         [DataType(DataType.Date)]
         [Required] 
         public string AppointmentDate { get; set; }
 
 
-        [DisplayName("Ora consultatie")]
+        [DisplayName("Ora")]
         [DataType(DataType.Time)]
         [Required] 
         public string AppointmentHour { get; set; }

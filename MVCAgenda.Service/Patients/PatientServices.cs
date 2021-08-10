@@ -27,11 +27,6 @@ namespace MVCAgenda.Service.Patients
         {
             try
             {
-                bool blacklist;
-                if (PatientModel.Blacklist == "Da")
-                    blacklist = true;
-                else
-                    blacklist = false;
                 string msg;
 
                 var patients = await _context.Patient
@@ -60,7 +55,7 @@ namespace MVCAgenda.Service.Patients
                         SecondName = PatientModel.SecondName,
                         PhonNumber = PatientModel.PhonNumber,
                         Mail = PatientModel.Mail,
-                        Blacklist = blacklist,
+                        Blacklist = PatientModel.Blacklist,
                         Hidden = PatientModel.Hidden
                     });
                     await _context.SaveChangesAsync();
@@ -78,12 +73,6 @@ namespace MVCAgenda.Service.Patients
         {
             try
             {
-                bool blacklist;
-                if (PatientModel.Blacklist == "Da")
-                    blacklist = true;
-                else
-                    blacklist = false;
-
                 _context.Update(new Patient() 
                 { 
                     Id= PatientModel.Id,
@@ -92,7 +81,7 @@ namespace MVCAgenda.Service.Patients
                     SecondName = PatientModel.SecondName,
                     PhonNumber = PatientModel.PhonNumber,
                     Mail = PatientModel.Mail,
-                    Blacklist = blacklist,
+                    Blacklist = PatientModel.Blacklist,
                     Hidden = PatientModel.Hidden
                 });
                 await _context.SaveChangesAsync();
@@ -177,6 +166,7 @@ namespace MVCAgenda.Service.Patients
                     .Select(patient => _agendaViewsFactory.PreperePatientViewModel(patient))
                     .ToList();
                 model.Hidden = isHidden;
+                model.Blacklist = includeBlackList;
                 model.PatientsList = patientsModel;
 
                 return model;

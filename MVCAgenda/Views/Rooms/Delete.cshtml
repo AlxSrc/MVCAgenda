@@ -7,13 +7,12 @@
 @if (User.Identity.IsAuthenticated)
 {
 
-    @model MVCAgenda.Core.Domain.Room
+    @model MVCAgenda.Core.ViewModels.RoomViewModel
 
     <h1>Sterge camera</h1>
 
     <h3>Esti sigur ca doresti sa stergi camera?</h3>
     <div>
-        <h4>Camera</h4>
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -23,7 +22,8 @@
                 @Html.DisplayFor(model => model.RoomName)
             </dd>
         </dl>
-
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Hidden" />
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
             <input type="submit" value="Delete" class="btn btn-danger" /> |

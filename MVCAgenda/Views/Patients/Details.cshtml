@@ -6,52 +6,54 @@
     @model MVCAgenda.Core.ViewModels.PatientViewModel
 
     <h1>Detalii pacient</h1>
-
-    <div>
-
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.FirstName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.FirstName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SecondName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.SecondName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PhonNumber)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PhonNumber)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Mail)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Mail)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Blacklist)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.Blacklist)
-            </dd>
-        </dl>
-        <div>
-            <input type="hidden" asp-for="Id" />
-            <ul>
-                
-                <li> <a asp-action="Index" asp-controller="Appointments" asp-route-Id="@Model.Id">Vizualizeaza istoria pacientului</a> </li>
-                <li> <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id">Vizualizeaza fisa pacientului</a> </li>
-                <li> <a asp-action="Edit" asp-route-id="@Model.Id">Editeaza</a> </li>
-                <li> <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a> </li>
-                <li> <a asp-action="Index">Inapoi la lista cu pacienti</a> </li>
-
-            </ul>
+    <br />
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-4">
+                <dl class="row">
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.DisplayFor(model => model.FirstName)
+                    </dd>
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.SecondName)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.DisplayFor(model => model.SecondName)
+                    </dd>
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.PhonNumber)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.DisplayFor(model => model.PhonNumber)
+                    </dd>
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.Mail)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.DisplayFor(model => model.Mail)
+                    </dd>
+                    <dt class="col-6">
+                        @Html.DisplayNameFor(model => model.BlacklistText)
+                    </dt>
+                    <dd class="col-6">
+                        @Html.Raw(Model.BlacklistText)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-sm-4">
+                <ul style="list-style-type:none; text-align:start;">
+                    <li> <a asp-action="Index" asp-controller="Appointments" asp-route-Id="@Model.Id">Programarile pacientului</a> </li>
+                    <li> <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id">Fisa medicala</a> </li>
+                    <li> <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> </li>
+                    <li> <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a> </li>
+                    <li> <a asp-action="Index">Lista cu pacienti</a> </li>
+                </ul>
+            </div>
         </div>
     </div>
+
+
 }

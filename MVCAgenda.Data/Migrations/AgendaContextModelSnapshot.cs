@@ -160,7 +160,6 @@ namespace MVCAgenda.Data.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("SecondName")
-                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 

@@ -19,8 +19,8 @@ namespace MVCAgenda.Core.MVCAgendaManagement
         #endregion
 
         #region ViewControllers
-
         public bool Hidden { get; set; }
+        public bool Blacklist { get; set; }
 
         #endregion
 

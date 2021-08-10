@@ -9,9 +9,11 @@
     <h1>Programari</h1>
 
     <p>
-        <a asp-action="Create">Adauga o programare</a>
+        <button type="button" class="btn btn-outline-primary" asp-controller="Appointments" asp-action="Create">Adauga o programare</button>
         &#8226;
-        <a asp-action="Index" asp-route-Hiden="true">Programari sterse</a>
+
+        <a asp-action="Create">Adauga o programare</a>
+        <a asp-action="Index" asp-route-Hidden="true">Programari sterse</a>
     </p>
 
     <form asp-controller="Appointments" asp-action="Index" method="get">
@@ -60,9 +62,11 @@
                 <th>
                     @Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
                 </th>
+                <!--
                 <th>
                     @Html.DisplayNameFor(model => model.AppointmentsList[0].SecondName)
                 </th>
+                -->
                 <th>
                     @Html.DisplayNameFor(model => model.AppointmentsList[0].PhonNumber)
                 </th>
@@ -94,9 +98,11 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.FirstName)
                     </td>
+                    <!--
                     <td>
                         @Html.DisplayFor(modelItem => item.SecondName)
                     </td>
+                    -->
                     <td>
                         @Html.DisplayFor(modelItem => item.PhonNumber)
                     </td>
@@ -119,7 +125,8 @@
                         @Html.Raw(item.MadeText)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Vezi pacient</a>|
+                        <a asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Vezi pacient</a>
+                        &#8226;
                         <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>
                     </td>
                 </tr>

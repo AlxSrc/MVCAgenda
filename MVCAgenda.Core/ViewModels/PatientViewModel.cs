@@ -32,6 +32,9 @@ namespace MVCAgenda.Core.ViewModels
 
 
         [DisplayName("Lista neagra")]
-        public string Blacklist { get; set; }
+        public string BlacklistText { get; set; }
+
+        [DisplayName("Lista neagra")]
+        public bool Blacklist { get; set; }
     }
 }

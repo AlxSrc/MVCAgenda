@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.ViewModels;
 using MVCAgenda.Data.DataBaseManager;
 
 namespace MVCAgenda.Controllers
@@ -16,20 +17,7 @@ namespace MVCAgenda.Controllers
             _context = context;
         }
 
-        // GET: Medici
-        public async Task<IActionResult> Index()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _context.Medic.ToListAsync());
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
 
-        // GET: Medici/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -46,7 +34,8 @@ namespace MVCAgenda.Controllers
                     return NotFound();
                 }
 
-                return View(medic);
+                MedicViewModel Medic = new MedicViewModel() { Id = medic.Id, MedicName = medic.MedicName, Hidden = medic.Hidden };
+                return View(Medic);
             }
             else
             {
@@ -54,7 +43,6 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // GET: Medici/Create
         public IActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
@@ -67,18 +55,15 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // POST: Medici/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MedicId,DenumireMedic")] Medic medic)
+        public async Task<IActionResult> Create(MedicViewModel medic)
         {
             if (User.Identity.IsAuthenticated)
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(medic);
+                    _context.Add(new Medic() { MedicName = medic.MedicName, Hidden = false});
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Manage", "Home");
                 }
@@ -90,7 +75,6 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // GET: Medici/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -100,12 +84,15 @@ namespace MVCAgenda.Controllers
                     return NotFound();
                 }
 
-                var medic = await _context.Medic.FindAsync(id);
+                var medic = await _context.Medic
+                    .FirstOrDefaultAsync(m => m.Id == id);
                 if (medic == null)
                 {
                     return NotFound();
                 }
-                return View(medic);
+
+                MedicViewModel Medic = new MedicViewModel() { Id = medic.Id, MedicName = medic.MedicName, Hidden = medic.Hidden };
+                return View(Medic);
             }
             else
             {
@@ -113,12 +100,9 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // POST: Medici/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MedicId,DenumireMedic")] Medic medic)
+        public async Task<IActionResult> Edit(int id, Medic medic)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -127,7 +111,7 @@ namespace MVCAgenda.Controllers
                 {
                     try
                     {
-                        _context.Update(medic);
+                        _context.Update(new Medic() {Id = medic.Id, MedicName = medic.MedicName, Hidden = medic.Hidden});
                         await _context.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
@@ -155,7 +139,6 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // GET: Medici/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -172,7 +155,8 @@ namespace MVCAgenda.Controllers
                     return NotFound();
                 }
 
-                return View(medic);
+                MedicViewModel Medic = new MedicViewModel() { Id = medic.Id, MedicName = medic.MedicName, Hidden = medic.Hidden };
+                return View(Medic);
             }
             else
             {
@@ -180,7 +164,6 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        // POST: Medici/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

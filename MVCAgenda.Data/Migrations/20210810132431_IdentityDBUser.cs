@@ -233,7 +233,7 @@ namespace MVCAgenda.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SheetPatientId = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    SecondName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    SecondName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     PhonNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Mail = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     Blacklist = table.Column<bool>(type: "bit", nullable: false),

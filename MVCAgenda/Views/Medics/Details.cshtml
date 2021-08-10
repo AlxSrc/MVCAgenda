@@ -7,13 +7,15 @@
 @if (User.Identity.IsAuthenticated)
 {
 
-    @model MVCAgenda.Core.Domain.Medic
+    @model MVCAgenda.Core.ViewModels.MedicViewModel
 
     <h1>Detalii</h1>
 
     <div>
         <h4>Medic</h4>
         <hr />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Hidden" />
         <dl class="row">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.MedicName)

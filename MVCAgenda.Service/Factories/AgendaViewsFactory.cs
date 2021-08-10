@@ -21,15 +21,17 @@ namespace MVCAgenda.Service.Factories
             };
             if (model.Blacklist == true)
             {
-                viewModel.Blacklist = "<span class=\"badge bg-danger\">Da</span>";
+                viewModel.Blacklist = true;
+                viewModel.BlacklistText = "<span class=\"badge bg-danger\">Da</span>";
             }
             else if (model.Blacklist == false)
             {
-                viewModel.Blacklist = "<span class=\"badge bg-success\">Nu</span>";
+                viewModel.Blacklist = false;
+                viewModel.BlacklistText = "<span class=\"badge bg-success\">Nu</span>";
             }
             else
             {
-                viewModel.Blacklist = "-";
+                viewModel.BlacklistText = "-";
             }
 
             return viewModel;
