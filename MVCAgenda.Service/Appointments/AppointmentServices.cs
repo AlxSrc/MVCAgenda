@@ -172,22 +172,6 @@ namespace MVCAgenda.Service.Appointments
         {
             try
             {
-                int foundPatientId = -1;
-                if (!string.IsNullOrEmpty(SearchByName) || !string.IsNullOrEmpty(SearchByPhoneNumber) || !string.IsNullOrEmpty(SearchByEmail))
-                {
-                    IQueryable<Patient> queryPatients = _context.Patient;
-
-                    queryPatients = queryPatients
-                        .Where(p => !string.IsNullOrEmpty(SearchByName) ? p.FirstName.Contains(SearchByName) : true)
-                        .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhonNumber.Contains(SearchByPhoneNumber) : true)
-                        .Where(p => !string.IsNullOrEmpty(SearchByEmail) ? p.Mail.Contains(SearchByEmail) : true);
-
-                    var searchPatient = queryPatients.FirstOrDefault();
-                    if (searchPatient != null)
-                        foundPatientId = searchPatient.Id;
-                }
-                
-
                 var queriAppointmentsList = await (
                     from patient in _context.Patient
                     join appointment in _context.Appointment
@@ -195,7 +179,6 @@ namespace MVCAgenda.Service.Appointments
                         .Where(h => Hiden == true ? h.Hidden == true : true)
                         .Where(d => Daily == true ? d.AppointmentDate.Contains(DayTime) : true)
                         .Where(p => Id != 0 ? p.PatientId == Id : true)
-                        .Where(p => foundPatientId != -1 ? p.PatientId == foundPatientId : true)
                         .Where(a => SearchByMedic != 0 ? a.MedicId == SearchByMedic : true)
                         .Where(a => SearchByRoom != 0 ? a.RoomId == SearchByRoom : true)
                         .Where(a => !string.IsNullOrEmpty(SearchByAppointmentHour) ? a.AppointmentHour.Contains(SearchByAppointmentHour) : true)
@@ -207,6 +190,11 @@ namespace MVCAgenda.Service.Appointments
                     orderby (appointment.AppointmentHour)
                     select _agendaViewsFactory.PrepereAppointmentViewModel(appointment, patient, medic, room)
                     ).ToListAsync();
+
+                queriAppointmentsList = queriAppointmentsList
+                    .Where(p => !string.IsNullOrEmpty(SearchByName) ? p.FirstName.Contains(SearchByName) : true)
+                    .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhonNumber.Contains(SearchByPhoneNumber) : true)
+                    .Where(p => !string.IsNullOrEmpty(SearchByEmail) ? p.Mail.Contains(SearchByEmail) : true).ToList();
 
                 return new MVCAgendaViewsManager()
                 {

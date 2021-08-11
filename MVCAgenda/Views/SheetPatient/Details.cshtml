@@ -8,13 +8,40 @@
 
     @model MVCAgenda.Core.ViewModels.SheetPatientViewModel
 
-    <h1>Detalii</h1>
+    <h1>Detalii fisa medicala</h1>
+    <hr />
 
     <div>
-        <h4>Fisa pacient</h4>
-        <hr />
         <dl class="row">
-            <dt class="col-sm-2">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsH)</span>
+                <input asp-for="AntecedentsH" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.AntecedentsP)</span>
+                <input asp-for="AntecedentsP" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon2" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhysicalExamination)</span>
+                <input asp-for="PhysicalExamination" type="text" class="form-control" aria-label="Examen fizic" aria-describedby="basic-addon3" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">@Html.DisplayNameFor(model => model.CNP)</span>
+                <input asp-for="CNP" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.CNP)" readonly>
+                <span class="input-group-text">@Html.DisplayNameFor(model => model.Gender)</span>
+                <input asp-for="Gender" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Gender)" readonly>
+                <span class="input-group-text">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
+                <input asp-for="DateOfBirth" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.DateOfBirth)" readonly>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">@Html.DisplayNameFor(model => model.Town)</span>
+                <input asp-for="Town" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Town)" readonly>
+                <span class="input-group-text">@Html.DisplayNameFor(model => model.Street)</span>
+                <input asp-for="Street" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Street)" readonly>
+            </div>
+
+            @*<dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.AntecedentsH)
             </dt>
             <dd class="col-sm-10">
@@ -61,9 +88,10 @@
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.DateOfBirth)
-            </dd>
+            </dd>*@
         </dl>
 
+        <h3>Consultatii</h3>
         <table class="table fixed-layout">
             <thead>
                 <tr>
@@ -82,30 +110,30 @@
             <tbody>
                 @foreach (var item in Model.Consultations)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Symptoms)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Diagnostic)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Prescriptions)
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-controller="Consultations" asp-route-id="@item.Id">Detalii</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Symptoms)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Diagnostic)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Prescriptions)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-controller="Consultations" asp-route-id="@item.Id">Detalii</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
-        <a asp-action="Create" asp-controller="Consultations" asp-route-id="@Model.Id">Adauga o consultatie noua </a>
-        <hr />
 
-    </div>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Modifica fisa pacientului</a> |
-        <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id">Inapoi</a>
+        <div class="btn-group" role="group" aria-label="Optiuni">
+            <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Inapoi</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Modifica fisa pacientului</a>
+            <a asp-action="Create" asp-controller="Consultations" asp-route-id="@Model.Id" class="btn btn-outline-primary">Adauga o consultatie</a>
+        </div>
+
     </div>
 
 }

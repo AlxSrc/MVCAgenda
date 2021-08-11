@@ -64,7 +64,7 @@ namespace MVCAgenda.Controllers
                 {
                     var result = await _sheetPatientServices.EditSheetPatientAsync(sheetPatient);
                     if(result == "")
-                        return RedirectToAction("Details", "Patients", new { id = sheetPatient.Id });
+                        return RedirectToAction("Details", "SheetPatient", new { id = sheetPatient.Id });
                 }
                 return View(sheetPatient);
             }

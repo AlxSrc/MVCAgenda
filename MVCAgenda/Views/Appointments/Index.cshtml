@@ -9,11 +9,8 @@
     <h1>Programari</h1>
 
     <p>
-        <button type="button" class="btn btn-outline-primary" asp-controller="Appointments" asp-action="Create">Adauga o programare</button>
-        &#8226;
-
-        <a asp-action="Create">Adauga o programare</a>
-        <a asp-action="Index" asp-route-Hidden="true">Programari sterse</a>
+        <a asp-action="Create" class="btn btn-outline-primary">Adauga o programare</a>
+        <a asp-action="Index" asp-route-Hidden="true" class="btn btn-outline-danger">Programari sterse</a>
     </p>
 
     <form asp-controller="Appointments" asp-action="Index" method="get">
@@ -49,8 +46,7 @@
                    asp-for="SearchByAppointmentHour" />
 
 
-            <input type="submit" value="Filter" />
-            <a asp-action="Index">Inapoi</a>
+            <input type="submit" value="Filter" class="btn btn-outline-info">
         </p>
 
     </form>

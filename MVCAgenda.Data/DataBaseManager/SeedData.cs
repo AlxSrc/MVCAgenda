@@ -151,7 +151,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 1",
                             Diagnostic = "sample text Diagnostic 1",
                             Symptoms = "sample text Simptome 1",
-                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                            CreationDate = DateTime.Parse("2000-07-24")
                         },
                         new Consultation
                         {
@@ -159,7 +159,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 2",
                             Diagnostic = "sample text Diagnostic 2",
                             Symptoms = "sample text Simptome 2",
-                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                            CreationDate = DateTime.Parse("2000-07-24")
                         },
                         new Consultation
                         {
@@ -167,7 +167,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 3",
                             Diagnostic = "sample text Diagnostic 3",
                             Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                            CreationDate = DateTime.Parse("2000-07-24")
                         },
                         new Consultation
                         {
@@ -175,7 +175,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 3",
                             Diagnostic = "sample text Diagnostic 3",
                             Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                            CreationDate = DateTime.Parse("2000-07-24")
                         },
                         new Consultation
                         {
@@ -183,7 +183,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 3",
                             Diagnostic = "sample text Diagnostic 3",
                             Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                            CreationDate = DateTime.Parse("2000-07-24")
                         },
                         new Consultation
                         {
@@ -191,7 +191,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 3",
                             Diagnostic = "sample text Diagnostic 3",
                             Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                            CreationDate = DateTime.Parse("2000-07-24")
                         },
                         new Consultation
                         {
@@ -199,7 +199,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 1",
                             Diagnostic = "sample text Diagnostic 1",
                             Symptoms = "sample text Simptome 1",
-                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                            CreationDate = DateTime.Parse("2000-07-24")
                         },
                         new Consultation
                         {
@@ -207,7 +207,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 2",
                             Diagnostic = "sample text Diagnostic 2",
                             Symptoms = "sample text Simptome 2",
-                            CreationDate = DateTime.Parse("2000-07-24T09:35")
+                            CreationDate = DateTime.Parse("2000-07-24")
                         });
 
                         context.SaveChanges();

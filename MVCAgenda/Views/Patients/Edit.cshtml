@@ -13,48 +13,87 @@
         <div class="col-md-4">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id"/>
+                <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="SheetPatientId" />
-                <div class="form-group">
-                    <label asp-for="FirstName" class="control-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="FirstName" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="FirstName"></label>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="SecondName" class="control-label"></label>
-                    <input asp-for="SecondName" class="form-control" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="SecondName" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="SecondName"></label>
                     <span asp-validation-for="SecondName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="PhonNumber" class="control-label"></label>
-                    <input asp-for="PhonNumber" class="form-control" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="PhonNumber" class="form-control" id="floatingInput" placeholder="0740 123 123">
+                    <label for="floatingInput" asp-for="PhonNumber"></label>
                     <span asp-validation-for="PhonNumber" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Mail" class="control-label"></label>
-                    <input asp-for="Mail" class="form-control" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Mail" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="Mail"></label>
                     <span asp-validation-for="Mail" class="text-danger"></span>
                 </div>
-                <!--
-                <div class="form-group">
-                    <label asp-for="Blacklist" class="control-label"></label>
-                    <select asp-for="Blacklist" class="form-control">
-                        <option value="0">Nu</option>
-                        <option value="1">Da</option>
-                    </select>
-                    <span asp-validation-for="Blacklist" class="text-danger"></span>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" type="checkbox" asp-for="Blacklist" aria-label="Checkbox for following text input">
+                    </div>
+                    <input type="text" value="Lista neagra" class="form-control" aria-label="Text input with checkbox" readonly>
                 </div>
-                -->
+
+                @*<div class="form-group">
+            <label asp-for="FirstName" class="control-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SecondName" class="control-label"></label>
+            <input asp-for="SecondName" class="form-control" />
+            <span asp-validation-for="SecondName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PhonNumber" class="control-label"></label>
+            <input asp-for="PhonNumber" class="form-control" />
+            <span asp-validation-for="PhonNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Mail" class="control-label"></label>
+            <input asp-for="Mail" class="form-control" />
+            <span asp-validation-for="Mail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Blacklist" class="control-label"></label>
+            <select asp-for="Blacklist" class="form-control">
+                <option value="0">Nu</option>
+                <option value="1">Da</option>
+            </select>
+            <span asp-validation-for="Blacklist" class="text-danger"></span>
+        </div>
+                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+            <input type="checkbox" class="btn-check" id="btnBlacklist" autocomplete="off" asp-for="Blacklist">
+            <label class="btn btn-outline-primary" for="btnBlacklist" asp-for="Blacklist"></label>
+        </div>
 
                 <div class="form-group">
-                    <div class="custom-control custom-checkbox">
+                    <div class="custom-control custom-checkbox mb-2">
                         <input asp-for="Blacklist" type="checkbox" class="custom-control-input">
                         <label class="custom-control-label" asp-for="Blacklist">@Html.DisplayNameFor(m => m.Blacklist)</label>
                     </div>
-                </div>
+                </div>*@
 
                 <input type="hidden" asp-for="Hidden" />
-                <div class="form-group">
+                <div class="form-group btn-group" role="group" aria-label="Optiuni">
+                    <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id" class="btn btn-secondary">Inapoi</a>
                     <input type="submit" value="Salveaza" class="btn btn-primary" />
                 </div>
             </form>
@@ -62,7 +101,6 @@
     </div>
 
     <div>
-        <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id">Inapoi</a>
     </div>
 
     @section Scripts {

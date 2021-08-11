@@ -35,7 +35,7 @@ namespace MVCAgenda.Core.ViewModels
         public string Street { get; set; }
 
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayName("Data nasterii")] 
         public DateTime DateOfBirth { get; set; }
 

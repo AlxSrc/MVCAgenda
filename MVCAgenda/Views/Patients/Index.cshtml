@@ -13,37 +13,43 @@
     else
         {<text><h1>Pacienti</h1></text>}
 
-<p>
-    <button type="button" class="btn btn-outline-primary" asp-action="Create">Adauga un nou pacient</button>
-    
-    @if (Model.Blacklist == false)
-    {
-        <text>
-            <button type="button" class="btn btn-outline-danger" asp-action="Index" asp-route-includeBlackList="true">Lista neagra cu pacienti</button>
-        </text>
-    }
-    @if (Model.Hidden == false)
-    {
-        <text>
-            <button type="button" class="btn btn-outline-secondary" asp-action="Index" asp-route-isDeleted="true">Pacienti stersi</button>
-        </text>
-    }
-</p>
-
     <form asp-controller="Patients" asp-action="Index" method="get">
-        <p>
-            <input placeholder="Nume"
-                   asp-for="SearchByName" />
-            &#8226;
-            <input placeholder="Numar de telefon"
-                   asp-for="SearchByPhoneNumber" />
-            &#8226;
-            <input placeholder="Adresa de e-mail"
-                   asp-for="SearchByEmail" />
+        <div class="input-group">
+            <a asp-action="Create" class="btn btn-outline-primary">Adauga un nou pacient</a>
 
-            <input type="submit" value="Filter" />
-            <a asp-action="Index">Inapoi</a>
-        </p>
+            <input type="text" class="form-control" placeholder="Numele de familie" aria-label="Recipient's username with two button addons" asp-for="SearchByName" />
+            <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
+            <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
+
+            <input class="btn btn-primary" type="submit" value="Cauta"/>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Optiuni</button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    @if (Model.Hidden == false)
+                    {
+                        <text>
+                            <a asp-action="Index" asp-route-isDeleted="true" class="link-warning">Pacienti stersi</a>
+                        </text>
+                    }
+                </li>
+                <li>
+                    @if (Model.Blacklist == false)
+                    {
+                        <text>
+                            <a asp-action="Index" asp-route-includeBlackList="true" class="link-danger">Lista neagra cu pacienti</a>
+                        </text>
+                    }
+                </li>
+                <li>
+                    @if (Model.Blacklist == true || Model.Hidden == true)
+                    {
+                        <text>
+                            <a asp-action="Index" class="link-primary">Pacienti</a>
+                        </text>
+                    }
+                </li>
+            </ul>
+        </div>
     </form>
 
     <table class="table">

@@ -43,10 +43,11 @@
         </dl>
 
         <form asp-action="Delete">
-            <input type="hidden" asp-for="Id" />
-            <input type="submit" value="Sterge" class="btn btn-danger" /> |
-
-            <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id">Inapoi</a>
+            <div class="btn-group" role="group" aria-label="Optiuni">
+                <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id" class="btn btn-secondary">Inapoi</a>
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Sterge" class="btn btn-danger" />
+            </div>
         </form>
     </div>
 }

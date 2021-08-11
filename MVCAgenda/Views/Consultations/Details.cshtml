@@ -36,8 +36,8 @@
             </dd>
         </dl>
     </div>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> |
-        <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.SheetPatientId">Inapoi</a>
+    <div class="btn-group" role="group" aria-label="Optiuni">
+        <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.SheetPatientId" class="btn btn-secondary">Inapoi</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifica</a>
     </div>
 }

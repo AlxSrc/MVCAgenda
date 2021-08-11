@@ -47,9 +47,9 @@
                 <ul style="list-style-type:none; text-align:start;">
                     <li> <a asp-action="Index" asp-controller="Appointments" asp-route-Id="@Model.Id">Programarile pacientului</a> </li>
                     <li> <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id">Fisa medicala</a> </li>
-                    <li> <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> </li>
-                    <li> <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a> </li>
-                    <li> <a asp-action="Index">Lista cu pacienti</a> </li>
+                    <li> <a asp-action="Edit" asp-route-id="@Model.Id" class="link-info">Modifica</a> </li>
+                    <li> <a asp-action="Delete" asp-route-id="@Model.Id" class="link-danger">Sterge</a> </li>
+                    <li> <a asp-action="Index" class="link-secondary">Lista cu pacienti</a> </li>
                 </ul>
             </div>
         </div>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Data.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20210810132442_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210811085412_IdentityDBUser")]
+    partial class IdentityDBUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -16,55 +16,72 @@
                 <input asp-for="SheetPatientId" type="hidden" />
                 <input asp-for="Hidden" type="hidden" />
 
-
-                <div class="form-group">
-                    <label asp-for="FirstName" class="control-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
+                <div class="form-floating mb-3">
+                    <input asp-for="FirstName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
+                    <label for="floatingInput1" asp-for="FirstName"></label>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="SecondName" class="control-label"></label>
-                    <input asp-for="SecondName" class="form-control" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="SecondName" class="form-control" id="floatingInput2" placeholder="optional">
+                    <label for="floatingInput2" asp-for="SecondName"></label>
                     <span asp-validation-for="SecondName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="PhonNumber" class="control-label"></label>
-                    <input type="number" placeholder="0700 123 123" asp-for="PhonNumber" class="form-control" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="PhonNumber" class="form-control" id="floatingInput3" placeholder="0740 123 123">
+                    <label for="floatingInput3" asp-for="PhonNumber"></label>
                     <span asp-validation-for="PhonNumber" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Mail" class="control-label"></label>
-                    <input asp-for="Mail" class="form-control" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Mail" class="form-control" id="floatingInput4" placeholder="name@example.com">
+                    <label for="floatingInput4" asp-for="Mail"></label>
                     <span asp-validation-for="Mail" class="text-danger"></span>
                 </div>
 
-                <!--
-                <div class="form-group">
-                    <label asp-for="Blacklist" class="control-label"></label>
-                    <select asp-for="Blacklist" class="form-control">
-                        <option value="0">Nu</option>
-                        <option value="1">Da</option>
-                    </select>
-                    <span asp-validation-for="Blacklist" class="text-danger"></span>
-                </div>
-                -->
-
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input asp-for="Blacklist" type="checkbox" class="custom-control-input">
-                        <label class="custom-control-label" asp-for="Blacklist">@Html.DisplayNameFor(m => m.Blacklist)</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" type="checkbox" asp-for="Blacklist" aria-label="Checkbox for following text input">
                     </div>
+                    <input type="text" value="Lista neagra" class="form-control" aria-label="Text input with checkbox" readonly>
                 </div>
 
-                <div class="form-group">
-                    <input type="submit" value="Adauga" class="btn btn-primary" />
+                @*<div class="form-group">
+            <label asp-for="FirstName" class="control-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SecondName" class="control-label"></label>
+            <input asp-for="SecondName" class="form-control" />
+            <span asp-validation-for="SecondName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhonNumber" class="control-label"></label>
+            <input type="number" placeholder="0700 123 123" asp-for="PhonNumber" class="form-control" />
+            <span asp-validation-for="PhonNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Mail" class="control-label"></label>
+            <input asp-for="Mail" class="form-control" />
+            <span asp-validation-for="Mail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <div class="custom-control custom-checkbox">
+                <input asp-for="Blacklist" type="checkbox" class="custom-control-input">
+                <label class="custom-control-label" asp-for="Blacklist">@Html.DisplayNameFor(m => m.Blacklist)</label>
+            </div>
+        </div>*@
+
+                <input type="hidden" asp-for="Hidden" />
+                <div class="form-group btn-group" role="group" aria-label="Optiuni">
+                    <a asp-action="Index" class="btn btn-secondary">Inapoi</a>
+                    <input type="submit" value="Salveaza" class="btn btn-primary" />
                 </div>
             </form>
         </div>
-    </div>
-
-    <div>
-        <a asp-action="Index">Inapoi la lista cu pacienti</a>
     </div>
 
     @section Scripts {
