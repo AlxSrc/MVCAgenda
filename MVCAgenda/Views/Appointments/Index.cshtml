@@ -1,56 +1,69 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Lista cu programari";
 }
 @if (User.Identity.IsAuthenticated)
 {
     @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
-
-    <h1>Programari</h1>
-
-    <p>
-        <a asp-action="Create" class="btn btn-outline-primary">Adauga o programare</a>
-        <a asp-action="Index" asp-route-Hidden="true" class="btn btn-outline-danger">Programari sterse</a>
-    </p>
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-8">
+                @if (Model.Blacklist == true)
+                {<text><h1>Programari neefectuate</h1></text>}
+                @if (Model.Hidden == true)
+                {<text><h1>Programari sterse</h1></text>}
+                @if (Model.Hidden == false && Model.Blacklist == false)
+                {<text><h1>Programari</h1></text>}
+            </div>
+            <div class="col-2">
+                <a asp-action="Create" class="btn btn-outline-primary">Adauga o programare</a>
+            </div>
+        </div>
+    </div>
 
     <form asp-controller="Appointments" asp-action="Index" method="get">
-
-        <p>
-            <input placeholder="Nume"
-                   asp-for="SearchByName" />
-            &#8226;
-            <input placeholder="Numar de telefon"
-                   asp-for="SearchByPhoneNumber" />
-            &#8226;
-            <input placeholder="Adresa de e-mail"
-                   asp-for="SearchByEmail" />
-        </p>
-
-        <p>
-            <select placeholder="Medic"
-                    asp-for="SearchByMedic"
-                    asp-items="ViewBag.MedicId">
+        <div class="input-group">
+            <input class="btn btn-primary" type="submit" value="Ieri" />
+            <input type="date" class="form-control" placeholder="Data programari" aria-label="Text" asp-for="SearchByAppointmentDate" />
+            <input type="time" class="form-control" placeholder="Ora programari" aria-label="Text" asp-for="SearchByAppointmentHour" />
+            <input class="btn btn-primary" type="submit" value="Maine" />
+            <select class="form-control" placeholder="Medic" asp-for="SearchByMedic" asp-items="ViewBag.MedicId">
                 <option disabled selected>Medic</option>
             </select>
-            &#8226;
-            <select placeholder="Camera"
-                    asp-for="SearchByRoom"
-                    asp-items="ViewBag.RoomId">
+            <select class="form-control" placeholder="Camera" asp-for="SearchByRoom" asp-items="ViewBag.RoomId">
                 <option disabled selected>Camera</option>
             </select>
-            &#8226;
-            <input placeholder="Data"
-                   asp-for="SearchByAppointmentDate" />
-            &#8226;
-            <input placeholder="Ora"
-                   asp-for="SearchByAppointmentHour" />
+        </div>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Numele de familie" aria-label="Recipient's username with two button addons" asp-for="SearchByName" />
+            <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
+            <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
 
-
-            <input type="submit" value="Filter" class="btn btn-outline-info">
-        </p>
-
+            <input class="btn btn-primary" type="submit" value="Cauta" />
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Optiuni
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        @if (Model.Hidden == false)
+                        {
+                            <text>
+                                <a asp-action="Index" asp-route-Hidden="true" class="dropdown-item link-danger">Programari sterse</a>
+                            </text>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.Blacklist == true || Model.Hidden == true)
+                        {
+                            <text>
+                                <a asp-action="Index" class="dropdown-item link-primary">Programari</a>
+                            </text>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
     </form>
-
 
     <table class="table">
         <thead>
@@ -121,9 +134,15 @@
                         @Html.Raw(item.MadeText)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Vezi pacient</a>
-                        &#8226;
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Detalii
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item link-info" asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Detalii pacient</a></li>
+                                <li><a class="dropdown-item link-info" asp-action="Details" asp-route-id="@item.Id">Detalii programare</a></li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             }

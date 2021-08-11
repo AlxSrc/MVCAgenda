@@ -8,115 +8,185 @@
     @model MVCAgenda.Core.ViewModels.AppointmentViewModel
 
 
-    <h1>Detalii</h1>
-
-    <div>
-        <h4>Programare      @Html.DisplayFor(model => model.AppointmentDate)        @Html.DisplayFor(model => model.AppointmentHour)</h4>
-        <hr />
-
-        <div>
-            <h4>Detalii despre pacient</h4>
+    <h1>Detalii programare</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.FirstName)</span>
+                    <input asp-for="FirstName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.FirstName)" aria-describedby="basic-addon1" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.SecondName)</span>
+                    <input asp-for="SecondName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.SecondName)" aria-describedby="basic-addon2" readonly>
+                </div>
+            </div>
         </div>
-        <dl class="row">
-
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.FirstName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.FirstName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SecondName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.SecondName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PhonNumber)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PhonNumber)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Mail)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Mail)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Blacklist)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.Blacklist)
-            </dd>
-        </dl>
-
-        <hr />
-        <div>
-            <h4>Detalii despre programare</h4>
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhonNumber)</span>
+                    <input asp-for="PhonNumber" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.PhonNumber)" aria-describedby="basic-addon3" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Mail)</span>
+                    <input asp-for="Mail" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Mail)" aria-describedby="basic-addon2" readonly>
+                </div>
+            </div>
         </div>
-        <dl class="row">
-
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Medic)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Medic)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Room)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Room)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.AppointmentDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.AppointmentDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.AppointmentHour)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.AppointmentHour)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Procedure)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Procedure)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Made)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.MadeText)
-            </dd>
-
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ResponsibleForAppointment)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ResponsibleForAppointment)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.AppointmentCreationDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.AppointmentCreationDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Comments)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Comments)
-            </dd>
-        </dl>
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.Medic)</span>
+                    <input asp-for="Medic" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Medic)" aria-describedby="basic-addon1" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Room)</span>
+                    <input asp-for="Room" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Room)" aria-describedby="basic-addon2" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AppointmentDate)</span>
+                    <input asp-for="AppointmentDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentDate)" aria-describedby="basic-addon1" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.AppointmentHour)</span>
+                    <input asp-for="AppointmentHour" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentHour)" aria-describedby="basic-addon2" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AppointmentCreationDate)</span>
+                    <input asp-for="AppointmentCreationDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentCreationDate)" aria-describedby="basic-addon1" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.ResponsibleForAppointment)</span>
+                    <input asp-for="ResponsibleForAppointment" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.ResponsibleForAppointment)" aria-describedby="basic-addon2" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="btn-group" role="group" aria-label="Optiuni">
+            <a asp-action="Index" class="btn btn-outline-secondary">Inapoi</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Modifica programarea</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Sterge programarea</a>
+        </div>
     </div>
-    <div>
-        <a asp-action="Index">Inapoi la lista de programari</a> |
-        <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> |
-        <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a>
-    </div>
+
+    @*<div>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.SecondName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.SecondName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PhonNumber)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PhonNumber)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Mail)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Mail)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Blacklist)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.Raw(Model.Blacklist)
+                </dd>
+            </dl>
+
+            <hr />
+            <div>
+                <h4>Detalii despre programare</h4>
+            </div>
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Medic)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Medic)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Room)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Room)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.AppointmentDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.AppointmentDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.AppointmentHour)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.AppointmentHour)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Procedure)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Procedure)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Made)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.Raw(Model.MadeText)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ResponsibleForAppointment)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ResponsibleForAppointment)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.AppointmentCreationDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.AppointmentCreationDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Comments)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Comments)
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a asp-action="Index">Inapoi la lista de programari</a> |
+            <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> |
+            <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a>
+        </div>*@
 }

@@ -33,9 +33,9 @@ namespace MVCAgenda.Service.Appointments
         {
             try
             {
-                if (await searchAppointment(appointment.RoomId, appointment.AppointmentDate, appointment.AppointmentHour) == true)
+                string message = searchAppointment(appointment.MedicId, appointment.RoomId, appointment.AppointmentDate, appointment.AppointmentHour);
+                if (message != "Clear")
                 {
-                    string message = $"In camera {appointment.RoomId}, la data {appointment.AppointmentDate}, ora {appointment.AppointmentHour} exista o consultatie";
                     return message;
                 }
                 else
@@ -70,6 +70,8 @@ namespace MVCAgenda.Service.Appointments
                     }
                     else
                     {
+                        //To do daca sa valideze doar dupa numar de telefon
+                        //Daca suna un pacient de pe numere diferite
                         var patients = await _context.Patient
                             .Where(p => p.FirstName == appointment.FirstName)
                             .Where(p => p.SecondName == appointment.SecondName)
@@ -283,18 +285,38 @@ namespace MVCAgenda.Service.Appointments
         /**************************************************************************************/
         #region Utils
 
-        private async Task<bool> searchAppointment(int RoomId, string AppointmentDate, string AppointmentHour)
+        private string searchAppointment(int MedicId, int RoomId, string AppointmentDate, string AppointmentHour)
         {
-            bool foundAppointment = false;
+            string foundAppointment = "Clear";
 
-            var appointments = await _context.Appointment
+            //Search a medic, date, h
+            var appointmentsM = _context.Appointment
+                        .Where(p => p.MedicId == MedicId)
+                        .Where(p => p.AppointmentDate == AppointmentDate)
+                        .Where(p => p.AppointmentHour == AppointmentHour)
+                        .Where(p => p.Hidden == false)
+                        .ToList();
+            if (appointmentsM.Count >= 1)
+            {
+                var medic = _context.Medic.FirstOrDefaultAsync(m => m.Id == MedicId);
+                foundAppointment = $"{medic.Result.MedicName} este ocupat/a la data {AppointmentDate}, ora {AppointmentHour}.";
+                return foundAppointment;
+            }
+
+            //Search a room, date, h
+            var appointmentsR = _context.Appointment
                         .Where(p => p.RoomId == RoomId)
-                        .Where(p => p.AppointmentDate.Equals(AppointmentDate))
-                        .Where(p => p.AppointmentDate.Equals(AppointmentHour))
-                        .ToListAsync();
+                        .Where(p => p.AppointmentDate == AppointmentDate)
+                        .Where(p => p.AppointmentHour == AppointmentHour)
+                        .Where(p => p.Hidden == false)
+                        .ToList();
 
-            if (appointments.Count >= 1)
-                foundAppointment = true;
+            if (appointmentsR.Count >= 1)
+            {
+                var room = _context.Room.FirstOrDefaultAsync(m => m.Id == RoomId);
+                foundAppointment = $"{room.Result.RoomName} este ocupata la data {AppointmentDate}, ora {AppointmentHour}.";
+                return foundAppointment;
+            }
 
             return foundAppointment;
         }

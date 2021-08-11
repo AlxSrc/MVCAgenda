@@ -18,7 +18,6 @@ namespace MVCAgenda.Core.ViewModels
 
         [StringLength(60, MinimumLength = 1)]
         [DisplayName("Prenume")]
-        [Required]
         public string SecondName { get; set; }
 
 

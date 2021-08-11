@@ -13,82 +13,115 @@
 
     <div>
         <dl class="row">
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsH)</span>
-                <input asp-for="AntecedentsH" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsH)</span>
+                        <input asp-for="AntecedentsH" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
+                    </div>
+                </div>
             </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.AntecedentsP)</span>
-                <input asp-for="AntecedentsP" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon2" readonly>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhysicalExamination)</span>
+                        <input asp-for="PhysicalExamination" type="text" class="form-control" aria-label="Examen fizic" aria-describedby="basic-addon3" readonly>
+                    </div>
+                </div>
             </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhysicalExamination)</span>
-                <input asp-for="PhysicalExamination" type="text" class="form-control" aria-label="Examen fizic" aria-describedby="basic-addon3" readonly>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">@Html.DisplayNameFor(model => model.Town)</span>
+                        <input asp-for="Town" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Town)" readonly>
+                    </div>
+                </div>
             </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">@Html.DisplayNameFor(model => model.CNP)</span>
-                <input asp-for="CNP" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.CNP)" readonly>
-                <span class="input-group-text">@Html.DisplayNameFor(model => model.Gender)</span>
-                <input asp-for="Gender" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Gender)" readonly>
-                <span class="input-group-text">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
-                <input asp-for="DateOfBirth" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.DateOfBirth)" readonly>
+                <div class="row">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">@Html.DisplayNameFor(model => model.CNP)</span>
+                        <input asp-for="CNP" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.CNP)" readonly>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">@Html.DisplayNameFor(model => model.Gender)</span>
+                        <input asp-for="Gender" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Gender)" readonly>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
+                        <input asp-for="DateOfBirth" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.DateOfBirth)" readonly>
+                    </div>
+                </div>
             </div>
+            <div class="input-group mb-3"></div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text">@Html.DisplayNameFor(model => model.Town)</span>
-                <input asp-for="Town" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Town)" readonly>
-                <span class="input-group-text">@Html.DisplayNameFor(model => model.Street)</span>
-                <input asp-for="Street" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Street)" readonly>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">@Html.DisplayNameFor(model => model.Town)</span>
+                        <input asp-for="Town" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Town)" readonly>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">@Html.DisplayNameFor(model => model.Street)</span>
+                        <input asp-for="Street" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Street)" readonly>
+                    </div>
+                </div>
             </div>
 
             @*<dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.AntecedentsH)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.AntecedentsH)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.AntecedentsP)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.AntecedentsP)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PhysicalExamination)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PhysicalExamination)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CNP)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CNP)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Gender)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Gender)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Town)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Town)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Street)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Street)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.DateOfBirth)
-            </dd>*@
+            @Html.DisplayNameFor(model => model.AntecedentsH)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AntecedentsH)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AntecedentsP)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AntecedentsP)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhysicalExamination)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhysicalExamination)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CNP)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CNP)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Town)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Town)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Street)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Street)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>*@
         </dl>
 
         <h3>Consultatii</h3>

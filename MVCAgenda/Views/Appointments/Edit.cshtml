@@ -9,64 +9,123 @@
     <h4>Modifica programare</h4>
     <hr />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Edit">
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="PatientId" />
-                <input type="hidden" asp-for="FirstName" />
-                <input type="hidden" asp-for="SecondName" />
-                <input type="hidden" asp-for="PhonNumber" />
-                <div class="form-group">
-                    <label asp-for="RoomId" class="control-label"></label>
-                    <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
-                    <span asp-validation-for="RoomId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="MedicId" class="control-label"></label>
-                    <select asp-for="MedicId" class="form-control" asp-items="ViewBag.MedicId"></select>
-                    <span asp-validation-for="MedicId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="AppointmentDate" class="control-label"></label>
-                    <input asp-for="AppointmentDate" class="form-control" />
-                    <span asp-validation-for="AppointmentDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="AppointmentHour" class="control-label"></label>
-                    <input asp-for="AppointmentHour" class="form-control" />
-                    <span asp-validation-for="AppointmentHour" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Procedure" class="control-label"></label>
-                    <input asp-for="Procedure" class="form-control" />
-                    <span asp-validation-for="Procedure" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Made" class="control-label"></label>
-                    <select asp-for="Made" class="form-control">
-                        <option value="true">Da</option>
-                        <option value="false">Nu</option>
-                    </select>
-                    <span asp-validation-for="Made" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Comments" class="control-label"></label>
-                    <textarea asp-for="Comments" class="form-control resizable"></textarea>
-                    <span asp-validation-for="Comments" class="text-danger"></span>
-                </div>
-                <input type="hidden" asp-for="ResponsibleForAppointment" />
-                <input type="hidden" asp-for="AppointmentCreationDate" />
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <div>
-        <a asp-action="Index">Inapoi la lista cu programari</a>
-    </div>
+    <form asp-action="Edit">
+
+        <div class="row g-3">
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="PatientId" type="hidden"/>
+            <input type="hidden" asp-for="PatientId"/>
+            <input type="hidden" asp-for="FirstName"/>
+            <input type="hidden" asp-for="SecondName"/>
+            <input type="hidden" asp-for="PhonNumber"/>
+
+            <div class="form-floating col-md-6">
+                <select asp-for="MedicId" class="form-control" id="floatingInput5" asp-items="ViewBag.MedicId"></select>
+                <label for="floatingInput5" asp-for="MedicId"></label>
+                <span asp-validation-for="MedicId" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating col-md-6">
+                <select asp-for="RoomId" class="form-control" id="floatingInput6" asp-items="ViewBag.RoomId"></select>
+                <label for="floatingInput6" asp-for="RoomId"></label>
+                <span asp-validation-for="RoomId" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating col-md-6">
+                <input asp-for="AppointmentDate" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
+                <label for="floatingInput7" asp-for="AppointmentDate"></label>
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating col-md-6">
+                <input asp-for="AppointmentHour" class="form-control" id="floatingInput8" placeholder="Obligatoriu">
+                <label for="floatingInput8" asp-for="AppointmentHour"></label>
+                <span asp-validation-for="AppointmentHour" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating col-md-6">
+                <input asp-for="Procedure" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
+                <label for="floatingInput7" asp-for="Procedure"></label>
+                <span asp-validation-for="Procedure" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating col-md-6">
+                <textarea asp-for="Comments" class="form-control resizable" id="floatingInput8" placeholder="Obligatoriu"></textarea>
+                <label for="floatingInput8" asp-for="Comments"></label>
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+
+            <input asp-for="Hidden" type="hidden" />
+            <input asp-for="Made" type="hidden" />
+            <input asp-for="ResponsibleForAppointment" type="hidden" />
+            <input asp-for="AppointmentCreationDate" type="hidden" />
+        </div>
+
+        <div class="btn-group mt-3" role="group" aria-label="Optiuni">
+            <a asp-action="Index" class="btn btn-secondary">Inapoi</a>
+            <input type="submit" value="Salveaza modificarile" class="btn btn-primary" />
+        </div>
+
+    </form>
+    @*<div class="row">
+            <div class="col-md-4">
+                <form asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="PatientId" />
+                    <input type="hidden" asp-for="FirstName" />
+                    <input type="hidden" asp-for="SecondName" />
+                    <input type="hidden" asp-for="PhonNumber" />
+                    <div class="form-group">
+                        <label asp-for="RoomId" class="control-label"></label>
+                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+                        <span asp-validation-for="RoomId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MedicId" class="control-label"></label>
+                        <select asp-for="MedicId" class="form-control" asp-items="ViewBag.MedicId"></select>
+                        <span asp-validation-for="MedicId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AppointmentDate" class="control-label"></label>
+                        <input asp-for="AppointmentDate" class="form-control" />
+                        <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AppointmentHour" class="control-label"></label>
+                        <input asp-for="AppointmentHour" class="form-control" />
+                        <span asp-validation-for="AppointmentHour" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Procedure" class="control-label"></label>
+                        <input asp-for="Procedure" class="form-control" />
+                        <span asp-validation-for="Procedure" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Made" class="control-label"></label>
+                        <select asp-for="Made" class="form-control">
+                            <option value="true">Da</option>
+                            <option value="false">Nu</option>
+                        </select>
+                        <span asp-validation-for="Made" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Comments" class="control-label"></label>
+                        <textarea asp-for="Comments" class="form-control resizable"></textarea>
+                        <span asp-validation-for="Comments" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" asp-for="ResponsibleForAppointment" />
+                    <input type="hidden" asp-for="AppointmentCreationDate" />
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">Inapoi la lista cu programari</a>
+        </div>*@
 
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
