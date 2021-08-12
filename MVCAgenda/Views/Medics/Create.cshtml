@@ -9,26 +9,26 @@
 
     @model MVCAgenda.Core.ViewModels.MedicViewModel
 
-    <h1>Adauga un medic nou</h1>
+    <div class="align-content-center">
+        <h1>Adauga un medic</h1>
 
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="MedicName" class="control-label"></label>
-                    <input asp-for="MedicName" class="form-control" />
-                    <span asp-validation-for="MedicName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-floating col-lg-10 mb-3">
+                        <input asp-for="MedicName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
+                        <label for="floatingInput1" asp-for="MedicName"></label>
+                        <span asp-validation-for="MedicName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group btn-group">
+                        <a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Inapoi</a>
+                        <input type="submit" value="Salveaza" class="btn btn-outline-primary" />
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-
-    <div>
-        <a asp-action="Manage" asp-controller="Home">Inapoi</a>
     </div>
 }

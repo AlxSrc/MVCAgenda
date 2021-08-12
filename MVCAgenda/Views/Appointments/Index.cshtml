@@ -22,10 +22,8 @@
 
     <form asp-controller="Appointments" asp-action="Index" method="get">
         <div class="input-group">
-            <input class="btn btn-primary" type="submit" value="Ieri" />
             <input type="date" class="form-control" placeholder="Data programari" aria-label="Text" asp-for="SearchByAppointmentDate" />
             <input type="time" class="form-control" placeholder="Ora programari" aria-label="Text" asp-for="SearchByAppointmentHour" />
-            <input class="btn btn-primary" type="submit" value="Maine" />
             <select class="form-control" placeholder="Medic" asp-for="SearchByMedic" asp-items="ViewBag.MedicId">
                 <option disabled selected>Medic</option>
             </select>
@@ -38,7 +36,7 @@
             <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
             <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
 
-            <input class="btn btn-primary" type="submit" value="Cauta" />
+            <input class="btn btn-outline-primary" type="submit" value="Cauta" />
             <div class="dropdown">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     Optiuni

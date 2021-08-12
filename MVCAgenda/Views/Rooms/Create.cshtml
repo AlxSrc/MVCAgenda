@@ -8,29 +8,27 @@
 {
 
     @model MVCAgenda.Core.ViewModels.RoomViewModel
+    <div class="align-content-center">
+        <h1>Adauga o camera</h1>
 
-    <h1>Adauga o camera noua</h1>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating col-lg-10 mb-3">
+                        <input asp-for="RoomName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
+                        <label for="floatingInput1" asp-for="RoomName"></label>
+                        <span asp-validation-for="RoomName" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label asp-for="RoomName" class="control-label"></label>
-                    <input asp-for="RoomName" class="form-control" />
-                    <span asp-validation-for="RoomName" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
+                    <div class="form-group btn-group">
+                        <a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Inapoi</a>
+                        <input type="submit" value="Salveaza" class="btn btn-outline-primary" />
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
-    <div>
-        <a asp-action="Manage" asp-controller="Home">Inapoi</a>
-    </div>
+    
 }

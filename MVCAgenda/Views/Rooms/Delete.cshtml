@@ -9,25 +9,23 @@
 
     @model MVCAgenda.Core.ViewModels.RoomViewModel
 
-    <h1>Sterge camera</h1>
-
     <h3>Esti sigur ca doresti sa stergi camera?</h3>
-    <div>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.RoomName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.RoomName)
-            </dd>
-        </dl>
-        <input type="hidden" asp-for="Id" />
-        <input type="hidden" asp-for="Hidden" />
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.RoomName)</span>
+                <input asp-for="RoomName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.RoomName)" aria-describedby="basic-addon2" readonly>
+            </div>
+        </div>
+
         <form asp-action="Delete">
-            <input type="hidden" asp-for="Id" />
-            <input type="submit" value="Delete" class="btn btn-danger" /> |
-            <a asp-action="Manage" asp-controller="Home">Inapoi</a>
+            <div class="form-group btn-group">
+                <a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Inapoi</a>
+                <input type="hidden" asp-for="Id"/>
+                <input type="submit" value="Delete" class="btn btn-outline-danger" />
+            </div>
+            
         </form>
     </div>
 }

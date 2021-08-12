@@ -121,11 +121,11 @@ namespace MVCAgenda.Service.Patients
             {
                 var patient = await _context.Patient.FindAsync(id);
                 patient.Hidden = true;
-
-                //var appointments = _context.Appointment.Where(a => a.PatientId == patient.Id);
-
-
                 _context.Patient.Update(patient);
+
+                var appointments = _context.Appointment.Where(a => a.PatientId == patient.Id);
+                await appointments.ForEachAsync(x => x.Hidden = true);
+
                 await _context.SaveChangesAsync();
                 return "";
             }

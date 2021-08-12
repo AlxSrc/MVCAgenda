@@ -9,24 +9,19 @@
 
     @model MVCAgenda.Core.ViewModels.MedicViewModel
 
-    <h1>Detalii</h1>
+    <h2>Detalii</h2>
+    <div class="row">
 
-    <div>
-        <h4>Medic</h4>
-        <hr />
-        <input type="hidden" asp-for="Id" />
-        <input type="hidden" asp-for="Hidden" />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MedicName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MedicName)
-            </dd>
-        </dl>
-    </div>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> |
-        <a asp-action="Manage" asp-controller="Home">Inapoi</a>
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.MedicName)</span>
+                <input asp-for="MedicName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.MedicName)" aria-describedby="basic-addon2" readonly>
+            </div>
+        </div>
+
+        <div class="form-group btn-group">
+            <a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Inapoi</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-info">Modifica</a>
+        </div>
     </div>
 }

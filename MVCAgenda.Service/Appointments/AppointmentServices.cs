@@ -170,7 +170,7 @@ namespace MVCAgenda.Service.Appointments
             }
         }
 
-        public async Task<MVCAgendaViewsManager> GetAppointmentsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, int Id, bool Daily, bool Hiden)
+        public async Task<MVCAgendaViewsManager> GetAppointmentsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, int Id, bool Daily, bool Hidden)
         {
             try
             {
@@ -178,7 +178,7 @@ namespace MVCAgenda.Service.Appointments
                     from patient in _context.Patient
                     join appointment in _context.Appointment
 
-                        .Where(h => Hiden == true ? h.Hidden == true : true)
+                        .Where(h => Hidden == true ? h.Hidden == true : h.Hidden == false)
                         .Where(d => Daily == true ? d.AppointmentDate.Contains(DayTime) : true)
                         .Where(p => Id != 0 ? p.PatientId == Id : true)
                         .Where(a => SearchByMedic != 0 ? a.MedicId == SearchByMedic : true)

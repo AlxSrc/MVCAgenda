@@ -56,8 +56,23 @@
         <div class="row">
             <div class="col">
                 <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AppointmentDate)</span>
+                    <input asp-for="AppointmentDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentDate)" aria-describedby="basic-addon1" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.AppointmentHour)</span>
+                    <input asp-for="AppointmentHour" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentHour)" aria-describedby="basic-addon2" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.MadeText)</span>
-                    <input asp-for="MadeText" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.MadeText)" aria-describedby="basic-addon1" readonly>
+                    <label asp-for="MadeText" class="form-control" aria-describedby="basic-addon1">@Html.Raw(Model.MadeText)</label>
                 </div>
             </div>
             <div class="col">
@@ -71,20 +86,6 @@
         <div class="row">
             <div class="col">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AppointmentDate)</span>
-                    <input asp-for="AppointmentDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentDate)" aria-describedby="basic-addon1" readonly>
-                </div>
-            </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.AppointmentHour)</span>
-                    <input asp-for="AppointmentHour" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentHour)" aria-describedby="basic-addon2" readonly>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AppointmentCreationDate)</span>
                     <input asp-for="AppointmentCreationDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentCreationDate)" aria-describedby="basic-addon1" readonly>
                 </div>
@@ -93,6 +94,14 @@
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.ResponsibleForAppointment)</span>
                     <input asp-for="ResponsibleForAppointment" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.ResponsibleForAppointment)" aria-describedby="basic-addon2" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.Comments)</span>
+                    <input asp-for="Comments" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Comments)" aria-describedby="basic-addon1" readonly>
                 </div>
             </div>
         </div>

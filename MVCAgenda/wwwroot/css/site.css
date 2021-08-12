@@ -8,8 +8,9 @@ for details on configuring this project to bundle and minify static web assets. 
     word-break: break-word;
 }
 
-.white-background{
-    background-color:white;
+.form-control:disabled, .form-control[readonly] {
+    background-color: white;
+    opacity: 1;
 }
 /*#endregion Custom*/
 
