@@ -1,14 +1,16 @@
-﻿@model MVCAgenda.Core.AccountModels.RegisterViewModel
+﻿
 @{
     ViewData["Title"] = "Register";
 }
 
-<div class="text-center">
-    <main class="form-signin">
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Core.AccountModels.RegisterViewModel
+    <div class="d-lg-flex justify-content-lg-center text-center">
         <form method="post">
 
             @*<img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">*@
-            <h1 class="h3 mb-3 fw-normal">Inregistreaza-te</h1>
+            <h1 class="h3 mb-3 fw-normal main-color">Inregistreaza-te</h1>
             <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="form-floating mb-3">
@@ -29,8 +31,8 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <button class="w-100 btn btn-lg btn-outline-primary" type="submit">Inregistreaza-te</button>
+            <button class="w-100 btn btn-lg btn-outline-primary main-color" type="submit">Inregistreaza-te</button>
             <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
         </form>
-    </main>
-</div>
+    </div>
+}

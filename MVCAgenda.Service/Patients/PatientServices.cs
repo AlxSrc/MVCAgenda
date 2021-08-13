@@ -162,7 +162,8 @@ namespace MVCAgenda.Service.Patients
 
                 var patients = await query.ToListAsync(); // aici aducem datele despre pacienti prin sintaxa SQL
 
-                var patientsModel = patients // lista de pacient adusa
+                var patientsModel = patients
+                    .OrderBy(p => p.FirstName)// lista de pacient adusa
                     .Select(patient => _agendaViewsFactory.PreperePatientViewModel(patient))
                     .ToList();
                 model.Hidden = isHidden;

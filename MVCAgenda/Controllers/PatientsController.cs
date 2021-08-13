@@ -143,7 +143,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _patientServices.GetPatientByIdAsync(id));
+                return View(await _patientServices.GetPatientViewModelByIdAsync(await _patientServices.GetPatientByIdAsync(id)));
             }
             else
             {

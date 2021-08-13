@@ -7,9 +7,9 @@
     @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
 
 
-    <div class="container">
+    <div class="container g-0">
         <div class="row justify-content-between">
-            <div class="col-md-8">
+            <div class="col-auto">
                 @if (Model.Blacklist == true)
                 {<text><h1>Lista neagra cu pacienti</h1></text>}
                 @if (Model.Hidden == true)
@@ -17,7 +17,7 @@
                 @if (Model.Hidden == false && Model.Blacklist == false)
                 {<text><h1>Pacienti</h1></text>}
             </div>
-            <div class="col-md-2">
+            <div class="col-auto mb-0 pb-0">
                 <a asp-action="Create" class="btn btn-outline-primary">Adauga un nou pacient</a>
             </div>
         </div>
@@ -115,10 +115,21 @@
                             </td>
                         </text>
                     }
-                    <td>
-                        <a asp-action="Create" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalii</a>
-                    </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Optiuni
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li>
+                                <a asp-action="Create" class="dropdown-item link-info" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a>
+                            </li>
+                            <li>
+                                <a asp-action="Details" class="dropdown-item link-info" asp-route-id="@item.Id">Detalii</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
                 </tr>
             }
         </tbody>

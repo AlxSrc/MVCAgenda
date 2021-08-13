@@ -200,7 +200,7 @@ namespace MVCAgenda.Service.Appointments
 
                 return new MVCAgendaViewsManager()
                 {
-                    AppointmentsList = queriAppointmentsList,
+                    AppointmentsList = queriAppointmentsList
                 };
             }
             catch

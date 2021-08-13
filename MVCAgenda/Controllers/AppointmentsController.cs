@@ -110,7 +110,7 @@ namespace MVCAgenda.Controllers
                 {
                     string result = await _appointmentServices.CreateAppointmentAsync(model);
                     if (result == "Ok")
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(Index),new { Daily = true });
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }

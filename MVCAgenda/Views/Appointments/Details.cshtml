@@ -106,7 +106,7 @@
             </div>
         </div>
         <div class="btn-group" role="group" aria-label="Optiuni">
-            <a asp-action="Index" class="btn btn-outline-secondary">Inapoi</a>
+            <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Modifica programarea</a>
             <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Sterge programarea</a>
         </div>

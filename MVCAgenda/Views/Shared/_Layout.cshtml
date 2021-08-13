@@ -9,21 +9,23 @@
 </head>
 <body>
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-            <span class="fs-4">Clinica Nume-clinica</span>
-        </a>
-
         @if (User.Identity.IsAuthenticated)
         {
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                @*<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>*@
+                <span class="fs-4 text-color ms-3">Clinica</span>
+                <img class="sigla" src="https://esderm.ro/wp-content/uploads/2020/09/logo-esderm-web.png">
+            </a>
+
+
             <ul class="nav nav-pills">
 
-                <li class="nav-item">
+                @*<li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index">Programari</a>
-                </li>
+                </li>*@
 
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programarile de azi</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programari</a>
                 </li>
 
                 <li class="nav-item">
@@ -47,9 +49,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                 </li>
-                <li class="nav-item">
+                @*<li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                </li>
+                </li>*@
             </ul>
         }
 

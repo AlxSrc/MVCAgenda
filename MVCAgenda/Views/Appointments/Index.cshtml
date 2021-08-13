@@ -4,9 +4,9 @@
 @if (User.Identity.IsAuthenticated)
 {
     @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
-    <div class="container">
+    <div class="container g-0">
         <div class="row justify-content-between">
-            <div class="col-8">
+            <div class="col-auto">
                 @if (Model.Blacklist == true)
                 {<text><h1>Programari neefectuate</h1></text>}
                 @if (Model.Hidden == true)
@@ -14,7 +14,7 @@
                 @if (Model.Hidden == false && Model.Blacklist == false)
                 {<text><h1>Programari</h1></text>}
             </div>
-            <div class="col-2">
+            <div class="col-auto">
                 <a asp-action="Create" class="btn btn-outline-primary">Adauga o programare</a>
             </div>
         </div>

@@ -3,6 +3,30 @@ for details on configuring this project to bundle and minify static web assets. 
 
 /*#region Custom*/
 
+.form-floating > .form-control {
+    min-width: 400px;
+}
+.text-color {
+    color: #7f73bb;
+}
+
+.btn-main-color {
+    color: #7f73bb;
+    border-color: #7f73bb;
+}
+
+.btn-main-color:hover {
+    color: #fff;
+    background-color: #7f73bb;
+    border-color: #7f73bb;
+}
+
+.sigla {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 80px;
+}
+
 .table.fixed-layout {
     table-layout: fixed;
     word-break: break-word;
@@ -11,6 +35,10 @@ for details on configuring this project to bundle and minify static web assets. 
 .form-control:disabled, .form-control[readonly] {
     background-color: white;
     opacity: 1;
+}
+.center{
+    align-content:center;
+    max-block-size: 600px;
 }
 /*#endregion Custom*/
 
