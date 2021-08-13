@@ -86,6 +86,8 @@ namespace MVCAgenda.Service.Factories
 
         public AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room)
         {
+            string WantedDate = $"{model.AppointmentDate.Substring(5, 2)}-{model.AppointmentDate.Substring(8, 2)}-{model.AppointmentDate.Substring(0, 4)}";
+
             AppointmentViewModel viewModel = new AppointmentViewModel()
             {
                 Id = model.Id,
@@ -96,7 +98,7 @@ namespace MVCAgenda.Service.Factories
                 Mail = patient.Mail,
                 Medic = medic.MedicName,
                 Room = room.RoomName,
-                AppointmentDate = model.AppointmentDate,
+                AppointmentDate = WantedDate,
                 AppointmentHour = model.AppointmentHour,
                 Procedure = model.Procedure,
                 ResponsibleForAppointment = model.ResponsibleForAppointment,

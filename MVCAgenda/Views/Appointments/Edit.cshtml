@@ -6,8 +6,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     @model MVCAgenda.Core.ViewModels.AppointmentViewModel
-    <h4>Modifica programare</h4>
-    <hr />
+    <h3 class="mb-3">Modifica programare</h3>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <form asp-action="Edit">
