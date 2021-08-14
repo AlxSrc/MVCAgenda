@@ -6,8 +6,8 @@
 @if (User.Identity.IsAuthenticated)
 {
     @model MVCAgenda.Core.ViewModels.AppointmentViewModel
-
-    <h3>Sunteti sigur ca doriti sa stergeti aceasta programare?</h3>
+<div class="main box">
+    <h2 class="text-color mb-3 text-center">Sunteti sigur ca doriti sa stergeti aceasta programare?</h2>
 
     <div class="container">
         <div class="row">
@@ -105,9 +105,13 @@
                 </div>
             </div>
         </div>
-        <div class="btn-group" role="group" aria-label="Optiuni">
-            <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
-            <input type="submit" value="Sterge" class="btn btn-outline-danger"/>
+        <div class="mt-3 d-lg-flex justify-content-lg-center">
+            <div class="btn-group" role="group" aria-label="Optiuni">
+                <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
+                <input type="submit" value="Sterge" class="btn btn-outline-danger" />
+            </div>
         </div>
     </div>
+</div>
+    
 }

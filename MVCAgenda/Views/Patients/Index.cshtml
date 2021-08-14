@@ -6,132 +6,131 @@
 {
     @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
 
-
     <div class="container g-0">
         <div class="row justify-content-between">
             <div class="col-auto">
                 @if (Model.Blacklist == true)
-                {<text><h1>Lista neagra cu pacienti</h1></text>}
+                {<text><h2 class="text-color mb-3 text-center">Lista neagra cu pacienti</h2></text>}
                 @if (Model.Hidden == true)
-                {<text><h1>Lista cu pacienti stersi</h1></text>}
+                {<text><h2 class="text-color mb-3 text-center">Lista cu pacienti stersi</h2></text>}
                 @if (Model.Hidden == false && Model.Blacklist == false)
-                {<text><h1>Pacienti</h1></text>}
+                {<text><h2 class="text-color mb-3 text-center">Pacienti</h2></text>}
             </div>
             <div class="col-auto mb-0 pb-0">
-                <a asp-action="Create" class="btn btn-outline-primary">Adauga un nou pacient</a>
+                <a asp-action="Create" class="btn btn-main-second-color-filled">Adauga un pacient</a>
             </div>
         </div>
     </div>
-        
+    <div class="main box">
+        <form asp-controller="Patients" asp-action="Index" method="get">
+            <div class="input-group  mb-3">
+                <input type="text" class="form-control" placeholder="Numele de familie" aria-label="Recipient's username with two button addons" asp-for="SearchByName" />
+                <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
+                <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
 
-    <form asp-controller="Patients" asp-action="Index" method="get">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Numele de familie" aria-label="Recipient's username with two button addons" asp-for="SearchByName" />
-            <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
-            <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
-
-            <input class="btn btn-primary" type="submit" value="Cauta" />
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Optiuni
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li>
-                        @if (Model.Hidden == false)
-                        {
-                            <text>
-                                <a asp-action="Index" asp-route-isDeleted="true" class="dropdown-item link-warning">Pacienti stersi</a>
-                            </text>
-                        }
-                    </li>
-                    <li>
-                        @if (Model.Blacklist == false)
-                        {
-                            <text>
-                                <a asp-action="Index" asp-route-includeBlackList="true" class="dropdown-item link-danger">Lista neagra</a>
-                            </text>
-                        }
-                    </li>
-                    <li>
-                        @if (Model.Blacklist == true || Model.Hidden == true)
-                        {
-                            <text>
-                                <a asp-action="Index" class="dropdown-item link-primary">Pacienti</a>
-                            </text>
-                        }
-                    </li>
-                </ul>
+                <input class="btn btn-main-color-filled" type="submit" value="Cauta" />
+                <div class="dropdown">
+                    <button class="btn btn-main-color dropdown-toggle btn-no-left-border-radius" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Optiuni
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                            @if (Model.Hidden == false)
+                            {
+                                <text>
+                                    <a asp-action="Index" asp-route-isDeleted="true" class="dropdown-item link-warning">Pacienti stersi</a>
+                                </text>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Blacklist == false)
+                            {
+                                <text>
+                                    <a asp-action="Index" asp-route-includeBlackList="true" class="dropdown-item link-danger">Lista neagra</a>
+                                </text>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Blacklist == true || Model.Hidden == true)
+                            {
+                                <text>
+                                    <a asp-action="Index" class="dropdown-item link-primary">Pacienti</a>
+                                </text>
+                            }
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.PatientsList[0].FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PatientsList[0].SecondName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PatientsList[0].PhonNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PatientsList[0].Mail)
-                </th>
-                @if (Model.Blacklist == false)
-                {
-                    <text>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PatientsList[0].BlacklistText)
-                        </th>
-                    </text>
-                }
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.PatientsList)
-            {
+        <table class="table">
+            <thead class="borderless-table">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SecondName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhonNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Mail)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PatientsList[0].FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PatientsList[0].SecondName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PatientsList[0].PhonNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PatientsList[0].Mail)
+                    </th>
                     @if (Model.Blacklist == false)
                     {
                         <text>
-                            <td>
-                                @Html.Raw(item.BlacklistText)
-                            </td>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PatientsList[0].BlacklistText)
+                            </th>
                         </text>
                     }
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Optiuni
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li>
-                                <a asp-action="Create" class="dropdown-item link-info" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a>
-                            </li>
-                            <li>
-                                <a asp-action="Details" class="dropdown-item link-info" asp-route-id="@item.Id">Detalii</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
- }
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PatientsList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SecondName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhonNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Mail)
+                        </td>
+                        @if (Model.Blacklist == false)
+                        {
+                            <text>
+                                <td>
+                                    @Html.Raw(item.BlacklistText)
+                                </td>
+                            </text>
+                        }
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Optiuni
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a asp-action="Create" class="dropdown-item text-color" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="Details" class="dropdown-item text-color" asp-route-id="@item.Id">Detalii</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

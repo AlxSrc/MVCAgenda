@@ -9,19 +9,22 @@
 
     @model MVCAgenda.Core.ViewModels.MedicViewModel
 
-    <h2>Detalii</h2>
-    <div class="row">
-
-        <div class="col-md-6">
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.MedicName)</span>
-                <input asp-for="MedicName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.MedicName)" aria-describedby="basic-addon2" readonly>
+    <div class="main box">
+        <div class=" mt-3 d-lg-flex justify-content-lg-center">
+            <h2 class="text-color text-center mb-3">Detalii medic</h2>
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.MedicName)</span>
+                    <input asp-for="MedicName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.MedicName)" aria-describedby="basic-addon2" readonly>
+                </div>
+                <div class=" mt-3 d-lg-flex justify-content-lg-center">
+                    <div class="form-group btn-group">
+                        <a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Inapoi</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifica medic</a>
+                    </div>
+                </div>
+            
             </div>
         </div>
-
-        <div class="form-group btn-group">
-            <a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Inapoi</a>
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-info">Modifica</a>
-        </div>
-    </div>
+    </div> 
 }

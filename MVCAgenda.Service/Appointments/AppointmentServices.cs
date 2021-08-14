@@ -200,6 +200,7 @@ namespace MVCAgenda.Service.Appointments
 
                 return new MVCAgendaViewsManager()
                 {
+                    Blacklist = Hidden,
                     AppointmentsList = queriAppointmentsList
                 };
             }

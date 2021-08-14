@@ -7,8 +7,9 @@
 {
     @model MVCAgenda.Core.ViewModels.AppointmentViewModel
 
+<div class="main box">
+    <h2 class="text-color mb-3 text-center">Detalii programare</h2>
 
-    <h1>Detalii programare</h1>
     <div class="container">
         <div class="row">
             <div class="col">
@@ -101,117 +102,18 @@
             <div class="col">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.Comments)</span>
-                    <input asp-for="Comments" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Comments)" aria-describedby="basic-addon1" readonly>
+                    <textarea asp-for="Comments" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Comments)" aria-describedby="basic-addon1" readonly></textarea>
                 </div>
             </div>
         </div>
-        <div class="btn-group" role="group" aria-label="Optiuni">
-            <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Modifica programarea</a>
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Sterge programarea</a>
-        </div>
-    </div>
-
-    @*<div>
-            <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.FirstName)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.SecondName)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.SecondName)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PhonNumber)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.PhonNumber)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Mail)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Mail)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Blacklist)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.Raw(Model.Blacklist)
-                </dd>
-            </dl>
-
-            <hr />
-            <div>
-                <h4>Detalii despre programare</h4>
+        <div class=" mt-3 d-lg-flex justify-content-lg-center">
+            <div class="btn-group" role="group" aria-label="Optiuni">
+                <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Sterge programarea</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifica programarea</a>
             </div>
-            <dl class="row">
-
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Medic)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Medic)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Room)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Room)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.AppointmentDate)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.AppointmentDate)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.AppointmentHour)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.AppointmentHour)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Procedure)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Procedure)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Made)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.Raw(Model.MadeText)
-                </dd>
-
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ResponsibleForAppointment)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ResponsibleForAppointment)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.AppointmentCreationDate)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.AppointmentCreationDate)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Comments)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Comments)
-                </dd>
-            </dl>
         </div>
-        <div>
-            <a asp-action="Index">Inapoi la lista de programari</a> |
-            <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> |
-            <a asp-action="Delete" asp-route-id="@Model.Id">Sterge</a>
-        </div>*@
+        
+    </div>
+</div>
 }

@@ -9,53 +9,59 @@
 </head>
 <body>
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        @if (User.Identity.IsAuthenticated)
-        {
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                @*<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>*@
-                <span class="fs-4 text-color ms-3">Clinica</span>
-                <img class="sigla" src="https://esderm.ro/wp-content/uploads/2020/09/logo-esderm-web.png">
-            </a>
+        <div class="container g-0">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                            @*<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>*@
+                            <span class="fs-4 text-color ms-3">Clinica</span>
+                            <img class="sigla" src="https://esderm.ro/wp-content/uploads/2020/09/logo-esderm-web.png">
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <ul class="nav nav-pills">
 
+                            @*<li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index">Programari</a>
+                            </li>*@
 
-            <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programari</a>
+                            </li>
 
-                @*<li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index">Programari</a>
-                </li>*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienti</a>
+                            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programari</a>
-                </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage">Management</a>
+                            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienti</a>
-                </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-danger" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage">Management</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link link-danger" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                </li>
-
-            </ul>
-
-        }
-        else
-        {
-            <ul class="nav nav-pills">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                </li>
-                @*<li class="nav-item">
+                        </ul>
+                    </div>
+                </div>
+                
+            }
+            else
+            {
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                    @*<li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                 </li>*@
-            </ul>
-        }
-
+                </ul>
+            }
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -63,8 +69,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - MVCAgenda - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container main-footer">
+            &copy; 2021 - Agenda Clinica Esderm - <a class="main-footer" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -4,146 +4,150 @@
 @if (User.Identity.IsAuthenticated)
 {
     @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
+
     <div class="container g-0">
         <div class="row justify-content-between">
             <div class="col-auto">
                 @if (Model.Blacklist == true)
-                {<text><h1>Programari neefectuate</h1></text>}
+                {<text><h2 class="text-color mb-3 text-center">Programari neefectuate</h2></text>}
                 @if (Model.Hidden == true)
-                {<text><h1>Programari sterse</h1></text>}
+                {<text><h2 class="text-color mb-3 text-center">Programari sterse</h2></text>}
                 @if (Model.Hidden == false && Model.Blacklist == false)
-                {<text><h1>Programari</h1></text>}
+                {<text><h2 class="text-color mb-3 text-center">Programari</h2></text>}
             </div>
             <div class="col-auto">
-                <a asp-action="Create" class="btn btn-outline-primary">Adauga o programare</a>
+                <a asp-action="Create" class="btn btn-main-second-color-filled">Adauga o programare</a>
             </div>
         </div>
     </div>
 
-    <form asp-controller="Appointments" asp-action="Index" method="get">
-        <div class="input-group">
-            <input type="date" class="form-control" placeholder="Data programari" aria-label="Text" asp-for="SearchByAppointmentDate" />
-            <input type="time" class="form-control" placeholder="Ora programari" aria-label="Text" asp-for="SearchByAppointmentHour" />
-            <select class="form-control" placeholder="Medic" asp-for="SearchByMedic" asp-items="ViewBag.MedicId">
-                <option disabled selected>Medic</option>
-            </select>
-            <select class="form-control" placeholder="Camera" asp-for="SearchByRoom" asp-items="ViewBag.RoomId">
-                <option disabled selected>Camera</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Numele de familie" aria-label="Recipient's username with two button addons" asp-for="SearchByName" />
-            <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
-            <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
-
-            <input class="btn btn-outline-primary" type="submit" value="Cauta" />
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Optiuni
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li>
-                        @if (Model.Hidden == false)
-                        {
-                            <text>
-                                <a asp-action="Index" asp-route-Hidden="true" class="dropdown-item link-danger">Programari sterse</a>
-                            </text>
-                        }
-                    </li>
-                    <li>
-                        @if (Model.Blacklist == true || Model.Hidden == true)
-                        {
-                            <text>
-                                <a asp-action="Index" class="dropdown-item link-primary">Programari</a>
-                            </text>
-                        }
-                    </li>
-                </ul>
+    <div class="main box">
+        <form asp-controller="Appointments" asp-action="Index" method="get">
+            <div class="input-group">
+                <input type="date" class="form-control" placeholder="Data programari" aria-label="Text" asp-for="SearchByAppointmentDate" />
+                <input type="time" class="form-control" placeholder="Ora programari" aria-label="Text" asp-for="SearchByAppointmentHour" />
+                <select class="form-control" placeholder="Medic" asp-for="SearchByMedic" asp-items="ViewBag.MedicId">
+                    <option disabled selected>Medic</option>
+                </select>
+                <select class="form-control" placeholder="Camera" asp-for="SearchByRoom" asp-items="ViewBag.RoomId">
+                    <option disabled selected>Camera</option>
+                </select>
             </div>
-        </div>
-    </form>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Numele de familie" aria-label="Recipient's username with two button addons" asp-for="SearchByName" />
+                <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
+                <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
-                </th>
-                <!--
+                <input class="btn btn-main-color-filled" type="submit" value="Cauta" />
+                <div class="dropdown">
+                    <button class="btn btn-main-color dropdown-toggle btn-no-left-border-radius" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Optiuni
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                            @if (Model.Hidden == false)
+                            {
+                                <text>
+                                    <a asp-action="Index" asp-route-Hidden="true" class="dropdown-item link-danger">Programari sterse</a>
+                                </text>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Blacklist == true || Model.Hidden == true)
+                            {
+                                <text>
+                                    <a asp-action="Index" class="dropdown-item link-primary">Programari</a>
+                                </text>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+
+        <table class="table">
+            <thead class="borderless-table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
+                    </th>
+                    <!--
                 <th>
                     @Html.DisplayNameFor(model => model.AppointmentsList[0].SecondName)
                 </th>
                 -->
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].PhonNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Medic)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Room)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentHour)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Procedure)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].Made)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.AppointmentsList)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <!--
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].PhonNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].Medic)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].Room)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentHour)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].Procedure)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].Made)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AppointmentsList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <!--
                     <td>
                         @Html.DisplayFor(modelItem => item.SecondName)
                     </td>
                     -->
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhonNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Medic)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Room)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AppointmentDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AppointmentHour)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Procedure)
-                    </td>
-                    <td>
-                        @Html.Raw(item.MadeText)
-                    </td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                Detalii
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item link-info" asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Detalii pacient</a></li>
-                                <li><a class="dropdown-item link-info" asp-action="Details" asp-route-id="@item.Id">Detalii programare</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhonNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Medic)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Room)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AppointmentDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AppointmentHour)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Procedure)
+                        </td>
+                        <td>
+                            @Html.Raw(item.MadeText)
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Detalii
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item text-color" asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Detalii pacient</a></li>
+                                    <li><a class="dropdown-item text-color" asp-action="Details" asp-route-id="@item.Id">Detalii programare</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
 }

@@ -3,11 +3,57 @@ for details on configuring this project to bundle and minify static web assets. 
 
 /*#region Custom*/
 
+.main.box {
+    margin-top: 10px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 1px 5px 3px #f1f1f1;
+    border-radius: 6px;
+}
+.main-header{
+    display: flex;
+}
+
+.main-footer{
+    color: #fff;
+}
+
 .form-floating > .form-control {
     min-width: 400px;
 }
+
+.large-input {
+    min-width: 600px;
+}
 .text-color {
     color: #7f73bb;
+}
+
+.btn-main-second-color-filled {
+    color: #fff;
+    background-color: #7f73bb;
+    border-color: #7f73bb;
+}
+
+.btn-main-second-color-filled:hover {
+    color: #fff;
+    background-color: #fba87e;
+    border-color: #fba87e;
+}
+.btn-no-left-border-radius {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+.btn-main-color-filled {
+    color: #fff;
+    background-color: #7f73bb;
+    border-color: #7f73bb;
+}
+
+.btn-main-color-filled:hover {
+    color: #fff;
+    background-color: #7f73bb;
+    border-color: #7f73bb;
 }
 
 .btn-main-color {
@@ -19,6 +65,21 @@ for details on configuring this project to bundle and minify static web assets. 
     color: #fff;
     background-color: #7f73bb;
     border-color: #7f73bb;
+}
+
+.btn-main1-color {
+    color: #fba87e;
+    border-color: #fba87e;
+}
+
+.btn-main1-color:hover {
+    color: #fff;
+    background-color: #fba87e;
+    border-color: #fba87e;
+}
+
+.text-dark:hover {
+    color: #7f73bb;
 }
 
 .sigla {
@@ -40,12 +101,14 @@ for details on configuring this project to bundle and minify static web assets. 
     align-content:center;
     max-block-size: 600px;
 }
+.borderless-table{
+    border: hidden;
+}
 /*#endregion Custom*/
-
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
@@ -100,11 +163,20 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #F7F7F7;
 }
+
+header {
+    background: #fff;
+    border: 0 !important;
+    box-shadow: 0 1px 5px 3px #f1f1f1;
+}
+
 .footer {
   position: absolute;
+  background-color: #7f73bb;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
