@@ -37,12 +37,14 @@ namespace MVCAgenda.Service.Factories
             return viewModel;
         }
 
-        public async Task<SheetPatientViewModel> PrepereSheetPatientViewModel(SheetPatient model, List
+        public async Task<SheetPatientViewModel> PrepereSheetPatientViewModel(SheetPatient model, Patient patient, List
             <ConsultationViewModel> consultations)
         {
             SheetPatientViewModel preparedView = new SheetPatientViewModel()
             {
                 Id = model.Id,
+                FirstName = patient.FirstName,
+                SecondName = patient.SecondName,
                 AntecedentsH = model.AntecedentsH,
                 AntecedentsP = model.AntecedentsP,
                 PhysicalExamination = model.PhysicalExamination,

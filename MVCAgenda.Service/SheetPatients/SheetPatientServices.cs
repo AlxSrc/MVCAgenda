@@ -107,8 +107,10 @@ namespace MVCAgenda.Service.SheetPatients
                 }
                 
                 var consultations = await _consultationServices.GetConsultationsAsync(Id);
+                var patients = await _context.Patient.ToListAsync();
+                var patient = patients.FirstOrDefault(p => p.SheetPatientId == Id);
 
-                return await _agendaViewsFactory.PrepereSheetPatientViewModel(sheetPatient, consultations);
+                return await _agendaViewsFactory.PrepereSheetPatientViewModel(sheetPatient, patient, consultations);
             }
             catch
             {

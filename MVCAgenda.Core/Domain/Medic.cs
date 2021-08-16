@@ -6,7 +6,7 @@ namespace MVCAgenda.Core.Domain
     public class Medic : BaseEntityModel
     {
         [StringLength(25, MinimumLength = 1)]
-        [DisplayName("Denumire medic")]
+        [DisplayName("Numele medicului")]
         [Required]
         public string MedicName { get; set; }
     }

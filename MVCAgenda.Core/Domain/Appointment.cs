@@ -14,7 +14,7 @@ namespace MVCAgenda.Core.Domain
         public virtual Patient Patient { get; set; }
 
 
-        [DisplayName("Camera")]
+        [DisplayName("Cameră")]
         public int RoomId { get; set; }
 
 
@@ -48,18 +48,18 @@ namespace MVCAgenda.Core.Domain
         public string Procedure { get; set; } = "neidentificat";
 
 
-        [DisplayName("Efectuata")]
+        [DisplayName("Efectuată")]
         [Required]
         public bool Made { get; set; } = true;
 
 
         [StringLength(30, MinimumLength = 1)]
-        [DisplayName("Programare realizata de")]
+        [DisplayName("Programare realizată de")]
         [Required]
         public string ResponsibleForAppointment { get; set; }
 
 
-        [DisplayName("Data creeare consultatie")]
+        [DisplayName("Data creeare programare")]
         [DataType(DataType.DateTime)]
         [Required]
         public string AppointmentCreationDate { get; set; }

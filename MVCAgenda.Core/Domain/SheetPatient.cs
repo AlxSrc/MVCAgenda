@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,7 +10,7 @@ namespace MVCAgenda.Core.Domain
 
 
         [StringLength(450, MinimumLength = 1)]
-        [DisplayName("Antecedente: heredo-colaterale")] 
+        [DisplayName("Antecedente: Heredo-colaterale")] 
         public string AntecedentsH { get; set; }
 
 
@@ -43,7 +43,7 @@ namespace MVCAgenda.Core.Domain
 
 
         [DataType(DataType.Date)]
-        [DisplayName("Data nasterii")] 
+        [DisplayName("Data nașterii")] 
         public DateTime DateOfBirth { get; set; }
     }
 }

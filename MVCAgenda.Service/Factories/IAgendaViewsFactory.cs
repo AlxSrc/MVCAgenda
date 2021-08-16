@@ -11,7 +11,7 @@ namespace MVCAgenda.Service.Factories
         PatientViewModel PreperePatientViewModel(Patient model);
 
         //SheetPatient
-        Task<SheetPatientViewModel> PrepereSheetPatientViewModel(SheetPatient model, List
+        Task<SheetPatientViewModel> PrepereSheetPatientViewModel(SheetPatient model, Patient patient, List
             <ConsultationViewModel> consultations);
 
         //Consultation

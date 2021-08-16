@@ -6,7 +6,7 @@ namespace MVCAgenda.Core.Domain
     public class Room : BaseEntityModel
     {
         [StringLength(25, MinimumLength = 1)]
-        [DisplayName("Denumire camera")]
+        [DisplayName("Denumire cameră")]
         [Required]
         public string RoomName { get; set; }
     }

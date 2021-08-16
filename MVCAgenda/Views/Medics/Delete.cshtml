@@ -12,7 +12,7 @@
 <div class="main box">
     <div class="d-lg-flex justify-content-lg-center">
         <div class="col-md-6">
-            <h3 class="text-color text-center mb-3">Esti sigur ca doresti sa stergi acest medic?</h3>
+            <h3 class="text-color text-center mb-3">Ești sigur că dorești să ștergi acest medic?</h3>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.MedicName)</span>
                 <input asp-for="MedicName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.MedicName)" aria-describedby="basic-addon2" readonly>
@@ -21,9 +21,9 @@
             <form asp-action="Delete">
                 <div class="d-lg-flex justify-content-lg-center">
                     <div class="form-group btn-group">
-                        <a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Inapoi</a>
+                        <a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Anulează</a>
                         <input type="hidden" asp-for="Id" />
-                        <input type="submit" value="Sterge medicul" class="btn btn-outline-danger" />
+                        <input type="submit" value="Șterge medicul" class="btn btn-outline-danger" />
                     </div>
                 </div>
             </form>

@@ -9,7 +9,7 @@
 </head>
 <body>
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <div class="container g-0">
+        <div class="container g-0 custom-header">
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="row justify-content-between">
@@ -28,19 +28,19 @@
                             </li>*@
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programari</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programări</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienti</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienți</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage">Management</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage">Administrare</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link link-danger" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                <a class="btn btn-outline-danger" asp-area="" asp-controller="Account" asp-action="Logout">Deconectare</a>
                             </li>
 
                         </ul>
@@ -52,7 +52,7 @@
             {
                 <ul class="nav nav-pills">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Conectare</a>
                     </li>
                     @*<li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
@@ -69,8 +69,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container main-footer">
-            &copy; 2021 - Agenda Clinica Esderm - <a class="main-footer" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container main-footer text-center">
+            &copy; 2021 - Agenda online, Clinica Esderm - <a class="main-footer" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

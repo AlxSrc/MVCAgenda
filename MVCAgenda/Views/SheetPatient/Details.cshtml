@@ -15,31 +15,29 @@
             <div class="container g-0">
                 <div class="row justify-content-between">
                     <div class="col-auto">
-                        <h2 class="mb-3 text-color">Fisa medicala</h2>
+                        <h2 class="mb-3 text-color">Fișa medicală</h2>
                     </div>
                     <div class="col-auto">
                         <div class="btn-group" role="group" aria-label="Optiuni">
                             <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Detalii pacient</a>
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifica fisa pacientului</a>
-                            <a asp-action="Create" asp-controller="Consultations" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Adauga o consultatie</a>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifică fișa pacientului</a>
+                            <a asp-action="Create" asp-controller="Consultations" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Adaugă o consultație</a>
                         </div>
                     </div>
                 </div>
             </div>
             <dl class="row">
-                <div class="row mb-3">
+                <div class="row  mb-3">
                     <div class="col">
                         <div class="input-group">
-                            <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsH)</span>
-                            <input asp-for="AntecedentsH" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
+                            <span class="input-group-text">@Html.DisplayNameFor(model => model.FirstName)</span>
+                            <input asp-for="FirstName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.FirstName)" readonly>
                         </div>
                     </div>
-                </div>
-                <div class="row mb-3">
                     <div class="col">
                         <div class="input-group">
-                            <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhysicalExamination)</span>
-                            <input asp-for="PhysicalExamination" type="text" class="form-control" aria-label="Examen fizic" aria-describedby="basic-addon3" readonly>
+                            <span class="input-group-text">@Html.DisplayNameFor(model => model.SecondName)</span>
+                            <input asp-for="SecondName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.SecondName)" readonly>
                         </div>
                     </div>
                 </div>
@@ -48,6 +46,12 @@
                         <div class="input-group">
                             <span class="input-group-text">@Html.DisplayNameFor(model => model.Town)</span>
                             <input asp-for="Town" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Town)" readonly>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group">
+                            <span class="input-group-text">@Html.DisplayNameFor(model => model.Street)</span>
+                            <input asp-for="Street" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Street)" readonly>
                         </div>
                     </div>
                 </div>
@@ -73,24 +77,33 @@
                 </div>
                 <div class="input-group mb-3"></div>
 
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col">
                         <div class="input-group">
-                            <span class="input-group-text">@Html.DisplayNameFor(model => model.Town)</span>
-                            <input asp-for="Town" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Town)" readonly>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group">
-                            <span class="input-group-text">@Html.DisplayNameFor(model => model.Street)</span>
-                            <input asp-for="Street" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Street)" readonly>
+                            <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsH)</span>
+                            <input asp-for="AntecedentsH" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
                         </div>
                     </div>
                 </div>
-
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsH)</span>
+                            <input asp-for="AntecedentsP" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhysicalExamination)</span>
+                            <input asp-for="PhysicalExamination" type="text" class="form-control" aria-label="Examen fizic" aria-describedby="basic-addon3" readonly>
+                        </div>
+                    </div>
+                </div>
             </dl>
 
-            <h3 class="text-color mb-3">Consultatii</h3>
+            <h3 class="text-color mb-3">Consultații</h3>
             <table class="table fixed-layout">
                 <thead class="borderless-table">
                     <tr>

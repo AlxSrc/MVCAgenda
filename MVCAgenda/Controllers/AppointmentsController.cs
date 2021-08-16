@@ -103,8 +103,7 @@ namespace MVCAgenda.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AppointmentViewModel model)
-        {
-            if (User.Identity.IsAuthenticated)
+        {if (User.Identity.IsAuthenticated)
             {
                 if (ModelState.IsValid)
                 {

@@ -7,7 +7,7 @@ namespace MVCAgenda.Core.Domain
 {
     public class Consultation : BaseEntityModel
     {
-        [DisplayName("Fisa Pacient")] 
+        [DisplayName("Fișă pacient")] 
         public int SheetPatientId { get; set; }
 
         [ForeignKey("SheetPatientId")] 
@@ -30,7 +30,7 @@ namespace MVCAgenda.Core.Domain
 
 
         [StringLength(450, MinimumLength = 1)]
-        [DisplayName("Prescriptii")]
+        [DisplayName("Prescripții")]
         public string Prescriptions { get; set; }
     }
 }

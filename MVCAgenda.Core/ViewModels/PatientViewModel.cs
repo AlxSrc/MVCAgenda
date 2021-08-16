@@ -5,7 +5,7 @@ namespace MVCAgenda.Core.ViewModels
 {
     public class PatientViewModel : BaseEntityModel
     {
-        [DisplayName("Detalii Pacient")] 
+        [DisplayName("Detalii pacient")] 
         public int SheetPatientId { get; set; }
 
 
@@ -21,20 +21,20 @@ namespace MVCAgenda.Core.ViewModels
 
 
         [StringLength(20, MinimumLength = 1)]
-        [DisplayName("Numar de telefon")]
+        [DisplayName("Număr de telefon")]
         [Required] 
         public string PhonNumber { get; set; }
 
 
         [StringLength(60, MinimumLength = 0)]
-        [DisplayName("Mail")] 
+        [DisplayName("E-mail")] 
         public string Mail { get; set; }
 
 
-        [DisplayName("Lista neagra")]
+        [DisplayName("Lista neagră")]
         public string BlacklistText { get; set; }
 
-        [DisplayName("Lista neagra")]
+        [DisplayName("Lista neagră")]
         public bool Blacklist { get; set; }
     }
 }

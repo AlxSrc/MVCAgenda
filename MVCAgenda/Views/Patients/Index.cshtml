@@ -10,14 +10,14 @@
         <div class="row justify-content-between">
             <div class="col-auto">
                 @if (Model.Blacklist == true)
-                {<text><h2 class="text-color mb-3 text-center">Lista neagra cu pacienti</h2></text>}
+                {<text><h2 class="text-color mb-3 text-center">Lista neagră cu pacienti</h2></text>}
                 @if (Model.Hidden == true)
-                {<text><h2 class="text-color mb-3 text-center">Lista cu pacienti stersi</h2></text>}
+                {<text><h2 class="text-color mb-3 text-center">Lista cu pacienți șterși</h2></text>}
                 @if (Model.Hidden == false && Model.Blacklist == false)
-                {<text><h2 class="text-color mb-3 text-center">Pacienti</h2></text>}
+                {<text><h2 class="text-color mb-3 text-center">Pacienți</h2></text>}
             </div>
             <div class="col-auto mb-0 pb-0">
-                <a asp-action="Create" class="btn btn-main-second-color-filled">Adauga un pacient</a>
+                <a asp-action="Create" class="btn btn-main-second-color-filled">Adaugă un pacient</a>
             </div>
         </div>
     </div>
@@ -28,17 +28,17 @@
                 <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
                 <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
 
-                <input class="btn btn-main-color-filled" type="submit" value="Cauta" />
+                <input class="btn btn-main-color-filled" type="submit" value="Caută" />
                 <div class="dropdown">
                     <button class="btn btn-main-color dropdown-toggle btn-no-left-border-radius" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Optiuni
+                        Opțiuni
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li>
                             @if (Model.Hidden == false)
                             {
                                 <text>
-                                    <a asp-action="Index" asp-route-isDeleted="true" class="dropdown-item link-warning">Pacienti stersi</a>
+                                    <a asp-action="Index" asp-route-isDeleted="true" class="dropdown-item link-warning">Pacienți șterși</a>
                                 </text>
                             }
                         </li>
@@ -46,7 +46,7 @@
                             @if (Model.Blacklist == false)
                             {
                                 <text>
-                                    <a asp-action="Index" asp-route-includeBlackList="true" class="dropdown-item link-danger">Lista neagra</a>
+                                    <a asp-action="Index" asp-route-includeBlackList="true" class="dropdown-item link-danger">Lista neagră</a>
                                 </text>
                             }
                         </li>
@@ -54,7 +54,7 @@
                             @if (Model.Blacklist == true || Model.Hidden == true)
                             {
                                 <text>
-                                    <a asp-action="Index" class="dropdown-item link-primary">Pacienti</a>
+                                    <a asp-action="Index" class="dropdown-item text-color">Pacienți</a>
                                 </text>
                             }
                         </li>
@@ -116,14 +116,17 @@
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Optiuni
+                                    Opțiuni
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <a asp-action="Create" class="dropdown-item text-color" asp-controller="Appointments" asp-route-id="@item.Id">Adauga programare</a>
+                                        <a asp-action="Create" class="dropdown-item text-color" asp-controller="Appointments" asp-route-id="@item.Id">Adaugă programare</a>
                                     </li>
                                     <li>
                                         <a asp-action="Details" class="dropdown-item text-color" asp-route-id="@item.Id">Detalii</a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="Details" asp-controller="SheetPatient" class="dropdown-item text-color" asp-route-id="@item.SheetPatientId">Fișa medicală</a>
                                     </li>
                                 </ul>
                             </div>

@@ -1,4 +1,4 @@
-using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,16 @@ namespace MVCAgenda.Core.ViewModels
 {
     public class SheetPatientViewModel : BaseEntityModel
     {
-        [DisplayName("Antecedente: heredo-colaterale")] 
+
+        [DisplayName("Nume")]
+        public string FirstName { get; set; }
+
+
+        [DisplayName("Prenume")]
+        public string SecondName { get; set; }
+
+
+        [DisplayName("Antecedente: Heredo-colaterale")] 
         public string AntecedentsH { get; set; }
 
 
@@ -36,9 +45,10 @@ namespace MVCAgenda.Core.ViewModels
 
 
         [DataType(DataType.Date)]
-        [DisplayName("Data nasterii")] 
+        [DisplayName("Data nașterii")] 
         public DateTime DateOfBirth { get; set; }
 
+        [DisplayName("Consultații")]
         public List<ConsultationViewModel> Consultations { get; set; }
     }
 }

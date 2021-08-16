@@ -22,17 +22,17 @@ namespace MVCAgenda.Core.ViewModels
 
 
         [StringLength(20, MinimumLength = 1)]
-        [DisplayName("Numar de telefon")]
+        [DisplayName("Număr de telefon")]
         [Required]
         public string PhonNumber { get; set; }
 
 
         [StringLength(60, MinimumLength = 0)]
-        [DisplayName("Mail")]
+        [DisplayName("E-mail")]
         public string Mail { get; set; }
 
 
-        [DisplayName("Lista neagra")]
+        [DisplayName("Lista neagră")]
         public string Blacklist { get; set; }
 
 
@@ -71,20 +71,20 @@ namespace MVCAgenda.Core.ViewModels
         public string Procedure { get; set; }
 
 
-        [DisplayName("Efectuata")]
+        [DisplayName("Efectuată")]
         [Required] 
         public bool Made { get; set; }
 
-        [DisplayName("Efectuata")]
+        [DisplayName("Efectuată")]
         public string MadeText { get; set; }
 
         [StringLength(30, MinimumLength = 1)]
-        [DisplayName("Programare realizata de")]
+        [DisplayName("Programare realizată de")]
         [Required] 
         public string ResponsibleForAppointment { get; set; }
 
 
-        [DisplayName("Data creeare consultatie")]
+        [DisplayName("Data creeare programare")]
         [DataType(DataType.DateTime)]
         [Required] 
         public string AppointmentCreationDate { get; set; }

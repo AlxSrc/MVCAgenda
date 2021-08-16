@@ -4,10 +4,81 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="text-center">
-        <h1 class="display-4">Wellcome</h1>
-        <h6>To do: explicatii platforma</h6>
-        <a href="https://discord.gg/xjypgrzYDE">Discrod</a>
-        
+    <div class="main box">
+        <div class="mt-3 d-lg-flex justify-content-lg-center">
+            <div>
+                <span class="fs-4 text-color ms-3 subtitle-home">Agenda online, Clinica</span>
+                <img class="sigla" src="https://esderm.ro/wp-content/uploads/2020/09/logo-esderm-web.png">
+            </div>
+        </div>
+
+        <div>
+            <div class="m-3">
+                <h5>Pe această pagină veți găsi documentația platformei.</h5>
+                <div class="ms-1">
+                    <h5 class="ms-1">Scurtă descriere a platformei</h5>
+                    <div class="ms-2">
+                        <p>Această platformă a fost creată pentru organizarea datelor despre programări, pacienți și a fișelor medicale a pacienților.</p>
+                        <p>Fiecare are reguli specifice de creeare și gestionare.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <h6>Pacientii</h6>
+                                <p>
+                                    Aceștia sunt folosiți la creearea unei programări. Deoarece numele de familie sau numele mic se poate repeta
+                                    singura regula la creearea unui nou pacient este  că pacienți trebuie să fie unici din punct de vedere al numărului de telefon.
+                                </p>
+                                <p>
+                                    Pentru a adaugă sau a edita un pacient este necesar să completați numele și numărul de telefon al pacientului, aceste 2 câmpuri
+                                    sunt obligatorii. Daca apar neplăceri cu anumiți placienti se poate bifa căsuță "Lista neagra" pentru a evidenția pacientul
+                                    respectiv, acest lucru se poate modifica ulterior.
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+
+                                <h6>Fișa medicală</h6>
+                                <p>
+                                    Fișa medicală a pacientului se creează automat la creearea unui nou pacient. Aceasta nu are câmpuri obligatorii. Fisa medicala și 
+                                    pacientul sunt legate între ele, de exemplu numele și prenumele sunt preluate de la pacient.
+                                </p>
+                                <p>
+                                    Fișa medicală conține un tabel cu consultații. Acestea sunt folosite pentru a memora operațiile sau actiuniile efectuate asupra 
+                                    pacientului evitând carnete de note sau alte tipuri de notițe. Pentru a adaugă o consultație nu există restricții sau câmpuri obligatorii. 
+                                    Într-o consultație se pot adaugă diagnostice, prescripții sau simptome.
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+
+                                <h6>Programările</h6>
+                                <p>
+                                    Acestea specifică data, timpul, camera, medicul și procedura ce trebuie efectuate. Prin umrare toate aceste câmpuri sunt obligatorii. Se 
+                                    pot adaugă și comentarii dar acestea sunt opționale.
+                                </p>
+                                <p>
+                                    Pe lângă acestea trebuie trecute numele de familie a pacientului și numărul sau de telefon.
+                                    În momentul în care se creează o programare se verifică dacă combinația dintre numărul de telefon, nume și prenume  există deja. Astfel nu trebuie
+                                    să verificați daca un pacient a fost deja deoarece o să se folosească pacientul deja existent și nu se vă crea același pacient de mai multe ori. Pentru
+                                    a adaugă o programare unui pacient existent se apasă opțiunea adaugă o programare de pe pagina cu pacienți.
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ms-1">
+                    <h5 class="ms-1">Comunicația</h5>
+                    <div class="ms-2">
+                        <p>
+                            Pentru comunicare se poate folosi aplicația Discord. <a class="text-color" href="https://discord.com/register">Creează un cont</a> și
+                            <a class="text-color" href="https://discord.gg/xjypgrzYDE">intră în aplictie folosind acest link.</a>
+                        </p>
+                        <ul class="list-group list-group-flush col-7">
+                            <li class="list-group-item">În secțiune #to-do puteți adaugă posibile modificări</li>
+                            <li class="list-group-item">În secțiune #bugs-report puteți adaugă erori(print screen sau poza + explicație eroare)</li>
+                            <li class="list-group-item">În secțiune #updates puteți vizualiza modificările aduse</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+        
 }

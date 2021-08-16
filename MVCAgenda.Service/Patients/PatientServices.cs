@@ -203,6 +203,7 @@ namespace MVCAgenda.Service.Patients
                 return emptyPatient;
             }
         }
+
         public async Task<PatientViewModel> GetPatientViewModelByIdAsync(Patient patient)
         {
             try

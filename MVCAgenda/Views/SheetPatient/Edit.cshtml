@@ -17,7 +17,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
 
-                <h2 class="text-color text-center mb-3">Modifica fisa pacientului</h2>
+                <h2 class="text-color text-center mb-3">Modifică fișa pacientului</h2>
 
                 <div class="form-floating mb-3">
                     <input asp-for="AntecedentsH" class="form-control" id="floatingInput">
@@ -63,8 +63,8 @@
                 </div>
                 <div class=" mt-3 d-lg-flex justify-content-lg-center">
                     <div class="btn-group" role="group" aria-label="Optiuni">
-                        <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Inapoi</a>
-                        <input type="submit" value="Salveaza modificarile" class="btn btn-main-color-filled" />
+                        <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Anulează</a>
+                        <input type="submit" value="Salvează modificările" class="btn btn-main-color-filled" />
                     </div>
                 </div>
             </form>

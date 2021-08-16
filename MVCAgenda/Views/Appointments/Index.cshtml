@@ -9,14 +9,14 @@
         <div class="row justify-content-between">
             <div class="col-auto">
                 @if (Model.Blacklist == true)
-                {<text><h2 class="text-color mb-3 text-center">Programari neefectuate</h2></text>}
+                {<text><h2 class="text-color mb-3 text-center">Programări neefectuate</h2></text>}
                 @if (Model.Hidden == true)
-                {<text><h2 class="text-color mb-3 text-center">Programari sterse</h2></text>}
+                {<text><h2 class="text-color mb-3 text-center">Programări sterse</h2></text>}
                 @if (Model.Hidden == false && Model.Blacklist == false)
-                {<text><h2 class="text-color mb-3 text-center">Programari</h2></text>}
+                {<text><h2 class="text-color mb-3 text-center">Programări</h2></text>}
             </div>
             <div class="col-auto">
-                <a asp-action="Create" class="btn btn-main-second-color-filled">Adauga o programare</a>
+                <a asp-action="Create" class="btn btn-main-second-color-filled">Adaugă o programare</a>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
                     <option disabled selected>Medic</option>
                 </select>
                 <select class="form-control" placeholder="Camera" asp-for="SearchByRoom" asp-items="ViewBag.RoomId">
-                    <option disabled selected>Camera</option>
+                    <option disabled selected>Cameră</option>
                 </select>
             </div>
             <div class="input-group mb-3">
@@ -38,17 +38,17 @@
                 <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
                 <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
 
-                <input class="btn btn-main-color-filled" type="submit" value="Cauta" />
+                <input class="btn btn-main-color-filled" type="submit" value="Caută" />
                 <div class="dropdown">
                     <button class="btn btn-main-color dropdown-toggle btn-no-left-border-radius" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Optiuni
+                        Opțiuni
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li>
                             @if (Model.Hidden == false)
                             {
                                 <text>
-                                    <a asp-action="Index" asp-route-Hidden="true" class="dropdown-item link-danger">Programari sterse</a>
+                                    <a asp-action="Index" asp-route-Hidden="true" class="dropdown-item link-danger">Programări șterse</a>
                                 </text>
                             }
                         </li>
@@ -56,7 +56,7 @@
                             @if (Model.Blacklist == true || Model.Hidden == true)
                             {
                                 <text>
-                                    <a asp-action="Index" class="dropdown-item link-primary">Programari</a>
+                                    <a asp-action="Index" class="dropdown-item text-color">Programări</a>
                                 </text>
                             }
                         </li>

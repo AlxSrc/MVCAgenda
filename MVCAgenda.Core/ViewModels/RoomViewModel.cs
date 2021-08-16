@@ -5,7 +5,7 @@ namespace MVCAgenda.Core.ViewModels
 {
     public class RoomViewModel : BaseEntityModel
     {
-        [DisplayName("Denumire camera")]
+        [DisplayName("Denumire cameră")]
         [Required]
         public string RoomName { get; set; }
     }

@@ -6,12 +6,12 @@ namespace MVCAgenda.Core.ViewModels
 {
     public class ConsultationViewModel : BaseEntityModel
     {
-        [DisplayName("Fisa Pacient")] 
+        [DisplayName("Fișă pacient")] 
         public int SheetPatientId { get; set; }
 
 
         [DataType(DataType.DateTime)]
-        [DisplayName("Data creeare")] 
+        [DisplayName("Dată creeare")] 
         public DateTime CreationDate { get; set; }
 
 
@@ -26,7 +26,7 @@ namespace MVCAgenda.Core.ViewModels
 
 
         [StringLength(450, MinimumLength = 1)]
-        [DisplayName("Prescriptii")]
+        [DisplayName("Prescripții")]
         public string Prescriptions { get; set; }
     }
 }

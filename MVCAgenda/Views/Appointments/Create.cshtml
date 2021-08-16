@@ -6,7 +6,7 @@
 {
     @model MVCAgenda.Core.ViewModels.AppointmentViewModel
 <div class="main box">
-    <h2 class="text-color mb-3 text-center">Adauga o programare</h2>
+    <h2 class="text-color mb-3 text-center">Adaugă o programare</h2>
 
     <form asp-action="Create">
 
@@ -39,12 +39,12 @@
                 <span asp-validation-for="Mail" class="text-danger"></span>
             </div>
 
-            <div class="input-group mb-3">
+            @*<div class="input-group mb-3">
                 <div class="input-group-text">
                     <input class="form-check-input mt-0" type="checkbox" asp-for="Blacklist" aria-label="Checkbox for following text input">
                 </div>
                 <input type="text" value="Lista neagra" class="form-control" aria-label="Text input with checkbox" readonly>
-            </div>
+            </div>*@
 
             <div class="form-floating col-md-6">
                 <select asp-for="MedicId" class="form-control" id="floatingInput5" asp-items="ViewBag.MedicId"></select>
@@ -90,8 +90,8 @@
 
         <div class="mt-3 d-lg-flex justify-content-lg-center">
             <div class="btn-group" role="group" aria-label="Optiuni">
-                <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Anuleaza</a>
-                <input type="submit" value="Adauga o programare" class="btn btn-main-color-filled" />
+                <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Anulează</a>
+                <input type="submit" value="Adaugă o programare" class="btn btn-main-color-filled" />
             </div>
         </div>
         
