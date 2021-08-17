@@ -170,7 +170,7 @@ namespace MVCAgenda.Service.Appointments
             }
         }
 
-        public async Task<MVCAgendaViewsManager> GetAppointmentsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, int Id, bool Daily, bool Hidden)
+        public async Task<MVCAgendaViewsManager> GetAppointmentsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
         {
             try
             {
@@ -185,6 +185,7 @@ namespace MVCAgenda.Service.Appointments
                         .Where(a => SearchByRoom != 0 ? a.RoomId == SearchByRoom : true)
                         .Where(a => !string.IsNullOrEmpty(SearchByAppointmentHour) ? a.AppointmentHour.Contains(SearchByAppointmentHour) : true)
                         .Where(a => !string.IsNullOrEmpty(SearchByAppointmentDate) ? a.AppointmentDate.Contains(SearchByAppointmentDate) : true)
+                        .Where(a => !string.IsNullOrEmpty(SearchByProcedure) ? a.Procedure.ToUpper().Contains(SearchByProcedure.ToUpper()) : true)
                             on patient.Id equals appointment.PatientId
 
                     join room in _context.Room on appointment.RoomId equals room.Id
@@ -194,9 +195,9 @@ namespace MVCAgenda.Service.Appointments
                     ).ToListAsync();
 
                 queriAppointmentsList = queriAppointmentsList
-                    .Where(p => !string.IsNullOrEmpty(SearchByName) ? p.FirstName.Contains(SearchByName) : true)
+                    .Where(p => !string.IsNullOrEmpty(SearchByName) ? p.FirstName.ToUpper().Contains(SearchByName.ToUpper()) : true)
                     .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhonNumber.Contains(SearchByPhoneNumber) : true)
-                    .Where(p => !string.IsNullOrEmpty(SearchByEmail) ? p.Mail.Contains(SearchByEmail) : true).ToList();
+                    .Where(p => !string.IsNullOrEmpty(SearchByEmail) ? p.Mail.ToUpper().Contains(SearchByEmail.ToUpper()) : true).ToList();
 
                 return new MVCAgendaViewsManager()
                 {

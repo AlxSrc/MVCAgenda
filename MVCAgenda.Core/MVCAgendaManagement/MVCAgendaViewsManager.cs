@@ -31,15 +31,17 @@ namespace MVCAgenda.Core.MVCAgendaManagement
 
         public string SearchByEmail { get; set; }
 
-        public int SearchByMedic { get; set; }
-
-        public int SearchByRoom { get; set; }
-
         [DataType(DataType.Date)]
         public string SearchByAppointmentDate { get; set; }
 
         [DataType(DataType.Time)]
         public string SearchByAppointmentHour { get; set; }
+
+        public int SearchByMedic { get; set; }
+
+        public int SearchByRoom { get; set; }
+
+        public string SearchByProcedure { get; set; }
         #endregion
     }
 }

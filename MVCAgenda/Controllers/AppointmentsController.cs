@@ -39,7 +39,7 @@ namespace MVCAgenda.Controllers
 
         #region Get
 
-        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, int Id, bool Daily, bool Hidden)
+        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -48,7 +48,7 @@ namespace MVCAgenda.Controllers
 
                 try
                 {
-                    return View(await _appointmentServices.GetAppointmentsAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentHour, SearchByAppointmentDate, SearchByRoom, SearchByMedic, Id, Daily, Hidden));
+                    return View(await _appointmentServices.GetAppointmentsAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentHour, SearchByAppointmentDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
                 }
                 catch
                 {

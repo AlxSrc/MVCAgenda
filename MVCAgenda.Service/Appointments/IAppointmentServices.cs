@@ -13,6 +13,6 @@ namespace MVCAgenda.Service.Appointments
         Task<bool> DeleteAppointmentAsync(int id);
         Task<AppointmentViewModel> GetAppointmentByIdAsync(int Id);
         Task<AppointmentViewModel> GetAppointmentViewModelByIdAsync(Appointment Appointment);
-        Task<MVCAgendaViewsManager> GetAppointmentsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, int Id, bool daily, bool Hiden);
+        Task<MVCAgendaViewsManager> GetAppointmentsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool daily, bool Hiden);
     }
 }

@@ -152,13 +152,13 @@ namespace MVCAgenda.Service.Patients
                     query = query.Where(p => p.Blacklist == true);
 
                 if (!string.IsNullOrEmpty(SearchByName))
-                    query = query.Where(p => p.FirstName.Contains(SearchByName));
+                    query = query.Where(p => p.FirstName.ToUpper().Contains(SearchByName.ToUpper()));
 
                 if (!string.IsNullOrEmpty(SearchByPhoneNumber))
                     query = query.Where(p => p.PhonNumber.Contains(SearchByPhoneNumber));
 
                 if (!string.IsNullOrEmpty(SearchByEmail))
-                    query = query.Where(p => p.Mail.Contains(SearchByEmail));
+                    query = query.Where(p => p.Mail.ToUpper().Contains(SearchByEmail.ToUpper()));
 
                 var patients = await query.ToListAsync(); // aici aducem datele despre pacienti prin sintaxa SQL
 
