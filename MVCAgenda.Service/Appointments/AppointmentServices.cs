@@ -158,9 +158,8 @@ namespace MVCAgenda.Service.Appointments
                     join appointment in _context.Appointment on patient.Id equals appointment.PatientId
                     join room in _context.Room on appointment.RoomId equals room.Id
                     join medic in _context.Medic on appointment.MedicId equals medic.Id
-                    select _agendaViewsFactory.PrepereAppointmentViewModel(appointment, patient, medic, room)
+                    select _agendaViewsFactory.PrepereAppointmentViewModel(appointment, patient, medic, room, false)
                     ).ToListAsync();
-
 
                 return queri.FirstOrDefault(a => a.Id == Id);
             }
@@ -191,7 +190,7 @@ namespace MVCAgenda.Service.Appointments
                     join room in _context.Room on appointment.RoomId equals room.Id
                     join medic in _context.Medic on appointment.MedicId equals medic.Id
                     orderby (appointment.AppointmentHour)
-                    select _agendaViewsFactory.PrepereAppointmentViewModel(appointment, patient, medic, room)
+                    select _agendaViewsFactory.PrepereAppointmentViewModel(appointment, patient, medic, room, true)
                     ).ToListAsync();
 
                 queriAppointmentsList = queriAppointmentsList

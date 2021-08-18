@@ -86,7 +86,7 @@ namespace MVCAgenda.Service.Factories
             return consultationViewModel;
         }
 
-        public AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room)
+        public AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room, bool Index = false)
         {
             string WantedDate = $"{model.AppointmentDate.Substring(5, 2)}-{model.AppointmentDate.Substring(8, 2)}-{model.AppointmentDate.Substring(0, 4)}";
 
@@ -100,7 +100,6 @@ namespace MVCAgenda.Service.Factories
                 Mail = patient.Mail,
                 Medic = medic.MedicName,
                 Room = room.RoomName,
-                AppointmentDate = WantedDate,
                 AppointmentHour = model.AppointmentHour,
                 Procedure = model.Procedure,
                 ResponsibleForAppointment = model.ResponsibleForAppointment,
@@ -108,6 +107,11 @@ namespace MVCAgenda.Service.Factories
                 Comments = model.Comments,
                 Hidden = model.Hidden
             };
+
+            if (Index == true)
+                viewModel.AppointmentDate = WantedDate;
+            else
+                viewModel.AppointmentDate = model.AppointmentDate;
 
             if (model.Made == true)
             {

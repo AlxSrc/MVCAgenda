@@ -11,9 +11,10 @@ for details on configuring this project to bundle and minify static web assets. 
     border-radius: 6px;
 }
 
-.row-action{
-
+.before-after-image {
+    max-width: -webkit-fill-available;
 }
+
 .custom-header {
     max-height: 35px;
 }

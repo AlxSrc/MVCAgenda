@@ -18,6 +18,6 @@ namespace MVCAgenda.Service.Factories
         Task<ConsultationViewModel> PrepereConsultationViewModel(Consultation consultation);
 
         //Appointment
-        AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room);
+        AppointmentViewModel PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room, bool index = false);
     }
 }

@@ -32,6 +32,7 @@ namespace MVCAgenda.Core.MVCAgendaManagement
         public string SearchByEmail { get; set; }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public string SearchByAppointmentDate { get; set; }
 
         [DataType(DataType.Time)]

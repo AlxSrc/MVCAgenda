@@ -56,6 +56,7 @@ namespace MVCAgenda.Core.ViewModels
         //Details about Appoitment
         [DisplayName("Data")]
         [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Required] 
         public string AppointmentDate { get; set; }
 

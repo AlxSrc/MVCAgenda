@@ -135,6 +135,7 @@ namespace MVCAgenda.Controllers
             {
                 ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Hidden == false), "Id", "RoomName");
                 ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Hidden == false), "Id", "MedicName");
+                var model = await _appointmentServices.GetAppointmentByIdAsync(id);
                 return View(await _appointmentServices.GetAppointmentByIdAsync(id));
             }
             else
