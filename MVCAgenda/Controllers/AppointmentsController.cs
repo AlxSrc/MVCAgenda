@@ -214,7 +214,7 @@ namespace MVCAgenda.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var result = await _appointmentServices.HideAppointmentAsync(id);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { Daily = true });
             }
             else
             {
