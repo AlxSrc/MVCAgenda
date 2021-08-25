@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Lista cu programari";
 }
 @if (User.Identity.IsAuthenticated)
@@ -47,17 +48,17 @@
                 <div class="row mb-2">
                     <div class="col same-size">
                         <input type="text" class="form-control"
-                               placeholder="Numele de familie" aria-label="Recipient" asp-for="SearchByName"/>
+                               placeholder="Numele de familie" aria-label="Recipient" asp-for="SearchByName" />
                     </div>
                     <div class="col same-size">
                         <input type="text" class="form-control"
-                               placeholder="Numar de telefon" aria-label="Recipient" asp-for="SearchByPhoneNumber"/>
+                               placeholder="Numar de telefon" aria-label="Recipient" asp-for="SearchByPhoneNumber" />
                     </div>
                     <div class="col same-size">
-                        <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient" asp-for="SearchByEmail"/>
+                        <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient" asp-for="SearchByEmail" />
                     </div>
                     <div class="col same-size">
-                        <input type="text" class="form-control" placeholder="Procedura" aria-label="Recipient" asp-for="SearchByProcedure"/>
+                        <input type="text" class="form-control" placeholder="Procedura" aria-label="Recipient" asp-for="SearchByProcedure" />
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -98,10 +99,10 @@
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
                     </th>
                     <!--
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentsList[0].SecondName)
-                </th>
-                -->
+                    <th>
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].SecondName)
+                    </th>
+                    -->
                     <th>
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].PhonNumber)
                     </th>
@@ -134,10 +135,10 @@
                             @Html.DisplayFor(modelItem => item.FirstName)
                         </td>
                         <!--
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SecondName)
-                    </td>
-                    -->
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SecondName)
+                        </td>
+                        -->
                         <td>
                             @Html.DisplayFor(modelItem => item.PhonNumber)
                         </td>
@@ -175,5 +176,5 @@
             </tbody>
         </table>
     </div>
-    
+
 }
