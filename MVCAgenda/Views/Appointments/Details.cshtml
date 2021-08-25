@@ -8,9 +8,24 @@
     @model MVCAgenda.Core.ViewModels.AppointmentViewModel
 
 <div class="main box">
-    <h2 class="text-color mb-3 text-center">Detalii programare</h2>
 
     <div class="container">
+        <div class="container g-0 mb-3">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <h2 class="text-color text-center">Detalii programare</h2>
+                </div>
+                <div class="col-auto">
+                    <div class="d-lg-flex justify-content-lg-center">
+                        <div class="btn-group" role="group" aria-label="Optiuni">
+                            <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Șterge programarea</a>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifică programarea</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <div class="input-group mb-3">
@@ -106,14 +121,7 @@
                 </div>
             </div>
         </div>
-        <div class=" mt-3 d-lg-flex justify-content-lg-center">
-            <div class="btn-group" role="group" aria-label="Optiuni">
-                <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
-                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Șterge programarea</a>
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifică programarea</a>
-            </div>
-        </div>
-        
+
     </div>
 </div>
 }

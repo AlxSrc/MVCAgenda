@@ -9,6 +9,7 @@ namespace MVCAgenda.Service.Patients
     public interface IPatientServices
     {
         Task<string> CreatePatientAsync(PatientViewModel PatientModel);
+        Task<string> CheckPatientAsync(Patient PatientModel);
         Task<string> EditPatientAsync(PatientViewModel PatientModel);
         Task<bool> DeletePatientAsync(int id);
         Task<string> HidePatientAsync(int id);

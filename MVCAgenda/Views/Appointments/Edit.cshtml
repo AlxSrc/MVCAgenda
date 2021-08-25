@@ -7,9 +7,26 @@
 {
     @model MVCAgenda.Core.ViewModels.AppointmentViewModel
 <div class="main box">
-    <h2 class="text-color mb-3 text-center">Modifică programarea</h2>
 
     <form asp-action="Edit">
+
+        <div class="container g-0">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <h2 class="text-color mb-3 text-center">Modifică programarea</h2>
+
+                </div>
+                <div class="col-auto">
+                    <div class="d-lg-flex justify-content-lg-center">
+                        <div class="btn-group" role="group" aria-label="Optiuni">
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Anulează</a>
+                            <input type="submit" value="Salvează modificările" class="btn btn-main-color-filled" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="row g-3">
@@ -60,12 +77,6 @@
             <input asp-for="Made" type="hidden" />
             <input asp-for="ResponsibleForAppointment" type="hidden" />
             <input asp-for="AppointmentCreationDate" type="hidden" />
-        </div>
-        <div class=" mt-3 d-lg-flex justify-content-lg-center">
-            <div class="btn-group mt-3" role="group" aria-label="Optiuni">
-                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Anulează</a>
-                <input type="submit" value="Salvează modificările" class="btn btn-main-color-filled" />
-            </div>
         </div>
     </form>
 </div>

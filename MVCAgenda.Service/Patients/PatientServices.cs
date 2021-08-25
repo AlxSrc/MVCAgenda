@@ -69,6 +69,51 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
+        public async Task<string> CheckPatientAsync(Patient PatientModel)
+        {
+            try
+            {
+                //To do daca sa valideze doar dupa numar de telefon
+                //Daca suna un pacient de pe numere diferite
+                var patients = await _context.Patient
+                    .Where(p => p.FirstName == PatientModel.FirstName)
+                    .Where(p => p.SecondName == PatientModel.SecondName)
+                    .Where(p => p.PhonNumber == PatientModel.PhonNumber)
+                    .Where(p => p.Mail == PatientModel.Mail)
+                    .Where(p => p.Hidden == false)
+                    .ToListAsync();
+
+                var newPatient = patients.FirstOrDefault();
+
+                if (newPatient == null)
+                {
+                    newPatient = new Patient
+                    {
+                        FirstName = PatientModel.FirstName,
+                        SecondName = PatientModel.SecondName,
+                        PhonNumber = PatientModel.PhonNumber,
+                        Mail = PatientModel.Mail,
+                        Blacklist = false,
+                        Hidden = false
+                    };
+
+                    SheetPatient FisaPacientCurent = new SheetPatient();
+                    _context.Add(FisaPacientCurent);
+                    await _context.SaveChangesAsync();
+
+                    newPatient.SheetPatientId = FisaPacientCurent.Id;
+                    _context.Add(newPatient);
+                    await _context.SaveChangesAsync();
+                }
+
+                return $"{newPatient.Id}";
+            }
+            catch (Exception ex)
+            {
+                return "-1";
+            }
+        }
+
         public async Task<string> EditPatientAsync(PatientViewModel PatientModel)
         {
             try
@@ -215,5 +260,7 @@ namespace MVCAgenda.Service.Patients
                 return new PatientViewModel();
             }
         }
+
+        
     }
 }

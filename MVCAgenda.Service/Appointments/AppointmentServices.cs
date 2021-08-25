@@ -7,6 +7,7 @@ using MVCAgenda.Core.MVCAgendaManagement;
 using MVCAgenda.Core.ViewModels;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Factories;
+using MVCAgenda.Service.Patients;
 
 namespace MVCAgenda.Service.Appointments
 {
@@ -15,16 +16,18 @@ namespace MVCAgenda.Service.Appointments
         #region Services
         private readonly AgendaContext _context;
         private readonly IAgendaViewsFactory _agendaViewsFactory;
+        private readonly IPatientServices _patientServices;
         #endregion
         /**************************************************************************************/
         #region Fields
         private string DayTime = DateTime.Now.ToString("yyyy-MM-dd");
         #endregion
 
-        public AppointmentServices(AgendaContext context, IAgendaViewsFactory agendaViewsFactory)
+        public AppointmentServices(AgendaContext context, IAgendaViewsFactory agendaViewsFactory, IPatientServices patientServices)
         {
             _context = context;
             _agendaViewsFactory = agendaViewsFactory;
+            _patientServices = patientServices;
         }
 
         #region Create
@@ -33,6 +36,7 @@ namespace MVCAgenda.Service.Appointments
         {
             try
             {
+                int patientId;
                 string message = searchAppointment(appointment.MedicId, appointment.RoomId, appointment.AppointmentDate, appointment.AppointmentHour);
                 if (message != "Clear")
                 {
@@ -47,91 +51,40 @@ namespace MVCAgenda.Service.Appointments
                         {
                             return "Error. Not found.";
                         }
-
-                        var newAppointment = new Appointment
-                        {
-                            PatientId = patient.Id,
-                            MedicId = appointment.MedicId,
-                            RoomId = appointment.RoomId,
-                            AppointmentDate = appointment.AppointmentDate,
-                            AppointmentHour = appointment.AppointmentHour,
-                            Procedure = appointment.Procedure,
-                            Made = appointment.Made,
-                            ResponsibleForAppointment = appointment.ResponsibleForAppointment,
-                            AppointmentCreationDate = appointment.AppointmentCreationDate,
-                            Comments = appointment.Comments,
-                            Hidden = appointment.Hidden
-                        };
-
-                        _context.Add(newAppointment);
-                        await _context.SaveChangesAsync();
-
-                        return "Ok";
+                        patientId = patient.Id;
                     }
                     else
                     {
-                        //To do daca sa valideze doar dupa numar de telefon
-                        //Daca suna un pacient de pe numere diferite
-                        var patients = await _context.Patient
-                            .Where(p => p.FirstName == appointment.FirstName)
-                            .Where(p => p.SecondName == appointment.SecondName)
-                            .Where(p => p.PhonNumber == appointment.PhonNumber)
-                            .Where(p => p.Mail == appointment.Mail)
-                            .ToListAsync();
-
-                        if (patients.Count > 1)
-                            return "Eror. Status cod 500";
-
-                        var newPatient = patients.FirstOrDefault();
-
-                        if (newPatient == null)
+                        var newPatient = new Patient
                         {
-                            bool bl;
-                            if (appointment.Blacklist == "Da")
-                                bl = true;
-                            else
-                                bl = false;
-
-                            newPatient = new Patient
-                            {
-                                FirstName = appointment.FirstName,
-                                SecondName = appointment.SecondName,
-                                PhonNumber = appointment.PhonNumber,
-                                Mail = appointment.Mail,
-                                Blacklist = bl
-                            };
-
-                            SheetPatient FisaPacientCurent = new SheetPatient();
-                            _context.Add(FisaPacientCurent);
-                            await _context.SaveChangesAsync();
-
-                            int lastID = _context.SheetPatient.Count();
-                            newPatient.SheetPatientId = lastID;
-                            _context.Add(newPatient);
-                            await _context.SaveChangesAsync();
-                        }
-
-                        var newAppointment = new Appointment
-                        {
-                            Id = appointment.Id,
-                            PatientId = newPatient.Id,
-                            MedicId = appointment.MedicId,
-                            RoomId = appointment.RoomId,
-                            AppointmentDate = appointment.AppointmentDate,
-                            AppointmentHour = appointment.AppointmentHour,
-                            Procedure = appointment.Procedure,
-                            Made = appointment.Made,
-                            ResponsibleForAppointment = appointment.ResponsibleForAppointment,
-                            AppointmentCreationDate = appointment.AppointmentCreationDate,
-                            Comments = appointment.Comments,
-                            Hidden = appointment.Hidden
+                            FirstName = appointment.FirstName,
+                            SecondName = appointment.SecondName,
+                            PhonNumber = appointment.PhonNumber,
+                            Mail = appointment.Mail
                         };
 
-                        _context.Add(newAppointment);
-
-                        await _context.SaveChangesAsync();
-                        return "Ok";
+                        patientId = Int32.Parse(await _patientServices.CheckPatientAsync(newPatient));
                     }
+
+                    var newAppointment = new Appointment
+                    {
+                        PatientId = patientId,
+                        MedicId = appointment.MedicId,
+                        RoomId = appointment.RoomId,
+                        AppointmentDate = appointment.AppointmentDate,
+                        AppointmentHour = appointment.AppointmentHour,
+                        Procedure = appointment.Procedure,
+                        Made = appointment.Made,
+                        ResponsibleForAppointment = appointment.ResponsibleForAppointment,
+                        AppointmentCreationDate = appointment.AppointmentCreationDate,
+                        Comments = appointment.Comments,
+                        Hidden = appointment.Hidden
+                    };
+
+                    _context.Add(newAppointment);
+                    await _context.SaveChangesAsync();
+
+                    return "Ok";
                 }
             }
             catch(Exception ex)

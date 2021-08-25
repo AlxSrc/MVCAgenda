@@ -7,9 +7,24 @@
 {
     @model MVCAgenda.Core.ViewModels.AppointmentViewModel
 <div class="main box">
-    <h2 class="text-color mb-3 text-center">Sunteți sigur că doriți să ștergeți aceasta programare?</h2>
 
     <div class="container">
+        <div class="container g-0">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <h2 class="text-color mb-3 text-center">Sunteți sigur că doriți să ștergeți aceasta programare?</h2>
+                </div>
+                <div class="col-auto">
+                    <form asp-action="Delete">
+                        <div class="btn-group" role="group" aria-label="Opțiuni">
+                            <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Anulează</a>
+                            <input type="hidden" asp-for="Id" />
+                            <input type="submit" value="Șterge programare" class="btn btn-outline-danger" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <div class="input-group mb-3">
@@ -104,16 +119,6 @@
                     <input asp-for="Comments" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Comments)" aria-describedby="basic-addon1" readonly>
                 </div>
             </div>
-        </div>
-        <div class="mt-3 d-lg-flex justify-content-lg-center">
-            <form asp-action="Delete">
-                <div class="btn-group" role="group" aria-label="Opțiuni">
-                    <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Anulează</a>
-                    <input type="hidden" asp-for="Id" />
-                    <input type="submit" value="Șterge programare" class="btn btn-outline-danger" />
-                </div>
-            </form>
-            
         </div>
     </div>
 </div>
