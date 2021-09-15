@@ -1,141 +1,74 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.ViewModels;
-using MVCAgenda.Data.DataBaseManager;
-using MVCAgenda.Service.Factories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Helpers;
+using MVCAgenda.Data.DataBaseManager;
 
 namespace MVCAgenda.Service.Consultations
 {
     public class ConsultationServices : IConsultationServices
     {
-        #region Services
+        #region Fields
         private readonly AgendaContext _context;
-        private readonly IAgendaViewsFactory _agendaViewsFactory; 
         #endregion
         /**************************************************************************************/
-        #region Fields
-        private static DateTime ActualDateTime = DateTime.Now;
-
-        private string DayTime = ActualDateTime.ToString("yyyy-MM-dd");
-        private string _dataCreeareConsultatie = ActualDateTime.ToString("U");
-        #endregion
-
-        public ConsultationServices(AgendaContext context, IAgendaViewsFactory agendaViewsFactory)
+        #region Constructor
+        public ConsultationServices(AgendaContext context)
         {
             _context = context;
-            _agendaViewsFactory = agendaViewsFactory;
         }
-
-        #region Create
-        public async Task<bool> CreateConsultationAsync(ConsultationViewModel consultation)
+        #endregion
+        /**************************************************************************************/
+        #region Methods
+        public async Task<bool> CreateAsync(Consultation consultation)
         {
             try
             {
-                _context.Add(new Consultation()
-                {
-                    SheetPatientId = consultation.SheetPatientId,
-                    CreationDate = consultation.CreationDate,
-                    Symptoms = consultation.Symptoms,
-                    Diagnostic = consultation.Diagnostic,
-                    Prescriptions = consultation.Prescriptions
-                });
+                _context.Add(consultation);
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex)
+            catch
             {
                 return false;
             }
         }
-        #endregion
-        /**************************************************************************************/
-        #region Get
-        public async Task<ConsultationViewModel> GetConsultationAsync(int id)
+        
+        public async Task<Consultation> GetAsync(int id)
         {
-            try
-            {
-                if (id == null)
-                {
-                    return new ConsultationViewModel();
-                }
-
-                var consultation = await _context.Consultation.FirstOrDefaultAsync(m => m.Id == id);
-                if (consultation == null)
-                {
-                    return new ConsultationViewModel();
-                }
-
-                return await _agendaViewsFactory.PrepereConsultationViewModel(consultation);
-            }
-            catch
-            {
-                return new ConsultationViewModel();
-            }
+            var consultation = await _context.Consultations.FirstOrDefaultAsync(m => m.Id == id);
+            return consultation;
         }
-        public async Task<List<ConsultationViewModel>> GetConsultationsAsync(int id)
+        public async Task<List<Consultation>> GetListAsync(int id)
         {
-            try
-            {
-                var consultationViewModel = new List<ConsultationViewModel>();
-                IQueryable<Consultation> query = _context.Consultation;
-                query = query.Where(p => p.SheetPatientId == id);
-
-                var consultations = await query.OrderByDescending(c => c.CreationDate).Where(c => c.Hidden == false).ToListAsync();
-
-                foreach (var consul in consultations)
-                    consultationViewModel.Add(await _agendaViewsFactory.PrepereConsultationViewModel(consul));
-
-                return consultationViewModel;
-            }
-            catch
-            {
-                return new List<ConsultationViewModel>();
-            }
+            var query = _context.Consultations.Where(p => p.SheetPatientId == id);
+            return await query.OrderByDescending(c => c.CreationDate).Where(c => c.Hidden == false).ToListAsync();
         }
-        #endregion
-        /**************************************************************************************/
-        #region Edit
-        public async Task<bool> EditConsultationAsync(ConsultationViewModel consultationModel)
+       
+        public async Task<bool> UpdateAsync(Consultation consultation)
         {
-            var consultation = new Consultation();
             try
             {
-                consultation.Id = consultationModel.Id;
-                consultation.SheetPatientId = consultationModel.SheetPatientId;
-                consultation.CreationDate = consultationModel.CreationDate;
-                consultation.Prescriptions = consultationModel.Prescriptions;
-                consultation.Symptoms = consultationModel.Symptoms;
-                consultation.Diagnostic = consultationModel.Diagnostic;
-
-                if (_context.Consultation.Any(e => e.Id == consultationModel.Id))
-                {
-                    _context.Update(consultation);
-                    await _context.SaveChangesAsync();
-                    return true;
-                }
-                else
-                    return false;
+                _context.Update(consultation);
+                await _context.SaveChangesAsync();
+                return true;
             }
             catch
             {
                 return false;
             }
         }
-        #endregion
-        /**************************************************************************************/
-        #region Hide
-        public async Task<bool> HideConsultationAsync(int id)
+        
+        public async Task<bool> HideAsync(int id)
         {
             try
             {
-                var consultation = await _context.Consultation.FindAsync(id);
+                var consultation = await _context.Consultations.FindAsync(id);
                 consultation.Hidden = true;
-                _context.Consultation.Update(consultation);
+                _context.Consultations.Update(consultation);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -143,16 +76,13 @@ namespace MVCAgenda.Service.Consultations
             {
                 return false;
             }
+            
         }
-        #endregion
-        /**************************************************************************************/
-        #region Delete
-        public async Task<bool> DeleteConsultationAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
-                var consultation = await _context.Consultation.FindAsync(id);
-                _context.Consultation.Remove(consultation);
+                _context.Consultations.Remove(await _context.Consultations.FindAsync(id));
                 await _context.SaveChangesAsync();
                 return true;
             }

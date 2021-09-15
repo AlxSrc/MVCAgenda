@@ -5,12 +5,28 @@
 @if (User.Identity.IsAuthenticated)
 {
 
-    @model MVCAgenda.Core.ViewModels.ConsultationViewModel
+    @model MVCAgenda.Models.Consultations.ConsultationDetailsViewModel
 
 <div class="main box">
     <div>
-
-        <h3 class="mb-3 text-color">Ești sigur că vrei să ștergi asta?</h3>
+        <div class="container g-0">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                                    <h3 class="mb-3 text-color">Ești sigur că vrei să ștergi asta?</h3>
+                        </div>
+                        <div class="col-auto">
+                            <div class="mb-3 d-lg-flex justify-content-lg-center">
+                                <div class="form-group btn-group" role="group" aria-label="Optiuni">
+                                        <form asp-action="Delete">
+                                            <input type="hidden" asp-for="Id" />
+                                            <input type="submit" value="Sterge consultatia" class="btn btn-outline-danger" />
+                                            <a asp-action="Details" asp-controller="PatientSheet" asp-route-id="@Model.SheetPatientId" class="btn btn-main-color-filled">Detalii fisa pacient</a>
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
         <dl class="row">
             <dt class="col-sm-2">
@@ -44,14 +60,6 @@
                 @Html.DisplayFor(model => model.Prescriptions)
             </dd>
         </dl>
-
-        <div class=" mt-3 d-lg-flex justify-content-lg-center">
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Sterge consultatia" class="btn btn-outline-danger" />
-                <a asp-action="Details" asp-controller="FisePacienti" asp-route-id="@Model.SheetPatientId" class="btn btn-main-color-filled">Detalii fisa pacient</a>
-            </form>
-        </div>
     </div>
 </div>
 }

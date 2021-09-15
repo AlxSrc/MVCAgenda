@@ -1,20 +1,20 @@
-﻿using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.MVCAgendaManagement;
-using MVCAgenda.Core.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MVCAgenda.Core.Domain;
 
 namespace MVCAgenda.Service.Patients
 {
     public interface IPatientServices
     {
-        Task<string> CreatePatientAsync(PatientViewModel PatientModel);
-        Task<string> CheckPatientAsync(Patient PatientModel);
-        Task<string> EditPatientAsync(PatientViewModel PatientModel);
-        Task<bool> DeletePatientAsync(int id);
-        Task<string> HidePatientAsync(int id);
-        Task<MVCAgendaViewsManager> GetPatientsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isDeleted);
-        Task<Patient> GetPatientByIdAsync(int Id);
-        Task<PatientViewModel> GetPatientViewModelByIdAsync(Patient patient);
+        Task<bool> CreateAsync(Patient patient);
+        Task<int> CheckExistentPatientAsync(Patient patient);
+        
+        Task<List<Patient>> GetListAsync(string searchByName, string searchByPhoneNumber, string searchByEmail, bool includeBlackList, bool isDeleted);
+        Task<Patient> GetAsync(int Id, bool GetPatientByPatientSheetId = false);
+        
+        Task<bool> UpdateAsync(Patient patient);
+        
+        Task<bool> DeleteAsync(int id);
+        Task<bool> HideAsync(int id);
     }
 }

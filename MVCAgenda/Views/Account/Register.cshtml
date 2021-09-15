@@ -3,9 +3,9 @@
     ViewData["Title"] = "Register";
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-    @model MVCAgenda.Core.AccountModels.RegisterViewModel
+@*@if (User.Identity.IsAuthenticated)
+{*@
+    @model MVCAgenda.Models.Accounts.RegisterViewModel
 <div class="d-lg-flex justify-content-lg-center text-center">
     <div class="main box"><form method="post">
 
@@ -35,4 +35,4 @@
 </form></div>
     
 </div>
-}
+@*}*@

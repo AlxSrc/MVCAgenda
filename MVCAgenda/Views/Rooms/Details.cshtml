@@ -7,7 +7,7 @@
 @if (User.Identity.IsAuthenticated)
 {
 
-    @model MVCAgenda.Core.ViewModels.RoomViewModel
+    @model MVCAgenda.Models.Rooms.RoomViewModel
 
     <div class="main box">
         <div class=" mt-3 d-lg-flex justify-content-lg-center">
@@ -26,9 +26,25 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.RoomName)</span>
-                    <input asp-for="RoomName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.RoomName)" aria-describedby="basic-addon2" readonly>
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Name)</span>
+                    <input asp-for="Name" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Name)" aria-describedby="basic-addon2" readonly>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.PrimaryColor)</span>
+                    <input asp-for="PrimaryColor" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.PrimaryColor)" aria-describedby="basic-addon2" readonly>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.SecondaryColor)</span>
+                    <input asp-for="SecondaryColor" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.SecondaryColor)" aria-describedby="basic-addon2" readonly>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Description)</span>
+                    <input asp-for="Description" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Description)" aria-describedby="basic-addon2" readonly>
                 </div>
             </div>
         </div>

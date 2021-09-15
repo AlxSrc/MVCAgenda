@@ -4,7 +4,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.MVCAgendaManagement.ManageViewModel
+    @model MVCAgenda.Models.Home.ManageViewModel
 
     <div class="main box">
         <div class="mt-3 d-lg-flex justify-content-lg-center">
@@ -27,7 +27,7 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.MedicName)
+                                    @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
                                     <a class="link-info" asp-action="Edit" asp-controller="Medics" asp-route-id="@item.Id">Modifică medicul</a>
@@ -54,7 +54,7 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.RoomName)
+                                    @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
                                     <a class="link-info" asp-action="Edit" asp-controller="Rooms" asp-route-id="@item.Id">Modifică camera</a>

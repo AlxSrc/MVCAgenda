@@ -4,7 +4,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
+    @model MVCAgenda.Models.Patients.PatientsViewModel
 
     <div class="container g-0">
         <div class="row justify-content-between">
@@ -126,7 +126,7 @@
                                         <a asp-action="Details" class="dropdown-item text-color" asp-route-id="@item.Id">Detalii</a>
                                     </li>
                                     <li>
-                                        <a asp-action="Details" asp-controller="SheetPatient" class="dropdown-item text-color" asp-route-id="@item.SheetPatientId">Fișa medicală</a>
+                                        <a asp-action="Details" asp-controller="PatientSheet" class="dropdown-item text-color" asp-route-id="@item.SheetPatientId">Fișa medicală</a>
                                     </li>
                                 </ul>
                             </div>

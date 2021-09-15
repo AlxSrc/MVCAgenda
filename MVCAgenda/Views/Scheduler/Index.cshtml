@@ -1,0 +1,359 @@
+﻿@{
+    ViewData["Title"] = "Lista cu programari";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Models.SyncfusionScheduler.ScheduleList
+
+    <div class="main box">
+
+        @using Syncfusion.EJ2.Schedule
+        @using Syncfusion.EJ2.Buttons
+        @using MVCAgenda.Models.SyncfusionScheduler
+
+        @{
+            var validationRules = new Dictionary<string, object>() { { "required", true } };
+            var locationValidationRules = new Dictionary<string, object>() { { "required", true }, { "regex", new string[] { "^[a-zA-Z0-9- ]*$", "Special character(s) not allowed in this field" } } };
+            var descriptionValidationRules = new Dictionary<string, object>() { { "required", true }, { "minLength", 5 }, { "maxLength", 500 } };
+        }
+
+        <ejs-schedule 
+            id="schedule" height="650px" 
+            startHour="06:00" endHour="20:00" showQuickInfo="true"
+            firstDayOfWeek=1 currentView="Week" selectedDate="@DateTime.Now.Date"
+            actionBegin="onActionBegin" actionComplete="onActionComplete" 
+            popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate">
+
+            <e-schedule-eventsettings>
+
+                <e-data-manager url="@Url.Action("LoadData", "Scheduler")" adaptor="WebMethodAdaptor"></e-data-manager>
+
+                <e-eventsettings-fields>
+                    <e-field-subject name="Subject" validation="validationRules"></e-field-subject>
+                    <e-field-starttime name="StartTime" validation="validationRules"></e-field-starttime>
+                    <e-field-endtime name="EndTime" validation="validationRules"></e-field-endtime>
+                </e-eventsettings-fields>
+
+            </e-schedule-eventsettings>
+
+            <e-schedule-views>
+                <e-schedule-view option="Day"></e-schedule-view>
+                <e-schedule-view option="Week" eventTemplate="#event-template"></e-schedule-view>
+                <e-schedule-view option="TimelineWeek" eventTemplate="#timeline-event-template"></e-schedule-view>
+                <e-schedule-view option="WorkWeek"></e-schedule-view>
+                <e-schedule-view option="Month"></e-schedule-view>
+            </e-schedule-views>
+
+        </ejs-schedule>
+
+        <script language="javascript" type="text/javascript">
+            var instance = new ej.base.Internationalization();
+            window.getTimeString = function (value) {
+                return instance.formatDate(value, { skeleton: 'hm' });
+            }
+
+            function onActionBegin(args) {
+                 if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
+                    var data;
+                    if (args.requestType === 'eventCreate') {
+                        data = args.data[0];
+                    } else if (args.requestType === 'eventChange') {
+                        data = args.data;
+                    }
+                    var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+                    if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime))
+                        args.cancel = true;
+                 }
+            }
+            function onEventRendered(args) {
+                var categoryColor;
+
+                switch (args.data.MedicId) {
+                    case 1:
+                        categoryColor = '#F57F17';
+                        break;
+                    case 2:
+                        categoryColor = '#7fa900';
+                        break;
+                    case 3:
+                        categoryColor = '#8e24aa';
+                        break;
+                }
+                if (!args.element || !categoryColor) {
+                    return;
+                }
+                var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+                if (scheduleObj.currentView === 'Agenda') {
+                    (args.element.firstChild).style.borderLeftColor = categoryColor;
+                } else {
+                    args.element.style.backgroundColor = categoryColor;
+                }
+            }
+            function onActionComplete(args) {
+                console.log(args);
+                var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+
+                if (args.requestType === "eventCreated") {
+                
+                    let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');;
+                    args.data[0].StartTime = formatted_start_date;
+
+                    let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');;
+                    args.data[0].EndTime = formatted_end_date;
+                
+                    $.ajax({
+                        url: "@Url.Action("AddData", "Scheduler")",
+                        data: args.data[0],
+                    type: "POST",
+                    success: function (result)
+                    {
+                        if (result === "The appointment was succesfull added.") {
+                            scheduleObj.refresh();
+                            console.log(result.result);
+                        }
+                        else
+                        {
+                            alert(result.result);
+                            scheduleObj.refresh();
+                            console.log(result.result);
+                        }
+                    }});
+                }
+                if (args.requestType === "eventRemoved") {
+                    $.ajax({
+                        url: "@Url.Action("DeleteData", "Scheduler")",
+                        data: args.data[0],
+                        type: "POST",
+                        success: function (result)
+                        {
+                            scheduleObj.refresh();
+                            console.log(result.result);
+                        }});
+                }
+                if (args.requestType === "eventChanged") {
+                
+                    let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');;
+                    args.data[0].StartTime = formatted_start_date;
+
+                    let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');;
+                    args.data[0].EndTime = formatted_end_date;
+                
+                    $.ajax({
+                        url: "@Url.Action("EditData", "Scheduler")",
+                        data: args.data[0],
+                    type: "POST",
+                    success: function (result)
+                    {
+                        scheduleObj.refresh();
+                        console.log(result.result);
+                    }});
+                }
+            }
+            function onPopupOpen(args) {
+
+                if (args.type === 'Editor') {
+
+
+                    var medicListElement = args.element.querySelector('#MedicId');
+                    if (!medicListElement.classList.contains('e-dropdownlist')) {
+                        var dropDownListMedicObject = new ej.dropdowns.DropDownList({
+                            placeholder: 'Alege medicul', value: medicListElement.value,
+                            dataSource: @Html.Raw(ViewData["MedicId"]),
+                            fields: { text: 'name', value: 'id' },
+                            value: (args.data).EventType
+                        });
+                        dropDownListMedicObject.appendTo(medicListElement);
+                        medicListElement.setAttribute('name', 'MedicId');
+                    }
+
+                    var roomListElement = args.element.querySelector('#RoomId');
+                    if (!roomListElement.classList.contains('e-dropdownlist')) {
+                        var dropDownListRoomObject = new ej.dropdowns.DropDownList({
+                            placeholder: 'Alege camera', value: roomListElement.value,
+                            dataSource: @Html.Raw(ViewData["RoomId"]),
+                            fields: { text: 'name', value: 'id'},
+                            selectedIndex:1,
+                            value: (args.data).EventType
+                        });
+                        dropDownListRoomObject.appendTo(roomListElement);
+                        roomListElement.setAttribute('name', 'RoomId');
+                    }
+
+                    var startElement = args.element.querySelector('#StartTime');
+                    if (!startElement.classList.contains('e-datetimepicker')) {
+                        new ej.calendars.DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
+                    }
+                    var endElement = args.element.querySelector('#EndTime');
+                    if (!endElement.classList.contains('e-datetimepicker')) {
+                        new ej.calendars.DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
+                    }
+                }
+            }
+        </script>
+
+        <style>
+            .custom-event-editor .e-textlabel {
+                padding-right: 15px;
+                text-align: right;
+            }
+
+            .custom-event-editor td {
+                padding: 7px;
+                padding-right: 16px;
+            }
+            .e-schedule .e-vertical-view .e-content-wrap .e-appointment,
+            .e-schedule .e-timeline-view .e-content-wrap .e-appointment {
+                border-radius: 8px;
+            }
+
+            .e-schedule .e-vertical-view .e-content-wrap .e-appointment .e-appointment-details {
+                padding: 0;
+                height: 100%;
+            }
+
+            .e-schedule .template-wrap {
+                height: 100%;
+                white-space: normal;
+            }
+
+            .e-schedule .template-wrap .image {
+                padding: 8px 0 4px;
+            }
+
+            .e-schedule .template-wrap .image img {
+                height: 100%;
+                width: 100%;
+                padding: 10px 25%;
+            }
+
+            .e-schedule .template-wrap .subject {
+                font-weight: 600;
+                font-size: 15px;
+                padding: 4px 4px 4px;
+                height: 25px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .e-schedule .template-wrap .time {
+                height: 25px;
+            }
+
+            .e-schedule .template-wrap .time,
+            .e-schedule .template-wrap .description {
+                font-size: 12px;
+                padding: 4px 6px 4px;
+                overflow: hidden;
+            }
+
+            .e-schedule .template-wrap .footer {
+                position: absolute;
+                bottom: 0;
+                height: 50px;
+                width: 100%;
+            }
+
+            .e-schedule .e-timeline-view .e-appointment .e-appointment-details {
+                padding: 0;
+                height: 100%;
+                width: 100%;
+            }
+
+            .e-schedule .e-timeline-view .template-wrap {
+                width: 100%;
+            }
+
+            .e-schedule .e-timeline-view .template-wrap .subject {
+                font-size: 16px;
+                height: 36px;
+                text-align: center;
+            }
+        </style>
+
+        <script id="event-template" type="text/x-template">
+            <div class='template-wrap' style='background:${SecondaryColor}'>
+                <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
+                <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
+                <div class="description">${FirstName} - ${PhonNumber}</div>
+                <div class="description">${Room} - ${Medic}</div>
+                <div class="description">${Description}</div>
+            </div>
+        </script>
+
+        <script id="timeline-event-template" type="text/x-template">
+            <div class='template-wrap' style='background:${PrimaryColor}'>
+                <div class="subject" style='background:${SecondaryColor}; border-left: 15px solid ${PrimaryColor};border-right: 15px solid ${PrimaryColor};'>${Subject}</div>
+            </div>
+        </script>
+
+        <script id="EventEditorTemplate" type="text/x-template">
+            @*@Html.PartialAsync("_SchedulerPopUp",modelPrecompletat)*@
+            <table class="custom-event-editor" width="100%" cellpadding="5">
+                <tbody>
+                    <tr>
+                        <td class="e-textlabel">Numele*</td>
+                        <td colspan="4">
+                            <input id="FirstName" name="FirstName" class="e-field e-input" type="text" value="" style="width: 100%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Prenumele</td>
+                        <td colspan="4">
+                            <input id="SecondName" name="SecondName" class="e-field e-input" type="text" value="" style="width: 100%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Numar de telefon*</td>
+                        <td colspan="4">
+                            <input id="PhonNumber" name="PhonNumber" class="e-field e-input" type="text" value="" style="width: 100%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Mail</td>
+                        <td colspan="4">
+                            <input id="Mail" name="Mail" class="e-field e-input" type="text" value="" style="width: 100%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Medicul</td>
+                        <td colspan="4">
+                            <input type="text" id="MedicId" name="MedicId" class="e-field" style="width: 100%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Camera</td>
+                        <td colspan="4">
+                            <input type="text" id="RoomId" name="RoomId" class="e-field" style="width: 100%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Incepe pe</td>
+                        <td colspan="4">
+                            <input id="StartTime" class="e-field" type="text" name="StartTime" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Se termina pe</td>
+                        <td colspan="4">
+                            <input id="EndTime" class="e-field" type="text" name="EndTime" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Procedura</td>
+                        <td colspan="4">
+                            <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Comentarii</td>
+                        <td colspan="4">
+                            <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
+                                      style="width: 100%; height: 60px !important; resize: vertical"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </script>
+    </div>
+}

@@ -74,7 +74,7 @@ namespace MVCAgenda.Data.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Appointment");
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("MVCAgenda.Core.Domain.Consultation", b =>
@@ -109,7 +109,7 @@ namespace MVCAgenda.Data.Migrations
 
                     b.HasIndex("SheetPatientId");
 
-                    b.ToTable("Consultation");
+                    b.ToTable("Consultations");
                 });
 
             modelBuilder.Entity("MVCAgenda.Core.Domain.Medic", b =>
@@ -122,14 +122,19 @@ namespace MVCAgenda.Data.Migrations
                     b.Property<bool>("Hidden")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MedicName")
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Medic");
+                    b.ToTable("Medics");
                 });
 
             modelBuilder.Entity("MVCAgenda.Core.Domain.Patient", b =>
@@ -154,6 +159,9 @@ namespace MVCAgenda.Data.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
+                    b.Property<int>("PatientSheetId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhonNumber")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -163,38 +171,19 @@ namespace MVCAgenda.Data.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("SheetPatientId")
+                    b.Property<int?>("SheetPatientId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SheetPatientId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[SheetPatientId] IS NOT NULL");
 
-                    b.ToTable("Patient");
+                    b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("MVCAgenda.Core.Domain.Room", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Hidden")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RoomName")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Room");
-                });
-
-            modelBuilder.Entity("MVCAgenda.Core.Domain.SheetPatient", b =>
+            modelBuilder.Entity("MVCAgenda.Core.Domain.PatientSheet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -236,7 +225,69 @@ namespace MVCAgenda.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SheetPatient");
+                    b.ToTable("PatientsSheet");
+                });
+
+            modelBuilder.Entity("MVCAgenda.Core.Domain.Room", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Hidden")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("PrimaryColor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecondaryColor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("MVCAgenda.Core.Logging.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Hidden")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LogLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LogLevelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShortMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -449,7 +500,7 @@ namespace MVCAgenda.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MVCAgenda.Core.Domain.Room", "Room")
+                    b.HasOne("MVCAgenda.Core.Domain.Consultation", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -464,7 +515,7 @@ namespace MVCAgenda.Data.Migrations
 
             modelBuilder.Entity("MVCAgenda.Core.Domain.Consultation", b =>
                 {
-                    b.HasOne("MVCAgenda.Core.Domain.SheetPatient", "SheetPatient")
+                    b.HasOne("MVCAgenda.Core.Domain.PatientSheet", "SheetPatient")
                         .WithMany()
                         .HasForeignKey("SheetPatientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -475,11 +526,9 @@ namespace MVCAgenda.Data.Migrations
 
             modelBuilder.Entity("MVCAgenda.Core.Domain.Patient", b =>
                 {
-                    b.HasOne("MVCAgenda.Core.Domain.SheetPatient", "SheetPatient")
+                    b.HasOne("MVCAgenda.Core.Domain.PatientSheet", "SheetPatient")
                         .WithOne("Patient")
-                        .HasForeignKey("MVCAgenda.Core.Domain.Patient", "SheetPatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MVCAgenda.Core.Domain.Patient", "SheetPatientId");
 
                     b.Navigation("SheetPatient");
                 });
@@ -535,7 +584,7 @@ namespace MVCAgenda.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MVCAgenda.Core.Domain.SheetPatient", b =>
+            modelBuilder.Entity("MVCAgenda.Core.Domain.PatientSheet", b =>
                 {
                     b.Navigation("Patient");
                 });

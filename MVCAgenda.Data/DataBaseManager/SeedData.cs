@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MVCAgenda.Core.AccountModels;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Data.DataBaseManager;
 using System;
@@ -22,68 +20,109 @@ namespace MVCAgenda.Data
                 serviceProvider.GetRequiredService<
                     DbContextOptions<AgendaContext>>()))
                 {
-                    if (context.Room.Any() == false)
+                    if (context.Rooms.Any() == false)
                     {
-                        context.Room.AddRange(
+                        context.Rooms.AddRange(
                         new Room
                         {
-                            RoomName = "Camera 1 medical"
+                            Name = "Camera 1 medical",
+                            Description = "Camera consultatii",
+                            PrimaryColor = "#3cdeff",
+                            SecondaryColor = "#b6fbff",
+                            Hidden = false
                         },
                         new Room
                         {
-                            RoomName = "Camera 2 medical"
+                            Name = "Camera 2 medical",
+                            Description = "Camera Operatii",
+                            PrimaryColor = "#6dd5ed",
+                            SecondaryColor = "#01F0C0",
+                            Hidden = false
                         },
                         new Room
                         {
-                            RoomName = "Camera 3 medical"
+                            Name = "Camera 3 medical",
+                            Description = "Camera 3 medical description",
+                            PrimaryColor = "#6dd5ed",
+                            SecondaryColor = "#3498DB",
+                            Hidden = false
                         },
                         new Room
                         {
-                            RoomName = "Camera 1 corporal"
+                            Name = "Camera 1 corporal",
+                            Description = "Camera laser",
+                            PrimaryColor = "#F8F9F9",
+                            SecondaryColor = "#E5E7E9",
+                            Hidden = false
                         },
                         new Room
                         {
-                            RoomName = "Camera 2 corporal"
+                            Name = "Camera 2 corporal",
+                            Description = "Camera 2 corporal descriprion",
+                            PrimaryColor = "#d54381",
+                            SecondaryColor = "#3498DB",
+                            Hidden = false
                         },
                         new Room
                         {
-                            RoomName = "Camera 3 corporal"
+                            Name = "Camera 3 corporal",
+                            Description = "Camera Aparatura",
+                            PrimaryColor = "#6dd5ed",
+                            SecondaryColor = "#7644ad",
+                            Hidden = false
                         },
                         new Room
                         {
-                            RoomName = "Camera 4 corporal"
+                            Name = "Camera 4 corporal",
+                            Description = "Camera reimprospatare",
+                            PrimaryColor = "",
+                            SecondaryColor = "",
+                            Hidden = false
                         },
                         new Room
                         {
-                            RoomName = "Sala de sport"
+                            Name = "Sala de sport",
+                            Description = "Camera refacere musculara",
+                            PrimaryColor = "#d54381",
+                            SecondaryColor = "#7644ad",
+                            Hidden = false
                         });
 
                         context.SaveChanges();
                     }
 
-                    if (context.Medic.Any() == false)
+                    if (context.Medics.Any() == false)
                     {
-                        context.Medic.AddRange(
+                        context.Medics.AddRange(
                         new Medic
                         {
-                            MedicName = "Doctor Ana-Maria"
+                            Name = "Doctor Ana-Maria",
+                            Mail = "ana_maria@yahoo.com",
+                            ImagePath = "",
+                            Hidden = false
                         },
                         new Medic
                         {
-                            MedicName = "Asistent Andrei"
+                            Name = "Asistent Andrei",
+                            Mail = "andrei@yahoo.com",
+                            ImagePath = "",
+                            Hidden = false
                         },
                         new Medic
                         {
-                            MedicName = "Asistent Ionela"
+                            Name = "Asistent Ionela",
+                            Mail = "ionela@yahoo.com",
+                            ImagePath = "",
+                            Hidden = false
                         });
 
                         context.SaveChanges();
                     }
 
-                    if (context.SheetPatient.Any() == false)
+                    if (context.PatientsSheet.Any() == false)
                     {
-                        context.SheetPatient.AddRange(
-                        new SheetPatient
+                        context.PatientsSheet.AddRange(
+                        new PatientSheet
                         {
                             CNP = "1990713123123",
                             PhysicalExamination = "Clinic sanatos",
@@ -94,7 +133,7 @@ namespace MVCAgenda.Data
                             Gender = 1,
                             DateOfBirth = DateTime.Parse("1989-02-12")
                         },
-                        new SheetPatient
+                        new PatientSheet
                         {
                             CNP = "1990713123321",
                             PhysicalExamination = "Clinic sanatos",
@@ -105,7 +144,7 @@ namespace MVCAgenda.Data
                             Gender = 1,
                             DateOfBirth = DateTime.Parse("1934-05-12")
                         },
-                        new SheetPatient
+                        new PatientSheet
                         {
                             CNP = "1990713123098",
                             PhysicalExamination = "Clinic sanatos",
@@ -116,7 +155,7 @@ namespace MVCAgenda.Data
                             Gender = 1,
                             DateOfBirth = DateTime.Parse("1929-02-12")
                         },
-                        new SheetPatient
+                        new PatientSheet
                         {
                             CNP = "2990713123322",
                             PhysicalExamination = "Clinic sanatos",
@@ -127,7 +166,7 @@ namespace MVCAgenda.Data
                             Gender = 0,
                             DateOfBirth = DateTime.Parse("1989-03-12")
                         },
-                        new SheetPatient
+                        new PatientSheet
                         {
                             CNP = "2990713123123",
                             PhysicalExamination = "Clinic sanatos",
@@ -142,16 +181,16 @@ namespace MVCAgenda.Data
                         context.SaveChanges();
                     }
 
-                    if (context.Consultation.Any() == false)
+                    if (context.Consultations.Any() == false)
                     {
-                        context.Consultation.AddRange(
+                        context.Consultations.AddRange(
                         new Consultation
                         {
                             SheetPatientId = 1,
                             Prescriptions = "sample text Prescriptii 1",
                             Diagnostic = "sample text Diagnostic 1",
                             Symptoms = "sample text Simptome 1",
-                            CreationDate = DateTime.Parse("2000-07-24")
+                            CreationDate = DateTime.Parse("2021-07-24 12:00")
                         },
                         new Consultation
                         {
@@ -159,7 +198,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 2",
                             Diagnostic = "sample text Diagnostic 2",
                             Symptoms = "sample text Simptome 2",
-                            CreationDate = DateTime.Parse("2000-07-24")
+                            CreationDate = DateTime.Parse("2021-07-24 12:00")
                         },
                         new Consultation
                         {
@@ -167,7 +206,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 3",
                             Diagnostic = "sample text Diagnostic 3",
                             Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24")
+                            CreationDate = DateTime.Parse("2021-07-24 12:00")
                         },
                         new Consultation
                         {
@@ -175,7 +214,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 3",
                             Diagnostic = "sample text Diagnostic 3",
                             Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24")
+                            CreationDate = DateTime.Parse("2021-07-24 12:00")
                         },
                         new Consultation
                         {
@@ -183,7 +222,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 3",
                             Diagnostic = "sample text Diagnostic 3",
                             Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24")
+                            CreationDate = DateTime.Parse("2021-07-24 12:00")
                         },
                         new Consultation
                         {
@@ -191,7 +230,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 3",
                             Diagnostic = "sample text Diagnostic 3",
                             Symptoms = "sample text Simptome 3",
-                            CreationDate = DateTime.Parse("2000-07-24")
+                            CreationDate = DateTime.Parse("2021-07-24 12:00")
                         },
                         new Consultation
                         {
@@ -199,7 +238,7 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 1",
                             Diagnostic = "sample text Diagnostic 1",
                             Symptoms = "sample text Simptome 1",
-                            CreationDate = DateTime.Parse("2000-07-24")
+                            CreationDate = DateTime.Parse("2021-07-24 12:00")
                         },
                         new Consultation
                         {
@@ -207,18 +246,18 @@ namespace MVCAgenda.Data
                             Prescriptions = "sample text Prescriptii 2",
                             Diagnostic = "sample text Diagnostic 2",
                             Symptoms = "sample text Simptome 2",
-                            CreationDate = DateTime.Parse("2000-07-24")
+                            CreationDate = DateTime.Parse("2021-07-24 12:00")
                         });
 
                         context.SaveChanges();
                     }
 
-                    if (context.Patient.Any() == false)
+                    if (context.Patients.Any() == false)
                     {
-                        context.Patient.AddRange(
+                        context.Patients.AddRange(
                         new Patient
                         {
-                            SheetPatientId = 1,
+                            PatientSheetId = 1,
                             FirstName = "Serediuc",
                             SecondName = "Alexandru",
                             PhonNumber = "0757541521",
@@ -228,7 +267,7 @@ namespace MVCAgenda.Data
                         },
                         new Patient
                         {
-                            SheetPatientId = 2,
+                            PatientSheetId = 2,
                             FirstName = "Serediuc",
                             SecondName = "Constantin",
                             PhonNumber = "0741241712",
@@ -238,7 +277,7 @@ namespace MVCAgenda.Data
                         },
                         new Patient
                         {
-                            SheetPatientId = 3,
+                            PatientSheetId = 3,
                             FirstName = "Mircea",
                             SecondName = "Andrei",
                             PhonNumber = "0757616511",
@@ -248,7 +287,7 @@ namespace MVCAgenda.Data
                         },
                         new Patient
                         {
-                            SheetPatientId = 4,
+                            PatientSheetId = 4,
                             FirstName = "Rotaru",
                             SecondName = "Andreea",
                             PhonNumber = "0757254785",
@@ -258,7 +297,7 @@ namespace MVCAgenda.Data
                         },
                         new Patient
                         {
-                            SheetPatientId = 5,
+                            PatientSheetId = 5,
                             FirstName = "Andreea",
                             SecondName = "Ana",
                             PhonNumber = "0755767254",
@@ -270,9 +309,9 @@ namespace MVCAgenda.Data
                         context.SaveChanges();
                     }
 
-                    if (context.Appointment.Any() == false)
+                    if (context.Appointments.Any() == false)
                     {
-                        context.Appointment.AddRange(
+                        context.Appointments.AddRange(
                         new Appointment
                         {
                             PatientId = 1,

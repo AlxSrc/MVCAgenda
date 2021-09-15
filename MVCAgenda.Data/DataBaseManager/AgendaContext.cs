@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Logging;
 
 namespace MVCAgenda.Data.DataBaseManager
 {
@@ -16,14 +17,14 @@ namespace MVCAgenda.Data.DataBaseManager
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
         }
 
-        public DbSet<Patient> Patient { get; set; }
-        public DbSet<SheetPatient> SheetPatient { get; set; }
-        public DbSet<Appointment> Appointment { get; set; }
-        public DbSet<Consultation> Consultation { get; set; }
-        public DbSet<Room> Room { get; set; }
-        public DbSet<Medic> Medic { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<PatientSheet> PatientsSheet { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Consultation> Consultations { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Medic> Medics { get; set; }
+        public DbSet<Log> Logs { get; set; }
     }
 }

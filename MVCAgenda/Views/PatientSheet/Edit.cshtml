@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @model MVCAgenda.Models.PatientsSheets.PatientSheetEditViewModel
+
+<div class="main box">
+    <div class=" mt-3 d-lg-flex justify-content-lg-center">
+
+        <div class="col-md-12">
+            <form asp-action="Edit">
+
+                <div class="container g-0">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <h2 class="text-color text-center mb-3">Modifică fișa pacientului</h2>
+                        </div>
+                        <div class="col-auto">
+                            <div class="btn-group" role="group" aria-label="Optiuni">
+                                <a asp-action="Details" asp-controller="PatientSheet" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Anulează</a>
+                                <input type="submit" value="Salvează modificările" class="btn btn-main-color-filled" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id"/>
+                <input type="hidden" asp-for="DateOfBirth"/>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="AntecedentsH" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="AntecedentsH"></label>
+                    <span asp-validation-for="AntecedentsH" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="AntecedentsP" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="AntecedentsP"></label>
+                    <span asp-validation-for="AntecedentsP" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="PhysicalExamination" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="PhysicalExamination"></label>
+                    <span asp-validation-for="PhysicalExamination" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="CNP" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="CNP"></label>
+                    <span asp-validation-for="CNP" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <select asp-for="Gender" class="form-select" id="floatingSelect" aria-label="Genul">
+                        <option value="0">Feminin</option>
+                        <option value="1">Masculin</option>
+                    </select>
+                    <label for="floatingSelect">Genul</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Town" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="Town"></label>
+                    <span asp-validation-for="Town" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Street" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="Street"></label>
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+}

@@ -4,20 +4,30 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.ViewModels.AppointmentViewModel
+    @model MVCAgenda.Models.Appointments.AppointmentCreateViewModel
 <div class="main box">
-    <h2 class="text-color mb-3 text-center">Adaugă o programare</h2>
 
     <form asp-action="Create">
-
+        <div class="container g-0">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <h2 class="text-color mb-3 text-center">Adaugă o programare</h2>
+                </div>
+                <div class="col-auto">
+                    <div class="btn-group" role="group" aria-label="Optiuni">
+                        <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Anulează</a>
+                        <input type="submit" value="Adaugă o programare" class="btn btn-main-color-filled" />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row g-3">
-            <input asp-for="Id" type="hidden" />
             <input asp-for="PatientId" type="hidden" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-floating col-md-6">
                 <input asp-for="FirstName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
-                <label for="floatingInput1" asp-for="FirstName"></label>
+                <label for="floatingInput1">@Html.DisplayNameFor(model => model.FirstName)*</label>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
 
@@ -29,7 +39,7 @@
 
             <div class="form-floating col-md-6">
                 <input asp-for="PhonNumber" class="form-control" id="floatingInput3" placeholder="Obligatoriu">
-                <label for="floatingInput3" asp-for="PhonNumber"></label>
+                <label for="floatingInput3">@Html.DisplayNameFor(model => model.PhonNumber)*</label>
                 <span asp-validation-for="PhonNumber" class="text-danger"></span>
             </div>
 
@@ -60,19 +70,19 @@
 
             <div class="form-floating col-md-6">
                 <input asp-for="AppointmentDate" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
-                <label for="floatingInput7" asp-for="AppointmentDate"></label>
+                <label for="floatingInput7">@Html.DisplayNameFor(model => model.AppointmentDate)*</label>
                 <span asp-validation-for="AppointmentDate" class="text-danger"></span>
             </div>
 
             <div class="form-floating col-md-6">
                 <input asp-for="AppointmentHour" class="form-control" id="floatingInput8" placeholder="Obligatoriu">
-                <label for="floatingInput8" asp-for="AppointmentHour"></label>
+                <label for="floatingInput8">@Html.DisplayNameFor(model => model.AppointmentHour)*</label>
                 <span asp-validation-for="AppointmentHour" class="text-danger"></span>
             </div>
 
             <div class="form-floating col-md-6">
                 <input asp-for="Procedure" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
-                <label for="floatingInput7" asp-for="Procedure"></label>
+                <label for="floatingInput7">@Html.DisplayNameFor(model => model.Procedure)*</label>
                 <span asp-validation-for="Procedure" class="text-danger"></span>
             </div>
 
@@ -82,19 +92,8 @@
                 <span asp-validation-for="Comments" class="text-danger"></span>
             </div>
 
-            <input asp-for="Hidden" type="hidden" />
-            <input asp-for="Made" type="hidden" />
             <input asp-for="ResponsibleForAppointment" type="hidden" />
-            <input asp-for="AppointmentCreationDate" type="hidden" />
         </div>
-
-        <div class="mt-3 d-lg-flex justify-content-lg-center">
-            <div class="btn-group" role="group" aria-label="Optiuni">
-                <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Anulează</a>
-                <input type="submit" value="Adaugă o programare" class="btn btn-main-color-filled" />
-            </div>
-        </div>
-        
     </form>
 </div>
     

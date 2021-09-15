@@ -7,7 +7,7 @@
 @if (User.Identity.IsAuthenticated)
 {
 
-    @model MVCAgenda.Core.ViewModels.MedicViewModel
+    @model MVCAgenda.Models.Medics.MedicViewModel
 
 <div class="main box">
     <div class="d-lg-flex justify-content-lg-center">
@@ -29,10 +29,18 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.MedicName)</span>
-                <input asp-for="MedicName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.MedicName)" aria-describedby="basic-addon2" readonly>
+                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Name)</span>
+                <input asp-for="Name" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Name)" aria-describedby="basic-addon2" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Mail)</span>
+                <input asp-for="Mail" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Mail)" aria-describedby="basic-addon2" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.ImagePath)</span>
+                <input asp-for="ImagePath" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.ImagePath)" aria-describedby="basic-addon2" readonly>
             </div>
 
             

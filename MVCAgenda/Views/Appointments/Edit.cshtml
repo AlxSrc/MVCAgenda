@@ -5,7 +5,7 @@
 }
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.ViewModels.AppointmentViewModel
+    @model MVCAgenda.Models.Appointments.AppointmentEditViewModel
 <div class="main box">
 
     <form asp-action="Edit">
@@ -33,9 +33,6 @@
             <input asp-for="Id" type="hidden" />
             <input asp-for="PatientId" type="hidden" />
             <input type="hidden" asp-for="PatientId" />
-            <input type="hidden" asp-for="FirstName" />
-            <input type="hidden" asp-for="SecondName" />
-            <input type="hidden" asp-for="PhonNumber" />
 
             <div class="form-floating col-md-6">
                 <select asp-for="MedicId" class="form-control" id="floatingInput5" asp-items="ViewBag.MedicId"></select>
@@ -72,9 +69,14 @@
                 <label for="floatingInput8" asp-for="Comments"></label>
                 <span asp-validation-for="Comments" class="text-danger"></span>
             </div>
+            <div class="input-group mb-3">
+                <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" asp-for="Made" aria-label="Checkbox for following text input">
+                </div>
+                <input type="text" value="Programare efectuată" class="form-control" aria-label="Text input with checkbox" readonly>
+            </div>
 
             <input asp-for="Hidden" type="hidden" />
-            <input asp-for="Made" type="hidden" />
             <input asp-for="ResponsibleForAppointment" type="hidden" />
             <input asp-for="AppointmentCreationDate" type="hidden" />
         </div>

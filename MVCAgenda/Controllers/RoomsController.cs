@@ -3,45 +3,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.ViewModels;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Managers.Rooms;
+using MVCAgenda.Models.Rooms;
 
 namespace MVCAgenda.Controllers
 {
     public class RoomsController : Controller
     {
-        private readonly AgendaContext _context;
-
-        public RoomsController(AgendaContext context)
+        #region Fields
+        private readonly IRoomsManager _roomManager;
+        #endregion
+        /**************************************************************************************/
+        #region Constructors
+        public RoomsController(IRoomsManager roomManager)
         {
-            _context = context;
+            _roomManager = roomManager;
         }
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var room = await _context.Room
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (room == null)
-                {
-                    return NotFound();
-                }
-
-                RoomViewModel Room = new RoomViewModel() { Id = room.Id, RoomName = room.RoomName, Hidden = room.Hidden };
-                return View(Room);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
-
+        #endregion
+        /**************************************************************************************/
+        #region Create
         public IActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
@@ -62,8 +43,7 @@ namespace MVCAgenda.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(new Room() {RoomName = room.RoomName, Hidden = false});
-                    await _context.SaveChangesAsync();
+                    var result = await _roomManager.CreateAsync(room);
                     return RedirectToAction("Manage", "Home");
                 }
                 return View(room);
@@ -74,23 +54,28 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        #endregion
+        /**************************************************************************************/
+        #region Read
+        public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var room = await _context.Room.FindAsync(id);
-                if (room == null)
-                {
-                    return NotFound();
-                }
-
-                RoomViewModel Room = new RoomViewModel() { Id = room.Id, RoomName = room.RoomName, Hidden = room.Hidden };
-                return View(Room);
+                return View(await _roomManager.GetDetailsAsync(id));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+        #endregion
+        /**************************************************************************************/
+        #region Update
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View(await _roomManager.GetDetailsAsync(id));
             }
             else
             {
@@ -100,7 +85,7 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,RoomViewModel room)
+        public async Task<IActionResult> Edit(int id, RoomViewModel room)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -111,23 +96,7 @@ namespace MVCAgenda.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    try
-                    {
-                        Room Room = new Room() { Id = room.Id, RoomName = room.RoomName, Hidden = room.Hidden };
-                        _context.Update(Room);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!RoomExists(room.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
+                    await _roomManager.UpdateAsync(room);
                     return RedirectToAction("Manage", "Home");
                 }
                 return View(room);
@@ -138,32 +107,20 @@ namespace MVCAgenda.Controllers
             }
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        #endregion
+        /**************************************************************************************/
+        #region Delete
+        public async Task<IActionResult> Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var room = await _context.Room
-                    .FirstOrDefaultAsync(m => m.Id == id);
-
-                if (room == null)
-                {
-                    return NotFound();
-                }
-
-                RoomViewModel Room = new RoomViewModel() { Id = room.Id, RoomName = room.RoomName, Hidden = room.Hidden };
-                return View(Room);
+                return View(await _roomManager.GetDetailsAsync(id));
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
         }
-
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -171,10 +128,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var camera = await _context.Room.FindAsync(id);
-                camera.Hidden = true;
-                _context.Room.Update(camera);
-                await _context.SaveChangesAsync();
+                var resuult = await _roomManager.DeleteAsync(id);
                 return RedirectToAction("Manage", "Home");
             }
             else
@@ -182,10 +136,6 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
-
-        private bool RoomExists(int id)
-        {
-            return _context.Room.Any(e => e.Id == id);
-        }
+        #endregion
     }
 }

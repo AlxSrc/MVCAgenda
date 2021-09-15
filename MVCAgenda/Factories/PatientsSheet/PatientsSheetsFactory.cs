@@ -1,0 +1,62 @@
+﻿using MVCAgenda.Core.Domain;
+using MVCAgenda.Models.Consultations;
+using MVCAgenda.Models.PatientsSheets;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace MVCAgenda.Factories.PatientsSheet
+{
+    public class PatientsSheetsFactory : IPatientsSheetsFactory
+    {
+        public PatientSheetDetailsViewModel PreperePatientSheetDetailsViewModel(PatientSheet model, Patient patient, List
+            <ConsultationViewModel> consultations)
+        {
+            PatientSheetDetailsViewModel preparedView = new PatientSheetDetailsViewModel()
+            {
+                Id = model.Id,
+                FirstName = patient.FirstName,
+                SecondName = patient.SecondName,
+                AntecedentsH = model.AntecedentsH,
+                AntecedentsP = model.AntecedentsP,
+                PhysicalExamination = model.PhysicalExamination,
+                CNP = model.CNP,
+                DateOfBirth = model.DateOfBirth,
+                Town = model.Town,
+                Street = model.Street,
+                Consultations = consultations,
+                Hidden = model.Hidden
+            };
+
+            if (model.Gender == 1)
+            {
+                preparedView.Gender = "Masculin";
+            }
+            else if (model.Gender == 0)
+            {
+                preparedView.Gender = "Feminin";
+            }
+            else
+            {
+                preparedView.Gender = "-";
+            }
+
+            return preparedView;
+        }
+
+        public PatientSheetEditViewModel PreperePatientSheetEditViewModel(PatientSheet model)
+        {
+            return new PatientSheetEditViewModel()
+            {
+                Id = model.Id,
+                AntecedentsH = model.AntecedentsH,
+                AntecedentsP = model.AntecedentsP,
+                PhysicalExamination = model.PhysicalExamination,
+                CNP = model.CNP,
+                DateOfBirth = model.DateOfBirth,
+                Town = model.Town,
+                Street = model.Street,
+                Hidden = model.Hidden
+            };
+        }
+    }
+}

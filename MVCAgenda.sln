@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCAgenda", "MVCAgenda\MVCAgenda.csproj", "{FD72CA65-28C4-49EB-89D8-0D2C7082A23B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCAgenda.Service", "MVCAgenda.Service\MVCAgenda.Service.csproj", "{8AC551FC-C530-4237-A280-5F0B283A907B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCAgenda.Service", "MVCAgenda.Service\MVCAgenda.Service.csproj", "{8AC551FC-C530-4237-A280-5F0B283A907B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCAgenda.Data", "MVCAgenda.Data\MVCAgenda.Data.csproj", "{D5D90532-77FE-428E-B6E2-1C73A8EBDF7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCAgenda.Data", "MVCAgenda.Data\MVCAgenda.Data.csproj", "{D5D90532-77FE-428E-B6E2-1C73A8EBDF7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCAgenda.Core", "MVCAgenda.Core\MVCAgenda.Core.csproj", "{7E71A58D-058F-4184-A579-E16AC31E707E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCAgenda.Core", "MVCAgenda.Core\MVCAgenda.Core.csproj", "{7E71A58D-058F-4184-A579-E16AC31E707E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{A32EA766-E6DE-4393-81BE-99689A4EBD2F}"
 EndProject

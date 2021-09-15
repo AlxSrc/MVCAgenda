@@ -1,66 +1,41 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.MVCAgendaManagement;
-using MVCAgenda.Core.ViewModels;
+using MVCAgenda.Core.Helpers;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Managers.Appointments;
+using MVCAgenda.Models.Appointments;
 using MVCAgenda.Service.Appointments;
-using MVCAgenda.Service.Factories;
+using MVCAgenda.Service.Medics;
+using MVCAgenda.Service.Patients;
+using MVCAgenda.Service.Rooms;
 
 namespace MVCAgenda.Controllers
 {
     public class AppointmentsController : Controller
     {
-        #region Services
-        private readonly AgendaContext _context;
-        private readonly IAgendaViewsFactory _agendaViewsFactory;
-        private readonly IAppointmentServices _appointmentServices;
+        #region Fields
+        private readonly IAppointmentsManager _appointmentsManager;
+        private readonly IPatientServices _patientServices;
+        private readonly IRoomServices _roomServices;
+        private readonly IMedicServices _medicServices;
         #endregion
         /**************************************************************************************/
-        #region Fields
-        private static DateTime ActualDateTime = DateTime.Now;
-
-        private string DayTime = ActualDateTime.ToString("yyyy-MM-dd");
-        private string _dataCreeareConsultatie = ActualDateTime.ToString("U");
-
-        private string _responsabilProgramare = "Administrator";
-        #endregion
-
-        public AppointmentsController(AgendaContext context, IAgendaViewsFactory agendaViewsFactory, IAppointmentServices appointmentServices)
+        #region Constructor
+        public AppointmentsController(
+            IAppointmentsManager appointmentsManager,
+            IPatientServices patientServices,
+            IRoomServices roomServices,
+            IMedicServices medicServices)
         {
-            _context = context;
-            _agendaViewsFactory = agendaViewsFactory;
-            _appointmentServices = appointmentServices;
-        }
-
-        #region Get
-
-        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Hidden == false), "Id", "RoomName");
-                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Hidden == false), "Id", "MedicName");
-
-                try
-                {
-                    return View(await _appointmentServices.GetAppointmentsAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentHour, SearchByAppointmentDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
-                }
-                catch
-                {
-                    return View(new MVCAgendaViewsManager());
-                }
-
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
+            _appointmentsManager = appointmentsManager;
+            _patientServices = patientServices;
+            _roomServices = roomServices;
+            _medicServices = medicServices;
         }
         #endregion
         /**************************************************************************************/
@@ -70,20 +45,17 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var model = new AppointmentViewModel();
+                var model = new AppointmentCreateViewModel();
 
-                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Hidden == false), "Id", "RoomName");
-                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Hidden == false), "Id", "MedicName");
+                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
-                model.AppointmentCreationDate = DateTime.Now.ToString();
                 model.ResponsibleForAppointment = User.Identity.Name;
-                model.Made = true;
                 if (id > 0)
                 {
-                    Patient patient = await _context.Patient.FindAsync(id);
+                    Patient patient = await _patientServices.GetAsync(id);
                     if (patient == null)
                         return View(model);
-
 
                     model.PatientId = id;
                     model.FirstName = patient.FirstName;
@@ -102,20 +74,21 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AppointmentViewModel model)
-        {if (User.Identity.IsAuthenticated)
+        public async Task<IActionResult> Create(AppointmentCreateViewModel model)
+        {
+            if (User.Identity.IsAuthenticated)
             {
                 if (ModelState.IsValid)
                 {
-                    string result = await _appointmentServices.CreateAppointmentAsync(model);
-                    if (result == "Ok")
+                    string result = await _appointmentsManager.CreateAsync(model);
+                    if (result == StringHelpers.SuccesMessage)
                         return RedirectToAction(nameof(Index),new { Daily = true });
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
 
-                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Hidden == false), "Id", "RoomName");
-                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Hidden == false), "Id", "MedicName");
+                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
                 return View(model);
             }
@@ -127,16 +100,33 @@ namespace MVCAgenda.Controllers
 
         #endregion
         /**************************************************************************************/
-        #region Edit
+        #region Read
+        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+
+                return View(await _appointmentsManager.GetListAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentHour, SearchByAppointmentDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        #endregion
+        /**************************************************************************************/
+        #region Update
 
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Hidden == false), "Id", "RoomName");
-                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Hidden == false), "Id", "MedicName");
-                var model = await _appointmentServices.GetAppointmentByIdAsync(id);
-                return View(await _appointmentServices.GetAppointmentByIdAsync(id));
+                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+                return View(await _appointmentsManager.GetEditDetailsAsync(id));
             }
             else
             {
@@ -146,7 +136,7 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, AppointmentViewModel model)
+        public async Task<IActionResult> Edit(int id, AppointmentEditViewModel model)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -155,15 +145,15 @@ namespace MVCAgenda.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    string result = await _appointmentServices.EditAppointmentAsync(model);
-                    if (result == "Ok")
+                    string result = await _appointmentsManager.UpdateAsync(model);
+                    if (result == StringHelpers.SuccesMessage)
                         return RedirectToAction(nameof(Index),new { Daily = true });
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
 
-                ViewData["RoomId"] = new SelectList(_context.Room.Where(c => c.Hidden == false), "Id", "RoomName");
-                ViewData["MedicId"] = new SelectList(_context.Medic.Where(m => m.Hidden == false), "Id", "MedicName");
+                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
                 return View(model);
             }
@@ -172,8 +162,6 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
-
-
         #endregion
         /**************************************************************************************/
         #region Details
@@ -181,7 +169,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _appointmentServices.GetAppointmentByIdAsync(id));
+                return View(await _appointmentsManager.GetDetailsAsync(id));
             }
             else
             {
@@ -190,16 +178,12 @@ namespace MVCAgenda.Controllers
         }
         #endregion
         /**************************************************************************************/
-        #region Hide => To do
-
-        #endregion
-        /**************************************************************************************/
         #region Delete
         public async Task<IActionResult> Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _appointmentServices.GetAppointmentByIdAsync(id));
+                return View(await _appointmentsManager.GetDetailsAsync(id));
             }
             else
             {
@@ -213,7 +197,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var result = await _appointmentServices.HideAppointmentAsync(id);
+                var result = await _appointmentsManager.DeleteAsync(id);
                 return RedirectToAction(nameof(Index), new { Daily = true });
             }
             else

@@ -3,11 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Room : BaseEntityModel
+    public class Room : BaseEntity
     {
         [StringLength(25, MinimumLength = 1)]
-        [DisplayName("Denumire cameră")]
         [Required]
-        public string RoomName { get; set; }
+        public string Name { get; set; }
+
+        public string PrimaryColor { get; set; }
+
+        public string SecondaryColor { get; set; }
+
+        public string Description { get; set; }
     }
 }

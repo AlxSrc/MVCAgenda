@@ -1,10 +1,9 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Lista cu programari";
 }
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.MVCAgendaManagement.MVCAgendaViewsManager
+    @model MVCAgenda.Models.Appointments.AppointmentsViewModel
 
     <div class="container g-0">
         <div class="row justify-content-between">
@@ -98,11 +97,6 @@
                     <th class="center-content">
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
                     </th>
-                    <!--
-                    <th>
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].SecondName)
-                    </th>
-                    -->
                     <th>
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].PhonNumber)
                     </th>
@@ -121,9 +115,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].Procedure)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].Made)
-                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -134,11 +125,6 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.FirstName)
                         </td>
-                        <!--
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SecondName)
-                        </td>
-                        -->
                         <td>
                             @Html.DisplayFor(modelItem => item.PhonNumber)
                         </td>
@@ -155,10 +141,7 @@
                             @Html.DisplayFor(modelItem => item.AppointmentHour)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Procedure)
-                        </td>
-                        <td>
-                            @Html.Raw(item.MadeText)
+                            @Html.Raw(item.Procedure)
                         </td>
                         <td class="text-end">
                             <div class="dropdown d-inline-block">
@@ -176,5 +159,4 @@
             </tbody>
         </table>
     </div>
-
 }

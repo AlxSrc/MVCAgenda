@@ -1,85 +1,59 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.MVCAgendaManagement;
-using MVCAgenda.Core.ViewModels;
-using MVCAgenda.Data.DataBaseManager;
-using MVCAgenda.Service.Factories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Microsoft.EntityFrameworkCore;
+using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Helpers;
+using MVCAgenda.Data.DataBaseManager;
 using System.Threading.Tasks;
 
 namespace MVCAgenda.Service.Patients
 {
     public class PatientServices : IPatientServices
     {
+        #region Fields
         private readonly AgendaContext _context;
-
-        private readonly IAgendaViewsFactory _agendaViewsFactory;
-        public PatientServices(AgendaContext context, IAgendaViewsFactory agendaViewsFactory)
+        #endregion
+        /***********************************************************************************/
+        #region Constructor
+        public PatientServices(AgendaContext context)
         {
             _context = context;
-            _agendaViewsFactory = agendaViewsFactory;
         }
-
-        public async Task<string> CreatePatientAsync(PatientViewModel PatientModel)
+        #endregion
+        /***********************************************************************************/
+        #region Create
+        public async Task<bool> CreateAsync(Patient patient)
         {
             try
             {
-                string msg;
+                var currentSheetPatient = new PatientSheet();
+                _context.Add(currentSheetPatient);
+                await _context.SaveChangesAsync();
 
-                var patients = await _context.Patient
-                                .Where(p => p.FirstName.Contains(PatientModel.FirstName))
-                                .Where(p => p.SecondName.Contains(PatientModel.SecondName))
-                                .Where(p => p.PhonNumber.Contains(PatientModel.PhonNumber))
-                                .ToListAsync();
+                patient.PatientSheetId = currentSheetPatient.Id;
+                _context.Add(patient);
+                await _context.SaveChangesAsync();
 
-                if (patients.Count >= 1)
-                {
-                    msg = $"Exista un pacient cu numele: {PatientModel.FirstName}, prenumele: {PatientModel.PhonNumber} si numarul de telefon: {PatientModel.PhonNumber}";
-                    return msg;
-                }
-                else
-                {
-                    SheetPatient CurrentSheetPatient = new SheetPatient();
-                    _context.Add(CurrentSheetPatient);
-                    await _context.SaveChangesAsync();
-
-                    int lastID = _context.SheetPatient.Count();
-
-                    _context.Add(new Patient()
-                    {
-                        SheetPatientId = lastID,
-                        FirstName = PatientModel.FirstName,
-                        SecondName = PatientModel.SecondName,
-                        PhonNumber = PatientModel.PhonNumber,
-                        Mail = PatientModel.Mail,
-                        Blacklist = PatientModel.Blacklist,
-                        Hidden = PatientModel.Hidden
-                    });
-                    await _context.SaveChangesAsync();
-
-                    return "Ok";
-                }
+                return true;
             }
-            catch(Exception ex)
+            catch
             {
-                return "error "+ ex.Message;
+                return false;
             }
         }
-
-        public async Task<string> CheckPatientAsync(Patient PatientModel)
+        //de sters
+        public async Task<int> CheckExistentPatientAsync(Patient patient)
         {
             try
             {
                 //To do daca sa valideze doar dupa numar de telefon
                 //Daca suna un pacient de pe numere diferite
-                var patients = await _context.Patient
-                    .Where(p => p.FirstName == PatientModel.FirstName)
-                    .Where(p => p.SecondName == PatientModel.SecondName)
-                    .Where(p => p.PhonNumber == PatientModel.PhonNumber)
-                    .Where(p => p.Mail == PatientModel.Mail)
+                var patients = await _context.Patients
+                    .Where(p => p.FirstName == patient.FirstName)
+                    .Where(p => p.SecondName == patient.SecondName)
+                    .Where(p => p.PhonNumber == patient.PhonNumber)
+                    .Where(p => p.Mail == patient.Mail)
                     .Where(p => p.Hidden == false)
                     .ToListAsync();
 
@@ -89,69 +63,65 @@ namespace MVCAgenda.Service.Patients
                 {
                     newPatient = new Patient
                     {
-                        FirstName = PatientModel.FirstName,
-                        SecondName = PatientModel.SecondName,
-                        PhonNumber = PatientModel.PhonNumber,
-                        Mail = PatientModel.Mail,
+                        FirstName = $"{patient.FirstName.Substring(0, 1).ToUpper()}{patient.FirstName.Substring(1, patient.FirstName.Length - 1).ToLower()}",
+                        SecondName = patient.SecondName != null ? $"{patient.SecondName.Substring(0, 1).ToUpper()}{patient.SecondName.Substring(1, patient.SecondName.Length - 1).ToLower()}" : null,
+                        PhonNumber = patient.PhonNumber,
+                        Mail = patient.Mail,
                         Blacklist = false,
                         Hidden = false
                     };
 
-                    SheetPatient FisaPacientCurent = new SheetPatient();
+                    var FisaPacientCurent = new PatientSheet();
                     _context.Add(FisaPacientCurent);
                     await _context.SaveChangesAsync();
 
-                    newPatient.SheetPatientId = FisaPacientCurent.Id;
+                    newPatient.PatientSheetId = FisaPacientCurent.Id;
                     _context.Add(newPatient);
                     await _context.SaveChangesAsync();
                 }
 
-                return $"{newPatient.Id}";
+                return newPatient.Id;
             }
             catch (Exception ex)
             {
-                return "-1";
+                return -1;
             }
         }
+        #endregion
+        /***********************************************************************************/
+        #region Read
+        public async Task<Patient> GetAsync(int Id, bool GetPatientByPatientSheetId = false)
+        {
+            if(GetPatientByPatientSheetId == false)
+                return await _context.Patients.FirstOrDefaultAsync(p => p.Id == Id);
+            else
+                return await _context.Patients.FirstOrDefaultAsync(p => p.PatientSheetId == Id);
+        }
+        public async Task<List<Patient>> GetListAsync(string searchByName, string searchByPhoneNumber, string searchByEmail, bool includeBlackList, bool isHidden)
+        {
+            return await (
+                    _context.Patients
 
-        public async Task<string> EditPatientAsync(PatientViewModel PatientModel)
+                        .Where(h => isHidden == true ? h.Hidden == true : h.Hidden == false)
+                        .Where(b => includeBlackList == true ? b.Blacklist == true : true)
+                        .Where(p => !string.IsNullOrEmpty(searchByName) ? p.FirstName.ToUpper().Contains(searchByName.ToUpper()) : true)
+                        .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhonNumber.Contains(searchByPhoneNumber) : true)
+                        .Where(p => !string.IsNullOrEmpty(searchByEmail) ? p.Mail.ToUpper().Contains(searchByEmail.ToUpper()) : true)
+
+                        .OrderBy(f => f.FirstName)
+
+                    ).ToListAsync();
+        }
+        #endregion
+        /***********************************************************************************/
+        #region Update
+        public async Task<bool> UpdateAsync(Patient patient)
         {
             try
             {
-                _context.Update(new Patient() 
-                { 
-                    Id= PatientModel.Id,
-                    SheetPatientId = PatientModel.SheetPatientId,
-                    FirstName = PatientModel.FirstName,
-                    SecondName = PatientModel.SecondName,
-                    PhonNumber = PatientModel.PhonNumber,
-                    Mail = PatientModel.Mail,
-                    Blacklist = PatientModel.Blacklist,
-                    Hidden = PatientModel.Hidden
-                });
+                _context.Update(patient);
                 await _context.SaveChangesAsync();
-                return "Succes";
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (_context.Patient.Any(p => p.Id == PatientModel.Id))
-                {
-                    return "Error, Not Found";
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
 
-        public async Task<bool> DeletePatientAsync(int id)
-        {
-            try
-            {
-                var patient = await _context.Patient.FindAsync(id);
-                _context.Patient.Remove(patient);
-                await _context.SaveChangesAsync();
                 return true;
             }
             catch
@@ -160,107 +130,45 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public async Task<string> HidePatientAsync(int id)
+        #endregion
+        /***********************************************************************************/
+        #region Delete
+        public async Task<bool> HideAsync(int id)
         {
             try
             {
-                var patient = await _context.Patient.FindAsync(id);
+                var patient = await _context.Patients.FindAsync(id);
                 patient.Hidden = true;
-                _context.Patient.Update(patient);
+                _context.Patients.Update(patient);
 
-                var appointments = _context.Appointment.Where(a => a.PatientId == patient.Id);
+                var appointments = _context.Appointments.Where(a => a.PatientId == patient.Id);
                 await appointments.ForEachAsync(x => x.Hidden = true);
 
                 await _context.SaveChangesAsync();
-                return "";
-            }
-            catch(Exception ex)
-            {
-                return ex.Message;
-            }
-        }
 
-        public async Task<MVCAgendaViewsManager> GetPatientsAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList, bool isHidden)
-        {
-            List<PatientViewModel> patientsList = new List<PatientViewModel>();
-            var model = new MVCAgendaViewsManager{ PatientsList = patientsList };
-            try
-            {
-                IQueryable<Patient> query = _context.Patient;
-
-                if (isHidden)
-                    query = query.Where(p => p.Hidden == true);
-                else
-                    query = query.Where(p => p.Hidden == false);
-
-                if (includeBlackList)
-                    query = query.Where(p => p.Blacklist == true);
-
-                if (!string.IsNullOrEmpty(SearchByName))
-                    query = query.Where(p => p.FirstName.ToUpper().Contains(SearchByName.ToUpper()));
-
-                if (!string.IsNullOrEmpty(SearchByPhoneNumber))
-                    query = query.Where(p => p.PhonNumber.Contains(SearchByPhoneNumber));
-
-                if (!string.IsNullOrEmpty(SearchByEmail))
-                    query = query.Where(p => p.Mail.ToUpper().Contains(SearchByEmail.ToUpper()));
-
-                var patients = await query.ToListAsync(); // aici aducem datele despre pacienti prin sintaxa SQL
-
-                var patientsModel = patients
-                    .OrderBy(p => p.FirstName)// lista de pacient adusa
-                    .Select(patient => _agendaViewsFactory.PreperePatientViewModel(patient))
-                    .ToList();
-                model.Hidden = isHidden;
-                model.Blacklist = includeBlackList;
-                model.PatientsList = patientsModel;
-
-                return model;
+                return true;
             }
             catch
             {
-                return model;
+                return false;
             }
         }
-
-        public async Task<Patient> GetPatientByIdAsync(int Id)
-        {
-            Patient patient = new Patient();
-            Patient emptyPatient = new Patient();
-            try
-            {
-                if (Id == null)
-                {
-                    return emptyPatient;
-                }
-
-                patient = await _context.Patient.FirstOrDefaultAsync(m => m.Id == Id);
-
-                if (patient == null)
-                {
-                    return emptyPatient;
-                }
-
-                return patient;
-            }
-            catch
-            {
-                return emptyPatient;
-            }
-        }
-
-        public async Task<PatientViewModel> GetPatientViewModelByIdAsync(Patient patient)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
-                return _agendaViewsFactory.PreperePatientViewModel(patient);
+                var patient = await _context.Patients.FindAsync(id);
+                _context.Patients.Remove(patient);
+                await _context.SaveChangesAsync();
+
+                return true;
             }
             catch
             {
-                return new PatientViewModel();
+                return false;
             }
+            
         }
-
-        
+        #endregion
     }
 }

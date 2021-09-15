@@ -3,46 +3,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.ViewModels;
+using MVCAgenda.Core.Helpers;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Managers.Medics;
+using MVCAgenda.Models.Medics;
 
 namespace MVCAgenda.Controllers
 {
     public class MedicsController : Controller
     {
-        private readonly AgendaContext _context;
-
-        public MedicsController(AgendaContext context)
+        #region Fields
+        private readonly IMedicsManager _medicsManager;
+        #endregion
+        /**************************************************************************************/
+        #region Constructors
+        public MedicsController(IMedicsManager medicsManager)
         {
-            _context = context;
+            _medicsManager = medicsManager;
         }
 
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var medic = await _context.Medic
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (medic == null)
-                {
-                    return NotFound();
-                }
-
-                MedicViewModel Medic = new MedicViewModel() { Id = medic.Id, MedicName = medic.MedicName, Hidden = medic.Hidden };
-                return View(Medic);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
-
+        #endregion
+        /**************************************************************************************/
+        #region Create
         public IActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
@@ -63,9 +45,11 @@ namespace MVCAgenda.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(new Medic() { MedicName = medic.MedicName, Hidden = false});
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Manage", "Home");
+                    var result = await _medicsManager.CreateAsync(medic);
+                    if(result == StringHelpers.SuccesMessage)
+                        return RedirectToAction("Manage", "Home");
+                    else
+                        ModelState.AddModelError(string.Empty, result);
                 }
                 return View(medic);
             }
@@ -74,25 +58,28 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
-
-        public async Task<IActionResult> Edit(int? id)
+        #endregion
+        /**************************************************************************************/
+        #region Read
+        public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var medic = await _context.Medic
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (medic == null)
-                {
-                    return NotFound();
-                }
-
-                MedicViewModel Medic = new MedicViewModel() { Id = medic.Id, MedicName = medic.MedicName, Hidden = medic.Hidden };
-                return View(Medic);
+                return View(await _medicsManager.GetDetailsAsync(id));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+        #endregion
+        /**************************************************************************************/
+        #region Update
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View(await _medicsManager.GetDetailsAsync(id));
             }
             else
             {
@@ -102,30 +89,18 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Medic medic)
+        public async Task<IActionResult> Edit(int id, MedicViewModel medic)
         {
             if (User.Identity.IsAuthenticated)
             {
 
                 if (ModelState.IsValid)
                 {
-                    try
-                    {
-                        _context.Update(new Medic() {Id = medic.Id, MedicName = medic.MedicName, Hidden = medic.Hidden});
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!MedicExists(medic.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return RedirectToAction("Manage", "Home");
+                    var result = await _medicsManager.UpdateAsync(medic);
+                    if (result == StringHelpers.SuccesMessage)
+                        return RedirectToAction("Manage", "Home");
+                    else
+                        ModelState.AddModelError(string.Empty, result);
                 }
                 return View(medic);
             }
@@ -133,30 +108,15 @@ namespace MVCAgenda.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            if (id != medic.Id)
-            {
-                return NotFound();
-            }
         }
-
-        public async Task<IActionResult> Delete(int? id)
+        #endregion
+        /**************************************************************************************/
+        #region Delete
+        public async Task<IActionResult> Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var medic = await _context.Medic
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (medic == null)
-                {
-                    return NotFound();
-                }
-
-                MedicViewModel Medic = new MedicViewModel() { Id = medic.Id, MedicName = medic.MedicName, Hidden = medic.Hidden };
-                return View(Medic);
+                return View(await _medicsManager.GetDetailsAsync(id));
             }
             else
             {
@@ -170,21 +130,20 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var medic = await _context.Medic.FindAsync(id);
-                medic.Hidden = true;
-                _context.Medic.Update(medic);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Manage", "Home");
+                var result = await _medicsManager.DeleteAsync(id);
+                if (result == StringHelpers.SuccesMessage)
+                    return RedirectToAction("Manage", "Home");
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result);
+                    return RedirectToAction("Delete", "Medics", new { id = id });
+                }
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
         }
-
-        private bool MedicExists(int id)
-        {
-            return _context.Medic.Any(e => e.Id == id);
-        }
+        #endregion
     }
 }

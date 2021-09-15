@@ -1,34 +1,30 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.ViewModels;
-using MVCAgenda.Data.DataBaseManager;
-using MVCAgenda.Service.Consultations;
+using MVCAgenda.Core.Helpers;
+using MVCAgenda.Managers.Consultations;
+using MVCAgenda.Models.Consultations;
 
 namespace MVCAgenda.Controllers
 {
     public class ConsultationsController : Controller
     {
-        #region Services
-        private readonly AgendaContext _context;
-        private readonly IConsultationServices _consultationServices;
+        #region Fields
+        private readonly IConsultationsManager _consultationManager;
         #endregion
         /**************************************************************************************/
-        public ConsultationsController(AgendaContext context, IConsultationServices consultationServices)
+        #region Constructor
+        public ConsultationsController(IConsultationsManager consultationManager)
         {
-            _context = context;
-            _consultationServices = consultationServices;
+            _consultationManager = consultationManager;
         }
-
+        #endregion
+        /**************************************************************************************/
         #region Create
         public IActionResult Create(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(new ConsultationViewModel() { SheetPatientId = id, CreationDate = DateTime.Now});
+                return View(new ConsultationCreateViewModel() { SheetPatientId = id});
             }
             else
             {
@@ -38,15 +34,15 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ConsultationViewModel consultation)
+        public async Task<IActionResult> Create(ConsultationCreateViewModel consultation)
         {
             if (User.Identity.IsAuthenticated)
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _consultationServices.CreateConsultationAsync(consultation);
-                    if(result)
-                        return RedirectToAction("Details", "SheetPatient", new { id = consultation.SheetPatientId });
+                    var result = await _consultationManager.CreateAsync(consultation);
+                    if(result == StringHelpers.SuccesMessage)
+                        return RedirectToAction("Details", "PatientSheet", new { id = consultation.SheetPatientId });
                 }
                 return View(consultation);
             }
@@ -57,12 +53,12 @@ namespace MVCAgenda.Controllers
         }
         #endregion
         /**************************************************************************************/
-        #region Get
+        #region Read
         public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _consultationServices.GetConsultationAsync(id));
+                return View(await _consultationManager.GetDetailsAsync(id));
             }
             else
             {
@@ -76,16 +72,17 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _consultationServices.GetConsultationAsync(id));
+                return View(await _consultationManager.GetEditDetailsAsync(id));
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ConsultationViewModel consultation)
+        public async Task<IActionResult> Edit(int id, ConsultationEditViewModel consultation)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -96,9 +93,9 @@ namespace MVCAgenda.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    var result = await _consultationServices.EditConsultationAsync(consultation);
-                    if (result)
-                        return RedirectToAction("Details", "SheetPatient", new { id = consultation.SheetPatientId });
+                    var result = await _consultationManager.UpdateAsync(consultation);
+                    if (result == StringHelpers.SuccesMessage)
+                        return RedirectToAction("Details", "PatientSheet", new { id = consultation.SheetPatientId });
                 }
                 return View(consultation);
             }
@@ -109,15 +106,12 @@ namespace MVCAgenda.Controllers
         }
         #endregion
         /**************************************************************************************/
-        #region Hide
-        #endregion
-        /**************************************************************************************/
         #region Delete
         public async Task<IActionResult> Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(_consultationServices.GetConsultationAsync(id));
+                return View(await _consultationManager.GetDetailsAsync(id));
             }
             else
             {
@@ -131,9 +125,12 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var result = await _consultationServices.DeleteConsultationAsync(id);
-                if(result)
-                    return RedirectToAction("Index", "Patients");
+                var result = await _consultationManager.DeleteAsync(id);
+                if(result == StringHelpers.SuccesMessage)
+                {
+                    var consultation = await _consultationManager.GetDetailsAsync(id);
+                    return RedirectToAction("Details", "PatientSheet", new { id = consultation.SheetPatientId});
+                }
                 else
                     return RedirectToAction("Details", "Consultations", new { id = id });
             }

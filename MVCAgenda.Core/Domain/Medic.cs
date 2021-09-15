@@ -3,11 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Medic : BaseEntityModel
+    public class Medic : BaseEntity
     {
-        [StringLength(25, MinimumLength = 1)]
-        [DisplayName("Numele medicului")]
         [Required]
-        public string MedicName { get; set; }
+        public string Name { get; set; }
+
+        public string ImagePath { get; set; }
+
+        public string Mail { get; set; }
     }
 }

@@ -3,7 +3,7 @@
 }
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Core.ViewModels.PatientViewModel
+    @model MVCAgenda.Models.Patients.PatientViewModel
 
     <div class="main box">
         <div class=" mt-3 d-lg-flex justify-content-lg-center">
@@ -34,10 +34,10 @@
                     <a asp-action="Index" class="btn btn-outline-secondary">Inapoi</a>
                     <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Șterge</a>
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifică</a>
-                    <a asp-action="Details" asp-controller="SheetPatient" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Fișă medicală</a>
+                    <a asp-action="Details" asp-controller="PatientSheet" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Fișă medicală</a>
                     <a asp-action="Index" asp-controller="Appointments" asp-route-Id="@Model.Id" class="btn btn-main-color-filled">Programarile pacientului</a>
                 </div>
-                <div class="d-lg-flex justify-content-lg-center">
+                @*<div class="d-lg-flex justify-content-lg-center">
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <label class="input-group-text" for="inputGroupFile01">Inainte</label>
@@ -55,7 +55,7 @@
                         <img class="before-after-image"
                              src="https://photovideocreative.com/wordpress/wp-content/uploads/2017/11/Paysage-en-orientation-portrait.jpg" />
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>

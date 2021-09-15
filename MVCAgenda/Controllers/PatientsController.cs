@@ -1,65 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.MVCAgendaManagement;
-using MVCAgenda.Core.ViewModels;
-using MVCAgenda.Data.DataBaseManager;
-using MVCAgenda.Service.Factories;
-using MVCAgenda.Service.Patients;
+using MVCAgenda.Core.Helpers;
+using MVCAgenda.Factories.Patients;
+using MVCAgenda.Managers.Patients;
+using MVCAgenda.Models.Patients;
 
 namespace MVCAgenda.Controllers
 {
     public class PatientsController : Controller
     {
-        #region Services
-        private readonly AgendaContext _context;
-        private readonly IPatientServices _patientServices;
-        private readonly IAgendaViewsFactory _agendaViewsFactory;
-        #endregion
-
-        public PatientsController(AgendaContext context,
-            IPatientServices patientServices, IAgendaViewsFactory agendaViewsFactory)
-        {
-            _context = context;
-            _patientServices = patientServices;
-            _agendaViewsFactory = agendaViewsFactory;
-        }
-
-        #region Index
-        [HttpPost]
-        public string Index(string searchString, bool notUsed)
-        {
-            return "From [HttpPost]Index: filter on " + searchString;
-        }
-
-        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList = false, bool isDeleted = false)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _patientServices.GetPatientsAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, includeBlackList, isDeleted));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
+        #region Fields
+        private readonly IPatientsManager _patientManager;
         #endregion
         /*********************************************************************************/
-        #region Details
-        public async Task<IActionResult> Details(int id)
+        #region Constructor
+        public PatientsController(IPatientsManager patientManager)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _patientServices.GetPatientViewModelByIdAsync(await _patientServices.GetPatientByIdAsync(id)));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            _patientManager = patientManager;
         }
         #endregion
         /*********************************************************************************/
@@ -84,8 +42,8 @@ namespace MVCAgenda.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string result = await _patientServices.CreatePatientAsync(patient);
-                    if (result == "Ok")
+                    string result = await _patientManager.CreateAsync(patient);
+                    if (result == StringHelpers.SuccesMessage)
                         return RedirectToAction(nameof(Index));
                     else
                         ModelState.AddModelError(string.Empty, result);
@@ -99,12 +57,45 @@ namespace MVCAgenda.Controllers
         }
         #endregion
         /*********************************************************************************/
+        #region Read
+        [HttpPost]
+        public string Index(string searchString)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
+        }
+
+        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool includeBlackList = false, bool isDeleted = false)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                // 
+                return View(await _patientManager.GetListAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, includeBlackList, isDeleted));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View(await _patientManager.GetDetailsAsync(id));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+        #endregion
+        /*********************************************************************************/
         #region Edit
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _patientServices.GetPatientViewModelByIdAsync(await _patientServices.GetPatientByIdAsync(id)));
+                return View(await _patientManager.GetDetailsAsync(id));
             }
             else
             {
@@ -114,22 +105,24 @@ namespace MVCAgenda.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, PatientViewModel patient)
+        public async Task<IActionResult> Edit(int id, PatientViewModel patientViewModel)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (id != patient.Id)
+                if (id != patientViewModel.Id)
                 {
                     return NotFound();
                 }
 
                 if (ModelState.IsValid)
                 {
-                    var result = await _patientServices.EditPatientAsync(patient);
-                    if(result == "Succes")
+                    var result = await _patientManager.UpdateAsync(patientViewModel);
+                    if (result == StringHelpers.SuccesMessage)
                         return RedirectToAction(nameof(Index));
+                    else
+                        ModelState.AddModelError(string.Empty, result);
                 }
-                return View(patient);
+                return View(patientViewModel);
             }
             else
             {
@@ -143,7 +136,7 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _patientServices.GetPatientViewModelByIdAsync(await _patientServices.GetPatientByIdAsync(id)));
+                return View(await _patientManager.GetDetailsAsync(id));
             }
             else
             {
@@ -158,8 +151,8 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var result = await _patientServices.HidePatientAsync(id);
-                if (result == "")
+                var result = await _patientManager.DeleteAsync(id);
+                if (result == StringHelpers.SuccesMessage)
                     return RedirectToAction(nameof(Index));
                 else
                 {
@@ -171,13 +164,6 @@ namespace MVCAgenda.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-        }
-        #endregion
-        /*********************************************************************************/
-        #region Utils
-        private bool PatientExists(int id)
-        {
-            return _context.Patient.Any(e => e.Id == id);
         }
         #endregion
     }
