@@ -74,6 +74,8 @@ namespace MVCAgenda.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Mail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

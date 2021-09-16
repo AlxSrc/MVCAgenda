@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Data.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20210916075259_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210916105439_IdentityDBUser")]
+    partial class IdentityDBUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,6 +117,12 @@ namespace MVCAgenda.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Hidden")
                         .HasColumnType("bit");

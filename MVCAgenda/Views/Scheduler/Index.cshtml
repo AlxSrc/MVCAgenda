@@ -20,9 +20,10 @@
         <ejs-schedule 
             id="schedule" height="650px" 
             startHour="06:00" endHour="20:00" showQuickInfo="true"
-            firstDayOfWeek=1 currentView="Week" selectedDate="@DateTime.Now.Date"
+            firstDayOfWeek=1 currentView="TimelineWeek" selectedDate="@DateTime.Now.Date"
+            resourceHeaderTemplate="#resource-template" 
             actionBegin="onActionBegin" actionComplete="onActionComplete" 
-            popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate">
+            popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate" >
 
             <e-schedule-eventsettings>
 
@@ -36,8 +37,11 @@
 
             </e-schedule-eventsettings>
 
+            <e-schedule-group enableCompactView="false" resources="@ViewBag.Resources"></e-schedule-group>
             <e-schedule-resources>
-                <e-schedule-resource dataSource="@ViewBag.Employees" field="EmployeeId" title="Employees" name="Employee" textField="text" idField="id" colorField="color" groupIDField="groupId" allowMultiple="false"></e-schedule-resource>
+                <e-schedule-resource dataSource="@ViewBag.Employees" field="MedicId" title="Employees" 
+                    name="Employee" textField="name" idField="id" groupIDField="id" allowMultiple="false">
+                </e-schedule-resource>
             </e-schedule-resources>
 
             <e-schedule-views>
@@ -68,30 +72,6 @@
                     if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime))
                         args.cancel = true;
                  }
-            }
-            function onEventRendered(args) {
-                var categoryColor;
-
-                switch (args.data.MedicId) {
-                    case 1:
-                        categoryColor = '#F57F17';
-                        break;
-                    case 2:
-                        categoryColor = '#7fa900';
-                        break;
-                    case 3:
-                        categoryColor = '#8e24aa';
-                        break;
-                }
-                if (!args.element || !categoryColor) {
-                    return;
-                }
-                var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-                if (scheduleObj.currentView === 'Agenda') {
-                    (args.element.firstChild).style.borderLeftColor = categoryColor;
-                } else {
-                    args.element.style.backgroundColor = categoryColor;
-                }
             }
             function onActionComplete(args) {
                 console.log(args);
@@ -193,9 +173,65 @@
                     }
                 }
             }
+
+            function getEmployeeName(value) {
+                return value.resourceData[value.resource.textField];
+            }
+            function getEmployeeImage(value) {
+                let resourceName = value.resourceData[value.resource.textField];
+                var path = "@Url.Content("~/css/schedule/images/")";
+                var src = path + resourceName.toLowerCase() + ".png";
+                var src1 = "https://images.unsplash.com/photo-1504257432389-52343af06ae3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80";
+                return '<img class="employee-image" src=' + src1 + '></img>';
+            }
+            function getEmployeeDesignation(value) {
+                let resourceName = value.resourceData[value.resource.Designation];
+                return value.resourceData.designation;
+            }
         </script>
 
         <style>
+
+            .e-schedule .template-wrap {
+                width: 100%;
+            }
+
+            .e-schedule .e-vertical-view .e-resource-cells {
+                height: 58px;
+            }
+
+            .e-schedule .e-timeline-view .e-resource-left-td,
+            .e-schedule .e-timeline-month-view .e-resource-left-td {
+                width: 170px;
+            }
+
+            .e-schedule .e-resource-cells.e-child-node .employee-category,
+            .e-schedule .e-resource-cells.e-child-node .employee-name {
+                padding: 5px
+            }
+
+            .e-schedule .employee-image {
+                width: 45px;
+                height: 40px;
+                float: left;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+
+            .e-schedule .employee-name {
+                font-size: 13px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
+            }
+
+            .e-schedule .employee-designation {
+                font-size: 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
+            }
+
             .custom-event-editor .e-textlabel {
                 padding-right: 15px;
                 text-align: right;
@@ -216,7 +252,7 @@
             }
 
             .e-schedule .template-wrap {
-                height: 100%;
+                
                 white-space: normal;
             }
 
@@ -247,7 +283,7 @@
             .e-schedule .template-wrap .time,
             .e-schedule .template-wrap .description {
                 font-size: 12px;
-                padding: 4px 6px 4px;
+                padding: 1px 1px 2px;
                 overflow: hidden;
             }
 
@@ -270,10 +306,29 @@
 
             .e-schedule .e-timeline-view .template-wrap .subject {
                 font-size: 16px;
-                height: 36px;
+                height: 30px;
                 text-align: center;
             }
+
+            .appointment-schedule-block{
+                
+            }
+
+            .e-schedule .e-timeline-view .e-appointment, .e-schedule .e-timeline-month-view .e-appointment{ 
+                height: auto; 
+             }
+
         </style>
+
+        <script id="resource-template" type="text/x-template">
+            <div class="template-wrap">
+                <div class="employee-category">
+                    @*${getEmployeeImage(data)}*@
+                    <div class="employee-name">${getEmployeeName(data)}</div>
+                    <div class="employee-designation">${getEmployeeDesignation(data)}</div>
+                </div>
+            </div>
+        </script>
 
         <script id="event-template" type="text/x-template">
             <div class='template-wrap' style='background:${SecondaryColor}'>
@@ -287,7 +342,20 @@
 
         <script id="timeline-event-template" type="text/x-template">
             <div class='template-wrap' style='background:${PrimaryColor}'>
-                <div class="subject" style='background:${SecondaryColor}; border-left: 15px solid ${PrimaryColor};border-right: 15px solid ${PrimaryColor};'>${Subject}</div>
+                <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
+                <div class="description" style='background:${SecondaryColor}'>${Room}</div>
+                <div class="description" style='background:${SecondaryColor}'>${FirstName} - ${PhoneNumber}</div>
+                <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
+            </div>
+        </script>
+
+        <script id="QuickInfoEventTemplate" type="text/x-template">
+            <div class='template-wrap' style='background:${PrimaryColor}'>
+                <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
+                <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
+                <div class="description">${FirstName} - ${PhoneNumber}</div>
+                <div class="description">${Room} - ${Medic}</div>
+                <div class="description">${Description}</div>
             </div>
         </script>
 

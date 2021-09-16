@@ -11,5 +11,9 @@ namespace MVCAgenda.Core.Domain
         public string ImagePath { get; set; }
 
         public string Mail { get; set; }
+
+        public string Description { get; set; }
+
+        public string Designation {  get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace MVCAgenda.Models.Medics
     public class MedicViewModel : BaseModel
     {
         [StringLength(25, MinimumLength = 1)]
-        [DisplayName("Numele medicului")]
+        [DisplayName("Numele medicului*")]
         [Required]
         public string Name { get; set; }
 
@@ -16,5 +16,11 @@ namespace MVCAgenda.Models.Medics
 
         [DisplayName("Imagine")]
         public string ImagePath { get; set; }
+
+        [DisplayName("Descrierea")]
+        public string Description { get; set; }
+
+        [DisplayName("Ocupatia")]
+        public string Designation { get; set; }
     }
 }

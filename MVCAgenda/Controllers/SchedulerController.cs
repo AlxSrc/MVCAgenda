@@ -59,12 +59,14 @@ namespace MVCAgenda.Controllers
                 ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsManager.GetListAsync(), new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
-                }); 
-                ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsManager.GetListAsync(), new JsonSerializerSettings
+                });
+
+                ViewBag.Employees = JsonConvert.SerializeObject(await _medicsManager.GetListAsync(), new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
 
+                ViewBag.Resources = new string[] { "Employee" };
                 return View();
             }
             else

@@ -17,6 +17,8 @@ namespace MVCAgenda.Factories.Medics
                 Name = medic.Name,
                 Mail = medic.Mail,
                 ImagePath = medic.ImagePath,
+                Designation = medic.Designation,
+                Description = medic.Description,
                 Hidden = medic.Hidden
             }; ;
         }

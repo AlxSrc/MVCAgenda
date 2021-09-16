@@ -40,6 +40,8 @@ namespace MVCAgenda.Managers.Medics
                     Name = model.Name,
                     Mail = model.Mail,
                     ImagePath = model.ImagePath,
+                    Designation = model.Designation,
+                    Description = model.Description,
                     Hidden = false
                 };
 
@@ -144,6 +146,8 @@ namespace MVCAgenda.Managers.Medics
                         Name = model.Name,
                         Mail = model.Mail,
                         ImagePath = model.ImagePath,
+                        Designation = model.Designation,
+                        Description = model.Description,
                         Hidden = false
                     };
 

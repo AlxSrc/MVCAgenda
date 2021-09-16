@@ -50,7 +50,7 @@ namespace MVCAgenda.Service.Appointments
                     _context.Appointments
 
                         .Where(h => Hidden == true ? h.Hidden == true : h.Hidden == false)
-                        .Where(d => Daily == true ? d.StartDate == DateTime.Now : true)
+                        .Where(d => Daily == true ? d.StartDate.Date == DateTime.Now.Date : true)
                         .Where(p => Id != 0 ? p.PatientId == Id : true)
                         .Where(a => SearchByMedic != 0 ? a.MedicId == SearchByMedic : true)
                         .Where(a => SearchByRoom != 0 ? a.RoomId == SearchByRoom : true)

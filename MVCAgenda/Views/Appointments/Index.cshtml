@@ -82,6 +82,14 @@
                                         </text>
                                     }
                                 </li>
+                                <li>
+                                    @if (Model.Hidden == false)
+                                    {
+                                        <text>
+                                            <a asp-action="Index" asp-route-Daily="false" class="dropdown-item link-danger">Programări șterse</a>
+                                        </text>
+                                    }
+                                </li>
                             </ul>
                         </div>
                     </div>
