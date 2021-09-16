@@ -16,13 +16,13 @@ namespace MVCAgenda.Managers.Patients
         string user = "admin";
 
         #region Fields
-        private readonly IPatientServices _patientServices;
+        private readonly IPatientService _patientServices;
         private readonly IPatientsFactory _patientFactory;
-        private readonly ILoggerServices _logger;
+        private readonly ILoggerService _logger;
         #endregion
         /***********************************************************************************/
         #region Constructor
-        public PatientsManager(IPatientServices patientServices, IPatientsFactory patientFactory, ILoggerServices loggerServices)
+        public PatientsManager(IPatientService patientServices, IPatientsFactory patientFactory, ILoggerService loggerServices)
         {
             _patientServices = patientServices;
             _patientFactory = patientFactory;
@@ -37,12 +37,12 @@ namespace MVCAgenda.Managers.Patients
             {
                 string msg;
 
-                var patients = await _patientServices.GetListAsync(patientViewModel.FirstName, patientViewModel.PhonNumber, null, false,false);
+                var patients = await _patientServices.GetListAsync(patientViewModel.FirstName, patientViewModel.PhoneNumber, null, false,false);
                     
 
                 if (patients.Count >= 1)
                 {
-                    msg = $"Exista un pacient cu numele: {patientViewModel.FirstName}, numarul de telefon: {patientViewModel.PhonNumber}";
+                    msg = $"Exista un pacient cu numele: {patientViewModel.FirstName}, numarul de telefon: {patientViewModel.PhoneNumber}";
                     return msg;
                 }
                 else
@@ -51,8 +51,8 @@ namespace MVCAgenda.Managers.Patients
                     var patient = new Patient()
                     {
                         FirstName = $"{patientViewModel.FirstName.Substring(0, 1).ToUpper()}{patientViewModel.FirstName.Substring(1, patientViewModel.FirstName.Length - 1).ToLower()}",
-                        SecondName = patientViewModel.SecondName != null ? $"{patientViewModel.SecondName.Substring(0, 1).ToUpper()}{patientViewModel.SecondName.Substring(1, patientViewModel.SecondName.Length - 1).ToLower()}" : null,
-                        PhonNumber = patientViewModel.PhonNumber,
+                        LastName = patientViewModel.LastName != null ? $"{patientViewModel.LastName.Substring(0, 1).ToUpper()}{patientViewModel.LastName.Substring(1, patientViewModel.LastName.Length - 1).ToLower()}" : null,
+                        PhoneNumber = patientViewModel.PhoneNumber,
                         Mail = patientViewModel.Mail,
                         Blacklist = patientViewModel.Blacklist,
                         Hidden = false
@@ -61,7 +61,7 @@ namespace MVCAgenda.Managers.Patients
                     await _patientServices.CreateAsync(patient);
                     await _logger.CreateAsync(new Log()
                     {
-                        ShortMessage = $"{user} created patient: {patientViewModel.FirstName}, {patientViewModel.PhonNumber}",
+                        ShortMessage = $"{user} created patient: {patientViewModel.FirstName}, {patientViewModel.PhoneNumber}",
                         FullMessage = null,
                         CreatedOnUtc = DateTime.UtcNow,
                         IpAddress = null,
@@ -75,7 +75,7 @@ namespace MVCAgenda.Managers.Patients
             {
                 await _logger.CreateAsync(new Log()
                 {
-                    ShortMessage = $"{user} failed to add patient: {patientViewModel.FirstName}, {patientViewModel.PhonNumber}",
+                    ShortMessage = $"{user} failed to add patient: {patientViewModel.FirstName}, {patientViewModel.PhoneNumber}",
                     FullMessage = exception.Message,
                     CreatedOnUtc = DateTime.UtcNow,
                     IpAddress = null,
@@ -164,8 +164,8 @@ namespace MVCAgenda.Managers.Patients
                         Id = patientViewModel.Id,
                         PatientSheetId = patientViewModel.SheetPatientId,
                         FirstName = $"{patientViewModel.FirstName.Substring(0, 1).ToUpper()}{patientViewModel.FirstName.Substring(1, patientViewModel.FirstName.Length - 1).ToLower()}",
-                        SecondName = patientViewModel.SecondName != null ? $"{patientViewModel.SecondName.Substring(0, 1).ToUpper()}{patientViewModel.SecondName.Substring(1, patientViewModel.SecondName.Length - 1).ToLower()}" : null,
-                        PhonNumber = patientViewModel.PhonNumber,
+                        LastName = patientViewModel.LastName != null ? $"{patientViewModel.LastName.Substring(0, 1).ToUpper()}{patientViewModel.LastName.Substring(1, patientViewModel.LastName.Length - 1).ToLower()}" : null,
+                        PhoneNumber = patientViewModel.PhoneNumber,
                         Mail = patientViewModel.Mail,
                         Blacklist = patientViewModel.Blacklist,
                         Hidden = patientViewModel.Hidden
@@ -175,7 +175,7 @@ namespace MVCAgenda.Managers.Patients
 
                     await _logger.CreateAsync(new Log()
                     {
-                        ShortMessage = $"{user} edited patient: {patientViewModel.FirstName}, {patientViewModel.PhonNumber}",
+                        ShortMessage = $"{user} edited patient: {patientViewModel.FirstName}, {patientViewModel.PhoneNumber}",
                         FullMessage = null,
                         CreatedOnUtc = DateTime.UtcNow,
                         IpAddress = null,
@@ -190,7 +190,7 @@ namespace MVCAgenda.Managers.Patients
             {
                 await _logger.CreateAsync(new Log()
                 {
-                    ShortMessage = $"{user} failed to edit patient: {patientViewModel.FirstName}, {patientViewModel.PhonNumber}",
+                    ShortMessage = $"{user} failed to edit patient: {patientViewModel.FirstName}, {patientViewModel.PhoneNumber}",
                     FullMessage = exception.Message,
                     CreatedOnUtc = DateTime.UtcNow,
                     IpAddress = null,

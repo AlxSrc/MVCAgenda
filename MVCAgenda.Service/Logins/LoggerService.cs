@@ -1,33 +1,55 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.Helpers;
+using MVCAgenda.Core.Logging;
 using MVCAgenda.Data.DataBaseManager;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCAgenda.Service.Rooms
+namespace MVCAgenda.Service.Logins
 {
-    public class RoomServices : IRoomServices
+    public class LoggerService : ILoggerService
     {
         #region Fields
         private readonly AgendaContext _context;
         #endregion
         /**************************************************************************************/
         #region Constructor
-        public RoomServices(AgendaContext context)
+        public LoggerService(AgendaContext context)
         {
             _context = context;
         }
         #endregion
         /**************************************************************************************/
         #region Methods
-        public async Task<bool> CreateAsync(Room room)
+        public async Task<bool> CreateAsync(Log log)
         {
             try
             {
-                _context.Add(room);
+                _context.Add(log);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+        
+        public async Task<Log> GetAsync(int id)
+        {
+            return await _context.Logs.FirstOrDefaultAsync(m => m.Id == id);
+        }
+        public async Task<List<Log>> GetListAsync()
+        {
+            return await _context.Logs.OrderBy(l => l.CreatedOnUtc).Where(l => l.Hidden == false).ToListAsync();
+        }
+        
+        public async Task<bool> UpdateAsync(Log log)
+        {
+            try
+            {
+                _context.Update(log);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -36,38 +58,14 @@ namespace MVCAgenda.Service.Rooms
                 return false;
             }
         }
-        
-        public async Task<Room> GetAsync(int id)
-        {
-            return await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
-        }
-        public async Task<List<Room>> GetListAsync()
-        {
-            return await _context.Rooms.OrderBy(r => r.Name).Where(c => c.Hidden == false).ToListAsync();
-        }
-        
-        public async Task<bool> UpdateAsync(Room room)
-        {
-            try
-            {
-                 _context.Rooms.Update(room);
-                 await _context.SaveChangesAsync();
-               
-                return true;
-            }
-            catch(Exception ex)
-            {
-                return false;
-            }
-        }
-        
+       
         public async Task<bool> HideAsync(int id)
         {
             try
             {
-                var room = await _context.Rooms.FindAsync(id);
-                room.Hidden = true;
-                _context.Rooms.Update(room);
+                var log = await _context.Logs.FindAsync(id);
+                log.Hidden = true;
+                _context.Logs.Update(log);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -80,7 +78,7 @@ namespace MVCAgenda.Service.Rooms
         {
             try
             {
-                _context.Rooms.Remove(await _context.Rooms.FindAsync(id));
+                _context.Logs.Remove(await _context.Logs.FindAsync(id));
                 await _context.SaveChangesAsync();
                 return true;
             }

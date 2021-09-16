@@ -4,7 +4,7 @@ using MVCAgenda.Core.Domain;
 
 namespace MVCAgenda.Service.Patients
 {
-    public interface IPatientServices
+    public interface IPatientService
     {
         Task<bool> CreateAsync(Patient patient);
         Task<int> CheckExistentPatientAsync(Patient patient);

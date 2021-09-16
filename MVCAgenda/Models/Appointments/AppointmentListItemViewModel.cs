@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using MVCAgenda.Models.BaseModels;
+using System;
 
 namespace MVCAgenda.Models.Appointments
 {
@@ -13,7 +14,7 @@ namespace MVCAgenda.Models.Appointments
         public string FirstName { get; set; }
 
         [DisplayName("Număr de telefon")]
-        public string PhonNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
 
         [DisplayName("Medic")]
@@ -23,13 +24,12 @@ namespace MVCAgenda.Models.Appointments
         public string Room { get; set; }
 
 
-        [DisplayName("Data")]
-        [DataType(DataType.Date)]
-        public string AppointmentDate { get; set; }
+        [DisplayName("Dată început")]
+        [Required]
+        public DateTime StartDate { get; set; }
 
-        [DisplayName("Ora")]
-        [DataType(DataType.Time)]
-        public string AppointmentHour { get; set; }
+        [DisplayName("Dată sfârșit")]
+        public DateTime EndDate { get; set; }
 
         [DisplayName("Procedura")]
         public string Procedure { get; set; }

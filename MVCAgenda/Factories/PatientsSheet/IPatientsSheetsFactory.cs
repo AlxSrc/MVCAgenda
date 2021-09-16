@@ -1,6 +1,6 @@
 ﻿using MVCAgenda.Core.Domain;
 using MVCAgenda.Models.Consultations;
-using MVCAgenda.Models.PatientsSheets;
+using MVCAgenda.Models.PatientSheets;
 using System.Collections.Generic;
 
 namespace MVCAgenda.Factories.PatientsSheet

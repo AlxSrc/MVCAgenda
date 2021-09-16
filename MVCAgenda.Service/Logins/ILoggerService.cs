@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Service.Logins
 {
-    public interface ILoggerServices
+    public interface ILoggerService
     {
         Task<bool> CreateAsync(Log log);
         

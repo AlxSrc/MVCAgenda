@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Service.Medics
 {
-    public interface IMedicServices
+    public interface IMedicService
     {
         Task<bool> CreateAsync(Medic medic);
         

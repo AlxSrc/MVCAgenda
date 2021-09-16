@@ -16,13 +16,13 @@ namespace MVCAgenda.Managers.Medics
         string user = "admin";
 
         #region Fields
-        private readonly IMedicServices _medicsServices;
+        private readonly IMedicService _medicsServices;
         private readonly IMedicsFactory _medicsFactory;
-        private readonly ILoggerServices _logger;
+        private readonly ILoggerService _logger;
         #endregion
         /***********************************************************************************/
         #region Constructor
-        public MedicsManager(IMedicServices medicsServices, IMedicsFactory medicsFactory, ILoggerServices loggerServices)
+        public MedicsManager(IMedicService medicsServices, IMedicsFactory medicsFactory, ILoggerService loggerServices)
         {
             _medicsServices = medicsServices;
             _medicsFactory = medicsFactory;

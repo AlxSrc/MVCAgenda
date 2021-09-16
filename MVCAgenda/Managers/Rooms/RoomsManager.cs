@@ -16,13 +16,13 @@ namespace MVCAgenda.Managers.Rooms
         string user = "admin";
 
         #region Fields
-        private readonly IRoomServices _roomsServices;
+        private readonly IRoomService _roomsServices;
         private readonly IRoomsFactory _roomsFactory;
-        private readonly ILoggerServices _logger;
+        private readonly ILoggerService _logger;
         #endregion
         /***********************************************************************************/
         #region Constructor
-        public RoomsManager(IRoomServices roomsServices, IRoomsFactory roomsFactory, ILoggerServices loggerServices)
+        public RoomsManager(IRoomService roomsServices, IRoomsFactory roomsFactory, ILoggerService loggerServices)
         {
             _roomsServices = roomsServices;
             _roomsFactory = roomsFactory;

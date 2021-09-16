@@ -28,7 +28,7 @@ using MVCAgenda.Service.Logins;
 using MVCAgenda.Service.Medics;
 using MVCAgenda.Service.Patients;
 using MVCAgenda.Service.Rooms;
-using MVCAgenda.Service.SheetPatients;
+using MVCAgenda.Service.PatientsSheet;
 
 namespace MVCAgenda
 {
@@ -56,13 +56,13 @@ namespace MVCAgenda
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AgendaContext>();
 
             //services
-            services.AddScoped<IPatientServices, PatientServices>();
-            services.AddScoped<IPatientSheetServices, PatientSheetServices>();
-            services.AddScoped<IConsultationServices, ConsultationServices>();
-            services.AddScoped<IAppointmentServices, AppointmentServices>();
-            services.AddScoped<IMedicServices, MedicServices>();
-            services.AddScoped<IRoomServices, RoomServices>();
-            services.AddScoped<ILoggerServices, LoggerServices>(); 
+            services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IPatientSheetService, PatientSheetService>();
+            services.AddScoped<IConsultationService, ConsultationService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IMedicService, MedicService>();
+            services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<ILoggerService, LoggerService>(); 
 
             //Factories
             services.AddScoped<IPatientsFactory, PatientsFactory>();

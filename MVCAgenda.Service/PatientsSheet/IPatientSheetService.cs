@@ -1,9 +1,9 @@
 ﻿using MVCAgenda.Core.Domain;
 using System.Threading.Tasks;
 
-namespace MVCAgenda.Service.SheetPatients
+namespace MVCAgenda.Service.PatientsSheet
 {
-    public interface IPatientSheetServices
+    public interface IPatientSheetService
     {
         Task<PatientSheet> GetAsync(int Id);
 

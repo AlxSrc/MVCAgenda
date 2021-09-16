@@ -1,6 +1,6 @@
 ﻿using MVCAgenda.Core.Domain;
 using MVCAgenda.Models.Consultations;
-using MVCAgenda.Models.PatientsSheets;
+using MVCAgenda.Models.PatientSheets;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,11 +15,11 @@ namespace MVCAgenda.Factories.PatientsSheet
             {
                 Id = model.Id,
                 FirstName = patient.FirstName,
-                SecondName = patient.SecondName,
+                SecondName = patient.LastName,
                 AntecedentsH = model.AntecedentsH,
                 AntecedentsP = model.AntecedentsP,
                 PhysicalExamination = model.PhysicalExamination,
-                CNP = model.CNP,
+                NationalIdentificationNumber = model.NationalIdentificationNumber,
                 DateOfBirth = model.DateOfBirth,
                 Town = model.Town,
                 Street = model.Street,
@@ -51,7 +51,7 @@ namespace MVCAgenda.Factories.PatientsSheet
                 AntecedentsH = model.AntecedentsH,
                 AntecedentsP = model.AntecedentsP,
                 PhysicalExamination = model.PhysicalExamination,
-                CNP = model.CNP,
+                NationalIdentificationNumber = model.NationalIdentificationNumber,
                 DateOfBirth = model.DateOfBirth,
                 Town = model.Town,
                 Street = model.Street,

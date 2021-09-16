@@ -13,14 +13,14 @@ namespace MVCAgenda.Factories.Appointments
                 Id = model.Id,
                 PatientId = model.PatientId,
                 FirstName = patient.FirstName,
-                SecondName = patient.SecondName,
-                PhonNumber = patient.PhonNumber,
+                SecondName = patient.LastName,
+                PhonNumber = patient.PhoneNumber,
                 Mail = patient.Mail,
                 Medic = medic.Name,
                 MedicId = medic.Id,
                 Room = room.Name,
                 RoomId = room.Id,
-                AppointmentHour = model.AppointmentHour,
+                StartDate = model.StartDate,
                 Procedure = model.Procedure,
                 ResponsibleForAppointment = model.ResponsibleForAppointment,
                 AppointmentCreationDate = model.AppointmentCreationDate,
@@ -58,11 +58,11 @@ namespace MVCAgenda.Factories.Appointments
                 Id = model.Id,
                 PatientId = model.PatientId,
                 FirstName = patient.FirstName,
-                PhonNumber = patient.PhonNumber,
+                PhoneNumber = patient.PhoneNumber,
                 Medic = medic.Name,
                 Room = room.Name,
-                AppointmentDate = model.AppointmentDate,
-                AppointmentHour = model.AppointmentHour,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
                 Procedure = model.Procedure,
                 Hidden = model.Hidden
             };
@@ -81,13 +81,13 @@ namespace MVCAgenda.Factories.Appointments
             {
                 Id = model.Id,
                 FirstName = patient.FirstName,
-                SecondName = patient.SecondName,
-                PhonNumber = patient.PhonNumber,
+                LastName = patient.LastName,
+                PhoneNumber = patient.PhoneNumber,
                 Mail = patient.Mail,
                 Medic = medic.Name,
                 Room = room.Name,
-                AppointmentHour = model.AppointmentHour,
-                AppointmentDate = model.AppointmentDate,
+                EndDate = model.EndDate,
+                StartDate = model.StartDate,
                 Procedure = model.Procedure,
                 ResponsibleForAppointment = model.ResponsibleForAppointment,
                 AppointmentCreationDate = model.AppointmentCreationDate,
@@ -115,6 +115,7 @@ namespace MVCAgenda.Factories.Appointments
 
             return viewModel;
         }
+
         public async Task<AppointmentEditViewModel> PrepereAppointmentEditDetailsViewModel(Appointment model)
         {
             var viewModel = new AppointmentEditViewModel()
@@ -124,8 +125,8 @@ namespace MVCAgenda.Factories.Appointments
                 MedicId = model.MedicId,
                 RoomId = model.RoomId,
                 Made = model.Made,
-                AppointmentHour = model.AppointmentHour,
-                AppointmentDate = model.AppointmentDate,
+                EndDate = model.EndDate,
+                StartDate = model.StartDate,
                 Procedure = model.Procedure,
                 ResponsibleForAppointment = model.ResponsibleForAppointment,
                 AppointmentCreationDate = model.AppointmentCreationDate,

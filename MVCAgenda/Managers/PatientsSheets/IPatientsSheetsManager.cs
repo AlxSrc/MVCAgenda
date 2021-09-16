@@ -1,4 +1,4 @@
-﻿using MVCAgenda.Models.PatientsSheets;
+﻿using MVCAgenda.Models.PatientSheets;
 using System.Threading.Tasks;
 
 namespace MVCAgenda.Managers.PatientsSheets

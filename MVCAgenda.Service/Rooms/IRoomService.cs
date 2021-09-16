@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Service.Rooms
 {
-    public interface IRoomServices
+    public interface IRoomService
     {
         Task<bool> CreateAsync(Room room);
         

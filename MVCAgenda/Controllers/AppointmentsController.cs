@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
-using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Managers.Appointments;
 using MVCAgenda.Models.Appointments;
-using MVCAgenda.Service.Appointments;
 using MVCAgenda.Service.Medics;
 using MVCAgenda.Service.Patients;
 using MVCAgenda.Service.Rooms;
@@ -20,17 +17,17 @@ namespace MVCAgenda.Controllers
     {
         #region Fields
         private readonly IAppointmentsManager _appointmentsManager;
-        private readonly IPatientServices _patientServices;
-        private readonly IRoomServices _roomServices;
-        private readonly IMedicServices _medicServices;
+        private readonly IPatientService _patientServices;
+        private readonly IRoomService _roomServices;
+        private readonly IMedicService _medicServices;
         #endregion
         /**************************************************************************************/
         #region Constructor
         public AppointmentsController(
             IAppointmentsManager appointmentsManager,
-            IPatientServices patientServices,
-            IRoomServices roomServices,
-            IMedicServices medicServices)
+            IPatientService patientServices,
+            IRoomService roomServices,
+            IMedicService medicServices)
         {
             _appointmentsManager = appointmentsManager;
             _patientServices = patientServices;
@@ -59,9 +56,11 @@ namespace MVCAgenda.Controllers
 
                     model.PatientId = id;
                     model.FirstName = patient.FirstName;
-                    model.SecondName = patient.SecondName;
-                    model.PhonNumber = patient.PhonNumber;
+                    model.LastName = patient.LastName;
+                    model.PhoneNumber = patient.PhoneNumber;
                     model.Mail = patient.Mail;
+                    model.StartDate = DateTime.Now;
+                    model.EndDate = DateTime.Now.AddMinutes(60);
                 }
 
                 return View(model);
@@ -101,14 +100,14 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Read
-        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
+        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, DateTime SearchByAppointmentStartDate, DateTime SearchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
                 ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
-                return View(await _appointmentsManager.GetListAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentHour, SearchByAppointmentDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
+                return View(await _appointmentsManager.GetListAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
             }
             else
             {

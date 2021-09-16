@@ -1,4 +1,5 @@
 ﻿using MVCAgenda.Models.SyncfusionScheduler;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,11 +26,11 @@ namespace MVCAgenda.Models.Appointments
 
         public string SearchByEmail { get; set; }
 
-        [DataType(DataType.Date)]
-        public string SearchByAppointmentDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
+        public DateTime SearchByAppointmentStartDate { get; set; } = DateTime.Now;
 
-        [DataType(DataType.Time)]
-        public string SearchByAppointmentHour { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
+        public DateTime SearchByAppointmentEndDate { get; set; } = DateTime.Now;
 
         public int SearchByMedic { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using MVCAgenda.Models.BaseModels;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,21 +13,21 @@ namespace MVCAgenda.Models.Appointments
 
         //Details about Patient
         [StringLength(60, MinimumLength = 1)]
-        [DisplayName("Nume")]
+        [DisplayName("Nume*")]
         [Required]
         public string FirstName { get; set; }
 
 
         [StringLength(60, MinimumLength = 1)]
         [DisplayName("Prenume")]
-        public string SecondName { get; set; }
+        public string LastName { get; set; }
 
 
         [StringLength(20, MinimumLength = 1)]
-        [DisplayName("Număr de telefon")]
+        [DisplayName("Număr de telefon*")]
         [DataType(DataType.PhoneNumber)]
         [Required]
-        public string PhonNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
 
         [StringLength(60, MinimumLength = 0)]
@@ -44,19 +45,18 @@ namespace MVCAgenda.Models.Appointments
         public int RoomId { get; set; }
 
 
-        [DisplayName("Data")]
-        [DataType(DataType.Date)]
+        [DisplayName("Dată început*")]
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
         [Required]
-        public string AppointmentDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.Now;
 
 
-        [DisplayName("Ora")]
-        [DataType(DataType.Time)]
-        [Required]
-        public string AppointmentHour { get; set; }
+        [DisplayName("Dată sfârșit")]
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
+        public DateTime EndDate { get; set; } = DateTime.Now;
 
 
-        [DisplayName("Procedura")]
+        [DisplayName("Procedura*")]
         [Required]
         public string Procedure { get; set; }
 

@@ -7,16 +7,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCAgenda.Service.SheetPatients
+namespace MVCAgenda.Service.PatientsSheet
 {
-    public class PatientSheetServices : IPatientSheetServices
+    public class PatientSheetService : IPatientSheetService
     {
         #region Fields
         private readonly AgendaContext _context;
         #endregion
         /**************************************************************************************/
         #region Constructor
-        public PatientSheetServices(AgendaContext context)
+        public PatientSheetService(AgendaContext context)
         {
             _context = context;
         }

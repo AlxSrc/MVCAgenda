@@ -17,22 +17,22 @@ namespace MVCAgenda.Managers.Scheduler
     public class SchedulerManager : ISchedulerManager
     {
         #region Fields
-        private readonly IAppointmentServices _appointmentServices;
+        private readonly IAppointmentService _appointmentServices;
         private readonly ISchedulerFactory _schedulerFactory;
-        private readonly IPatientServices _patientServices;
-        private readonly IRoomServices _roomServices;
-        private readonly IMedicServices _medicServices;
-        private readonly ILoggerServices _logger;
+        private readonly IPatientService _patientServices;
+        private readonly IRoomService _roomServices;
+        private readonly IMedicService _medicServices;
+        private readonly ILoggerService _logger;
         #endregion
         /***********************************************************************************/
         #region Constructor
         public SchedulerManager(
-            IAppointmentServices appointmentServices,
+            IAppointmentService appointmentServices,
             ISchedulerFactory schedulerFactory,
-            IPatientServices patientServices,
-            IRoomServices roomServices,
-            IMedicServices medicServices,
-            ILoggerServices loggerServices)
+            IPatientService patientServices,
+            IRoomService roomServices,
+            IMedicService medicServices,
+            ILoggerService loggerServices)
         {
             _appointmentServices = appointmentServices;
             _schedulerFactory = schedulerFactory;
@@ -53,7 +53,7 @@ namespace MVCAgenda.Managers.Scheduler
                 int patientId;
                 string date = ScheduleData.StartTime.ToString("yyyy-MM-dd");
                 string hour = ScheduleData.StartTime.ToString("HH:mm");
-                string message = await _appointmentServices.SearchAppointmentAsync(ScheduleData.MedicId, ScheduleData.RoomId, date, hour);
+                string message = await _appointmentServices.SearchAppointmentAsync(ScheduleData.MedicId, ScheduleData.RoomId, ScheduleData.StartTime, ScheduleData.EndTime);
 
                 if (message != StringHelpers.SuccesMessage)
                 {
@@ -74,8 +74,8 @@ namespace MVCAgenda.Managers.Scheduler
                     var newPatient = new Patient()
                     {
                         FirstName = ScheduleData.FirstName,
-                        SecondName = ScheduleData.SecondName,
-                        PhonNumber = ScheduleData.PhonNumber,
+                        LastName = ScheduleData.LastName,
+                        PhoneNumber = ScheduleData.PhoneNumber,
                         Mail = ScheduleData.Mail
                     };
 
@@ -87,12 +87,12 @@ namespace MVCAgenda.Managers.Scheduler
                     PatientId = patientId,
                     MedicId = ScheduleData.MedicId,
                     RoomId = ScheduleData.RoomId,
-                    AppointmentDate = date,
-                    AppointmentHour = hour,
+                    StartDate = ScheduleData.StartTime,
+                    EndDate = ScheduleData.EndTime,
                     Procedure = ScheduleData.Subject,
                     Made = true,
                     ResponsibleForAppointment = User,
-                    AppointmentCreationDate = DateTime.Now.ToString(),
+                    AppointmentCreationDate = DateTime.Now,
                     Comments = ScheduleData.Description,
                     Hidden = false
                 };
@@ -101,7 +101,7 @@ namespace MVCAgenda.Managers.Scheduler
 
                 await _logger.CreateAsync(new Log()
                 {
-                    ShortMessage = $"{User} created Appointment & Patient: Id Appointment:{ScheduleData.Id} {ScheduleData.FirstName}, {ScheduleData.PhonNumber}",
+                    ShortMessage = $"{User} created Appointment & Patient: Id Appointment:{ScheduleData.Id} {ScheduleData.FirstName}, {ScheduleData.PhoneNumber}",
                     FullMessage = null,
                     CreatedOnUtc = DateTime.UtcNow,
                     IpAddress = null,
@@ -115,7 +115,7 @@ namespace MVCAgenda.Managers.Scheduler
             {
                 await _logger.CreateAsync(new Log()
                 {
-                    ShortMessage = $"{User} failed to add Appointment & Patient: Id Appointment:Appointment & Patient: Id Appointment:{ScheduleData.Id} {ScheduleData.FirstName}, {ScheduleData.PhonNumber}",
+                    ShortMessage = $"{User} failed to add Appointment & Patient: Id Appointment:Appointment & Patient: Id Appointment:{ScheduleData.Id} {ScheduleData.FirstName}, {ScheduleData.PhoneNumber}",
                     FullMessage = exception.Message,
                     CreatedOnUtc = DateTime.UtcNow,
                     IpAddress = null,
@@ -131,7 +131,7 @@ namespace MVCAgenda.Managers.Scheduler
             try
             {
                 var items = new List<ScheduleEventData>();
-                var appointments = await _appointmentServices.GetListAsync(null,null,0,0,null,0,false,false);
+                var appointments = await _appointmentServices.GetListAsync(DateTime.MinValue, DateTime.MinValue, 0,0,null,0,false,false);
                 foreach (var appointment in appointments)
                     items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(
                         appointment, 
@@ -147,25 +147,25 @@ namespace MVCAgenda.Managers.Scheduler
             }
         }
 
-        public async Task<string> UpdateAsync(ScheduleEventData ScheduleData)
+        public async Task<string> UpdateAsync(ScheduleEventData scheduleData)
         {
             try
             {
                 var appointment = new Appointment()
                 {
-                    Id = ScheduleData.Id,
-                    PatientId = ScheduleData.PatientId,
-                    MedicId = ScheduleData.MedicId,
-                    RoomId = ScheduleData.RoomId,
+                    Id = scheduleData.Id,
+                    PatientId = scheduleData.PatientId,
+                    MedicId = scheduleData.MedicId,
+                    RoomId = scheduleData.RoomId,
 
-                    Made = ScheduleData.Made,
-                    AppointmentDate = ScheduleData.StartTime.ToString("yyyy-MM-dd"),
-                    AppointmentHour = ScheduleData.StartTime.ToString("HH:mm"),
-                    Procedure = ScheduleData.Subject,
-                    Comments = ScheduleData.Description,
+                    Made = scheduleData.Made,
+                    StartDate = scheduleData.StartTime,
+                    EndDate = scheduleData.EndTime,
+                    Procedure = scheduleData.Subject,
+                    Comments = scheduleData.Description,
 
-                    ResponsibleForAppointment = ScheduleData.ResponsibleForAppointment,
-                    AppointmentCreationDate = ScheduleData.AppointmentCreationDate,
+                    ResponsibleForAppointment = scheduleData.ResponsibleForAppointment,
+                    AppointmentCreationDate = scheduleData.AppointmentCreationDate,
                     Hidden = false,
                 };
                 var test = await _appointmentServices.UpdateAsync(appointment);

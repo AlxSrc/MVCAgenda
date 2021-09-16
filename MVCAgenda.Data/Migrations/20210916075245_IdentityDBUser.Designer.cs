@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Data.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20210915054527_IdentityDBUser")]
+    [Migration("20210916075245_IdentityDBUser")]
     partial class IdentityDBUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,20 +28,14 @@ namespace MVCAgenda.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppointmentCreationDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppointmentDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppointmentHour")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("AppointmentCreationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Hidden")
                         .HasColumnType("bit");
@@ -67,6 +61,9 @@ namespace MVCAgenda.Data.Migrations
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -157,6 +154,10 @@ namespace MVCAgenda.Data.Migrations
                     b.Property<bool>("Hidden")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LastName")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
                     b.Property<string>("Mail")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
@@ -164,14 +165,10 @@ namespace MVCAgenda.Data.Migrations
                     b.Property<int>("PatientSheetId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PhonNumber")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("SecondName")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int?>("SheetPatientId")
                         .HasColumnType("int");
@@ -200,10 +197,6 @@ namespace MVCAgenda.Data.Migrations
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CNP")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -212,6 +205,10 @@ namespace MVCAgenda.Data.Migrations
 
                     b.Property<bool>("Hidden")
                         .HasColumnType("bit");
+
+                    b.Property<string>("NationalIdentificationNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("PhysicalExamination")
                         .HasMaxLength(60)

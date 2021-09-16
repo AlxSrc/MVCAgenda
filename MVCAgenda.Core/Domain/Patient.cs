@@ -17,12 +17,12 @@ namespace MVCAgenda.Core.Domain
 
 
         [StringLength(60, MinimumLength = 1)]
-        public string SecondName { get; set; }
+        public string LastName { get; set; }
 
 
         [StringLength(20, MinimumLength = 1)]
         [Required] 
-        public string PhonNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
 
         [StringLength(60, MinimumLength = 0)]

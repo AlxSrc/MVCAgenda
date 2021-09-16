@@ -11,7 +11,6 @@ namespace MVCAgenda.Factories.Scheduler
         {
             try
             {
-                var start = DateTime.Parse($"{appointment.AppointmentDate} {appointment.AppointmentHour}");
                 return new ScheduleEventData()
                 {
                     Id = appointment.Id,
@@ -20,12 +19,12 @@ namespace MVCAgenda.Factories.Scheduler
                     PatientId = appointment.PatientId,
 
                     FirstName = patient.FirstName,
-                    SecondName = patient.SecondName,
-                    PhonNumber = patient.PhonNumber,
+                    LastName = patient.LastName,
+                    PhoneNumber = patient.PhoneNumber,
                     Mail = patient.Mail,
 
-                    StartTime = start,
-                    EndTime = start.AddMinutes(60),
+                    StartTime = appointment.StartDate,
+                    EndTime = appointment.EndDate,
 
                     Medic = medic.Name,
                     Room = room.Name,

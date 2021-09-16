@@ -1,33 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Data.DataBaseManager;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MVCAgenda.Service.Consultations
+namespace MVCAgenda.Service.Rooms
 {
-    public class ConsultationServices : IConsultationServices
+    public class RoomService : IRoomService
     {
         #region Fields
         private readonly AgendaContext _context;
         #endregion
         /**************************************************************************************/
         #region Constructor
-        public ConsultationServices(AgendaContext context)
+        public RoomService(AgendaContext context)
         {
             _context = context;
         }
         #endregion
         /**************************************************************************************/
         #region Methods
-        public async Task<bool> CreateAsync(Consultation consultation)
+        public async Task<bool> CreateAsync(Room room)
         {
             try
             {
-                _context.Add(consultation);
+                _context.Add(room);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -37,26 +37,25 @@ namespace MVCAgenda.Service.Consultations
             }
         }
         
-        public async Task<Consultation> GetAsync(int id)
+        public async Task<Room> GetAsync(int id)
         {
-            var consultation = await _context.Consultations.FirstOrDefaultAsync(m => m.Id == id);
-            return consultation;
+            return await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
         }
-        public async Task<List<Consultation>> GetListAsync(int id)
+        public async Task<List<Room>> GetListAsync()
         {
-            var query = _context.Consultations.Where(p => p.SheetPatientId == id);
-            return await query.OrderByDescending(c => c.CreationDate).Where(c => c.Hidden == false).ToListAsync();
+            return await _context.Rooms.OrderBy(r => r.Name).Where(c => c.Hidden == false).ToListAsync();
         }
-       
-        public async Task<bool> UpdateAsync(Consultation consultation)
+        
+        public async Task<bool> UpdateAsync(Room room)
         {
             try
             {
-                _context.Update(consultation);
-                await _context.SaveChangesAsync();
+                 _context.Rooms.Update(room);
+                 await _context.SaveChangesAsync();
+               
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
                 return false;
             }
@@ -66,9 +65,9 @@ namespace MVCAgenda.Service.Consultations
         {
             try
             {
-                var consultation = await _context.Consultations.FindAsync(id);
-                consultation.Hidden = true;
-                _context.Consultations.Update(consultation);
+                var room = await _context.Rooms.FindAsync(id);
+                room.Hidden = true;
+                _context.Rooms.Update(room);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -76,13 +75,12 @@ namespace MVCAgenda.Service.Consultations
             {
                 return false;
             }
-            
         }
         public async Task<bool> DeleteAsync(int id)
         {
             try
             {
-                _context.Consultations.Remove(await _context.Consultations.FindAsync(id));
+                _context.Rooms.Remove(await _context.Rooms.FindAsync(id));
                 await _context.SaveChangesAsync();
                 return true;
             }

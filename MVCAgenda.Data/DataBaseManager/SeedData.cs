@@ -124,7 +124,7 @@ namespace MVCAgenda.Data
                         context.PatientsSheet.AddRange(
                         new PatientSheet
                         {
-                            CNP = "1990713123123",
+                            NationalIdentificationNumber = "1990713123123",
                             PhysicalExamination = "Clinic sanatos",
                             AntecedentsH = "antecedente de la parinti lipsa",
                             AntecedentsP = "acnee",
@@ -135,7 +135,7 @@ namespace MVCAgenda.Data
                         },
                         new PatientSheet
                         {
-                            CNP = "1990713123321",
+                            NationalIdentificationNumber = "1990713123321",
                             PhysicalExamination = "Clinic sanatos",
                             AntecedentsH = "",
                             AntecedentsP = "",
@@ -146,7 +146,7 @@ namespace MVCAgenda.Data
                         },
                         new PatientSheet
                         {
-                            CNP = "1990713123098",
+                            NationalIdentificationNumber = "1990713123098",
                             PhysicalExamination = "Clinic sanatos",
                             AntecedentsH = "",
                             AntecedentsP = "acnee",
@@ -157,7 +157,7 @@ namespace MVCAgenda.Data
                         },
                         new PatientSheet
                         {
-                            CNP = "2990713123322",
+                            NationalIdentificationNumber = "2990713123322",
                             PhysicalExamination = "Clinic sanatos",
                             AntecedentsH = "antecedente de la parinti lipsa",
                             AntecedentsP = "",
@@ -168,7 +168,7 @@ namespace MVCAgenda.Data
                         },
                         new PatientSheet
                         {
-                            CNP = "2990713123123",
+                            NationalIdentificationNumber = "2990713123123",
                             PhysicalExamination = "Clinic sanatos",
                             AntecedentsH = "",
                             AntecedentsP = "acnee",
@@ -259,8 +259,8 @@ namespace MVCAgenda.Data
                         {
                             PatientSheetId = 1,
                             FirstName = "Serediuc",
-                            SecondName = "Alexandru",
-                            PhonNumber = "0757541521",
+                            LastName = "Alexandru",
+                            PhoneNumber = "0757541521",
                             Mail = "",
                             Blacklist = false,
                             Hidden = false
@@ -269,8 +269,8 @@ namespace MVCAgenda.Data
                         {
                             PatientSheetId = 2,
                             FirstName = "Serediuc",
-                            SecondName = "Constantin",
-                            PhonNumber = "0741241712",
+                            LastName = "Constantin",
+                            PhoneNumber = "0741241712",
                             Mail = "Alex.gsa@yahoo.com",
                             Blacklist = false,
                             Hidden = false
@@ -279,8 +279,8 @@ namespace MVCAgenda.Data
                         {
                             PatientSheetId = 3,
                             FirstName = "Mircea",
-                            SecondName = "Andrei",
-                            PhonNumber = "0757616511",
+                            LastName = "Andrei",
+                            PhoneNumber = "0757616511",
                             Mail = "mirceaand@gmail.com",
                             Blacklist = false,
                             Hidden = false
@@ -289,8 +289,8 @@ namespace MVCAgenda.Data
                         {
                             PatientSheetId = 4,
                             FirstName = "Rotaru",
-                            SecondName = "Andreea",
-                            PhonNumber = "0757254785",
+                            LastName = "Andreea",
+                            PhoneNumber = "0757254785",
                             Mail = "androt@yahoo.com",
                             Blacklist = false,
                             Hidden = false
@@ -299,8 +299,8 @@ namespace MVCAgenda.Data
                         {
                             PatientSheetId = 5,
                             FirstName = "Andreea",
-                            SecondName = "Ana",
-                            PhonNumber = "0755767254",
+                            LastName = "Ana",
+                            PhoneNumber = "0755767254",
                             Mail = "andana@gmail.com",
                             Blacklist = false,
                             Hidden = true
@@ -317,12 +317,12 @@ namespace MVCAgenda.Data
                             PatientId = 1,
                             MedicId = 1,
                             RoomId = 1,
-                            AppointmentDate = "2021-02-12",
-                            AppointmentHour = "12-00",
+                            StartDate = DateTime.Now.AddDays(1).AddHours(15),
+                            EndDate = DateTime.Now.AddDays(1).AddHours(75),
                             Procedure = "Anestezie",
                             Made = true,
                             ResponsibleForAppointment = "Administrator",
-                            AppointmentCreationDate = "2021-04-14T09:35",
+                            AppointmentCreationDate = DateTime.Now.AddDays(1),
                             Hidden = false
                         },
                         new Appointment
@@ -330,12 +330,12 @@ namespace MVCAgenda.Data
                             PatientId = 4,
                             MedicId = 3,
                             RoomId = 5,
-                            AppointmentDate = "2021-02-12",
-                            AppointmentHour = "13-00",
+                            StartDate = DateTime.Now.AddDays(3).AddHours(15),
+                            EndDate = DateTime.Now.AddDays(3).AddHours(75),
                             Procedure = "Apucuntura",
                             Made = true,
                             ResponsibleForAppointment = "Administrator",
-                            AppointmentCreationDate = "2021-04-14T09:35",
+                            AppointmentCreationDate = DateTime.Now.AddDays(3),
                             Hidden = false
                         },
                         new Appointment
@@ -343,12 +343,12 @@ namespace MVCAgenda.Data
                             PatientId = 3,
                             MedicId = 2,
                             RoomId = 4,
-                            AppointmentDate = "2021-03-12",
-                            AppointmentHour = "14-30",
+                            StartDate = DateTime.Now.AddDays(2).AddHours(115),
+                            EndDate = DateTime.Now.AddDays(2).AddHours(175),
                             Procedure = "Anestezie",
                             Made = true,
                             ResponsibleForAppointment = "Administrator",
-                            AppointmentCreationDate = "2021-04-14T09:35",
+                            AppointmentCreationDate = DateTime.Now.AddDays(2),
                             Hidden = false
                         },
                         new Appointment
@@ -356,12 +356,12 @@ namespace MVCAgenda.Data
                             PatientId = 2,
                             MedicId = 1,
                             RoomId = 2,
-                            AppointmentDate = "2021-02-02",
-                            AppointmentHour = "12-00",
+                            StartDate = DateTime.Now.AddDays(7).AddHours(15),
+                            EndDate = DateTime.Now.AddDays(7).AddHours(75),
                             Procedure = "Anestezie",
                             Made = true,
                             ResponsibleForAppointment = "Administrator",
-                            AppointmentCreationDate = "2021-04-14T09:35",
+                            AppointmentCreationDate = DateTime.Now.AddDays(7),
                             Hidden = false
                         });
 

@@ -11,8 +11,8 @@ namespace MVCAgenda.Models.SyncfusionScheduler
 
 
         public string FirstName { get; set; }
-        public string SecondName { get; set; }
-        public string PhonNumber { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
         public string Mail { get; set; }
 
 
@@ -30,7 +30,7 @@ namespace MVCAgenda.Models.SyncfusionScheduler
 
         public bool Made { get; set; }
         public string ResponsibleForAppointment { get; set; }
-        public string AppointmentCreationDate { get; set; }
+        public DateTime AppointmentCreationDate { get; set; }
         public string User { get; set; }
     }
 }

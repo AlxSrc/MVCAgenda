@@ -7,7 +7,7 @@
 @if (User.Identity.IsAuthenticated)
 {
 
-    @model MVCAgenda.Models.PatientsSheets.PatientSheetEditViewModel
+    @model MVCAgenda.Models.PatientSheets.PatientSheetEditViewModel
 
 <div class="main box">
     <div class=" mt-3 d-lg-flex justify-content-lg-center">
@@ -49,9 +49,9 @@
                     <span asp-validation-for="PhysicalExamination" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="CNP" class="form-control" id="floatingInput">
-                    <label for="floatingInput" asp-for="CNP"></label>
-                    <span asp-validation-for="CNP" class="text-danger"></span>
+                    <input asp-for="NationalIdentificationNumber" class="form-control" id="floatingInput">
+                    <label for="floatingInput" asp-for="NationalIdentificationNumber"></label>
+                    <span asp-validation-for="NationalIdentificationNumber" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
                     <select asp-for="Gender" class="form-select" id="floatingSelect" aria-label="Genul">

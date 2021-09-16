@@ -27,20 +27,20 @@
 
             <div class="form-floating col-md-6">
                 <input asp-for="FirstName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
-                <label for="floatingInput1">@Html.DisplayNameFor(model => model.FirstName)*</label>
+                <label for="floatingInput1" asp-for="FirstName"></label>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
 
             <div class="form-floating col-md-6">
-                <input asp-for="SecondName" class="form-control" id="floatingInput2" placeholder="Obligatoriu">
-                <label for="floatingInput2" asp-for="SecondName"></label>
-                <span asp-validation-for="SecondName" class="text-danger"></span>
+                <input asp-for="LastName" class="form-control" id="floatingInput2" placeholder="Obligatoriu">
+                <label for="floatingInput2" asp-for="LastName"></label>
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
 
             <div class="form-floating col-md-6">
-                <input asp-for="PhonNumber" class="form-control" id="floatingInput3" placeholder="Obligatoriu">
-                <label for="floatingInput3">@Html.DisplayNameFor(model => model.PhonNumber)*</label>
-                <span asp-validation-for="PhonNumber" class="text-danger"></span>
+                <input asp-for="PhoneNumber" class="form-control" id="floatingInput3" placeholder="Obligatoriu">
+                <label for="floatingInput3" asp-for="PhoneNumber"></label>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
 
             <div class="form-floating col-md-6">
@@ -69,20 +69,20 @@
             </div>
 
             <div class="form-floating col-md-6">
-                <input asp-for="AppointmentDate" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
-                <label for="floatingInput7">@Html.DisplayNameFor(model => model.AppointmentDate)*</label>
-                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                <input asp-for="StartDate" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
+                <label for="floatingInput7" asp-for="StartDate"></label>
+                <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
 
             <div class="form-floating col-md-6">
-                <input asp-for="AppointmentHour" class="form-control" id="floatingInput8" placeholder="Obligatoriu">
-                <label for="floatingInput8">@Html.DisplayNameFor(model => model.AppointmentHour)*</label>
-                <span asp-validation-for="AppointmentHour" class="text-danger"></span>
+                <input asp-for="EndDate" class="form-control" id="floatingInput8" placeholder="Obligatoriu">
+                <label for="floatingInput8" asp-for="EndDate"></label>
+                <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
 
             <div class="form-floating col-md-6">
                 <input asp-for="Procedure" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
-                <label for="floatingInput7">@Html.DisplayNameFor(model => model.Procedure)*</label>
+                <label for="floatingInput7" asp-for="Procedure"></label>
                 <span asp-validation-for="Procedure" class="text-danger"></span>
             </div>
 

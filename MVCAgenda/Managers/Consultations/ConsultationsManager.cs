@@ -15,13 +15,13 @@ namespace MVCAgenda.Managers.Consultations
         string user = "admin";
 
         #region Fields
-        private readonly IConsultationServices _consultationServices;
+        private readonly IConsultationService _consultationServices;
         private readonly IConsultationsFactory _consultationFactory;
-        private readonly ILoggerServices _logger;
+        private readonly ILoggerService _logger;
         #endregion
         /***********************************************************************************/
         #region Constructor
-        public ConsultationsManager(IConsultationServices consultationServices, IConsultationsFactory consultationFactory, ILoggerServices loggerServices)
+        public ConsultationsManager(IConsultationService consultationServices, IConsultationsFactory consultationFactory, ILoggerService loggerServices)
         {
             _consultationServices = consultationServices;
             _consultationFactory = consultationFactory;

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using MVCAgenda.Models.BaseModels;
 using MVCAgenda.Models.Consultations;
 
-namespace MVCAgenda.Models.PatientsSheets
+namespace MVCAgenda.Models.PatientSheets
 {
     public class PatientSheetEditViewModel : BaseModel
     {
@@ -21,7 +21,7 @@ namespace MVCAgenda.Models.PatientsSheets
         public string PhysicalExamination { get; set; }
 
 
-        public string CNP { get; set; }
+        public string NationalIdentificationNumber { get; set; }
 
 
         [DisplayName("Sexul")]

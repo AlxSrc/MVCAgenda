@@ -8,23 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Data.DataBaseManager;
-using MVCAgenda.Service.Patients;
 
 namespace MVCAgenda.Service.Appointments
 {
-    public class AppointmentServices : IAppointmentServices
+    public class AppointmentService : IAppointmentService
     {
         #region Fields
         private readonly AgendaContext _context;
-        private readonly IPatientServices _patientServices;
-        private string DayTime = DateTime.Now.ToString("yyyy-MM-dd");
         #endregion
         /**************************************************************************************/
         #region Constructor
-        public AppointmentServices(AgendaContext context, IPatientServices patientServices)
+        public AppointmentService(AgendaContext context)
         {
             _context = context;
-            _patientServices = patientServices;
         }
         #endregion
         /**************************************************************************************/
@@ -48,21 +44,21 @@ namespace MVCAgenda.Service.Appointments
             return await _context.Appointments.FirstOrDefaultAsync(a => a.Id == Id);
         }
 
-        public async Task<List<Appointment>> GetListAsync(string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
+        public async Task<List<Appointment>> GetListAsync(DateTime searchByAppointmentStartDate, DateTime searchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
         {
             var appointmentsList = await (
                     _context.Appointments
 
                         .Where(h => Hidden == true ? h.Hidden == true : h.Hidden == false)
-                        .Where(d => Daily == true ? d.AppointmentDate.Contains(DayTime) : true)
+                        .Where(d => Daily == true ? d.StartDate == DateTime.Now : true)
                         .Where(p => Id != 0 ? p.PatientId == Id : true)
                         .Where(a => SearchByMedic != 0 ? a.MedicId == SearchByMedic : true)
                         .Where(a => SearchByRoom != 0 ? a.RoomId == SearchByRoom : true)
-                        .Where(a => !string.IsNullOrEmpty(SearchByAppointmentHour) ? a.AppointmentHour.Contains(SearchByAppointmentHour) : true)
-                        .Where(a => !string.IsNullOrEmpty(SearchByAppointmentDate) ? a.AppointmentDate.Contains(SearchByAppointmentDate) : true)
+                        .Where(a => searchByAppointmentStartDate != DateTime.MinValue ? a.StartDate == searchByAppointmentStartDate : true)
+                        .Where(a => searchByAppointmentEndDate != DateTime.MinValue ? a.EndDate == searchByAppointmentEndDate : true)
                         .Where(a => !string.IsNullOrEmpty(SearchByProcedure) ? a.Procedure.ToUpper().Contains(SearchByProcedure.ToUpper()) : true)
 
-                        .OrderBy(h => h.AppointmentHour)
+                        .OrderBy(h => h.StartDate)
 
                     ).ToListAsync();
 
@@ -116,37 +112,37 @@ namespace MVCAgenda.Service.Appointments
         #endregion
         /**************************************************************************************/
         #region Utils
-        public async Task<string> SearchAppointmentAsync(int MedicId, int RoomId, string AppointmentDate, string AppointmentHour)
+        public async Task<string> SearchAppointmentAsync(int medicId, int roomId, DateTime startDate, DateTime endDate)
         {
             string foundAppointment = StringHelpers.SuccesMessage;
 
             //Search a medic, date, h
             var appointmentsM = await _context.Appointments
-                        .Where(p => p.MedicId == MedicId)
-                        .Where(p => p.AppointmentDate == AppointmentDate)
-                        .Where(p => p.AppointmentHour == AppointmentHour)
+                        .Where(p => p.MedicId == medicId)
+                        .Where(p => p.StartDate == startDate)
+                        //.Where(p => p.EndDate == endDate)
                         .Where(p => p.Hidden == false)
                         .ToListAsync();
 
             if (appointmentsM.Count >= 1)
             {
-                var medic = await _context.Medics.FirstOrDefaultAsync(m => m.Id == MedicId);
-                foundAppointment = $"{medic.Name} este ocupat/a la data {AppointmentDate}, ora {AppointmentHour}.";
+                var medic = await _context.Medics.FirstOrDefaultAsync(m => m.Id == medicId);
+                foundAppointment = $"{medic.Name} este ocupat/a la data {startDate}.";
                 return foundAppointment;
             }
 
             //Search a room, date, h
             var appointmentsR = await _context.Appointments
-                        .Where(p => p.RoomId == RoomId)
-                        .Where(p => p.AppointmentDate == AppointmentDate)
-                        .Where(p => p.AppointmentHour == AppointmentHour)
+                        .Where(p => p.RoomId == roomId)
+                        .Where(p => p.StartDate == startDate)
+                        //.Where(p => p.EndDate == endDate)
                         .Where(p => p.Hidden == false)
                         .ToListAsync();
 
             if (appointmentsR.Count >= 1)
             {
-                var room = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == RoomId);
-                foundAppointment = $"{room.Name} este ocupata la data {AppointmentDate}, ora {AppointmentHour}.";
+                var room = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == roomId);
+                foundAppointment = $"{room.Name} este ocupata la data {startDate}.";
                 return foundAppointment;
             }
 

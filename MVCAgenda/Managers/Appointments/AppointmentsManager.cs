@@ -20,22 +20,22 @@ namespace MVCAgenda.Managers.Appointments
         string user = "admin"; 
 
         #region Fields
-        private readonly IAppointmentServices _appointmentServices;
+        private readonly IAppointmentService _appointmentServices;
         private readonly IAppointmentsFactory _appointmentsFactory;
-        private readonly IPatientServices _patientServices;
-        private readonly IRoomServices _roomServices;
-        private readonly IMedicServices _medicServices;
-        private readonly ILoggerServices _logger;
+        private readonly IPatientService _patientServices;
+        private readonly IRoomService _roomServices;
+        private readonly IMedicService _medicServices;
+        private readonly ILoggerService _logger;
         #endregion
         /***********************************************************************************/
         #region Constructor
         public AppointmentsManager(
-            IAppointmentServices appointmentServices,
+            IAppointmentService appointmentServices,
             IAppointmentsFactory appointmentsFactory,
-            IPatientServices patientServices,
-            IRoomServices roomServices,
-            IMedicServices medicServices,
-            ILoggerServices loggerServices)
+            IPatientService patientServices,
+            IRoomService roomServices,
+            IMedicService medicServices,
+            ILoggerService loggerServices)
         {
             _appointmentServices = appointmentServices;
             _appointmentsFactory = appointmentsFactory;
@@ -52,7 +52,7 @@ namespace MVCAgenda.Managers.Appointments
             try
             {
                 int patientId;
-                string message = await _appointmentServices.SearchAppointmentAsync(appointmentViewModel.MedicId, appointmentViewModel.RoomId, appointmentViewModel.AppointmentDate, appointmentViewModel.AppointmentHour);
+                string message = await _appointmentServices.SearchAppointmentAsync(appointmentViewModel.MedicId, appointmentViewModel.RoomId, appointmentViewModel.StartDate, appointmentViewModel.EndDate);
 
                 if (message != StringHelpers.SuccesMessage)
                 {
@@ -73,8 +73,8 @@ namespace MVCAgenda.Managers.Appointments
                     var newPatient = new Patient
                     {
                         FirstName = appointmentViewModel.FirstName,
-                        SecondName = appointmentViewModel.SecondName,
-                        PhonNumber = appointmentViewModel.PhonNumber,
+                        LastName = appointmentViewModel.LastName,
+                        PhoneNumber = appointmentViewModel.PhoneNumber,
                         Mail = appointmentViewModel.Mail
                     };
 
@@ -86,33 +86,33 @@ namespace MVCAgenda.Managers.Appointments
                     PatientId = patientId,
                     MedicId = appointmentViewModel.MedicId,
                     RoomId = appointmentViewModel.RoomId,
-                    AppointmentDate = appointmentViewModel.AppointmentDate,
-                    AppointmentHour = appointmentViewModel.AppointmentHour,
+                    StartDate = appointmentViewModel.StartDate,
+                    EndDate = appointmentViewModel.EndDate,
                     Procedure = appointmentViewModel.Procedure,
                     Made = true,
                     ResponsibleForAppointment = appointmentViewModel.ResponsibleForAppointment,
-                    AppointmentCreationDate = DateTime.Now.ToString(),
+                    AppointmentCreationDate = DateTime.Now,
                     Comments = appointmentViewModel.Comments,
                     Hidden = false
                 };
 
                 await _appointmentServices.CreateAsync(newAppointment);
 
-                await CreateLog($"{user} created Appointment Id Appointment:{appointmentViewModel.AppointmentDate} {appointmentViewModel.Procedure}", null, LogLevel.Information);
+                await CreateLog($"{user} created Appointment Id Appointment:{appointmentViewModel.StartDate} {appointmentViewModel.Procedure}", null, LogLevel.Information);
                 return StringHelpers.SuccesMessage;
             }
             catch (Exception exception)
             {
-                await CreateLog($"{user} failed to add Appointment & Patient: Id Appointment:{appointmentViewModel} {appointmentViewModel.FirstName}, {appointmentViewModel.PhonNumber}", exception.Message, LogLevel.Error);
+                await CreateLog($"{user} failed to add Appointment & Patient: Id Appointment:{appointmentViewModel} {appointmentViewModel.FirstName}, {appointmentViewModel.PhoneNumber}", exception.Message, LogLevel.Error);
                 return "Nu s-a putut adauga programarea.";
             }
         }
         
-        public async Task<AppointmentsViewModel> GetListAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, string SearchByAppointmentHour, string SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool daily, bool Hidden)
+        public async Task<AppointmentsViewModel> GetListAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, DateTime SearchByAppointmentStartDate, DateTime SearchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool daily, bool Hidden)
         {
             try
             {
-                var appointmentsList = await _appointmentServices.GetListAsync(SearchByAppointmentHour, SearchByAppointmentDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, daily, Hidden);
+                var appointmentsList = await _appointmentServices.GetListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, daily, Hidden);
                 
                 var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
                 foreach (var appointment in appointmentsList)
@@ -120,7 +120,7 @@ namespace MVCAgenda.Managers.Appointments
 
                 var app = appointmentsListViewModel
                     .Where(p => !string.IsNullOrEmpty(SearchByName) ? p.FirstName.ToUpper().Contains(SearchByName.ToUpper()) : true)
-                    .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhonNumber.Contains(SearchByPhoneNumber) : true).ToList();
+                    .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhoneNumber.Contains(SearchByPhoneNumber) : true).ToList();
 
                 return new AppointmentsViewModel()
                 {
@@ -177,7 +177,7 @@ namespace MVCAgenda.Managers.Appointments
         {
             try
             {
-                string message = await _appointmentServices.SearchAppointmentAsync(appointmentViewModel.MedicId, appointmentViewModel.RoomId, appointmentViewModel.AppointmentDate, appointmentViewModel.AppointmentHour);
+                string message = await _appointmentServices.SearchAppointmentAsync(appointmentViewModel.MedicId, appointmentViewModel.RoomId, appointmentViewModel.StartDate, appointmentViewModel.EndDate);
 
                 if (message != StringHelpers.SuccesMessage)
                 {
@@ -190,8 +190,8 @@ namespace MVCAgenda.Managers.Appointments
                     PatientId = appointmentViewModel.PatientId,
                     MedicId = appointmentViewModel.MedicId,
                     RoomId = appointmentViewModel.RoomId,
-                    AppointmentDate = appointmentViewModel.AppointmentDate,
-                    AppointmentHour = appointmentViewModel.AppointmentHour,
+                    StartDate = appointmentViewModel.StartDate,
+                    EndDate = appointmentViewModel.EndDate,
                     Procedure = appointmentViewModel.Procedure,
                     Made = appointmentViewModel.Made,
                     ResponsibleForAppointment = appointmentViewModel.ResponsibleForAppointment,

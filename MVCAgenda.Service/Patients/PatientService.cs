@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Service.Patients
 {
-    public class PatientServices : IPatientServices
+    public class PatientService : IPatientService
     {
         #region Fields
         private readonly AgendaContext _context;
         #endregion
         /***********************************************************************************/
         #region Constructor
-        public PatientServices(AgendaContext context)
+        public PatientService(AgendaContext context)
         {
             _context = context;
         }
@@ -51,8 +51,8 @@ namespace MVCAgenda.Service.Patients
                 //Daca suna un pacient de pe numere diferite
                 var patients = await _context.Patients
                     .Where(p => p.FirstName == patient.FirstName)
-                    .Where(p => p.SecondName == patient.SecondName)
-                    .Where(p => p.PhonNumber == patient.PhonNumber)
+                    .Where(p => p.LastName == patient.LastName)
+                    .Where(p => p.PhoneNumber == patient.PhoneNumber)
                     .Where(p => p.Mail == patient.Mail)
                     .Where(p => p.Hidden == false)
                     .ToListAsync();
@@ -64,8 +64,8 @@ namespace MVCAgenda.Service.Patients
                     newPatient = new Patient
                     {
                         FirstName = $"{patient.FirstName.Substring(0, 1).ToUpper()}{patient.FirstName.Substring(1, patient.FirstName.Length - 1).ToLower()}",
-                        SecondName = patient.SecondName != null ? $"{patient.SecondName.Substring(0, 1).ToUpper()}{patient.SecondName.Substring(1, patient.SecondName.Length - 1).ToLower()}" : null,
-                        PhonNumber = patient.PhonNumber,
+                        LastName = patient.LastName != null ? $"{patient.LastName.Substring(0, 1).ToUpper()}{patient.LastName.Substring(1, patient.LastName.Length - 1).ToLower()}" : null,
+                        PhoneNumber = patient.PhoneNumber,
                         Mail = patient.Mail,
                         Blacklist = false,
                         Hidden = false
@@ -105,7 +105,7 @@ namespace MVCAgenda.Service.Patients
                         .Where(h => isHidden == true ? h.Hidden == true : h.Hidden == false)
                         .Where(b => includeBlackList == true ? b.Blacklist == true : true)
                         .Where(p => !string.IsNullOrEmpty(searchByName) ? p.FirstName.ToUpper().Contains(searchByName.ToUpper()) : true)
-                        .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhonNumber.Contains(searchByPhoneNumber) : true)
+                        .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhoneNumber.Contains(searchByPhoneNumber) : true)
                         .Where(p => !string.IsNullOrEmpty(searchByEmail) ? p.Mail.ToUpper().Contains(searchByEmail.ToUpper()) : true)
 
                         .OrderBy(f => f.FirstName)

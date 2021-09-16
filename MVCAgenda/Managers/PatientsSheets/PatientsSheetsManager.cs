@@ -4,11 +4,11 @@ using MVCAgenda.Core.Logging;
 using MVCAgenda.Factories.Consultations;
 using MVCAgenda.Factories.PatientsSheet;
 using MVCAgenda.Models.Consultations;
-using MVCAgenda.Models.PatientsSheets;
+using MVCAgenda.Models.PatientSheets;
 using MVCAgenda.Service.Consultations;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Service.Patients;
-using MVCAgenda.Service.SheetPatients;
+using MVCAgenda.Service.PatientsSheet;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,21 +21,21 @@ namespace MVCAgenda.Managers.PatientsSheets
 
         #region Fields
         private readonly IPatientsSheetsFactory _patientSheetFactory;
-        private readonly IPatientSheetServices _patientSheetServices;
-        private readonly IPatientServices _patientServices;
-        private readonly IConsultationServices _consultationServices;
+        private readonly IPatientSheetService _patientSheetServices;
+        private readonly IPatientService _patientServices;
+        private readonly IConsultationService _consultationServices;
         private readonly IConsultationsFactory _consultationFactory;
-        private readonly ILoggerServices _logger;
+        private readonly ILoggerService _logger;
         #endregion
         /***********************************************************************************/
         #region Constructor
         public PatientsSheetsManager(
-            IPatientSheetServices patientSheetServices,
+            IPatientSheetService patientSheetServices,
             IPatientsSheetsFactory patientSheetFactory,
-            IPatientServices patientServices, 
-            IConsultationServices consultationServices, 
+            IPatientService patientServices, 
+            IConsultationService consultationServices, 
             IConsultationsFactory consultationFactory, 
-            ILoggerServices loggerServices)
+            ILoggerService loggerServices)
         {
             _patientSheetServices = patientSheetServices;
             _patientSheetFactory = patientSheetFactory;
@@ -120,7 +120,7 @@ namespace MVCAgenda.Managers.PatientsSheets
                         Id = model.Id,
                         AntecedentsH = model.AntecedentsH,
                         AntecedentsP = model.AntecedentsP,
-                        CNP = model.CNP,
+                        NationalIdentificationNumber = model.NationalIdentificationNumber,
                         DateOfBirth = model.DateOfBirth,
                         Gender = Int32.Parse(model.Gender),
                         PhysicalExamination = model.PhysicalExamination,

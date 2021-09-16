@@ -15,8 +15,8 @@ namespace MVCAgenda.Factories.Patients
                 Id = patient.Id,
                 SheetPatientId = patient.PatientSheetId,
                 FirstName = patient.FirstName,
-                SecondName = patient.SecondName,
-                PhonNumber = patient.PhonNumber,
+                LastName = patient.LastName,
+                PhoneNumber = patient.PhoneNumber,
                 Mail = patient.Mail,
                 Hidden = patient.Hidden
             };

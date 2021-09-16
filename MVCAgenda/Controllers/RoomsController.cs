@@ -1,9 +1,5 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MVCAgenda.Core.Domain;
-using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Models.Rooms;
 
@@ -71,6 +67,8 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Update
+
+        //[Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)

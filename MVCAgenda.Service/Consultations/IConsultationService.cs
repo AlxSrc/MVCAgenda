@@ -4,7 +4,7 @@ using MVCAgenda.Core.Domain;
 
 namespace MVCAgenda.Service.Consultations
 {
-    public interface IConsultationServices
+    public interface IConsultationService
     {
         Task<bool> CreateAsync(Consultation consultation);
         

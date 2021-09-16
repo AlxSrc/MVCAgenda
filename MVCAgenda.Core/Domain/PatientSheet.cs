@@ -18,7 +18,7 @@ namespace MVCAgenda.Core.Domain
 
 
         [StringLength(20, MinimumLength = 1)] 
-        public string CNP { get; set; }
+        public string NationalIdentificationNumber { get; set; }
 
 
         public int Gender { get; set; }

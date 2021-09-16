@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,14 +20,12 @@ namespace MVCAgenda.Core.Domain
         public virtual Medic Medic { get; set; }
 
 
-        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Required]
-        public string AppointmentDate { get; set; }
+        public DateTime StartDate { get; set; }
 
 
-        [DataType(DataType.Time)]
-        [Required]
-        public string AppointmentHour { get; set; }
+        public DateTime EndDate { get; set; }
 
 
         [StringLength(75, MinimumLength = 1)]
@@ -45,7 +44,7 @@ namespace MVCAgenda.Core.Domain
 
         [DataType(DataType.DateTime)]
         [Required]
-        public string AppointmentCreationDate { get; set; }
+        public DateTime AppointmentCreationDate { get; set; }
 
 
         public string Comments { get; set; }

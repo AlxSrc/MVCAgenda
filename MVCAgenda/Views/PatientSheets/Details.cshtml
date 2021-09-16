@@ -6,7 +6,7 @@
 @if (User.Identity.IsAuthenticated)
 {
 
-    @model MVCAgenda.Models.PatientsSheets.PatientSheetDetailsViewModel
+    @model MVCAgenda.Models.PatientSheets.PatientSheetDetailsViewModel
 
 <div class="main box">
     <div class="mt-3 d-lg-flex justify-content-lg-center">
@@ -57,8 +57,8 @@
                 <div class="row">
                     <div class="col">
                         <div class="input-group">
-                            <span class="input-group-text">@Html.DisplayNameFor(model => model.CNP)</span>
-                            <input asp-for="CNP" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.CNP)" readonly>
+                            <span class="input-group-text">@Html.DisplayNameFor(model => model.NationalIdentificationNumber)</span>
+                            <input asp-for="NationalIdentificationNumber" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.NationalIdentificationNumber)" readonly>
                         </div>
                     </div>
                     <div class="col">

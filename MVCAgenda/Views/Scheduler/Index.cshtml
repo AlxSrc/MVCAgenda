@@ -36,6 +36,10 @@
 
             </e-schedule-eventsettings>
 
+            <e-schedule-resources>
+                <e-schedule-resource dataSource="@ViewBag.Employees" field="EmployeeId" title="Employees" name="Employee" textField="text" idField="id" colorField="color" groupIDField="groupId" allowMultiple="false"></e-schedule-resource>
+            </e-schedule-resources>
+
             <e-schedule-views>
                 <e-schedule-view option="Day"></e-schedule-view>
                 <e-schedule-view option="Week" eventTemplate="#event-template"></e-schedule-view>
@@ -275,7 +279,7 @@
             <div class='template-wrap' style='background:${SecondaryColor}'>
                 <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
                 <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
-                <div class="description">${FirstName} - ${PhonNumber}</div>
+                <div class="description">${FirstName} - ${PhoneNumber}</div>
                 <div class="description">${Room} - ${Medic}</div>
                 <div class="description">${Description}</div>
             </div>
@@ -300,13 +304,13 @@
                     <tr>
                         <td class="e-textlabel">Prenumele</td>
                         <td colspan="4">
-                            <input id="SecondName" name="SecondName" class="e-field e-input" type="text" value="" style="width: 100%" />
+                            <input id="LastName" name="LastName" class="e-field e-input" type="text" value="" style="width: 100%" />
                         </td>
                     </tr>
                     <tr>
                         <td class="e-textlabel">Numar de telefon*</td>
                         <td colspan="4">
-                            <input id="PhonNumber" name="PhonNumber" class="e-field e-input" type="text" value="" style="width: 100%" />
+                            <input id="PhoneNumber" name="PhoneNumber" class="e-field e-input" type="text" value="" style="width: 100%" />
                         </td>
                     </tr>
                     <tr>

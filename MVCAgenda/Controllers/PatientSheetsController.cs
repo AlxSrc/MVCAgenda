@@ -3,18 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Factories.PatientsSheet;
 using MVCAgenda.Managers.PatientsSheets;
-using MVCAgenda.Models.PatientsSheets;
+using MVCAgenda.Models.PatientSheets;
 
 namespace MVCAgenda.Controllers
 {
-    public class PatientSheetController : Controller
+    public class PatientSheetsController : Controller
     {
         #region Fields
         private readonly IPatientsSheetsManager _patientSheetManager;
         #endregion
         /*********************************************************************************/
         #region Constructor
-        public PatientSheetController(IPatientsSheetsManager patientSheetManager)
+        public PatientSheetsController(IPatientsSheetsManager patientSheetManager)
         {
             _patientSheetManager = patientSheetManager;
         }

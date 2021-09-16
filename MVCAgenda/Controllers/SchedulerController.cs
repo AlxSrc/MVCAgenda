@@ -59,6 +59,10 @@ namespace MVCAgenda.Controllers
                 ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsManager.GetListAsync(), new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
+                }); 
+                ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsManager.GetListAsync(), new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
 
                 return View();

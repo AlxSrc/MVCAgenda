@@ -26,12 +26,10 @@
             <div class="container">
                 <div class="row mb-2">
                     <div class="col same-size">
-                        <input type="date" class="form-control"
-                               placeholder="Data programari" aria-label="Text" asp-for="SearchByAppointmentDate" />
+                        <input class="form-control" aria-label="Text" asp-for="SearchByAppointmentStartDate" />
                     </div>
                     <div class="col same-size">
-                        <input type="time" class="form-control"
-                               placeholder="Ora programari" aria-label="Text" asp-for="SearchByAppointmentHour" />
+                        <input class="form-control" aria-label="Text" asp-for="SearchByAppointmentEndDate" />
                     </div>
                     <div class="col same-size">
                         <select class="form-control" placeholder="Medic" asp-for="SearchByMedic" asp-items="ViewBag.MedicId">
@@ -98,7 +96,7 @@
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].PhonNumber)
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].PhoneNumber)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].Medic)
@@ -107,10 +105,10 @@
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].Room)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentDate)
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].StartDate)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].AppointmentHour)
+                        @Html.DisplayNameFor(model => model.AppointmentsList[0].EndDate)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.AppointmentsList[0].Procedure)
@@ -126,7 +124,7 @@
                             @Html.DisplayFor(modelItem => item.FirstName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.PhonNumber)
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Medic)
@@ -135,10 +133,10 @@
                             @Html.DisplayFor(modelItem => item.Room)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AppointmentDate)
+                            @Html.DisplayFor(modelItem => item.StartDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AppointmentHour)
+                            @Html.DisplayFor(modelItem => item.EndDate)
                         </td>
                         <td>
                             @Html.Raw(item.Procedure)
