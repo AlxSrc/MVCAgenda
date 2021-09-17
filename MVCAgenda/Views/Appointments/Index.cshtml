@@ -83,10 +83,10 @@
                                     }
                                 </li>
                                 <li>
-                                    @if (Model.Hidden == false)
+                                    @if (Model.Daily == true)
                                     {
                                         <text>
-                                            <a asp-action="Index" asp-route-Daily="false" class="dropdown-item link-danger">Programări șterse</a>
+                                            <a asp-action="Index" asp-route-Daily="false" class="dropdown-item text-color">Toate programările</a>
                                         </text>
                                     }
                                 </li>

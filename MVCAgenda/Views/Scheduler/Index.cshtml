@@ -20,10 +20,10 @@
         <ejs-schedule 
             id="schedule" height="650px" 
             startHour="06:00" endHour="20:00" showQuickInfo="true"
-            firstDayOfWeek=1 currentView="TimelineWeek" selectedDate="@DateTime.Now.Date"
+            firstDayOfWeek=1 currentView="Day" selectedDate="@DateTime.Now.Date"
             resourceHeaderTemplate="#resource-template" 
             actionBegin="onActionBegin" actionComplete="onActionComplete" 
-            popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate" >
+            popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate">
 
             <e-schedule-eventsettings>
 
@@ -40,16 +40,16 @@
             <e-schedule-group enableCompactView="false" resources="@ViewBag.Resources"></e-schedule-group>
             <e-schedule-resources>
                 <e-schedule-resource dataSource="@ViewBag.Employees" field="MedicId" title="Employees" 
-                    name="Employee" textField="name" idField="id" groupIDField="id" allowMultiple="false">
+                    name="Employee" textField="name" idField="id" groupIDField="id" allowMultiple="true">
                 </e-schedule-resource>
             </e-schedule-resources>
 
             <e-schedule-views>
-                <e-schedule-view option="Day"></e-schedule-view>
-                <e-schedule-view option="Week" eventTemplate="#event-template"></e-schedule-view>
+                <e-schedule-view option="Day" eventTemplate="#day-event-template"></e-schedule-view>
+                <e-schedule-view option="Week" eventTemplate="#week-event-template"></e-schedule-view>
                 <e-schedule-view option="TimelineWeek" eventTemplate="#timeline-event-template"></e-schedule-view>
-                <e-schedule-view option="WorkWeek"></e-schedule-view>
-                <e-schedule-view option="Month"></e-schedule-view>
+                @*<e-schedule-view option="WorkWeek"></e-schedule-view>*@
+                <e-schedule-view option="Month" eventTemplate="#month-event-template"></e-schedule-view>
             </e-schedule-views>
 
         </ejs-schedule>
@@ -69,8 +69,9 @@
                         data = args.data;
                     }
                     var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-                    if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime))
-                        args.cancel = true;
+                    //
+                    //if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime) && )
+                    //    args.cancel = true;
                  }
             }
             function onActionComplete(args) {
@@ -88,20 +89,19 @@
                     $.ajax({
                         url: "@Url.Action("AddData", "Scheduler")",
                         data: args.data[0],
-                    type: "POST",
-                    success: function (result)
-                    {
-                        if (result === "The appointment was succesfull added.") {
-                            scheduleObj.refresh();
-                            console.log(result.result);
-                        }
-                        else
+                        type: "POST",
+                        success: function (result)
                         {
-                            alert(result.result);
-                            scheduleObj.refresh();
-                            console.log(result.result);
-                        }
-                    }});
+                            if (result.result === "Succes.") {
+                                scheduleObj.refresh();
+                            }
+                            else
+                            {
+                                alert(result.result);
+                                scheduleObj.refresh();
+                                console.log(result.result);
+                            }
+                        }});
                 }
                 if (args.requestType === "eventRemoved") {
                     $.ajax({
@@ -125,12 +125,12 @@
                     $.ajax({
                         url: "@Url.Action("EditData", "Scheduler")",
                         data: args.data[0],
-                    type: "POST",
-                    success: function (result)
-                    {
-                        scheduleObj.refresh();
-                        console.log(result.result);
-                    }});
+                        type: "POST",
+                        success: function (result)
+                        {
+                            scheduleObj.refresh();
+                            console.log(result.result);
+                        }});
                 }
             }
             function onPopupOpen(args) {
@@ -144,6 +144,7 @@
                             placeholder: 'Alege medicul', value: medicListElement.value,
                             dataSource: @Html.Raw(ViewData["MedicId"]),
                             fields: { text: 'name', value: 'id' },
+                            selectedIndex:1,
                             value: (args.data).EventType
                         });
                         dropDownListMedicObject.appendTo(medicListElement);
@@ -174,6 +175,7 @@
                 }
             }
 
+            //Capul la tabel cu medici
             function getEmployeeName(value) {
                 return value.resourceData[value.resource.textField];
             }
@@ -266,32 +268,21 @@
                 padding: 10px 25%;
             }
 
-            .e-schedule .template-wrap .subject {
-                font-weight: 600;
-                font-size: 15px;
-                padding: 4px 4px 4px;
-                height: 25px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-
             .e-schedule .template-wrap .time {
                 height: 25px;
             }
 
-            .e-schedule .template-wrap .time,
-            .e-schedule .template-wrap .description {
-                font-size: 12px;
-                padding: 1px 1px 2px;
-                overflow: hidden;
-            }
 
             .e-schedule .template-wrap .footer {
                 position: absolute;
                 bottom: 0;
                 height: 50px;
                 width: 100%;
+            }
+
+            .e-schedule .e-event-resize.e-top-handler, .e-schedule .e-event-resize.e-bottom-handler {
+                height: 0px;
+                width: 0%;
             }
 
             .e-schedule .e-timeline-view .e-appointment .e-appointment-details {
@@ -309,17 +300,40 @@
                 height: 30px;
                 text-align: center;
             }
-
-            .appointment-schedule-block{
-                
+            /* folosite sigur */
+            .e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
+                width:98% !important;
+                background-color: #fafafa;
+                border-color: #7f73bb;
+                border-width: 2px;
             }
-
+            
             .e-schedule .e-timeline-view .e-appointment, .e-schedule .e-timeline-month-view .e-appointment{ 
                 height: auto; 
-             }
+            }
+            
+            .e-schedule .template-wrap .subject {
+                font-weight: 600;
+                font-size: 19px;
+                padding: 4px 4px 4px;
+                height: 30px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                text-align:center;
+            }
 
+            .e-schedule .template-wrap .time,
+            .e-schedule .template-wrap .description {
+                font-size: 14px;
+                padding: 4px 10px 1px;
+                color: #141414;
+                overflow: hidden;
+            }
         </style>
-
+        
+        
+        @*Capul la tabel cu medici*@
         <script id="resource-template" type="text/x-template">
             <div class="template-wrap">
                 <div class="employee-category">
@@ -330,7 +344,17 @@
             </div>
         </script>
 
-        <script id="event-template" type="text/x-template">
+        @*Templaturi pt vizualizare tabelului pe perioade*@
+        <script id="day-event-template" type="text/x-template">
+            <div class="template-wrap" style="background:${PrimaryColor}">
+                <div class="subject" style="background:${PrimaryColor}">${Subject}</div>
+                <div class="description" style="background:${SecondaryColor}">Camera: <b>${Room}</b></div>
+                <div class="description" style="background:${SecondaryColor}">Pacient: <b>${FirstName}</b></div>
+                @*<div class="time">Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>*@
+            </div>
+        </script>
+
+        <script id="week-event-template" type="text/x-template">
             <div class='template-wrap' style='background:${SecondaryColor}'>
                 <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
                 <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
@@ -341,24 +365,23 @@
         </script>
 
         <script id="timeline-event-template" type="text/x-template">
-            <div class='template-wrap' style='background:${PrimaryColor}'>
-                <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
-                <div class="description" style='background:${SecondaryColor}'>${Room}</div>
-                <div class="description" style='background:${SecondaryColor}'>${FirstName} - ${PhoneNumber}</div>
-                <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
+            <div class="template-wrap" style="background:${PrimaryColor}">
+                <div class="subject" style="background:${PrimaryColor}">${Subject}</div>
+                <div class="description" style="background:${SecondaryColor}">${Room}</div>
+                <div class="description" style="background:${SecondaryColor}">${FirstName}</div>
+                @*<div class="time" style="background:${PrimaryColor}">Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>*@
             </div>
         </script>
 
-        <script id="QuickInfoEventTemplate" type="text/x-template">
-            <div class='template-wrap' style='background:${PrimaryColor}'>
-                <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
-                <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
-                <div class="description">${FirstName} - ${PhoneNumber}</div>
-                <div class="description">${Room} - ${Medic}</div>
-                <div class="description">${Description}</div>
+        <script id="month-event-template" type="text/x-template">
+            <div class="template-wrap" style="background:${PrimaryColor}">
+                <div class="subject" style="font-size: 12px">${Subject}</div>
             </div>
         </script>
+        
+        
 
+        @*Templaturi pt adaugare date*@
         <script id="EventEditorTemplate" type="text/x-template">
             @*@Html.PartialAsync("_SchedulerPopUp",modelPrecompletat)*@
             <table class="custom-event-editor" width="100%" cellpadding="5">

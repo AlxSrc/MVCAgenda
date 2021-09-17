@@ -17,6 +17,7 @@ namespace MVCAgenda.Models.Appointments
         
         public bool Hidden { get; set; }
         public bool Blacklist { get; set; }
+        public bool Daily { get; set; }
         #endregion
 
         #region Param for search

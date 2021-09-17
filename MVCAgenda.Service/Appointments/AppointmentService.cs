@@ -44,7 +44,7 @@ namespace MVCAgenda.Service.Appointments
             return await _context.Appointments.FirstOrDefaultAsync(a => a.Id == Id);
         }
 
-        public async Task<List<Appointment>> GetListAsync(DateTime searchByAppointmentStartDate, DateTime searchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
+        public async Task<List<Appointment>> GetFiltredListAsync(DateTime searchByAppointmentStartDate, DateTime searchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
         {
             var appointmentsList = await (
                     _context.Appointments

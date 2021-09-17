@@ -112,7 +112,7 @@ namespace MVCAgenda.Managers.Appointments
         {
             try
             {
-                var appointmentsList = await _appointmentServices.GetListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, daily, Hidden);
+                var appointmentsList = await _appointmentServices.GetFiltredListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, daily, Hidden);
                 
                 var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
                 foreach (var appointment in appointmentsList)
@@ -130,7 +130,7 @@ namespace MVCAgenda.Managers.Appointments
             }
             catch (Exception exception)
             {
-                _logger.CreateAsync(new Log()
+                await _logger.CreateAsync(new Log()
                 {
                     ShortMessage = $"{user} failed to get appointments",
                     FullMessage = exception.Message,

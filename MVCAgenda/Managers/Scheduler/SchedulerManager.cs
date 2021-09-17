@@ -97,7 +97,7 @@ namespace MVCAgenda.Managers.Scheduler
                     Hidden = false
                 };
 
-                await _appointmentServices.CreateAsync(newAppointment);
+                var asd = await _appointmentServices.CreateAsync(newAppointment);
 
                 await _logger.CreateAsync(new Log()
                 {
@@ -131,7 +131,7 @@ namespace MVCAgenda.Managers.Scheduler
             try
             {
                 var items = new List<ScheduleEventData>();
-                var appointments = await _appointmentServices.GetListAsync(DateTime.MinValue, DateTime.MinValue, 0,0,null,0,false,false);
+                var appointments = await _appointmentServices.GetFiltredListAsync(DateTime.MinValue, DateTime.MinValue, 0,0,null,0,false,false);
                 foreach (var appointment in appointments)
                     items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(
                         appointment, 

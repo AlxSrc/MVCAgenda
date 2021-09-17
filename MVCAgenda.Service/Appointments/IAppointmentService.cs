@@ -10,7 +10,8 @@ namespace MVCAgenda.Service.Appointments
         Task<bool> CreateAsync(Appointment appointment);
         
         Task<Appointment> GetAsync(int Id);
-        Task<List<Appointment>> GetListAsync(DateTime SearchByAppointmentHour, DateTime SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool daily, bool Hiden);
+
+        Task<List<Appointment>> GetFiltredListAsync(DateTime SearchByAppointmentHour, DateTime SearchByAppointmentDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool daily, bool Hiden);
 
         Task<bool> UpdateAsync(Appointment appointment);
 
