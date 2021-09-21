@@ -38,8 +38,8 @@ namespace MVCAgenda.Managers.Rooms
                 var room = new Room()
                 {
                     Name = model.Name,
-                    PrimaryColor = model.PrimaryColor,
-                    SecondaryColor = model.SecondaryColor,
+                    PrimaryColor = model.PrimaryColor == null || model.PrimaryColor == "" ? "#7f73bb" : model.PrimaryColor,
+                    SecondaryColor = model.SecondaryColor == null || model.SecondaryColor == "" ? "#f5f5f5" : model.SecondaryColor,
                     Description = model.Description,
                     Hidden = false
                 };
@@ -144,8 +144,8 @@ namespace MVCAgenda.Managers.Rooms
                     {
                         Id = model.Id,
                         Name = model.Name,
-                        PrimaryColor = model.PrimaryColor,
-                        SecondaryColor = model.SecondaryColor,
+                        PrimaryColor = model.PrimaryColor == null || model.PrimaryColor == "" ? "#7f73bb" : model.PrimaryColor,
+                        SecondaryColor = model.SecondaryColor == null || model.SecondaryColor == "" ? "#f5f5f5" : model.SecondaryColor,
                         Description = model.Description,
                         Hidden = model.Hidden
                     };

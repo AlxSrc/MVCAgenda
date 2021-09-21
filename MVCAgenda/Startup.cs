@@ -1,11 +1,7 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Factories.Appointments;
@@ -29,6 +25,11 @@ using MVCAgenda.Service.Medics;
 using MVCAgenda.Service.Patients;
 using MVCAgenda.Service.Rooms;
 using MVCAgenda.Service.PatientsSheet;
+using MVCAgenda.Core.Users;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using MVCAgenda.Managers.ManageAccount;
 
 namespace MVCAgenda
 {
@@ -46,14 +47,18 @@ namespace MVCAgenda
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<AgendaContext>(options =>
+            services.AddDbContext<AgendaContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("AgendaContext")));
 
 
             string connectionString = Configuration.GetConnectionString("AgendaContext");
             services.AddDbContext<AgendaContext>(c => c.UseSqlServer(connectionString));
 
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AgendaContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AgendaContext>();
+
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<AgendaContext>();
 
             //services
             services.AddScoped<IPatientService, PatientService>();
@@ -81,6 +86,7 @@ namespace MVCAgenda
             services.AddScoped<IMedicsManager, MedicsManager>();
             services.AddScoped<IRoomsManager, RoomsManager>();
             services.AddScoped<ISchedulerManager, SchedulerManager>();
+            services.AddScoped<IManageAccountManager, ManageAccountManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

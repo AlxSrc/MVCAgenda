@@ -1,22 +1,25 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Mail;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.Core.Users;
 using MVCAgenda.Models.Accounts;
 
 namespace MVCAgenda.Controllers
 {
     public class AccountController : Controller
     {
-        #region Services
+        #region Fields
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         #endregion
         /**************************************************************************************/
         #region Constructor
-        public AccountController(UserManager<IdentityUser> userManager,
-                                      SignInManager<IdentityUser> signInManager)
+        public AccountController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -64,10 +67,12 @@ namespace MVCAgenda.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                MailAddress address = new MailAddress(model.Email);
+                string userName = address.User;
+                var user = new ApplicationUser
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
+                    UserName = userName,
+                    Email = model.Email
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -75,7 +80,7 @@ namespace MVCAgenda.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-
+                    //await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
                     return RedirectToAction("index", "Home");
                 }
 

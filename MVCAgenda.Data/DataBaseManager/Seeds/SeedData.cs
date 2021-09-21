@@ -1,21 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Users;
+using MVCAgenda.Core.Users.AppPermissions;
 using MVCAgenda.Data.DataBaseManager;
 using System;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace MVCAgenda.Data
+namespace MVCAgenda.Data.DataBaseManager.Seeds
 {
     public class SeedData
     {
-        //private readonly UserManager<IdentityUser> _userManager;
-        //private readonly SignInManager<IdentityUser> _signInManager;
-
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async void Initialize(IServiceProvider serviceProvider, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             try
             {
+                //var context = new AgendaContext(serviceProvider.GetRequiredService<DbContextOptions<AgendaContext>>());
+
                 using (var context = new AgendaContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<AgendaContext>>()))
@@ -27,64 +31,64 @@ namespace MVCAgenda.Data
                         {
                             Name = "Camera 1 medical",
                             Description = "Camera consultatii",
-                            PrimaryColor = "#3cdeff",
-                            SecondaryColor = "#b6fbff",
+                            PrimaryColor = "#7f73bb",
+                            SecondaryColor = "#fafafa",
                             Hidden = false
                         },
                         new Room
                         {
                             Name = "Camera 2 medical",
                             Description = "Camera Operatii",
-                            PrimaryColor = "#6dd5ed",
-                            SecondaryColor = "#01F0C0",
+                            PrimaryColor = "#7f73bb",
+                            SecondaryColor = "#fafafa",
                             Hidden = false
                         },
                         new Room
                         {
                             Name = "Camera 3 medical",
                             Description = "Camera 3 medical description",
-                            PrimaryColor = "#6dd5ed",
-                            SecondaryColor = "#3498DB",
+                            PrimaryColor = "#7f73bb",
+                            SecondaryColor = "#fafafa",
                             Hidden = false
                         },
                         new Room
                         {
                             Name = "Camera 1 corporal",
                             Description = "Camera laser",
-                            PrimaryColor = "#F8F9F9",
-                            SecondaryColor = "#E5E7E9",
+                            PrimaryColor = "#7f73bb",
+                            SecondaryColor = "#fafafa",
                             Hidden = false
                         },
                         new Room
                         {
                             Name = "Camera 2 corporal",
                             Description = "Camera 2 corporal descriprion",
-                            PrimaryColor = "#d54381",
-                            SecondaryColor = "#3498DB",
+                            PrimaryColor = "#7f73bb",
+                            SecondaryColor = "#fafafa",
                             Hidden = false
                         },
                         new Room
                         {
                             Name = "Camera 3 corporal",
                             Description = "Camera Aparatura",
-                            PrimaryColor = "#6dd5ed",
-                            SecondaryColor = "#7644ad",
+                            PrimaryColor = "#7f73bb",
+                            SecondaryColor = "#fafafa",
                             Hidden = false
                         },
                         new Room
                         {
                             Name = "Camera 4 corporal",
                             Description = "Camera reimprospatare",
-                            PrimaryColor = "",
-                            SecondaryColor = "",
+                            PrimaryColor = "#7f73bb",
+                            SecondaryColor = "#fafafa",
                             Hidden = false
                         },
                         new Room
                         {
                             Name = "Sala de sport",
                             Description = "Camera refacere musculara",
-                            PrimaryColor = "#d54381",
-                            SecondaryColor = "#7644ad",
+                            PrimaryColor = "#7f73bb",
+                            SecondaryColor = "#fafafa",
                             Hidden = false
                         });
 
@@ -317,8 +321,8 @@ namespace MVCAgenda.Data
                             PatientId = 1,
                             MedicId = 1,
                             RoomId = 1,
-                            StartDate = DateTime.Now.AddDays(1).AddHours(15),
-                            EndDate = DateTime.Now.AddDays(1).AddHours(75),
+                            StartDate = DateTime.Now.AddDays(1).AddMinutes(15),
+                            EndDate = DateTime.Now.AddDays(1).AddMinutes(75),
                             Procedure = "Anestezie",
                             Made = true,
                             ResponsibleForAppointment = "Administrator",
@@ -330,8 +334,8 @@ namespace MVCAgenda.Data
                             PatientId = 4,
                             MedicId = 3,
                             RoomId = 5,
-                            StartDate = DateTime.Now.AddDays(3).AddHours(15),
-                            EndDate = DateTime.Now.AddDays(3).AddHours(75),
+                            StartDate = DateTime.Now.AddDays(3).AddMinutes(15),
+                            EndDate = DateTime.Now.AddDays(3).AddMinutes(75),
                             Procedure = "Apucuntura",
                             Made = true,
                             ResponsibleForAppointment = "Administrator",
@@ -343,8 +347,8 @@ namespace MVCAgenda.Data
                             PatientId = 3,
                             MedicId = 2,
                             RoomId = 4,
-                            StartDate = DateTime.Now.AddDays(2).AddHours(115),
-                            EndDate = DateTime.Now.AddDays(2).AddHours(175),
+                            StartDate = DateTime.Now.AddDays(2).AddMinutes(115),
+                            EndDate = DateTime.Now.AddDays(2).AddMinutes(175),
                             Procedure = "Anestezie",
                             Made = true,
                             ResponsibleForAppointment = "Administrator",
@@ -356,8 +360,8 @@ namespace MVCAgenda.Data
                             PatientId = 2,
                             MedicId = 1,
                             RoomId = 2,
-                            StartDate = DateTime.Now.AddDays(7).AddHours(15),
-                            EndDate = DateTime.Now.AddDays(7).AddHours(75),
+                            StartDate = DateTime.Now.AddDays(7).AddMinutes(15),
+                            EndDate = DateTime.Now.AddDays(7).AddMinutes(75),
                             Procedure = "Anestezie",
                             Made = true,
                             ResponsibleForAppointment = "Administrator",
@@ -368,15 +372,26 @@ namespace MVCAgenda.Data
                         context.SaveChanges();
                     }
 
-                    //RegisterViewModel model = new RegisterViewModel() { Email = "admin@agenda-online.com", Password = "admiN!23", ConfirmPassword = "admiN!23" };
+                    if (userManager.Users.Any() == false)
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(Roles.Moderator.ToString()));
+                        await roleManager.CreateAsync(new IdentityRole(Roles.Manager.ToString()));
+                        await roleManager.CreateAsync(new IdentityRole(Roles.Doctor.ToString()));
+                        await roleManager.CreateAsync(new IdentityRole(Roles.Nurse.ToString()));
 
-                    //var user = new IdentityUser
-                    //{
-                    //    UserName = model.Email,
-                    //    Email = model.Email,
-                    //};
+                        var moderatorUser = new IdentityUser
+                        {
+                            UserName = "moderator_agenda@gmail.com",
+                            Email = "moderator_agenda@gmail.com",
+                            EmailConfirmed = true
+                        };
 
-                    //var result = _userManager.CreateAsync(user, model.Password);
+                        await userManager.CreateAsync(moderatorUser, "{Al@ka#9A#s&KA|");
+                        await userManager.AddToRoleAsync(moderatorUser, Roles.Moderator.ToString());
+                        await userManager.AddToRoleAsync(moderatorUser, Roles.Manager.ToString());
+
+                        await SeedClaimsForModeratorAdmin(roleManager);
+                    }
                 }
             }
             catch(Exception ex)
@@ -384,6 +399,31 @@ namespace MVCAgenda.Data
                 var msg = ex.Message;
             }
         }
+
+        private static async  Task SeedClaimsForModeratorAdmin(RoleManager<IdentityRole> roleManager)
+        {
+            var adminRole = await roleManager.FindByNameAsync("Moderator");
+            await SeedData.AddPermissionClaim(roleManager, adminRole, "Patients");
+            await SeedData.AddPermissionClaim(roleManager, adminRole, "PatientSheets");
+            await SeedData.AddPermissionClaim(roleManager, adminRole, "Consultations");
+            await SeedData.AddPermissionClaim(roleManager, adminRole, "Appointments");
+            await SeedData.AddPermissionClaim(roleManager, adminRole, "Rooms");
+            await SeedData.AddPermissionClaim(roleManager, adminRole, "Medics");
+        }
+
+        public static async Task AddPermissionClaim(RoleManager<IdentityRole> roleManager, IdentityRole role, string module)
+        {
+            var allClaims = await roleManager.GetClaimsAsync(role);
+            var allPermissions = Permissions.GeneratePermissionsForModule(module);
+            foreach (var permission in allPermissions)
+            {
+                if (!allClaims.Any(a => a.Type == "Permission" && a.Value == permission))
+                {
+                    await roleManager.AddClaimAsync(role, new Claim("Permission", permission));
+                }
+            }
+        }
+
 
         private static string GetRandomDate()
         {

@@ -71,10 +71,25 @@
                             <h2 class="mb-3 text-center text-color">Administrarea conturilor</h2>
                         </div>
                         <div class="col-auto">
-                            <a class="btn btn-main-color-filled" asp-controller="Account" asp-action="Register">Adaugă un cont</a>
+                            <div class="btn-group" role="group" aria-label="Opțiuni">
+                                <a class="btn btn-main-color-filled" asp-controller="Account" asp-action="Register">Adaugă un cont</a>
+                                <a class="btn btn-main-color-filled" asp-controller="UserRoles" asp-action="Index">Modifica perimiunile</a>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="container g-0">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <h2 class="mb-3 text-center text-color">Administrarea rorulilor</h2>
+                        </div>
+                        <div class="col-auto">
+                            <a class="btn btn-main-color-filled" asp-controller="RoleManager" asp-action="Index">Roluri</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

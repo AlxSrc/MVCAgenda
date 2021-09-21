@@ -17,7 +17,7 @@ namespace MVCAgenda.Models.Accounts
 
         [DataType(DataType.Password)]
         [DisplayName("Confirmă parola")]
-        [Compare("Password", ErrorMessage = "Password and confirmation password not match.")]
+        [Compare("Password", ErrorMessage = "Parolele nu corespund.")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -7,7 +7,6 @@ namespace MVCAgenda.Models.Accounts
     {
         [DisplayName("E-mail")]
         [Required]
-        [EmailAddress]
         public string Email { get; set; }
 
         [DisplayName("Parola")]

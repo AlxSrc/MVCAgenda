@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MVCAgenda.Data;
+using MVCAgenda.Data.DataBaseManager.Seeds;
 using System;
+using System.Threading.Tasks;
 
 namespace MVCAgenda
 {
@@ -16,14 +18,28 @@ namespace MVCAgenda
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                var logger = loggerFactory.CreateLogger("app");
 
                 try
                 {
-                    SeedData.Initialize(services);
+                    //Roles
+                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+                    //BasicData
+                    SeedData.Initialize(services, userManager, roleManager);
+
+
+                    //Task.Run(() => DefaultRoles.SeedAsync(userManager, roleManager));
+                    //Task.Run(() => DefaultUsers.SeedBasicNurseAsync(userManager, roleManager));
+                    //Task.Run(() => DefaultUsers.SeedModeratorAdminAsync(userManager, roleManager));
+
+                    logger.LogInformation("Finished Seeding Default Data");
+                    logger.LogInformation("Application Starting");
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred seeding the DB.");
                 }
             }
