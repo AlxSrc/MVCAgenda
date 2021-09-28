@@ -28,12 +28,14 @@
                             <span class="fs-4 text-color ms-3">Clinica</span>
                             <img class="sigla" src="https://esderm.ro/wp-content/uploads/2020/09/logo-esderm-web.png">
                         </a>
+                        
                     </div>
+                    
                     <div class="col-auto">
                         <ul class="nav nav-pills">
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Scheduler" asp-action="Index">Program</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Scheduler" asp-action="Index">Calendar</a>
                             </li>
 
                             <li class="nav-item">
@@ -47,11 +49,30 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage">Administrare</a>
                             </li>
+                            
+                            <li class="nav-item">
+                                <img class="wellcome-image" src="https://imgix.bustle.com/uploads/image/2021/7/16/07062a59-9fd1-41f8-9c99-e4c0f5d80c05-06546552-d025-4a16-ab18-d252ff01fa90-getty-1205000579.jpeg?w=800&fit=crop&crop=focalpoint&auto=format%2Ccompress&fp-x=0.4587&fp-y=0.754">
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link wellcome-name" asp-controller="UserRoles" asp-action="Index">
+                                    @if (String.Compare(DateTime.Now.ToString("t"),"12:00") < 0)
+                                    {
+                                        <text>Bună diminea, @User.Identity.Name</text>
+                                    }
+                                    else if (String.Compare(DateTime.Now.ToString("t"),"18:00") > 0)
+                                    {
+                                        <text>Bună seara, @User.Identity.Name</text>
+                                    }
+                                    else
+                                    {
+                                        <text>Bună ziua, @User.Identity.Name</text>
+                                    }
+                                </a>
+							</li>
 
                             <li class="nav-item">
                                 <a class="btn btn-outline-danger" asp-area="" asp-controller="Account" asp-action="Logout">Deconectare</a>
                             </li>
-
                         </ul>
                     </div>
                 </div>

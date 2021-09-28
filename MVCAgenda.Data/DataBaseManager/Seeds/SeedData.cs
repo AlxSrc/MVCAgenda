@@ -375,7 +375,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                     if (userManager.Users.Any() == false)
                     {
                         await roleManager.CreateAsync(new IdentityRole(Roles.Moderator.ToString()));
-                        await roleManager.CreateAsync(new IdentityRole(Roles.Manager.ToString()));
+                        await roleManager.CreateAsync(new IdentityRole(Roles.Administrator.ToString()));
                         await roleManager.CreateAsync(new IdentityRole(Roles.Doctor.ToString()));
                         await roleManager.CreateAsync(new IdentityRole(Roles.Nurse.ToString()));
 
@@ -388,7 +388,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
 
                         await userManager.CreateAsync(moderatorUser, "{Al@ka#9A#s&KA|");
                         await userManager.AddToRoleAsync(moderatorUser, Roles.Moderator.ToString());
-                        await userManager.AddToRoleAsync(moderatorUser, Roles.Manager.ToString());
+                        await userManager.AddToRoleAsync(moderatorUser, Roles.Administrator.ToString());
 
                         await SeedClaimsForModeratorAdmin(roleManager);
                     }

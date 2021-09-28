@@ -26,7 +26,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                     var user = await userManager.FindByEmailAsync(defaultNurse.Email);
                     if (user == null)
                     {
-                        await userManager.CreateAsync(defaultNurse, "C|!nk@ $ErNN");
+                        await userManager.CreateAsync(defaultNurse, "C|!nk@ $3rNN");
                         await userManager.AddToRoleAsync(defaultNurse, Roles.Nurse.ToString());
                     }
                 }
@@ -53,7 +53,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                     {
                         await userManager.CreateAsync(moderatorUser, "{Al@ka#9A#s&KA|");
                         await userManager.AddToRoleAsync(moderatorUser, Roles.Moderator.ToString());
-                        await userManager.AddToRoleAsync(moderatorUser, Roles.Manager.ToString());
+                        await userManager.AddToRoleAsync(moderatorUser, Roles.Administrator.ToString());
                     }
                     await roleManager.SeedClaimsForModeratorAdmin();
                 }

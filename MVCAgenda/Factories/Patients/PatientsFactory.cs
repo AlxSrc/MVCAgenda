@@ -37,5 +37,24 @@ namespace MVCAgenda.Factories.Patients
 
             return viewModel;
         }
+
+        public PatientListItemViewModel PreperePatientListItemViewModel(Patient patient)
+        {
+            PatientListItemViewModel viewModel = new PatientListItemViewModel()
+            {
+                Id = patient.Id,
+                SheetPatientId = patient.PatientSheetId,
+                FirstName = patient.FirstName,
+                LastName = patient.LastName,
+                Mail = patient.Mail,
+            };
+            
+            if (patient.Blacklist == false)
+                viewModel.PhoneNumber = $"<span class=\"text-success\">{patient.PhoneNumber}</span>";
+            else
+                viewModel.PhoneNumber = $"<span class=\"text-danger\">{patient.PhoneNumber}</span>";
+
+            return viewModel;
+        }
     }
 }

@@ -80,7 +80,7 @@ namespace MVCAgenda.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    //await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
+                    await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
                     return RedirectToAction("index", "Home");
                 }
 

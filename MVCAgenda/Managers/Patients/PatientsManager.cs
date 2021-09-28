@@ -90,15 +90,15 @@ namespace MVCAgenda.Managers.Patients
         {
             try
             {
-                var patientsViewModelList = new List<PatientViewModel>();
+                var patientsListViewModel = new List<PatientListItemViewModel>();
                 var patientsList = await _patientServices.GetListAsync(searchByName, searchByPhoneNumber, searchByEmail, includeBlackList, isDeleted);
 
                 foreach (var patient in patientsList)
-                    patientsViewModelList.Add(_patientFactory.PreperePatientViewModel(patient));
+                    patientsListViewModel.Add(_patientFactory.PreperePatientListItemViewModel(patient));
 
                 var patientsViewModel = new PatientsViewModel()
                 {
-                    PatientsList = patientsViewModelList,
+                    PatientsList = patientsListViewModel,
                     Hidden = isDeleted,
                     Blacklist = includeBlackList
                 };

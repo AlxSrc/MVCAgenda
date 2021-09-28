@@ -6,11 +6,11 @@ namespace MVCAgenda.Models.Patients
     {
         public PatientsViewModel()
         {
-            PatientsList = new List<PatientViewModel>();
+            PatientsList = new List<PatientListItemViewModel>();
         }
 
         #region Lists
-        public List<PatientViewModel> PatientsList { get; set; }
+        public List<PatientListItemViewModel> PatientsList { get; set; }
         #endregion
 
         #region ViewControllers

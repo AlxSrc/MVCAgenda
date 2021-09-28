@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using MVCAgenda.Managers.ManageAccount;
+using MVCAgenda.Managers.Roles;
 
 namespace MVCAgenda
 {
@@ -87,6 +88,7 @@ namespace MVCAgenda
             services.AddScoped<IRoomsManager, RoomsManager>();
             services.AddScoped<ISchedulerManager, SchedulerManager>();
             services.AddScoped<IManageAccountManager, ManageAccountManager>();
+            services.AddScoped<IRolesManager, RolesManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

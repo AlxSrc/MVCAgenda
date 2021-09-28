@@ -59,6 +59,12 @@
 
         <style>
 
+            .e-schedule {
+                background-color: #fff;
+                border-radius: 5px;
+                border: 1.5px solid #7f73bb;
+            }
+
             .e-schedule .template-wrap {
                 width: 100%;
             }
@@ -170,7 +176,7 @@
 
             .quick-info-header {
                 background-color: white;
-                padding: 8px 18px;
+                padding: 5px 5px;
             }
 
             .quick-info-header-content {
@@ -178,6 +184,8 @@
                 display: flex;
                 flex-direction: column;
                 padding: 5px 10px 5px;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
             }
 
             .quick-info-title {
@@ -194,22 +202,22 @@
             }
 
             .content-area {
-                padding: 10px;
+                padding: 0px;
                 width: auto;
             }
 
             .event-content {
-                height: 90px;
+                height: 150px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                padding: 0 15px;
+                padding: 0px 0px 0px 6px;
             }
 
             .meeting-type-wrap,
             .meeting-subject-wrap,
             .notes-wrap {
-                font-size: 11px;
+                font-size: 14px;
                 color: #666;
                 letter-spacing: 0.33px;
                 height: 24px;
@@ -223,7 +231,7 @@
             }
 
             .event-content div span {
-                font-size: 11px;
+                font-size: 14px;
                 color: #151515;
                 letter-spacing: 0.33px;
                 line-height: 14px;
@@ -238,6 +246,10 @@
 
             .cell-footer {
                 padding-top: 10px;
+            }
+
+            .e-quick-popup-wrapper .e-event-popup .e-popup-content {
+                padding: 0 1px 25px 1px;
             }
 
             .e-quick-popup-wrapper .e-cell-popup .e-popup-content {
@@ -288,7 +300,7 @@
             var instance = new ej.base.Internationalization();
             window.getTimeString = function (value) {
                 return instance.formatDate(value, { skeleton: 'hm' });
-            }
+            };
 
             window.getHeaderDetails = function (data) {
                 return instance.formatDate(data.StartTime, { type: 'date', skeleton: 'full' }) + ' (' +
@@ -306,6 +318,15 @@
                 }
             };
 
+            window.getEventType = function (data) {
+                var resourceData = window.getResourceData(data);
+                return resourceData.Name;
+            };
+
+            window.getSubjectDetails = function (data) {
+                var resourceData = window.getResourceData(data);
+                return resourceData.Subject;
+            };
 
             var buttonClickActions = function (e) {
                 var scheduleObj = document.getElementById('schedule').ej2_instances[0];
@@ -354,20 +375,16 @@
                 scheduleObj.closeQuickInfoPopup();
             };
 
-            window.getEventType = function (data) {
-                var resourceData = window.getResourceData(data);
-                return resourceData.Name;
+            
+
+            window.getResourceData = function (data) {
+                var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+                var resources = scheduleObj.getResourceCollections().slice(-1)[0];
+                var resourceData = resources.dataSource.filter(function (resource) {
+                    return resource.Id === data.RoomId;
+                })[0];
+                return resourceData;
             };
-
-
-
-
-
-
-
-
-
-
 
             function onActionBegin(args) {
                  if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
@@ -544,7 +561,7 @@
 
         <script id="month-event-template" type="text/x-template">
             <div class="template-wrap" style="background:${PrimaryColor}">
-                <div class="subject" style="font-size: 12px">${Subject}</div>
+                <div class="subject" style="font-size: 13px">${Subject}</div>
             </div>
         </script>
         
@@ -552,7 +569,7 @@
         <script id="header-template" type="text/x-template">
             <div class="quick-info-header">
                 <div class="quick-info-header-content" style='${getHeaderStyles(data)}'>
-                    <div class="quick-info-title">${if (elementType == "cell")}Adaugă o programare${else}Detalii programare${/if}</div>
+                    <div class="quick-info-title">${if (elementType == "cell")}Adaugă o programare${else}Procedura: ${Subject}${/if}</div>
                     <div class="duration-text">${getHeaderDetails(data)}</div>
                 </div>
             </div>
@@ -562,7 +579,7 @@
             <div class="quick-info-content">
                 ${if (elementType == "cell")}
                 <div class="e-cell-content">
-                    <table class="custom-event-editor" width="100%" cellpadding="5">
+                    @*<table class="custom-event-editor" width="100%" cellpadding="5">
                         <tbody>
                             <tr>
                                 <td class="e-textlabel">Numele*</td>
@@ -626,37 +643,27 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table>*@
+                    <span>Dublu click pe o celula pentru a adauga o programare, click pe o programare pentru a vizualiza informatii.</span>
                 </div>
                 ${else}
                 <div class="event-content">
+                    
+                    <div class="meeting-type-wrap">
+                        <label>Medicul</label>:
+                        <span>${Medic}</span>
+                    </div>
+                    <div class="meeting-type-wrap">
+                        <label>Camera</label>:
+                        <span>${Room}</span>
+                    </div>
                     <div class="meeting-type-wrap">
                         <label>Numele</label>:
                         <span>${FirstName}</span>
                     </div>
                     <div class="meeting-type-wrap">
-                        <label>Prenumele</label>:
-                        <span>${LastName}</span>
-                    </div>
-                    <div class="meeting-type-wrap">
                         <label>Numar de telefon</label>:
                         <span>${PhoneNumber}</span>
-                    </div>
-                    <div class="meeting-type-wrap">
-                        <label>E-mail</label>:
-                        <span>${Mail}</span>
-                    </div>
-                    <div class="meeting-type-wrap">
-                        <label>Medicul:</label>:
-                        <span>${Medic}</span>
-                    </div>
-                    <div class="meeting-type-wrap">
-                        <label>Camera:</label>:
-                        <span>${Room}</span>
-                    </div>
-                    <div class="meeting-type-wrap">
-                        <label>Procedura</label>:
-                        <span>${Subject}</span>
                     </div>
                     <div class="meeting-type-wrap">
                         <label>Comentarii</label>:
@@ -671,8 +678,8 @@
             <div class="quick-info-footer">
                 ${if (elementType == "cell")}
                 <div class="cell-footer">
-                    <button id="more-details">Mai multe detalii</button>
-                    <button id="add">Adaugă o programare</button>
+                    @*<button id="more-details">Mai multe detalii</button>
+                    <button id="add">Adaugă o programare</button>*@
                 </div>
                 ${else}
                 <div class="event-footer">

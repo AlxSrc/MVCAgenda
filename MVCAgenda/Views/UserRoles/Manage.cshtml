@@ -1,16 +1,32 @@
-﻿@using MVCAgenda.Models.Accounts.Roles
-@model List<ManageUserRolesViewModel>
-@{
+﻿@{
     ViewData["Title"] = "Manage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form method="post">
-    <div class="card">
-        <div class="card-header">
-            <h2>Manage User Roles</h2>
-            Add/Remove Roles for User / @ViewBag.UserName.
-        </div>
-        <div class="card-body">
+
+@if (User.Identity.IsAuthenticated)
+{
+    @using MVCAgenda.Models.Accounts.Roles
+    @model List<ManageUserRolesViewModel>
+        
+    
+
+    <div class="main box">
+        <form method="post">
+            <div class="container g-0 mb-3">
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <h2 class="text-color">Modifică rolurile pentru utilizatorul @ViewBag.UserName</h2>
+                    </div>
+                    <div class="col-auto">
+                        <div class="d-lg-flex justify-content-lg-center">
+                            <div class="btn-group" role="group" aria-label="Optiuni">
+                                <input type="submit" value="Salvează" class="btn btn-main-color-filled"/>
+                                <a asp-action="Index" class="btn btn-outline-secondary">Anulează</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @for (int i = 0; i < Model.Count; i++)
             {
                 <div class="form-check m-1">
@@ -23,12 +39,8 @@
                 </div>
             }
             <div asp-validation-summary="All" class="text-danger"></div>
-        </div>
-        <div class="card-footer">
-            <input type="submit" value="Update" class="btn btn-primary"
-                   style="width:auto" />
-            <a asp-action="EditUser" asp-route-id="@ViewBag.userId"
-               class="btn btn-primary" style="width:auto">Cancel</a>
-        </div>
+
+
+        </form>
     </div>
-</form>
+}

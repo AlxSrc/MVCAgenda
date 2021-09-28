@@ -11,13 +11,20 @@ namespace MVCAgenda.Controllers
 {
     public class UserRolesController : Controller
     {
+        #region Fields
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        #endregion
+        /***********************************************************************************/
+        #region Constructor
         public UserRolesController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
         }
+        #endregion
+        /***********************************************************************************/
+        #region Methods
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -32,7 +39,10 @@ namespace MVCAgenda.Controllers
                 thisViewModel.Roles = await GetUserRoles(user);
                 userRolesViewModel.Add(thisViewModel);
             }
-            return View(userRolesViewModel);
+
+            var viewModel = new UsersRolesViewModel() { Users = userRolesViewModel };
+
+            return View(viewModel);
         }
         private async Task<List<string>> GetUserRoles(IdentityUser user)
         {
@@ -69,6 +79,7 @@ namespace MVCAgenda.Controllers
             }
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, string userId)
         {
@@ -92,5 +103,6 @@ namespace MVCAgenda.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
     }
 }

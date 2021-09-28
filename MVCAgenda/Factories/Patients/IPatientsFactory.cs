@@ -5,8 +5,7 @@ namespace MVCAgenda.Factories.Patients
 {
     public interface IPatientsFactory
     {
-        #region PreperePatientViewModel
         PatientViewModel PreperePatientViewModel(Patient patient);
-        #endregion
+        PatientListItemViewModel PreperePatientListItemViewModel(Patient patient);
     }
 }

@@ -15,6 +15,11 @@ for details on configuring this project to bundle and minify static web assets. 
     max-width: -webkit-fill-available;
 }
 
+.form-check-input:checked {
+    background-color: #7f73bb;
+    border-color: #7f73bb;
+}
+
 .custom-header {
     max-height: 35px;
 }
@@ -43,6 +48,22 @@ td, tr{
 .text-color {
     color: #7f73bb;
 }
+.wellcome-name {
+    color: #7f73bb;
+    font-size: 17px;
+}
+.wellcome-name:hover {
+    color: #7f73bb;
+}
+.wellcome-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-left: 10px;
+    margin-right: -10px;
+}
+
 
 .btn-main-second-color-filled {
     color: #fff;

@@ -3,7 +3,7 @@
     public enum Roles
     {
         Moderator,
-        Manager,
+        Administrator,
         Doctor,
         Nurse
     }
