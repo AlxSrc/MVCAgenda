@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using System;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ using MVCAgenda.Models.Accounts;
 
 namespace MVCAgenda.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : Controller 
     {
         #region Fields
         private readonly UserManager<IdentityUser> _userManager;
@@ -57,42 +58,60 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Register
+        [Authorize]
         public IActionResult Register()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+
+            if (User.Identity.IsAuthenticated)
             {
-                MailAddress address = new MailAddress(model.Email);
-                string userName = address.User;
-                var user = new ApplicationUser
+                if (ModelState.IsValid)
                 {
-                    UserName = userName,
-                    Email = model.Email
-                };
+                    MailAddress address = new MailAddress(model.Email);
+                    string userName = address.User;
+                    var user = new ApplicationUser
+                    {
+                        UserName = userName,
+                        Email = model.Email
+                    };
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+                    var result = await _userManager.CreateAsync(user, model.Password);
 
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
-                    return RedirectToAction("index", "Home");
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
+                        return RedirectToAction("index", "Home");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+
                 }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-
+                return View(model);
             }
-            return View(model);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            
         }
         #endregion
         /**************************************************************************************/

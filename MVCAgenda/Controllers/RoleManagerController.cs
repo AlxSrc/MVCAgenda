@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MVCAgenda.Core.Users;
 using MVCAgenda.Models.Accounts.Roles;
 using System.Threading.Tasks;
 
 namespace MVCAgenda.Controllers
 {
-    //[Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Administrator")]
     public class RoleManagerController : Controller
     {
         #region Fields
@@ -24,9 +25,16 @@ namespace MVCAgenda.Controllers
         #region Methods
         public async Task<IActionResult> Index()
         {
-            var viewModel = new RolesManagerViewModel();
-            viewModel.RolesList = await _roleManager.Roles.ToListAsync();
-            return View(viewModel);
+            if (User.Identity.IsAuthenticated)
+            {
+                var viewModel = new RolesManagerViewModel();
+                viewModel.RolesList = await _roleManager.Roles.ToListAsync();
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> AddRole(string roleName)
@@ -43,12 +51,25 @@ namespace MVCAgenda.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string userId)
         {
-            var roleToDelete = await _roleManager.FindByIdAsync(userId);
-            if (roleToDelete != null)
+            if (User.Identity.IsAuthenticated)
             {
-                await _roleManager.DeleteAsync(roleToDelete);
+                IdentityRole role = await _roleManager.FindByIdAsync(userId);
+
+                if (role != null)
+                {
+                    IdentityResult result = await _roleManager.DeleteAsync(role);
+                    if (result.Succeeded)
+                        return RedirectToAction("Index");
+                    else
+                        return null;
+                }
+                else
+                    return null;
             }
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         #endregion
     }

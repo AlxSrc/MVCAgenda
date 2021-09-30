@@ -2,9 +2,10 @@
 {
     public enum Roles
     {
-        Moderator,
         Administrator,
+        Admin,
         Doctor,
-        Nurse
+        Nurse,
+        User
     }
 }

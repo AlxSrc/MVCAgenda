@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,32 +25,41 @@
             {
                 <div class="row justify-content-between">
                     <div class="col-auto">
-                        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                            @*<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>*@
-                            <span class="fs-4 text-color ms-3">Clinica</span>
-                            <img class="sigla" src="https://esderm.ro/wp-content/uploads/2020/09/logo-esderm-web.png">
-                        </a>
-                        
-                    </div>
-                    
-                    <div class="col-auto">
                         <ul class="nav nav-pills">
-
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Scheduler" asp-action="Index">Calendar</a>
+                                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                                    @*<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>*@
+                                    <span class="fs-4 text-color ms-3">Clinica</span>
+                                    <img class="sigla" src="https://esderm.ro/wp-content/uploads/2020/09/logo-esderm-web.png">
+                                </a>
                             </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programări</a>
-                            </li>
-
+                            
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienți</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage">Administrare</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programări</a>
                             </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Scheduler" asp-action="Index">Calendar</a>
+                            </li>
+
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage">Administrare</a>
+                                </li>
+                            }
+                        </ul>
+
+                        
+                        
+                    </div>
+                    
+                    <div class="col-auto">
+                        <ul class="nav nav-pills">
                             
                             <li class="nav-item">
                                 <img class="wellcome-image" src="https://imgix.bustle.com/uploads/image/2021/7/16/07062a59-9fd1-41f8-9c99-e4c0f5d80c05-06546552-d025-4a16-ab18-d252ff01fa90-getty-1205000579.jpeg?w=800&fit=crop&crop=focalpoint&auto=format%2Ccompress&fp-x=0.4587&fp-y=0.754">

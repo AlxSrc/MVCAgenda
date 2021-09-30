@@ -10,8 +10,9 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
     {
         public static async Task SeedAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            await roleManager.CreateAsync(new IdentityRole(Roles.Moderator.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Administrator.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.User.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Doctor.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Nurse.ToString()));
         }

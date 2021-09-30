@@ -42,7 +42,7 @@ namespace MVCAgenda.Controllers
                 {
                     var result = await _consultationManager.CreateAsync(consultation);
                     if(result == StringHelpers.SuccesMessage)
-                        return RedirectToAction("Details", "PatientSheet", new { id = consultation.SheetPatientId });
+                        return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId });
                 }
                 return View(consultation);
             }
@@ -95,7 +95,7 @@ namespace MVCAgenda.Controllers
                 {
                     var result = await _consultationManager.UpdateAsync(consultation);
                     if (result == StringHelpers.SuccesMessage)
-                        return RedirectToAction("Details", "PatientSheet", new { id = consultation.SheetPatientId });
+                        return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId });
                 }
                 return View(consultation);
             }
@@ -129,7 +129,7 @@ namespace MVCAgenda.Controllers
                 if(result == StringHelpers.SuccesMessage)
                 {
                     var consultation = await _consultationManager.GetDetailsAsync(id);
-                    return RedirectToAction("Details", "PatientSheet", new { id = consultation.SheetPatientId});
+                    return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId});
                 }
                 else
                     return RedirectToAction("Details", "Consultations", new { id = id });

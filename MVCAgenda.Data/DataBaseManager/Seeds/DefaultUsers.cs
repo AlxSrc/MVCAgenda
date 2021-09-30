@@ -27,7 +27,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                     if (user == null)
                     {
                         await userManager.CreateAsync(defaultNurse, "C|!nk@ $3rNN");
-                        await userManager.AddToRoleAsync(defaultNurse, Roles.Nurse.ToString());
+                        await userManager.AddToRoleAsync(defaultNurse, Roles.User.ToString());
                     }
                 }
             }
@@ -52,7 +52,6 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                     if (user == null)
                     {
                         await userManager.CreateAsync(moderatorUser, "{Al@ka#9A#s&KA|");
-                        await userManager.AddToRoleAsync(moderatorUser, Roles.Moderator.ToString());
                         await userManager.AddToRoleAsync(moderatorUser, Roles.Administrator.ToString());
                     }
                     await roleManager.SeedClaimsForModeratorAdmin();

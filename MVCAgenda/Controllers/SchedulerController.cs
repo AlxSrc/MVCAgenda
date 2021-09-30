@@ -37,12 +37,24 @@ namespace MVCAgenda.Controllers
         [HttpPost]
         public async Task<JsonResult> AddData(ScheduleEventData ScheduleData)
         {
-            ScheduleData.User = User.Identity.Name;
-            var ressult = await _schedulerManager.CreateAsync(ScheduleData);
-            return new JsonResult(new
+
+            if (User.Identity.IsAuthenticated)
             {
-                result = ressult,
-            }, new JsonSerializerOptions());
+                ScheduleData.User = User.Identity.Name;
+                var ressult = await _schedulerManager.CreateAsync(ScheduleData);
+                return new JsonResult(new
+                {
+                    result = ressult,
+                }, new JsonSerializerOptions());
+            }
+            else
+            {
+                var ressult = "Trebuie sa fiti conectati.";
+                return new JsonResult(new
+                {
+                    result = ressult,
+                }, new JsonSerializerOptions());
+            }
         }
 
         #endregion
@@ -78,20 +90,32 @@ namespace MVCAgenda.Controllers
 
         public async Task<JsonResult> LoadData()
         {
-            try
+
+            if (User.Identity.IsAuthenticated)
             {
-                var appointmentsList = await _schedulerManager.GetAsync();
-                return new JsonResult(new
+
+                try
                 {
-                    result = appointmentsList.AppointmentsSchedule,
-                }, new JsonSerializerOptions());
+                    var appointmentsList = await _schedulerManager.GetAsync();
+                    return new JsonResult(new
+                    {
+                        result = appointmentsList.AppointmentsSchedule,
+                    }, new JsonSerializerOptions());
+                }
+                catch
+                {
+                    return new JsonResult(new
+                    {
+                        Items = new List<ScheduleEventData>(),
+                    });
+                }
             }
-            catch
             {
+                var ressult = "Trebuie sa fiti conectati.";
                 return new JsonResult(new
                 {
-                    Items = new List<ScheduleEventData>(),
-                });
+                    result = ressult,
+                }, new JsonSerializerOptions());
             }
         }
         #endregion
@@ -101,12 +125,22 @@ namespace MVCAgenda.Controllers
         [HttpPost]
         public async Task<JsonResult> EditData(ScheduleEventData ScheduleData)
         {
-            ScheduleData.User = User.Identity.Name;
-            var ressult = await _schedulerManager.UpdateAsync(ScheduleData);
-            return new JsonResult(new
+            if (User.Identity.IsAuthenticated)
             {
-                result = ressult,
-            }, new JsonSerializerOptions());
+                ScheduleData.User = User.Identity.Name;
+                var ressult = await _schedulerManager.UpdateAsync(ScheduleData);
+                return new JsonResult(new
+                {
+                    result = ressult,
+                }, new JsonSerializerOptions());
+            }
+            {
+                var ressult = "Trebuie sa fiti conectati.";
+                return new JsonResult(new
+                {
+                    result = ressult,
+                }, new JsonSerializerOptions());
+            }
         }
         #endregion
         /**************************************************************************************/
@@ -114,11 +148,22 @@ namespace MVCAgenda.Controllers
         [HttpPost]
         public async Task<JsonResult> DeleteData(ScheduleEventData ScheduleData)
         {
-            var ressult = await _schedulerManager.HideAsync(ScheduleData.Id);
-            return new JsonResult(new
+            if (User.Identity.IsAuthenticated)
             {
-                result = ressult,
-            }, new JsonSerializerOptions());
+                var ressult = await _schedulerManager.HideAsync(ScheduleData.Id);
+                return new JsonResult(new
+                {
+                    result = ressult,
+                }, new JsonSerializerOptions());
+            }
+            {
+                var ressult = "Trebuie sa fiti conectati.";
+                return new JsonResult(new
+                {
+                    result = ressult,
+                }, new JsonSerializerOptions());
+            }
+
         }
         #endregion
     }

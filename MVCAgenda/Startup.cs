@@ -1,7 +1,10 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Factories.Appointments;
@@ -25,12 +28,9 @@ using MVCAgenda.Service.Medics;
 using MVCAgenda.Service.Patients;
 using MVCAgenda.Service.Rooms;
 using MVCAgenda.Service.PatientsSheet;
-using MVCAgenda.Core.Users;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using MVCAgenda.Managers.ManageAccount;
 using MVCAgenda.Managers.Roles;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVCAgenda
 {
@@ -46,6 +46,9 @@ namespace MVCAgenda
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            //services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
             services.AddControllersWithViews();
 
             services.AddDbContext<AgendaContext>(options => 
@@ -109,8 +112,8 @@ namespace MVCAgenda
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

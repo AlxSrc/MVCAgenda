@@ -29,9 +29,16 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
-                                <td>
-                                    <a class="link-info" asp-action="Edit" asp-controller="Medics" asp-route-id="@item.Id">Modifică medicul</a>
-                                    <a class="link-danger" asp-action="Delete" asp-controller="Medics" asp-route-id="@item.Id">Șterge medicul</a>
+                                <td class="text-end">
+                                    <div class="dropdown d-inline-block">
+                                        <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Detalii
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item link-info" asp-action="Edit" asp-controller="Medics" asp-route-id="@item.Id">Modifică medicul</a></li>
+                                            <li><a class="dropdown-item link-danger" asp-action="Delete" asp-controller="Medics" asp-route-id="@item.Id">Șterge medicul</a></li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -56,9 +63,16 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
-                                <td>
-                                    <a class="link-info" asp-action="Edit" asp-controller="Rooms" asp-route-id="@item.Id">Modifică camera</a>
-                                    <a class="link-danger" asp-action="Delete" asp-controller="Rooms" asp-route-id="@item.Id">Șterge camera</a>
+                                <td class="text-end">
+                                    <div class="dropdown d-inline-block">
+                                        <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Detalii
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item link-info" asp-action="Edit" asp-controller="Rooms" asp-route-id="@item.Id">Modifică camera</a></li>
+                                            <li><a class="dropdown-item link-danger" asp-action="Delete" asp-controller="Rooms" asp-route-id="@item.Id">Șterge camera</a></li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -83,7 +97,10 @@
                         </div>
                         <div class="col-auto">
                             <div class="btn-group" role="group" aria-label="Opțiuni">
-                                <a class="btn btn-main-color-filled" asp-controller="RoleManager" asp-action="Index">Modifică rolurile</a>
+                                @if (User.IsInRole("Administrator"))
+                                {
+                                    <a class="btn btn-main-color-filled" asp-controller="RoleManager" asp-action="Index">Modifică rolurile</a>
+                                }
                                 <a class="btn btn-main-color-filled" asp-controller="UserRoles" asp-action="Index">Modifică rolurile conturilor</a>
                             </div>
                         </div>
