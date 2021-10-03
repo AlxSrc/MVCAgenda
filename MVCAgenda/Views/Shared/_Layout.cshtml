@@ -8,7 +8,6 @@
     <title>@ViewData["Title"] - MVCAgenda</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    
 
     <!-- Syncfusion Essential JS 2 Styles -->
     <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/bootstrap4.css" />
@@ -17,6 +16,8 @@
     
     
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">

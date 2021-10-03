@@ -49,15 +49,13 @@ namespace MVCAgenda.Service.Patients
             {
                 //To do daca sa valideze doar dupa numar de telefon
                 //Daca suna un pacient de pe numere diferite
-                var patients = await _context.Patients
+                var newPatient = await _context.Patients
                     .Where(p => p.FirstName == patient.FirstName)
                     .Where(p => p.LastName == patient.LastName)
                     .Where(p => p.PhoneNumber == patient.PhoneNumber)
                     .Where(p => p.Mail == patient.Mail)
                     .Where(p => p.Hidden == false)
-                    .ToListAsync();
-
-                var newPatient = patients.FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
                 if (newPatient == null)
                 {
@@ -97,20 +95,31 @@ namespace MVCAgenda.Service.Patients
             else
                 return await _context.Patients.FirstOrDefaultAsync(p => p.PatientSheetId == Id);
         }
-        public async Task<List<Patient>> GetListAsync(string searchByName, string searchByPhoneNumber, string searchByEmail, bool includeBlackList, bool isHidden)
+
+        public async Task<List<Patient>> GetListAsync(string searchByName = null,
+            string searchByPhoneNumber = null,
+            string searchByEmail = null,
+            bool? includeBlackList = false,
+            bool? isHidden = false)
         {
-            return await (
-                    _context.Patients
+            var query = _context.Patients.AsQueryable();
 
-                        .Where(h => isHidden == true ? h.Hidden == true : h.Hidden == false)
-                        .Where(b => includeBlackList == true ? b.Blacklist == true : true)
-                        .Where(p => !string.IsNullOrEmpty(searchByName) ? p.FirstName.ToUpper().Contains(searchByName.ToUpper()) : true)
-                        .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhoneNumber.Contains(searchByPhoneNumber) : true)
-                        .Where(p => !string.IsNullOrEmpty(searchByEmail) ? p.Mail.ToUpper().Contains(searchByEmail.ToUpper()) : true)
+            if (isHidden != null)
+                query = query.Where(p => p.Hidden == isHidden);
 
-                        .OrderBy(f => f.FirstName)
+            if (includeBlackList != null)
+                query = query.Where(p => p.Blacklist == includeBlackList);
 
-                    ).ToListAsync();
+            if (searchByName != null)
+                query = query.Where(p => p.FirstName.ToUpper().Contains(searchByName.ToUpper()));
+
+            if (searchByPhoneNumber != null)
+                query = query.Where(p => p.PhoneNumber.Contains(searchByPhoneNumber));
+
+            if (searchByEmail != null)
+                query = query.Where(p => p.Mail.ToUpper().Contains(searchByEmail.ToUpper()));
+
+            return await query.ToListAsync();
         }
         #endregion
         /***********************************************************************************/

@@ -3,6 +3,10 @@ for details on configuring this project to bundle and minify static web assets. 
 
 /*#region Custom*/
 
+#ej2LicWarning {
+    display:none;
+}
+
 .main.box {
     margin-top: 10px;
     background: #fff;

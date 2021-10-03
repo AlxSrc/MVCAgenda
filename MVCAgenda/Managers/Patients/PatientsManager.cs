@@ -37,8 +37,7 @@ namespace MVCAgenda.Managers.Patients
             {
                 string msg;
 
-                var patients = await _patientServices.GetListAsync(patientViewModel.FirstName, patientViewModel.PhoneNumber, null, false,false);
-                    
+                var patients = await _patientServices.GetListAsync(patientViewModel.FirstName, patientViewModel.PhoneNumber);
 
                 if (patients.Count >= 1)
                 {
