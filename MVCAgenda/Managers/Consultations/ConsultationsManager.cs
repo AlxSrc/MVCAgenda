@@ -13,7 +13,6 @@ namespace MVCAgenda.Managers.Consultations
     public class ConsultationsManager : IConsultationsManager
     {
         string user = "admin";
-
         #region Fields
         private readonly IConsultationService _consultationServices;
         private readonly IConsultationsFactory _consultationFactory;
@@ -44,30 +43,20 @@ namespace MVCAgenda.Managers.Consultations
                     Hidden = false
                 };
 
-                await _consultationServices.CreateAsync(consultation);
-
-                await _logger.CreateAsync(new Log()
+                var result = await _consultationServices.CreateAsync(consultation);
+                if (result == false)
+                    return "Consultatia nu a putut fi adaugata.";
+                else
                 {
-                    ShortMessage = $"{user} created consultation: patientSheetId {consultationViewModel.SheetPatientId}",
-                    FullMessage = null,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Information,
-                    Hidden = false
-                });
-                return StringHelpers.SuccesMessage;
+                    var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Create}, Consultation: {consultation.Id}";
+                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    return StringHelpers.SuccesMessage;
+                }
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to add consultation: patientSheetId {consultationViewModel.SheetPatientId}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Create}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Information);
                 return "Consultatia nu a putut fi adaugata.";
             }
         }
@@ -80,15 +69,8 @@ namespace MVCAgenda.Managers.Consultations
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed see consultation: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new ConsultationDetailsViewModel();
             }
         }
@@ -100,15 +82,8 @@ namespace MVCAgenda.Managers.Consultations
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed see consultation: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new ConsultationEditViewModel();
             }
         }
@@ -119,15 +94,6 @@ namespace MVCAgenda.Managers.Consultations
             {
                 if (await CheckExist(consultationViewModel.Id) == false)
                 {
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} failed to get consultation: id:{consultationViewModel.Id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
                     return "Consultatia nu a putut fi gasita.";
                 }
                 else
@@ -143,32 +109,22 @@ namespace MVCAgenda.Managers.Consultations
                         Hidden = consultationViewModel.Hidden
                     };
 
-                    await _consultationServices.UpdateAsync(consultation);
-
-                    await _logger.CreateAsync(new Log()
+                    var result = await _consultationServices.UpdateAsync(consultation);
+                    if(result == false)
+                        return "Consultatia nu a putut fi editata.";
+                    else
                     {
-                        ShortMessage = $"{user} edited consultation: id:{consultationViewModel.Id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Edit}, Consultation: {consultationViewModel.Id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
                 }
 
             }
             catch (Exception exception)
             {
-                _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to edit consultation: id:{consultationViewModel.Id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Edit}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Consultatia nu a putut fi editata.";
             }
 
@@ -180,44 +136,27 @@ namespace MVCAgenda.Managers.Consultations
             {
                 if (await CheckExist(id) == false)
                 {
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} delete consultation: id:{id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return "Consultatia inexistenta.";
+                    return "Consultatia nu a putut fi gasita.";
                 }
                 else
                 {
-                    await _consultationServices.HideAsync(id);
-                    await _logger.CreateAsync(new Log()
+                   
+                    var result = await _consultationServices.HideAsync(id);
+                    if (result == false)
+                        return "Consultatia nu a putut fi stearsa.";
+                    else
                     {
-                        ShortMessage = $"{user} delete consultation: id:{id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Information,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Delete}, Consultation: {id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
                 }
 
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to delete consultation: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Delete}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Consultatia nu a putut fi stearsa.";
             }
         }

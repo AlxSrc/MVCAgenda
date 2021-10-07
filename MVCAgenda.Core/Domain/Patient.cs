@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Patient : BaseEntity
+    public class Patient : BaseEntityDomain
     {
         public int PatientSheetId { get; set; }
         [ForeignKey("SheetPatientId")] 

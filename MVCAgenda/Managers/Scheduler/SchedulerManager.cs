@@ -16,6 +16,7 @@ namespace MVCAgenda.Managers.Scheduler
 {
     public class SchedulerManager : ISchedulerManager
     {
+        string user = "User";
         #region Fields
         private readonly IAppointmentService _appointmentServices;
         private readonly ISchedulerFactory _schedulerFactory;
@@ -46,18 +47,15 @@ namespace MVCAgenda.Managers.Scheduler
         #region Methods
         public async Task<string> CreateAsync(ScheduleEventData ScheduleData)
         {
-            string User = "Administrator";
-
+            string User = "alexandru";
             try
             {
                 int patientId;
-                string date = ScheduleData.StartTime.ToString("yyyy-MM-dd");
-                string hour = ScheduleData.StartTime.ToString("HH:mm");
-                string message = await _appointmentServices.SearchAppointmentAsync(ScheduleData.MedicId, ScheduleData.RoomId, ScheduleData.StartTime, ScheduleData.EndTime);
+                string ressultSearch = await _appointmentServices.SearchAppointmentAsync(ScheduleData.MedicId, ScheduleData.RoomId, ScheduleData.StartTime, ScheduleData.EndTime);
 
-                if (message != StringHelpers.SuccesMessage)
+                if (ressultSearch != StringHelpers.SuccesMessage)
                 {
-                    return message;
+                    return ressultSearch;
                 }
 
                 if (ScheduleData.PatientId > 0)
@@ -97,31 +95,22 @@ namespace MVCAgenda.Managers.Scheduler
                     Hidden = false
                 };
 
-                var asd = await _appointmentServices.CreateAsync(newAppointment);
+                var ressult = await _appointmentServices.CreateAsync(newAppointment);
 
-                await _logger.CreateAsync(new Log()
+                if (ressult == false)
+                    return "Nu s-a putut creea programarea";
+                else
                 {
-                    ShortMessage = $"{User} created Appointment & Patient: Id Appointment:{ScheduleData.Id} {ScheduleData.FirstName}, {ScheduleData.PhoneNumber}",
-                    FullMessage = null,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Information,
-                    Hidden = false
-                });
+                    var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}, Appointment: {newAppointment.Id}";
+                    await _logger.CreateAsync(msg, null, null, LogLevel.Error);
+                    return StringHelpers.SuccesMessage;
+                }
 
-                return StringHelpers.SuccesMessage;
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{User} failed to add Appointment & Patient: Id Appointment:Appointment & Patient: Id Appointment:{ScheduleData.Id} {ScheduleData.FirstName}, {ScheduleData.PhoneNumber}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi adaugat, contacteaza administratorul.";
             }
         }
@@ -131,7 +120,7 @@ namespace MVCAgenda.Managers.Scheduler
             try
             {
                 var items = new List<ScheduleEventData>();
-                var appointments = await _appointmentServices.GetFiltredListAsync(DateTime.MinValue, DateTime.MinValue, 0,0,null,0,false,false);
+                var appointments = await _appointmentServices.GetFiltredListAsync();
                 foreach (var appointment in appointments)
                     items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(
                         appointment, 
@@ -141,8 +130,10 @@ namespace MVCAgenda.Managers.Scheduler
 
                 return new ScheduleList() { AppointmentsSchedule = items };
             }
-            catch (Exception Exception)
+            catch (Exception exception)
             {
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new ScheduleList();
             }
         }
@@ -171,12 +162,13 @@ namespace MVCAgenda.Managers.Scheduler
                 var test = await _appointmentServices.UpdateAsync(appointment);
                 return StringHelpers.SuccesMessage;
             }
-            catch (Exception Exception)
+            catch (Exception exception)
             {
-                return StringHelpers.MakeFailMessage(Exception.Message);
+                var msg = $"User: {user}, Table:{LogTable.Appointments} Schedule manager, Action: {LogInfo.Edit}, Appointment: {scheduleData.Id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return "Nu s-a putut modifica programarea";
             }
         }
-
 
         public async Task<string> DeleteAsync(int id)
         {
@@ -186,7 +178,7 @@ namespace MVCAgenda.Managers.Scheduler
             }
             catch (Exception Exception)
             {
-                return StringHelpers.MakeFailMessage(Exception.Message);
+                return "Programarea nu a putut fi stearsa.";
             }
         }
 

@@ -2,10 +2,13 @@
 {
     public enum Roles
     {
-        Administrator,
         Admin,
+        Administrator,
         Doctor,
         Nurse,
+        Receptionist,
+        PersonalTrainer,
+        Kinetotherapist,
         User
     }
 }

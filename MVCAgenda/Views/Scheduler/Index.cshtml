@@ -58,35 +58,6 @@
 
         <script language="javascript" type="text/javascript">
             var instance = new ej.base.Internationalization();
-            window.getTimeString = function (value) {
-                return instance.formatDate(value, { skeleton: 'hm' });
-            };
-
-            window.getHeaderDetails = function (data) {
-                return instance.formatDate(data.StartTime, { type: 'date', skeleton: 'full' }) + ' (' +
-                    instance.formatDate(data.StartTime, { skeleton: 'hm' }) + ' - ' + instance.formatDate(data.EndTime, { skeleton: 'hm' }) + ')';
-            };
-
-            window.getHeaderStyles = function (data) {
-                if (data.elementType === 'cell') {
-                    return 'align-items: center; color: #919191;';
-                }
-                else {
-                    var resourceData = window.getResourceData(data);
-                    return 'background: #7f73bb; color: #FFFFFF;';
-                    //return 'background:' + resourceData.PrimaryColor + '; color: #FFFFFF;';
-                }
-            };
-
-            window.getEventType = function (data) {
-                var resourceData = window.getResourceData(data);
-                return resourceData.Name;
-            };
-
-            window.getSubjectDetails = function (data) {
-                var resourceData = window.getResourceData(data);
-                return resourceData.Subject;
-            };
 
             var buttonClickActions = function (e) {
                 var scheduleObj = document.getElementById('schedule').ej2_instances[0];
@@ -133,6 +104,36 @@
                     scheduleObj.openEditor(eventDetail, currentActions, true);
                 }
                 scheduleObj.closeQuickInfoPopup();
+            };
+
+            window.getTimeString = function (value) {
+                return instance.formatDate(value, { skeleton: 'hm' });
+            };
+
+            window.getHeaderDetails = function (data) {
+                return instance.formatDate(data.StartTime, { type: 'date', skeleton: 'full' }) + ' (' +
+                    instance.formatDate(data.StartTime, { skeleton: 'hm' }) + ' - ' + instance.formatDate(data.EndTime, { skeleton: 'hm' }) + ')';
+            };
+
+            window.getHeaderStyles = function (data) {
+                if (data.elementType === 'cell') {
+                    return 'align-items: center; color: #919191;';
+                }
+                else {
+                    var resourceData = window.getResourceData(data);
+                    return 'background: #7f73bb; color: #FFFFFF;';
+                    //return 'background:' + resourceData.PrimaryColor + '; color: #FFFFFF;';
+                }
+            };
+
+            window.getEventType = function (data) {
+                var resourceData = window.getResourceData(data);
+                return resourceData.Name;
+            };
+
+            window.getSubjectDetails = function (data) {
+                var resourceData = window.getResourceData(data);
+                return resourceData.Subject;
             };
 
             window.getResourceData = function (data) {
@@ -444,7 +445,7 @@
                 ${else}
                 <div class="event-footer d-flex justify-content-end">
                     <button id="delete" class="btn btn-sm btn-outline-danger">Șterge programarea</button>
-                    <button id="more-details" class="ml-1 btn btn-sm btn-primary" data-appointment-id="${Id}">Modifică programarea</button>
+                    <button id="more-details" class="ml-1 btn btn-sm btn-primary" data-appointment-id="${Id}">Detalii programarea</button>
                 </div>
                 ${/if}
             </div>

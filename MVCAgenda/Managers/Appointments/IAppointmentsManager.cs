@@ -8,7 +8,17 @@ namespace MVCAgenda.Managers.Appointments
     {
         Task<string> CreateAsync(AppointmentCreateViewModel appointmentViewModel);
         
-        Task<AppointmentsViewModel> GetListAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, DateTime SearchByAppointmentStartDate, DateTime SearchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool daily, bool Hidden);
+        Task<AppointmentsViewModel> GetListAsync(string SearchByName = null,
+            string SearchByPhoneNumber = null,
+            string SearchByEmail = null,
+            DateTime? SearchByAppointmentStartDate = null,
+            DateTime? SearchByAppointmentEndDate = null,
+            int? SearchByRoom = null,
+            int? SearchByMedic = null,
+            string SearchByProcedure = null,
+            int? Id = null,
+            bool? Daily = null,
+            bool? Hidden = null);
 
         Task<AppointmentDetailsViewModel> GetDetailsAsync(int id);
         Task<AppointmentEditViewModel> GetEditDetailsAsync(int id);

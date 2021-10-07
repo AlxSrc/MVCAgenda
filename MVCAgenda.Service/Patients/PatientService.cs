@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.Helpers;
 using MVCAgenda.Data.DataBaseManager;
 using System.Threading.Tasks;
+using MVCAgenda.Service.Logins;
+using MVCAgenda.Core.Logging;
 
 namespace MVCAgenda.Service.Patients
 {
     public class PatientService : IPatientService
     {
+        private string user = "TestUser";
         #region Fields
+        private string msg;
         private readonly AgendaContext _context;
+        private readonly ILoggerService _logger;
         #endregion
-        /***********************************************************************************/
+        /**************************************************************************************/
         #region Constructor
-        public PatientService(AgendaContext context)
+        public PatientService(AgendaContext context, ILoggerService logger)
         {
             _context = context;
+            _logger = logger;
         }
         #endregion
         /***********************************************************************************/
@@ -37,12 +42,13 @@ namespace MVCAgenda.Service.Patients
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Create}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
         }
-        //de sters
         public async Task<int> CheckExistentPatientAsync(Patient patient)
         {
             try
@@ -51,9 +57,7 @@ namespace MVCAgenda.Service.Patients
                 //Daca suna un pacient de pe numere diferite
                 var newPatient = await _context.Patients
                     .Where(p => p.FirstName == patient.FirstName)
-                    .Where(p => p.LastName == patient.LastName)
                     .Where(p => p.PhoneNumber == patient.PhoneNumber)
-                    .Where(p => p.Mail == patient.Mail)
                     .Where(p => p.Hidden == false)
                     .FirstOrDefaultAsync();
 
@@ -82,6 +86,8 @@ namespace MVCAgenda.Service.Patients
             }
             catch (Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Create}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return -1;
             }
         }
@@ -90,10 +96,19 @@ namespace MVCAgenda.Service.Patients
         #region Read
         public async Task<Patient> GetAsync(int Id, bool GetPatientByPatientSheetId = false)
         {
-            if(GetPatientByPatientSheetId == false)
-                return await _context.Patients.FirstOrDefaultAsync(p => p.Id == Id);
-            else
-                return await _context.Patients.FirstOrDefaultAsync(p => p.PatientSheetId == Id);
+            try
+            {
+                if (GetPatientByPatientSheetId == false)
+                    return await _context.Patients.FirstOrDefaultAsync(p => p.Id == Id);
+                else
+                    return await _context.Patients.FirstOrDefaultAsync(p => p.PatientSheetId == Id);
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return null;
+            }
         }
 
         public async Task<List<Patient>> GetListAsync(string searchByName = null,
@@ -102,24 +117,34 @@ namespace MVCAgenda.Service.Patients
             bool? includeBlackList = false,
             bool? isHidden = false)
         {
-            var query = _context.Patients.AsQueryable();
+            try
+            {
+                var query = _context.Patients.AsQueryable();
 
-            if (isHidden != null)
-                query = query.Where(p => p.Hidden == isHidden);
+                if (isHidden != null)
+                    query = query.Where(p => p.Hidden == isHidden);
 
-            if (includeBlackList != null)
-                query = query.Where(p => p.Blacklist == includeBlackList);
+                if (includeBlackList != null)
+                    query = query.Where(p => p.Blacklist == includeBlackList);
 
-            if (searchByName != null)
-                query = query.Where(p => p.FirstName.ToUpper().Contains(searchByName.ToUpper()));
+                if (searchByName != null)
+                    query = query.Where(p => p.FirstName.ToUpper().Contains(searchByName.ToUpper()));
 
-            if (searchByPhoneNumber != null)
-                query = query.Where(p => p.PhoneNumber.Contains(searchByPhoneNumber));
+                if (searchByPhoneNumber != null)
+                    query = query.Where(p => p.PhoneNumber.Contains(searchByPhoneNumber));
 
-            if (searchByEmail != null)
-                query = query.Where(p => p.Mail.ToUpper().Contains(searchByEmail.ToUpper()));
+                if (searchByEmail != null)
+                    query = query.Where(p => p.Mail.ToUpper().Contains(searchByEmail.ToUpper()));
 
-            return await query.ToListAsync();
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return null;
+            }
+            
         }
         #endregion
         /***********************************************************************************/
@@ -133,12 +158,13 @@ namespace MVCAgenda.Service.Patients
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Edit}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
         }
-
         #endregion
         /***********************************************************************************/
         #region Delete
@@ -157,8 +183,10 @@ namespace MVCAgenda.Service.Patients
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Hide}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
         }
@@ -172,8 +200,10 @@ namespace MVCAgenda.Service.Patients
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Delete}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
             

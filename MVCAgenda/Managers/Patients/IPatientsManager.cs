@@ -7,7 +7,7 @@ namespace MVCAgenda.Managers.Patients
     {
         Task<string> CreateAsync(PatientViewModel patientViewModel);
         
-        Task<PatientsViewModel> GetListAsync(string searchByName, string searchByPhoneNumber, string searchByEmail, bool includeBlackList, bool isDeleted);
+        Task<PatientsViewModel> GetListAsync(string searchByName = null, string searchByPhoneNumber = null, string searchByEmail = null, bool? includeBlackList = null, bool? isDeleted = null);
         
         Task<PatientViewModel> GetDetailsAsync(int id);
        

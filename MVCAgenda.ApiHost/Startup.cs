@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using MVCAgenda.ApiHost.Factories.Patients;
 using MVCAgenda.ApiHost.JSON.Serializers;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Service.Logins;
 using MVCAgenda.Service.Patients;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,7 @@ namespace MVCAgenda.ApiHost
             });
 
             //services
+            services.AddScoped<ILoggerService, LoggerService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IJsonFieldsSerializer, JsonFieldsSerializer>(); 
 

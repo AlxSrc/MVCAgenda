@@ -1,20 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Managers.Medics;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Managers.Scheduler;
 using MVCAgenda.Models.SyncfusionScheduler;
-using MVCAgenda.Service.Appointments;
-using MVCAgenda.Service.Patients;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize]
     public class SchedulerController : Controller
     {
         #region Services
@@ -33,11 +31,9 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Create
-
         [HttpPost]
         public async Task<JsonResult> AddData(ScheduleEventData ScheduleData)
         {
-
             if (User.Identity.IsAuthenticated)
             {
                 ScheduleData.User = User.Identity.Name;
@@ -49,14 +45,13 @@ namespace MVCAgenda.Controllers
             }
             else
             {
-                var ressult = "Trebuie sa fiti conectati.";
+                var ressult = "Pentru a adauga o programare trebuie sa fiti autenificat.";
                 return new JsonResult(new
                 {
                     result = ressult,
                 }, new JsonSerializerOptions());
             }
         }
-
         #endregion
         /*********************************************************************************/
         #region Read
@@ -90,10 +85,8 @@ namespace MVCAgenda.Controllers
 
         public async Task<JsonResult> LoadData()
         {
-
             if (User.Identity.IsAuthenticated)
             {
-
                 try
                 {
                     var appointmentsList = await _schedulerManager.GetAsync();
@@ -163,7 +156,6 @@ namespace MVCAgenda.Controllers
                     result = ressult,
                 }, new JsonSerializerOptions());
             }
-
         }
         #endregion
     }

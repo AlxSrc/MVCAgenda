@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Models.Rooms;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize]
     public class RoomsController : Controller
     {
         #region Fields
@@ -68,7 +70,6 @@ namespace MVCAgenda.Controllers
         /**************************************************************************************/
         #region Update
 
-        //[Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)

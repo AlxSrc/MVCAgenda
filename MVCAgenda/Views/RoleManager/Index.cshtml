@@ -7,10 +7,10 @@
         <table class="table">
             <thead class="borderless-table">
                 <tr>
-                    <th>
+                    <th class="column-center">
                         Denumire rol
                     </th>
-                    <th>
+                    <th class="column-center">
                         Id
                     </th>
                     <th></th>
@@ -20,10 +20,10 @@
                 @foreach (var item in Model.RolesList)
                 {
                     <tr>
-                        <td>
+                        <td class="column-center">
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
-                        <td>
+                        <td class="column-center">
                             @Html.DisplayFor(modelItem => item.Id)
                         </td>
                         <td class="text-end">

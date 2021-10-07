@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Managers.Consultations;
@@ -6,6 +7,7 @@ using MVCAgenda.Models.Consultations;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize]
     public class ConsultationsController : Controller
     {
         #region Fields

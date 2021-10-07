@@ -14,8 +14,8 @@ namespace MVCAgenda.Models.Patients
         #endregion
 
         #region ViewControllers
-        public bool Hidden { get; set; }
-        public bool Blacklist { get; set; }
+        public bool? Hidden { get; set; }
+        public bool? Blacklist { get; set; }
         #endregion
 
         #region Param for search

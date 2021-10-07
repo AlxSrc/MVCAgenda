@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
@@ -10,6 +11,7 @@ using MVCAgenda.Models.Medics;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize]
     public class MedicsController : Controller
     {
         #region Fields

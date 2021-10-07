@@ -62,15 +62,8 @@ namespace MVCAgenda.Managers.PatientsSheets
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed see consultation: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Read}, PatientSheets: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientSheetDetailsViewModel();
             }
         }
@@ -83,15 +76,8 @@ namespace MVCAgenda.Managers.PatientsSheets
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to see patient sheet: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientSheetEditViewModel();
             }
         }
@@ -102,15 +88,6 @@ namespace MVCAgenda.Managers.PatientsSheets
             {
                 if (await CheckExist(model.Id) == false)
                 {
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} failed to get patient sheet: id:{model.Id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
                     return "Fisa pacientului nu a putut fi gasita.";
                 }
                 else
@@ -129,32 +106,22 @@ namespace MVCAgenda.Managers.PatientsSheets
                         Hidden = model.Hidden
                     };
 
-                    await _patientSheetServices.UpdateAsync(patientSheet);
-
-                    await _logger.CreateAsync(new Log()
+                    var result = await _patientSheetServices.UpdateAsync(patientSheet);
+                    if(result == false)
+                        return "Fisa pacientului nu a putut fi editata.";
+                    else
                     {
-                        ShortMessage = $"{user} edited patient sheet: id:{model.Id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Edit}, Appointment: {model.Id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
                 }
 
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to edit patient sheet: id:{model.Id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Edit}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Fisa pacientului nu a putut fi editata.";
             }
 

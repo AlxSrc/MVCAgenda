@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.ApiHost.ModelBinders;
 
 namespace MVCAgenda.ApiHost.Models.Parameters.Patients
 {
+    [ModelBinder(typeof(ParametersModelBinder<PatientsParametersModel>))]
     public class PatientsParametersModel : BasePatientsParametersModel
     {
         public PatientsParametersModel()
@@ -11,8 +14,6 @@ namespace MVCAgenda.ApiHost.Models.Parameters.Patients
 
         /// <summary>
         ///     comma-separated list of fields to include in the response
-        /// </summary>
-        [JsonProperty("fields")]
         public string Fields { get; set; }
     }
 }

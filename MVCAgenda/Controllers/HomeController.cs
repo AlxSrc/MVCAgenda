@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using MVCAgenda.Core.Domain;
-using MVCAgenda.Data.DataBaseManager;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Managers.Medics;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Models.Accounts;
 using MVCAgenda.Models.Home;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         #region Fields
@@ -50,6 +47,20 @@ namespace MVCAgenda.Controllers
                 };
 
                 return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+        #endregion
+        /**************************************************************************************/
+        #region Manage
+        public async Task<IActionResult> Informations()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
             }
             else
             {

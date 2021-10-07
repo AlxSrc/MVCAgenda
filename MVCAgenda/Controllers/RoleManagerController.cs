@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Admin")]
     public class RoleManagerController : Controller
     {
         #region Fields
@@ -46,7 +46,6 @@ namespace MVCAgenda.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string userId)

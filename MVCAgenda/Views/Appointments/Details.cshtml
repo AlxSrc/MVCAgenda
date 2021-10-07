@@ -7,121 +7,121 @@
 {
     @model MVCAgenda.Models.Appointments.AppointmentDetailsViewModel
 
-<div class="main box">
+    <div class="main box">
 
-    <div class="container">
-        <div class="container g-0 mb-3">
-            <div class="row justify-content-between">
-                <div class="col-auto">
-                    <h2 class="text-color text-center">Detalii programare</h2>
-                </div>
-                <div class="col-auto">
-                    <div class="d-lg-flex justify-content-lg-center">
-                        <div class="btn-group" role="group" aria-label="Optiuni">
-                            <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
-                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Șterge programarea</a>
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifică programarea</a>
+        <div class="container">
+            <div class="container g-0 mb-3">
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <h2 class="text-color text-center">Detalii programare</h2>
+                    </div>
+                    <div class="col-auto">
+                        <div class="d-lg-flex justify-content-lg-center">
+                            <div class="btn-group" role="group" aria-label="Optiuni">
+                                <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Inapoi</a>
+                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Șterge programarea</a>
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifică programarea</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.FirstName)</span>
-                    <input asp-for="FirstName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.FirstName)" aria-describedby="basic-addon1" readonly>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.FirstName)</span>
+                        <input asp-for="FirstName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.FirstName)" aria-describedby="basic-addon1" readonly>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.LastName)</span>
+                        <input asp-for="LastName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.LastName)" aria-describedby="basic-addon2" readonly>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.LastName)</span>
-                    <input asp-for="LastName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.LastName)" aria-describedby="basic-addon2" readonly>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhoneNumber)</span>
+                        <input asp-for="PhoneNumber" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.PhoneNumber)" aria-describedby="basic-addon3" readonly>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Mail)</span>
+                        <input asp-for="Mail" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Mail)" aria-describedby="basic-addon2" readonly>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhoneNumber)</span>
-                    <input asp-for="PhoneNumber" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.PhoneNumber)" aria-describedby="basic-addon3" readonly>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.Medic)</span>
+                        <input asp-for="Medic" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Medic)" aria-describedby="basic-addon1" readonly>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Room)</span>
+                        <input asp-for="Room" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Room)" aria-describedby="basic-addon2" readonly>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Mail)</span>
-                    <input asp-for="Mail" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Mail)" aria-describedby="basic-addon2" readonly>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.Medic)</span>
-                    <input asp-for="Medic" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Medic)" aria-describedby="basic-addon1" readonly>
-                </div>
-            </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Room)</span>
-                    <input asp-for="Room" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Room)" aria-describedby="basic-addon2" readonly>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.StartDate)</span>
-                    <input asp-for="StartDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.StartDate)" aria-describedby="basic-addon1" readonly>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.StartDate)</span>
+                        <input asp-for="StartDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.StartDate)" aria-describedby="basic-addon1" readonly>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.EndDate)</span>
+                        <input asp-for="EndDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.EndDate)" aria-describedby="basic-addon2" readonly>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.EndDate)</span>
-                    <input asp-for="EndDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.EndDate)" aria-describedby="basic-addon2" readonly>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.MadeText)</span>
-                    <label asp-for="MadeText" class="form-control" aria-describedby="basic-addon1">@Html.Raw(Model.MadeText)</label>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.MadeText)</span>
+                        <label asp-for="MadeText" class="form-control" aria-describedby="basic-addon1">@Html.Raw(Model.MadeText)</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Procedure)</span>
+                        <input asp-for="Procedure" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Procedure)" aria-describedby="basic-addon2" readonly>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Procedure)</span>
-                    <input asp-for="Procedure" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Procedure)" aria-describedby="basic-addon2" readonly>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AppointmentCreationDate)</span>
-                    <input asp-for="AppointmentCreationDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentCreationDate)" aria-describedby="basic-addon1" readonly>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AppointmentCreationDate)</span>
+                        <input asp-for="AppointmentCreationDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.AppointmentCreationDate)" aria-describedby="basic-addon1" readonly>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.ResponsibleForAppointment)</span>
+                        <input asp-for="ResponsibleForAppointment" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.ResponsibleForAppointment)" aria-describedby="basic-addon2" readonly>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.ResponsibleForAppointment)</span>
-                    <input asp-for="ResponsibleForAppointment" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.ResponsibleForAppointment)" aria-describedby="basic-addon2" readonly>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.Comments)</span>
+                        <textarea asp-for="Comments" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Comments)" aria-describedby="basic-addon1" readonly></textarea>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.Comments)</span>
-                    <textarea asp-for="Comments" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Comments)" aria-describedby="basic-addon1" readonly></textarea>
-                </div>
-            </div>
-        </div>
 
+        </div>
     </div>
-</div>
 }

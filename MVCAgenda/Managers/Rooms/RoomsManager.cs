@@ -44,31 +44,20 @@ namespace MVCAgenda.Managers.Rooms
                     Hidden = false
                 };
 
-                await _roomsServices.CreateAsync(room);
-
-                await _logger.CreateAsync(new Log()
+                var result = await _roomsServices.CreateAsync(room);
+                if (result == false)
+                    return "Camera nu s-a putut creea";
+                else
                 {
-                    ShortMessage = $"{user} created room: name {model.Name}",
-                    FullMessage = null,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Information,
-                    Hidden = false
-                });
-
-                return StringHelpers.SuccesMessage;
+                    var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}, Room: {room.Id}";
+                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    return StringHelpers.SuccesMessage;
+                }
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to add room: name {model.Name}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Camera nu a putut fi adaugat.";
             }
         }
@@ -87,16 +76,9 @@ namespace MVCAgenda.Managers.Rooms
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed see rooms",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
-                return null;
+                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new List<RoomViewModel>();
             }
         }
 
@@ -108,16 +90,9 @@ namespace MVCAgenda.Managers.Rooms
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed see room: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
-                return null;
+                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new RoomViewModel();
             }
         }
 
@@ -127,15 +102,6 @@ namespace MVCAgenda.Managers.Rooms
             {
                 if (await CheckExist(model.Id) == false)
                 {
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} failed to get room: id:{model.Name}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
                     return "Camera nu a putut fi gasita.";
                 }
                 else
@@ -150,33 +116,23 @@ namespace MVCAgenda.Managers.Rooms
                         Hidden = model.Hidden
                     };
 
-                    var test = await _roomsServices.UpdateAsync(room);
-
-                    await _logger.CreateAsync(new Log()
+                    var result = await _roomsServices.UpdateAsync(room);
+                    if(result == false)
+                        return "Camera nu a putut fi editata.";
+                    else
                     {
-                        ShortMessage = $"{user} edited room: name:{model.Name}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Edit}, Room: {model.Id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
                 }
 
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to edit room: name:{model.Name}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
-                return "Consultatia nu a putut fi editata.";
+                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Edit}, Room: {model.Id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return "Camera nu a putut fi editata.";
             }
 
         }
@@ -187,45 +143,26 @@ namespace MVCAgenda.Managers.Rooms
             {
                 if (await CheckExist(id) == false)
                 {
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} failed to get room: id:{id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
                     return "Camera inexistenta.";
                 }
                 else
                 {
-                    await _roomsServices.HideAsync(id);
-
-                    await _logger.CreateAsync(new Log()
+                    var result = await _roomsServices.HideAsync(id);
+                    if (result == false)
+                        return "Camera nu a putut fi stearsa.";
+                    else
                     {
-                        ShortMessage = $"{user} deleted room: id:{id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Hide}, Room: {id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
                 }
 
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to delete room: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Hide}, Room: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Camera nu a putut fi stearsa.";
             }
         }

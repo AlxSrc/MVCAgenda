@@ -33,6 +33,19 @@ namespace MVCAgenda.ApiHost.JSON.Serializers
             return json;
         }
 
+        public string Serialize(ISerializableObject objectToSerialize)
+        {
+            if (objectToSerialize == null)
+            {
+                throw new ArgumentNullException(nameof(objectToSerialize));
+            }
+
+            var json = Serialize(objectToSerialize);
+
+            return json;
+        }
+
+
         private string Serialize(object objectToSerialize, IList<string> jsonFields = null)
         {
             var jToken = JToken.FromObject(objectToSerialize);

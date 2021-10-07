@@ -14,7 +14,7 @@ using MVCAgenda.Service.Rooms;
 
 namespace MVCAgenda.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class AppointmentsController : Controller
     {
         #region Fields
@@ -102,13 +102,25 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Read
-        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, DateTime SearchByAppointmentStartDate, DateTime SearchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
+        public async Task<IActionResult> Index(string SearchByName = null, 
+            string SearchByPhoneNumber = null, 
+            string SearchByEmail = null, 
+            DateTime? SearchByAppointmentStartDate = null, 
+            DateTime? SearchByAppointmentEndDate = null, 
+            int? SearchByRoom = null, 
+            int? SearchByMedic = null, 
+            string SearchByProcedure = null, 
+            int? Id = null, 
+            bool? Daily = null, 
+            bool? Hidden = null)
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
                 ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
+                var ast = User.Identity.Name;
+                
                 return View(await _appointmentsManager.GetListAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
             }
             else

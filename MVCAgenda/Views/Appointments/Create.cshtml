@@ -1,101 +1,100 @@
 ﻿@{
     ViewData["Title"] = "Create";
 }
-
 @if (User.Identity.IsAuthenticated)
 {
     @model MVCAgenda.Models.Appointments.AppointmentCreateViewModel
-<div class="main box">
+    <div class="main box">
 
-    <form asp-action="Create">
-        <div class="container g-0">
-            <div class="row justify-content-between">
-                <div class="col-auto">
-                    <h2 class="text-color mb-3 text-center">Adaugă o programare</h2>
-                </div>
-                <div class="col-auto">
-                    <div class="btn-group" role="group" aria-label="Optiuni">
-                        <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Anulează</a>
-                        <input type="submit" value="Adaugă o programare" class="btn btn-main-color-filled" />
+        <form asp-action="Create">
+            <div class="container g-0">
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <h2 class="text-color mb-3 text-center">Adaugă o programare</h2>
+                    </div>
+                    <div class="col-auto">
+                        <div class="btn-group" role="group" aria-label="Optiuni">
+                            <a asp-action="Index" asp-route-Daily="true" class="btn btn-outline-secondary">Anulează</a>
+                            <input type="submit" value="Adaugă o programare" class="btn btn-main-color-filled" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row g-3">
-            <input asp-for="PatientId" type="hidden" />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row g-3">
+                <input asp-for="PatientId" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-floating col-md-6">
-                <input asp-for="FirstName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
-                <label for="floatingInput1" asp-for="FirstName"></label>
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating col-md-6">
-                <input asp-for="LastName" class="form-control" id="floatingInput2" placeholder="Obligatoriu">
-                <label for="floatingInput2" asp-for="LastName"></label>
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating col-md-6">
-                <input asp-for="PhoneNumber" class="form-control" id="floatingInput3" placeholder="Obligatoriu">
-                <label for="floatingInput3" asp-for="PhoneNumber"></label>
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating col-md-6">
-                <input asp-for="Mail" class="form-control" id="floatingInput4" placeholder="Obligatoriu">
-                <label for="floatingInput4" asp-for="Mail"></label>
-                <span asp-validation-for="Mail" class="text-danger"></span>
-            </div>
-
-            @*<div class="input-group mb-3">
-                <div class="input-group-text">
-                    <input class="form-check-input mt-0" type="checkbox" asp-for="Blacklist" aria-label="Checkbox for following text input">
+                <div class="form-floating col-md-6">
+                    <input asp-for="FirstName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
+                    <label for="floatingInput1" asp-for="FirstName"></label>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
-                <input type="text" value="Lista neagra" class="form-control" aria-label="Text input with checkbox" readonly>
-            </div>*@
 
-            <div class="form-floating col-md-6">
-                <select asp-for="MedicId" class="form-control" id="floatingInput5" asp-items="ViewBag.MedicId"></select>
-                <label for="floatingInput5" asp-for="MedicId"></label>
-                <span asp-validation-for="MedicId" class="text-danger"></span>
+                <div class="form-floating col-md-6">
+                    <input asp-for="LastName" class="form-control" id="floatingInput2" placeholder="Obligatoriu">
+                    <label for="floatingInput2" asp-for="LastName"></label>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <input asp-for="PhoneNumber" class="form-control" id="floatingInput3" placeholder="Obligatoriu">
+                    <label for="floatingInput3" asp-for="PhoneNumber"></label>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <input asp-for="Mail" class="form-control" id="floatingInput4" placeholder="Obligatoriu">
+                    <label for="floatingInput4" asp-for="Mail"></label>
+                    <span asp-validation-for="Mail" class="text-danger"></span>
+                </div>
+
+                @*<div class="input-group mb-3">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" type="checkbox" asp-for="Blacklist" aria-label="Checkbox for following text input">
+                    </div>
+                    <input type="text" value="Lista neagra" class="form-control" aria-label="Text input with checkbox" readonly>
+                </div>*@
+
+                <div class="form-floating col-md-6">
+                    <select asp-for="MedicId" class="form-control" id="floatingInput5" asp-items="ViewBag.MedicId"></select>
+                    <label for="floatingInput5" asp-for="MedicId"></label>
+                    <span asp-validation-for="MedicId" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <select asp-for="RoomId" class="form-control" id="floatingInput6" asp-items="ViewBag.RoomId"></select>
+                    <label for="floatingInput6" asp-for="RoomId"></label>
+                    <span asp-validation-for="RoomId" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <input asp-for="StartDate" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
+                    <label for="floatingInput7" asp-for="StartDate"></label>
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <input asp-for="EndDate" class="form-control" id="floatingInput8" placeholder="Obligatoriu">
+                    <label for="floatingInput8" asp-for="EndDate"></label>
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <input asp-for="Procedure" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
+                    <label for="floatingInput7" asp-for="Procedure"></label>
+                    <span asp-validation-for="Procedure" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <textarea asp-for="Comments" class="form-control resizable" id="floatingInput8" placeholder="Obligatoriu"></textarea>
+                    <label for="floatingInput8" asp-for="Comments"></label>
+                    <span asp-validation-for="Comments" class="text-danger"></span>
+                </div>
+
+                <input asp-for="ResponsibleForAppointment" type="hidden" />
             </div>
-
-            <div class="form-floating col-md-6">
-                <select asp-for="RoomId" class="form-control" id="floatingInput6" asp-items="ViewBag.RoomId"></select>
-                <label for="floatingInput6" asp-for="RoomId"></label>
-                <span asp-validation-for="RoomId" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating col-md-6">
-                <input asp-for="StartDate" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
-                <label for="floatingInput7" asp-for="StartDate"></label>
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating col-md-6">
-                <input asp-for="EndDate" class="form-control" id="floatingInput8" placeholder="Obligatoriu">
-                <label for="floatingInput8" asp-for="EndDate"></label>
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating col-md-6">
-                <input asp-for="Procedure" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
-                <label for="floatingInput7" asp-for="Procedure"></label>
-                <span asp-validation-for="Procedure" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating col-md-6">
-                <textarea asp-for="Comments" class="form-control resizable" id="floatingInput8" placeholder="Obligatoriu"></textarea>
-                <label for="floatingInput8" asp-for="Comments"></label>
-                <span asp-validation-for="Comments" class="text-danger"></span>
-            </div>
-
-            <input asp-for="ResponsibleForAppointment" type="hidden" />
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
     
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

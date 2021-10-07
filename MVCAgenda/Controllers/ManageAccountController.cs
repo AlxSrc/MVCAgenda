@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Managers.ManageAccount;
 using MVCAgenda.Models.Accounts.ManageAccount;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize]
     public class ManageAccountController : Controller
     {
         #region Fields

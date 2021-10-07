@@ -15,7 +15,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Users[0].Email)
                     </th>
-                    <th>
+                    <th class="column-center">
                         @Html.DisplayNameFor(model => model.Users[0].Roles)
                     </th>
                     <th></th>
@@ -28,7 +28,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Email)
                         </td>
-                        <td>
+                        <td class="column-center">
                             @string.Join(", ", item.Roles.ToList())
                         </td>
                         <td>

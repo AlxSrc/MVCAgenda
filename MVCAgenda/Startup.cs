@@ -31,6 +31,8 @@ using MVCAgenda.Service.PatientsSheet;
 using MVCAgenda.Managers.ManageAccount;
 using MVCAgenda.Managers.Roles;
 using Microsoft.AspNetCore.Authorization;
+using MVCAgenda.Managers.Logging;
+using MVCAgenda.Factories.Logging;
 
 namespace MVCAgenda
 {
@@ -80,7 +82,8 @@ namespace MVCAgenda
             services.AddScoped<IAppointmentsFactory, AppointmentsFactory>();
             services.AddScoped<IMedicsFactory, MedicsFactory>();
             services.AddScoped<IRoomsFactory, RoomsFactory>();
-            services.AddScoped<ISchedulerFactory, SchedulerFactory>(); 
+            services.AddScoped<ISchedulerFactory, SchedulerFactory>();
+            services.AddScoped<ILoggingFactory, LoggingFactory>(); 
 
             //Managers
             services.AddScoped<IPatientsManager, PatientsManager>();
@@ -92,6 +95,7 @@ namespace MVCAgenda
             services.AddScoped<ISchedulerManager, SchedulerManager>();
             services.AddScoped<IManageAccountManager, ManageAccountManager>();
             services.AddScoped<IRolesManager, RolesManager>();
+            services.AddScoped<ILoggingManager, LoggingManager>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

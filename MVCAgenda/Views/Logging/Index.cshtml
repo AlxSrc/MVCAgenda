@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Lista of loggs";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    @model MVCAgenda.Models.Logging.LogsViewModel
+
+    <div class="container g-0">
+        <div class="row justify-content-between">
+            <h2 class="text-color ms-4">Logs</h2>
+        </div>
+    </div>
+
+    <div class="main box">
+        <table class="table">
+            <thead class="borderless-table">
+                <tr>
+                    <th class="center-content column-center">
+                        @Html.DisplayNameFor(model => model.Logs[0].LogLevel)
+                    </th>
+                    <th class="column-center">
+                        @Html.DisplayNameFor(model => model.Logs[0].CreatedOnUtc)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Logs[0].ShortMessage)
+                    </th>
+                    <th class="column-center">
+                        @Html.DisplayNameFor(model => model.Logs[0].IpAddress)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Logs)
+                {
+                    <tr>
+                        <td class="column-center">
+                            @Html.Raw(item.LogLevel)
+                        </td>
+                        <td class="column-center">
+                            @Html.DisplayFor(modelItem => item.CreatedOnUtc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShortMessage)
+                        </td>
+                        <td class="column-center">
+                            @Html.DisplayFor(modelItem => item.IpAddress)
+                        </td>
+                        <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Detalii
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item text-color" asp-route-id="@item.Id">Detalii log</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

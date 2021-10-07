@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Appointment : BaseEntity
+    public class Appointment : BaseEntityDomain
     {
         public int PatientId { get; set; }
         [ForeignKey("PatientId")]
@@ -13,7 +13,7 @@ namespace MVCAgenda.Core.Domain
 
         public int RoomId { get; set; }
         [ForeignKey("RoomId")]
-        public virtual Consultation Room { get; set; }
+        public virtual Room Room { get; set; }
 
         public int MedicId { get; set; }
         [ForeignKey("MedicId")]

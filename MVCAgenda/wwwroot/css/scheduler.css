@@ -205,7 +205,7 @@
 
 /* folosite sigur */
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
-    width: 98% !important;
+    /*width: 98% !important;*/
     background-color: #fafafa;
     border-color: #7f73bb;
     border-width: 2px;

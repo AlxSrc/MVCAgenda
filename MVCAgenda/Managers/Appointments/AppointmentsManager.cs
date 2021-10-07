@@ -96,23 +96,39 @@ namespace MVCAgenda.Managers.Appointments
                     Hidden = false
                 };
 
-                await _appointmentServices.CreateAsync(newAppointment);
-
-                await CreateLog($"{user} created Appointment Id Appointment:{appointmentViewModel.StartDate} {appointmentViewModel.Procedure}", null, LogLevel.Information);
-                return StringHelpers.SuccesMessage;
+                var result = await _appointmentServices.CreateAsync(newAppointment);
+                if (result == false)
+                    return "Nu s-a putut creea programarea.";
+                else
+                {
+                    var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}, Appointment: {newAppointment.Id}";
+                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    return StringHelpers.SuccesMessage;
+                }
             }
             catch (Exception exception)
             {
-                await CreateLog($"{user} failed to add Appointment & Patient: Id Appointment:{appointmentViewModel} {appointmentViewModel.FirstName}, {appointmentViewModel.PhoneNumber}", exception.Message, LogLevel.Error);
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Nu s-a putut adauga programarea.";
             }
         }
         
-        public async Task<AppointmentsViewModel> GetListAsync(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, DateTime SearchByAppointmentStartDate, DateTime SearchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool daily, bool Hidden)
+        public async Task<AppointmentsViewModel> GetListAsync(string SearchByName = null,
+            string SearchByPhoneNumber = null,
+            string SearchByEmail = null,
+            DateTime? SearchByAppointmentStartDate = null,
+            DateTime? SearchByAppointmentEndDate = null,
+            int? SearchByRoom = null,
+            int? SearchByMedic = null,
+            string SearchByProcedure = null,
+            int? Id = null,
+            bool? Daily = null,
+            bool? Hidden = null)
         {
             try
             {
-                var appointmentsList = await _appointmentServices.GetFiltredListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, daily, Hidden);
+                var appointmentsList = await _appointmentServices.GetFiltredListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden);
                 
                 var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
                 foreach (var appointment in appointmentsList)
@@ -121,25 +137,19 @@ namespace MVCAgenda.Managers.Appointments
                 var app = appointmentsListViewModel
                     .Where(p => !string.IsNullOrEmpty(SearchByName) ? p.FirstName.ToUpper().Contains(SearchByName.ToUpper()) : true)
                     .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhoneNumber.Contains(SearchByPhoneNumber) : true).ToList();
-
+                bool? Blacklist = null;
                 return new AppointmentsViewModel()
                 {
-                    Blacklist = Hidden,
+                    Hidden = Hidden == null ? false : Hidden,
+                    Blacklist = Blacklist == null ? false : Blacklist,
                     AppointmentsList = appointmentsListViewModel
                 };
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to get appointments",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
-                return null;
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new AppointmentsViewModel();
             }
         }
         
@@ -156,7 +166,8 @@ namespace MVCAgenda.Managers.Appointments
             }
             catch (Exception exception)
             {
-                await CreateLog($"{user} failed to get appointment: id:{id}", exception.Message, LogLevel.Error);
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}, Appointment: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return null;
             }
         }
@@ -168,8 +179,9 @@ namespace MVCAgenda.Managers.Appointments
             }
             catch (Exception exception)
             {
-                await CreateLog($"{user} failed to get appointment for edit: id:{id}", exception.Message, LogLevel.Error);
-                return null;
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}, Appointment: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new AppointmentEditViewModel();
             }
         }
         
@@ -200,13 +212,22 @@ namespace MVCAgenda.Managers.Appointments
                     Hidden = appointmentViewModel.Hidden
                 };
 
-                var test = await _appointmentServices.UpdateAsync(newAppointment);
-                var est = await CreateLog($"{user} Updated Appointment: Id Appointment:{appointmentViewModel}", null, LogLevel.Information);
-                return StringHelpers.SuccesMessage;
+                var response = await _appointmentServices.UpdateAsync(newAppointment);
+                if (response == false)
+                {
+                    return "Programarea nu a putut fi editata.";
+                }
+                else
+                {
+                    var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Edit}, Appointment: {appointmentViewModel.Id}";
+                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    return StringHelpers.SuccesMessage;
+                }
             }
             catch (Exception exception)
             {
-                await CreateLog($"{user} failed to update Appointment: Id Appointment:{appointmentViewModel}", exception.Message, LogLevel.Error);
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Edit}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi adaugat, contacteaza administratorul.";
             }
         }
@@ -218,19 +239,28 @@ namespace MVCAgenda.Managers.Appointments
                 if (await CheckExist(id) != true)
                 {
                     return "Programarea nu a putut fi gasita.";
-                    await CreateLog($"{user} failed to delete appointment: id:{id}, missing.", null, LogLevel.Error);
                 }
                 else
                 {
-                    await _appointmentServices.HideAsync(id);
-                    await CreateLog($"{user} deleted appointment: id:{id}", null, LogLevel.Information);
-                    return StringHelpers.SuccesMessage;
+                    var response = await _appointmentServices.HideAsync(id);
+                    if(response == false)
+                    {
+                        return "Programarea nu a putut fi stearsa.";
+                    }
+                    else
+                    {
+                        var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Hide}, Appointment: {id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
+                    
                 }
 
             }
             catch (Exception exception)
             {
-                await CreateLog($"{user} failed to delete appointment: id:{id}", exception.Message, LogLevel.Error);
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Hide}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Programarea nu a putut fi stersa.";
             }
         }
@@ -244,19 +274,6 @@ namespace MVCAgenda.Managers.Appointments
             if (model == null)
                 return false;
 
-            return true;
-        }
-        private async Task<bool> CreateLog(string message, string fullMessage, LogLevel logLevel)
-        {
-            await _logger.CreateAsync(new Log()
-            {
-                ShortMessage = message,
-                FullMessage = fullMessage,
-                CreatedOnUtc = DateTime.UtcNow,
-                IpAddress = null,
-                LogLevel = logLevel,
-                Hidden = false
-            });
             return true;
         }
         #endregion

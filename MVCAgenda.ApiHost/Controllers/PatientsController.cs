@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MVCAgenda.ApiHost.Attributes;
 using MVCAgenda.ApiHost.DTOs.Errors;
 using MVCAgenda.ApiHost.DTOs.Patients;
 using MVCAgenda.ApiHost.Factories.Patients;
@@ -13,77 +14,74 @@ using MVCAgenda.ApiHost.Models.Parameters.Patients;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Patients;
+using Newtonsoft.Json;
 
 namespace MVCAgenda.ApiHost.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PatientsController : ControllerBase
+    public class PatientsController : Controller
     {
+        #region Fields
         private readonly AgendaContext _context;
         private readonly IPatientService _patientService;
         private readonly IPatientsFactory _patientFactory;
         IJsonFieldsSerializer _jsonFieldsSerializer;
-
-        public PatientsController(AgendaContext context, 
-            IPatientService patientService, 
-            IPatientsFactory patientFactory,
-            IJsonFieldsSerializer jsonFieldsSerializer)
+        #endregion
+        #region Constructor
+        public PatientsController(AgendaContext context,
+            IPatientService patientService,
+            IPatientsFactory patientFactory)
         {
             _context = context;
             _patientService = patientService;
             _patientFactory = patientFactory;
-            _jsonFieldsSerializer = jsonFieldsSerializer;
         }
-
-        // GET: api/Patients
-        //[HttpGet]
-        //public async Task<ActionResult<List<PatientDTO>>> GetPatients()
-        //{
-        //    var patients = await _patientService.GetListAsync(null, null, null, false, false);
-        //    var patientsDTO = new List<PatientDTO>();
-
-        //    foreach (var patient in patients)
-        //        patientsDTO.Add(_patientFactory.PreperePatientDTO(patient));
-
-        //    return patientsDTO;
-        //}
+        #endregion
 
         [HttpGet]
         [Route("/api/patients", Name = "GetPatients")]
         [ProducesResponseType(typeof(PatientsRootObject), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetPatients(PatientsParametersModel parameters)
+        public async Task<ActionResult<PatientsRootObject>> GetPatients()
         {
-            var patients = await _patientService.GetListAsync(parameters.SearchByName, parameters.SearchByPhoneNumber, parameters.SearchByEmail, parameters.IncludeBlackList, parameters.IsDeleted);
-
-            IList<PatientDto> patientsAsDtos = new List<PatientDto>();
-
-            foreach (var patient in patients)
-                patientsAsDtos.Add(_patientFactory.PreperePatientDTO(patient));
-
-            var patientsRootObject = new PatientsRootObject
+            try
             {
-                Patients = patientsAsDtos
-            };
+                var patients = await _patientService.GetListAsync();
+                var patientsAsDtos = new List<PatientDto>();
+                foreach (var patient in patients)
+                    patientsAsDtos.Add(_patientFactory.PreperePatientDTO(patient));
 
-            var json = _jsonFieldsSerializer.Serialize(patientsRootObject, parameters.Fields);
+                var patientsRoot = new PatientsRootObject() { 
+                    Patients = patientsAsDtos
+                };
 
-            return new RawJsonActionResult(json);
-        }
-        
-        // GET: api/Patients/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Patient>> GetPatient(int id)
-        {
-            var patient = await _context.Patients.FindAsync(id);
+                var json = JsonConvert.SerializeObject(patientsRoot);
 
-            if (patient == null)
-            {
-                return NotFound();
+                return new RawJsonActionResult(json);
             }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
-            return patient;
+        /// <summary>
+        ///     Retrieve patient by specified id
+        /// </summary>
+        /// <param name="id">Id of the category</param>
+        /// <param name="fields">Fields from the patient you want your json to contain</param>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="401">Unauthorized</response>
+        [HttpGet]
+        [Route("/api/patients/{id}", Name = "GetPatientById")]
+        [ProducesResponseType(typeof(PatientsRootObject), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetPatientById(int id, string fields = "")
+        {
+            return null;
         }
 
         // PUT: api/Patients/5

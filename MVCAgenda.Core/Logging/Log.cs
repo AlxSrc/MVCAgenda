@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Core.Logging
 {
-    public partial class Log : BaseEntity
+    public partial class Log : BaseEntityDomain
     {
         /// <summary>
         /// Gets or sets the log level identifier

@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MVCAgenda.Core.Users;
 using MVCAgenda.Models.Accounts.Roles;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize(Roles = "Admin,Administrator")]
     public class UserRolesController : Controller
     {
         #region Fields
@@ -27,10 +28,8 @@ namespace MVCAgenda.Controllers
         #region Methods
         public async Task<IActionResult> Index()
         {
-
             if (User.Identity.IsAuthenticated)
             {
-
                 var users = await _userManager.Users.ToListAsync();
                 var userRolesViewModel = new List<UserRolesViewModel>();
                 foreach (var user in users)
@@ -55,11 +54,9 @@ namespace MVCAgenda.Controllers
         }
         private async Task<List<string>> GetUserRoles(IdentityUser user)
         {
-
             if (User.Identity.IsAuthenticated)
             {
                 return new List<string>(await _userManager.GetRolesAsync(user));
-
             }
             else
             {
@@ -69,7 +66,6 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Manage(string userId)
         {
-
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.userId = userId;
@@ -109,7 +105,6 @@ namespace MVCAgenda.Controllers
         [HttpPost]
         public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, string userId)
         {
-
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.FindByIdAsync(userId);

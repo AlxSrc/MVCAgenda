@@ -10,6 +10,7 @@ using MVCAgenda.Models.Accounts;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize]
     public class AccountController : Controller 
     {
         #region Fields
@@ -58,7 +59,7 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Register
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Register()
         {
             if (User.Identity.IsAuthenticated)
@@ -72,7 +73,7 @@ namespace MVCAgenda.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
 

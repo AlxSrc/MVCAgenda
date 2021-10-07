@@ -45,31 +45,21 @@ namespace MVCAgenda.Managers.Medics
                     Hidden = false
                 };
 
-                await _medicsServices.CreateAsync(medic);
-
-                await _logger.CreateAsync(new Log()
+                var result = await _medicsServices.CreateAsync(medic);
+                if (result == false)
+                    return "Medicul nu s-a putut creea";
+                else
                 {
-                    ShortMessage = $"{user} created medic: name {model.Name}",
-                    FullMessage = null,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Information,
-                    Hidden = false
-                });
+                    var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Create}, Medic: {medic.Id}";
+                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    return StringHelpers.SuccesMessage;
+                }
 
-                return StringHelpers.SuccesMessage;
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to add medic: name {model.Name}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Create}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Medicul nu a putut fi adaugat.";
             }
         }
@@ -88,16 +78,9 @@ namespace MVCAgenda.Managers.Medics
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed see medics",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
-                return null;
+                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new List<MedicViewModel>();
             }
         }
         public async Task<MedicViewModel> GetDetailsAsync(int id)
@@ -108,16 +91,9 @@ namespace MVCAgenda.Managers.Medics
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed see medic: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
-                return null;
+                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new MedicViewModel();
             }
         }
         
@@ -127,15 +103,6 @@ namespace MVCAgenda.Managers.Medics
             {
                 if (await CheckExist(model.Id) == false )
                 {
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} failed to get medic: name:{model.Name}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
                     return "Medicul nu a putut fi gasit.";
                 }
                 else
@@ -151,32 +118,22 @@ namespace MVCAgenda.Managers.Medics
                         Hidden = false
                     };
 
-                    await _medicsServices.UpdateAsync(medic);
-
-                    await _logger.CreateAsync(new Log()
+                    var result = await _medicsServices.UpdateAsync(medic);
+                    if (result == false)
+                        return "Medicul nu a putut di editat";
+                    else
                     {
-                        ShortMessage = $"{user} edited medic: name:{model.Name}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Edit}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
                 }
 
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to edit medic: name:{model.Name}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Edit}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Medicul nu a putut fi editat.";
             }
 
@@ -188,45 +145,26 @@ namespace MVCAgenda.Managers.Medics
             {
                 if (await CheckExist(id) == false)
                 {
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} failed to get medic: id:{id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
                     return "Medic inexistent.";
                 }
                 else
                 {
-                    await _medicsServices.HideAsync(id);
-
-                    await _logger.CreateAsync(new Log()
+                    var result = await _medicsServices.HideAsync(id);
+                    if (result == false)
+                        return "Medicul nu a putut fi sters.";
+                    else
                     {
-                        ShortMessage = $"{user} delete medic: id:{id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
-                }
+                        var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Delete}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
 
+                }
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to delete medic: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Delete}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Medicul nu a putut fi stears.";
             }
         }

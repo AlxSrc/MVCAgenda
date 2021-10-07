@@ -7,20 +7,26 @@ using Microsoft.EntityFrameworkCore;
 
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
+using MVCAgenda.Core.Logging;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Service.Logins;
 
 namespace MVCAgenda.Service.Appointments
 {
     public class AppointmentService : IAppointmentService
     {
+        private string user = "TestUser";
         #region Fields
+        private string msg;
         private readonly AgendaContext _context;
+        private readonly ILoggerService _logger;
         #endregion
         /**************************************************************************************/
         #region Constructor
-        public AppointmentService(AgendaContext context)
+        public AppointmentService(AgendaContext context, ILoggerService logger)
         {
             _context = context;
+            _logger = logger;
         }
         #endregion
         /**************************************************************************************/
@@ -33,36 +39,89 @@ namespace MVCAgenda.Service.Appointments
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Create.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null,LogLevel.Error);
                 return false;
             }
         }
 
         public async Task<Appointment> GetAsync(int Id)
         {
-            return await _context.Appointments.FirstOrDefaultAsync(a => a.Id == Id);
+            try
+            {
+                return await _context.Appointments.FirstOrDefaultAsync(a => a.Id == Id);
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return new Appointment();
+            }
         }
 
-        public async Task<List<Appointment>> GetFiltredListAsync(DateTime searchByAppointmentStartDate, DateTime searchByAppointmentEndDate, int SearchByRoom, int SearchByMedic, string SearchByProcedure, int Id, bool Daily, bool Hidden)
+        /// <summary>
+        /// Get a list of appointments
+        /// </summary>
+        /// <param name="searchByAppointmentStartDate">Search appointments using start date</param>
+        /// <param name="searchByAppointmentEndDate">Search appointments using end date</param>
+        /// <param name="searchByRoom">Search appointments using room id</param>
+        /// <param name="searchByMedic">Search appointments using medic id</param>
+        /// <param name="searchByProcedure">Search appointments using a procedure</param>
+        /// <param name="id">Search appointments using patient id</param>
+        /// <param name="Daily">Get daily appointments where start date = system.date</param>
+        /// <param name="Hidden">Get deleted appointments</param>
+        /// <returns></returns>
+        public async Task<List<Appointment>> GetFiltredListAsync(DateTime? searchByAppointmentStartDate = null, 
+            DateTime? searchByAppointmentEndDate = null, 
+            int? searchByRoom = null, 
+            int? searchByMedic = null, 
+            string searchByProcedure = null, 
+            int? id = null, 
+            bool? Daily = null, 
+            bool? Hidden = null)
         {
-            var appointmentsList = await (
-                    _context.Appointments
+            try
+            {
+                var query = _context.Appointments.AsQueryable();
 
-                        .Where(h => Hidden == true ? h.Hidden == true : h.Hidden == false)
-                        .Where(d => Daily == true ? d.StartDate.Date == DateTime.Now.Date : true)
-                        .Where(p => Id != 0 ? p.PatientId == Id : true)
-                        .Where(a => SearchByMedic != 0 ? a.MedicId == SearchByMedic : true)
-                        .Where(a => SearchByRoom != 0 ? a.RoomId == SearchByRoom : true)
-                        .Where(a => searchByAppointmentStartDate != DateTime.MinValue ? a.StartDate == searchByAppointmentStartDate : true)
-                        .Where(a => searchByAppointmentEndDate != DateTime.MinValue ? a.EndDate == searchByAppointmentEndDate : true)
-                        .Where(a => !string.IsNullOrEmpty(SearchByProcedure) ? a.Procedure.ToUpper().Contains(SearchByProcedure.ToUpper()) : true)
+                //detalii programari
+                if (searchByAppointmentStartDate != null)
+                    query = query.Where(a => a.StartDate == searchByAppointmentStartDate);
 
-                        .OrderBy(h => h.StartDate)
+                if (searchByAppointmentEndDate != null)
+                    query = query.Where(a => a.EndDate == searchByAppointmentEndDate);
 
-                    ).ToListAsync();
+                if (searchByRoom != null)
+                    query = query.Where(a => a.RoomId == searchByRoom);
 
-            return appointmentsList;
+                if (searchByMedic != null)
+                    query = query.Where(a => a.MedicId == searchByMedic);
+
+                if (searchByProcedure != null)
+                    query = query.Where(a => a.Procedure.ToUpper().Contains(searchByProcedure.ToUpper()));
+
+                //programrile unui pacient
+                if (id != null)
+                    query = query.Where(a => a.PatientId == id);
+
+                //programrile zilnice
+                if (Daily != null)
+                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
+
+                //programrile sterse
+                if (Hidden != null)
+                    query = query.Where(a => a.Hidden == Hidden);
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return new List<Appointment>();
+            }
         }
         
         public async Task<bool> UpdateAsync(Appointment appointment)
@@ -73,8 +132,10 @@ namespace MVCAgenda.Service.Appointments
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Edit.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
         }
@@ -89,8 +150,10 @@ namespace MVCAgenda.Service.Appointments
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Hide.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
         }
@@ -103,8 +166,10 @@ namespace MVCAgenda.Service.Appointments
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Delete}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
         }

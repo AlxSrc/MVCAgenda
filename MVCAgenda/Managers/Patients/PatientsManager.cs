@@ -13,7 +13,7 @@ namespace MVCAgenda.Managers.Patients
 {
     public class PatientsManager : IPatientsManager
     {
-        string user = "admin";
+        string user = "TestLogging";
 
         #region Fields
         private readonly IPatientService _patientServices;
@@ -46,7 +46,6 @@ namespace MVCAgenda.Managers.Patients
                 }
                 else
                 {
-
                     var patient = new Patient()
                     {
                         FirstName = $"{patientViewModel.FirstName.Substring(0, 1).ToUpper()}{patientViewModel.FirstName.Substring(1, patientViewModel.FirstName.Length - 1).ToLower()}",
@@ -57,35 +56,26 @@ namespace MVCAgenda.Managers.Patients
                         Hidden = false
                     };
 
-                    await _patientServices.CreateAsync(patient);
-                    await _logger.CreateAsync(new Log()
+                    var result = await _patientServices.CreateAsync(patient);
+                    if(result == false)
+                        return "Pacientul nu a putut fi adaugat.";
+                    else
                     {
-                        ShortMessage = $"{user} created patient: {patientViewModel.FirstName}, {patientViewModel.PhoneNumber}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Information,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Create}, Patient: {patient.Id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }    
                 }
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to add patient: {patientViewModel.FirstName}, {patientViewModel.PhoneNumber}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi adaugat.";
             }
         }
         
-        public async Task<PatientsViewModel> GetListAsync(string searchByName, string searchByPhoneNumber, string searchByEmail, bool includeBlackList, bool isDeleted)
+        public async Task<PatientsViewModel> GetListAsync(string searchByName = null, string searchByPhoneNumber = null, string searchByEmail = null, bool? includeBlackList = null, bool? isDeleted = null)
         {
             try
             {
@@ -105,15 +95,8 @@ namespace MVCAgenda.Managers.Patients
             }
             catch(Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to get patients",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientsViewModel();
             }
         }
@@ -125,16 +108,8 @@ namespace MVCAgenda.Managers.Patients
                 return _patientFactory.PreperePatientViewModel(await _patientServices.GetAsync(id));
             }
             catch (Exception exception)
-            {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to see patient: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+            {                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientViewModel();
             }
         }
@@ -145,15 +120,6 @@ namespace MVCAgenda.Managers.Patients
             {
                 if(await CheckExist(patientViewModel.Id) != true)
                 {
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} failed to see patient: id:{patientViewModel.Id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
                     return "Pacientul nu a putut fi gasit.";
                 }
                 else
@@ -170,32 +136,22 @@ namespace MVCAgenda.Managers.Patients
                         Hidden = patientViewModel.Hidden
                     };
 
-                    await _patientServices.UpdateAsync(patient);
-
-                    await _logger.CreateAsync(new Log()
+                    var result = await _patientServices.UpdateAsync(patient);
+                    if (result == false)
+                        return "Pacientul nu a putut fi editat.";
+                    else
                     {
-                        ShortMessage = $"{user} edited patient: {patientViewModel.FirstName}, {patientViewModel.PhoneNumber}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}, Patient: {patient.Id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
                 }
 
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to edit patient: {patientViewModel.FirstName}, {patientViewModel.PhoneNumber}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi editat.";
             }
             
@@ -208,43 +164,26 @@ namespace MVCAgenda.Managers.Patients
                 if (await CheckExist(id) == false)
                 {
                     return "Pacientul nu a putut fi gasit.";
-                    await _logger.CreateAsync(new Log()
-                    {
-                        ShortMessage = $"{user} failed to see patient: id:{id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
                 }
                 else
                 {
-                    await _patientServices.HideAsync(id);
-                    await _logger.CreateAsync(new Log()
+                    
+                    var result = await _patientServices.HideAsync(id);
+                    if (result == false)
+                        return "Pacientul nu a putut fi sters.";
+                    else
                     {
-                        ShortMessage = $"{user} deleted patient: id:{id}",
-                        FullMessage = null,
-                        CreatedOnUtc = DateTime.UtcNow,
-                        IpAddress = null,
-                        LogLevel = LogLevel.Error,
-                        Hidden = false
-                    });
-                    return StringHelpers.SuccesMessage;
+                        var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Delete}, Patient: {id}";
+                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        return StringHelpers.SuccesMessage;
+                    }
                 }
 
             }
             catch (Exception exception)
             {
-                await _logger.CreateAsync(new Log()
-                {
-                    ShortMessage = $"{user} failed to delete patient: id:{id}",
-                    FullMessage = exception.Message,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    IpAddress = null,
-                    LogLevel = LogLevel.Error,
-                    Hidden = false
-                });
+                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Delete}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi sters.";
             }
         }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Factories.Patients;
@@ -8,6 +8,7 @@ using MVCAgenda.Models.Patients;
 
 namespace MVCAgenda.Controllers
 {
+    [Authorize]
     public class PatientsController : Controller
     {
         #region Fields
@@ -68,7 +69,6 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                // 
                 return View(await _patientManager.GetListAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, includeBlackList, isDeleted));
             }
             else
