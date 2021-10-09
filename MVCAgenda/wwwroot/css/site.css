@@ -1,1 +1,370 @@
-../../../../../../Chrome workspace/localhost%3a44339/css/site.css
+:root {
+    --main-color: #7f73bb;
+    --main-color-darker: #6c629e;
+    --main-color-shadow: 0 0 0 0.25rem rgba(108, 98, 158, 0.25);
+    --white: #fff;
+    --black: #333;
+    --transition: all 150ms linear;
+}
+
+.btn-primary {
+    border-color: var(--main-color);
+    background-color: var(--main-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--main-color-darker);
+    border-color: var(--main-color-darker);
+}
+
+.btn-primary:focus {
+    background-color: var(--main-color-darker);
+    border-color: var(--main-color-darker);
+    box-shadow: var(--main-color-shadow) !important;
+}
+
+.btn-outline-primary {
+    color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--main-color-darker);
+    border-color: var(--main-color-darker);
+}
+
+.btn-outline-primary:focus {
+    background-color: var(--main-color-darker);
+    border-color: var(--main-color-darker);
+    box-shadow: var(--main-color-shadow) !important;
+}
+
+.form-control:focus {
+    box-shadow: var(--main-color-shadow) !important;
+    border-color: var(--main-color-darker);
+}
+
+.btn-check:focus + .btn, .btn:focus {
+    box-shadow: var(--main-color-shadow) !important;
+}
+
+.input-group {
+    /* border-radius: 20px; */
+}
+
+.input-group span,
+.input-group label {
+    background-color: #fff;
+    border-color: #f7f7f7;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    border-color: #f7f7f7;
+}
+
+.input-group input[readonly],
+.input-group select[readonly],
+.input-group textarea[readonly] {
+    background-color: #fdfdfd;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #fdfdfd;
+}
+
+body img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+body a {
+    color: var(--black);
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+body a:hover {
+    color: var(--main-color);
+    transition: var(--transition);
+}
+
+body .vr-left {
+    padding-left: 12px;
+    margin-left: 8px;
+    border-left: 1px solid #e2e2e2;
+    height: 90%;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+#AppContent {
+    display: flex;
+}
+
+#AppContent > .sidebar {
+    width: 360px;
+    min-height: 100vh;
+    background-color: var(--main-color);
+    position: relative;
+    z-index: 2;
+}
+
+#AppContent > .sidebar .brand {
+    height: 60px;
+    line-height: 60px;
+    margin-left: 32px;
+    color: var(--white);
+    font-size: 18px;
+}
+
+#AppContent > .sidebar .brand strong {
+    margin-left: 8px;
+}
+
+#AppContent > .sidebar .navigation {
+    list-style: none;
+    padding: 13px 0 10px 10px;
+    overflow: hidden;
+}
+
+#AppContent > .sidebar .navigation .item {
+    width: 100%;
+}
+
+#AppContent > .sidebar .navigation .item a {
+    display: block;
+    text-decoration: none !important;
+    color: var(--white);
+    padding: 20px;
+    width: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    position: relative;
+    transition: none;
+}
+
+#AppContent > .sidebar .navigation .item a:before,
+#AppContent > .sidebar .navigation .item a:after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: -8px;
+    opacity: 0;
+}
+
+#AppContent > .sidebar .navigation .item a:before {
+    top: -12px;
+    border-right-style: solid;
+    border-right-width: 8px;
+    border-bottom-width: 8px;
+    border-bottom-style: solid;
+    border-bottom-right-radius: 20px;
+    border-color: transparent;
+}
+
+#AppContent > .sidebar .navigation .item a:after {
+    bottom: -12px;;
+    border-right-style: solid;
+    border-right-width: 8px;
+    border-top-width: 8px;
+    border-top-style: solid;
+    border-top-right-radius: 20px;
+    border-color: transparent;
+}
+
+#AppContent > .sidebar .navigation .item.active a,
+#AppContent > .sidebar .navigation .item a:hover {
+    background-color: #fdfdfd;
+    color: var(--main-color);
+    text-shadow: 0 0 1px var(--main-color);
+}
+
+#AppContent > .sidebar .navigation .item.active a:before,
+#AppContent > .sidebar .navigation .item.active a:after,
+#AppContent > .sidebar .navigation .item a:hover:before,
+#AppContent > .sidebar .navigation .item a:hover:after {
+    border-color: #fdfdfd;
+    opacity: 1;
+}
+
+#AppContent > .sidebar .navigation .item i {
+    width: 20px;
+    text-align: center;
+    margin-right: 8px
+}
+
+#AppContent > .content {
+    width: 100%;
+    position: relative;
+    padding-bottom: 44px;
+}
+
+#AppContent .main-footer {
+    box-shadow: 0 1px 8px #efefef;
+    display: flex;
+    background-color: var(--white);
+    padding: 10px 20px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: -1;
+    height: 44px;
+}
+
+#AppContent .main-header {
+    height: 60px;
+    box-shadow: 0 1px 8px #efefef;
+    display: flex;
+    background-color: var(--white);
+}
+
+#AppContent .main-header .sidebar-toggle {
+    height: 60px;
+    line-height: 60px;
+    font-size: 22px;
+    margin-left: 10px;
+}
+
+#AppContent .main-header .user-menu {
+    margin-left: auto;
+}
+
+#AppContent .main-header .user-menu a {
+    display: block;
+    height: 60px;
+    line-height: 60px;
+    text-decoration: none;
+}
+
+#AppContent .main-header .user-menu a i {
+    width: 10px;
+    height: 10px;
+    line-height: 10px;
+    vertical-align: middle;
+    text-align: center;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+#AppContent .main-header .user-menu a span {
+    vertical-align: middle;
+}
+
+#AppContent .main-header .user-menu a:hover i {
+    opacity: 1;
+    transition: var(--transition);
+}
+
+#AppContent main {
+    padding: 20px;
+}
+
+#AppContent main > .navigation {
+    margin: 10px 0 12px 20px;
+    font-size: 13px;
+}
+
+#AppContent main > .navigation .breadcrumb {
+    margin: 0;
+}
+
+#AppContent .section {
+    box-shadow: 0 0 8px #efefef;
+    border-radius: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+#AppContent .section:last-child {
+    margin-bottom: 0;
+}
+
+#AppContent .section > * {
+    padding: 20px
+}
+
+#AppContent .section header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f7f7f7;
+}
+
+#AppContent .section header form {
+    display: inline-block;
+}
+
+#AppContent .section header > .title {
+    font-size: 18px;
+}
+
+#AppContent .section header > .title i {
+    margin-right: 5px;
+}
+
+#AppContent .section header > .actions {
+    margin-left: auto;
+}
+
+#AppContent .section .filters {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #f7f7f7;
+}
+
+#AppContent .section .filters header {
+    border-bottom: 0;
+}
+
+#AppContent .section .filters header > .title {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+#AppContent .section .filters header > .actions {
+    margin-left: auto;
+}
+
+#AppContent .section .filters .row {
+    margin-bottom: 20px;
+}
+
+#AppContent .section .filters .row:last-child {
+    margin-bottom: 0;
+}
+
+#AppContent .section .content {
+    padding: 0;
+}
+
+#AppContent .section .content table {
+    width: 100%;
+}
+
+#AppContent .section .content table th {
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #f7f7f7;
+}
+
+#AppContent .section .content table th,
+#AppContent .section .content table td {
+    padding: 10px 20px;
+}
+
+#AppContent .section .content table tr:nth-child(even) td {
+    background-color: #fdfcfc;
+}
+
+#AppContent .section .content table tr:not(.no-hover):hover td {
+    background-color: #f3f3f3;
+}
+
+#AppContent .section .content .data {
+    padding: 20px
+}
