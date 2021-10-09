@@ -132,17 +132,6 @@ namespace MVCAgenda.Controllers
         #endregion
         /*********************************************************************************/
         #region Delete
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _patientManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
 
         // POST: Pacienti/Delete/5
         [HttpPost, ActionName("Delete")]

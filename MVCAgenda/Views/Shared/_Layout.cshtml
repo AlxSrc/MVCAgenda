@@ -1,128 +1,155 @@
-﻿
-
+﻿@using MVCAgenda.Extensions
+@using MVCAgenda.Controllers
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MVCAgenda</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>@ViewData["Title"] - MVCAgenda</title>
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="~/css/site.css"/>
+		@* <link rel="stylesheet" href="~/css/side_old.css"/> *@
+		<link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css"/>
 
-    <!-- Syncfusion Essential JS 2 Styles -->
-    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/bootstrap4.css" />
-    <!-- Syncfusion Essential JS 2 Scripts -->
-    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
-    
-    
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<!-- Syncfusion Essential JS 2 Styles -->
+		<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/bootstrap4.css"/>
+		<!-- Syncfusion Essential JS 2 Scripts -->
+		<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 
-    @await RenderSectionAsync("Styles", required: false)
-</head>
-<body>
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <div class="container g-0 custom-header">
-            @if (User.Identity.IsAuthenticated)
-            {
-                <div class="row justify-content-between">
-                    <div class="col-auto">
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                                    @*<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>*@
-                                    <span class="fs-4 text-color ms-3">Clinica</span>
-                                    <img class="sigla" src="https://esderm.ro/wp-content/uploads/2020/09/logo-esderm-web.png">
-                                </a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienți</a>
-                            </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index" asp-route-Daily="true">Programări</a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Scheduler" asp-action="Index">Calendar</a>
-                            </li>
+		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
-                            @if (User.IsInRole("Administrator") || User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage">Administrare</a>
-                                </li>
-                            }
-                        </ul>
+		@await RenderSectionAsync("Styles", required: false)
+	</head>
+	<body>
+		<div id="AppContent">
+			<aside class="sidebar">
+				<div class="brand">
+					<i class="far fa-hospital"></i>
+					<strong>Clinica Esderm</strong>
+				</div>
+				<ul class="navigation">
+					<li class="item @(Html.IsSelected("Home", "Index") ? "active" : null)">
+						<a asp-action="Index" asp-controller="Home">
+							<i class="fas fa-home"></i>
+							<span class="text">Acasa</span>
+						</a>
+					</li>
+					<li class="item @(Html.IsSelected("Patients,PatientSheets,Consultations", null) ? "active" : null)">
+						<a asp-controller="Patients" asp-action="Index" class="text">
+							<i class="fas fa-user-friends"></i>
+							<span>Pacienți</span>
+						</a>
+					</li>
+					<li class="item @(Html.IsSelected("Appointments", null) ? "active" : null)">
+						<a asp-controller="Appointments" asp-action="Index" asp-route-Daily="true" class="text">
+							<i class="fas fa-clipboard-list"></i>
+							<span>Programări</span>
+						</a>
+					</li>
+					<li class="item @(Html.IsSelected("Scheduler", null) ? "active" : null)">
+						<a asp-controller="Scheduler" asp-action="Index" class="text">
+							<i class="fas fa-calendar-alt"></i>
+							<span>Calendar</span>
+						</a>
+					</li>
+					<li class="item @(Html.IsSelected("Home", "Manage") ? "active" : null)">
+						<a asp-controller="Home" asp-action="Manage" class="text">
+							<i class="fas fa-cogs"></i>
+							<span>Administrare</span>
+						</a>
+					</li>
+				</ul>
+			</aside>
+			<div class="content">
+				<header class="main-header container-fluid">
+					<div class="sidebar-toggle">
+						<i class="fas fa-bars"></i>
+					</div>
+					<div class="user-menu">
+						<a href="#">
+							<span>@User.Identity.Name</span>
+							<i class="fas fa-caret-down"></i>
+						</a>
+					</div>
+				</header>
+				<main class="container-fluid" role="main">
+					@RenderBody()
+				</main>
+				<footer class="main-footer">
+					&copy; 2021 - Agenda online, Clinica Esderm - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+				</footer>
+			</div>
+		</div>
+		@* <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom"> *@
+		@* 	<div class="container g-0 custom-header"> *@
+		@* 		@if (User.Identity.IsAuthenticated) *@
+		@* 		{ *@
+		@* 			<div class="row justify-content-between"> *@
+		@* 				<div class="col-auto"> *@
+		@* 					<ul class="nav pills"> *@
+		@* *@
+		@* 					</ul> *@
+		@* *@
+		@* *@
+		@* 				</div> *@
+		@* *@
+		@* 				<div class="col-auto"> *@
+		@* 					<ul class="nav pills"> *@
+		@* *@
+		@* 						<li class="item"> *@
+		@* 							<img class="wellcome-image" src="https://imgix.bustle.com/uploads/image/2021/7/16/07062a59-9fd1-41f8-9c99-e4c0f5d80c05-06546552-d025-4a16-ab18-d252ff01fa90-getty-1205000579.jpeg?w=800&fit=crop&crop=focalpoint&auto=format%2Ccompress&fp-x=0.4587&fp-y=0.754"> *@
+		@* 						</li> *@
+		@* 						<li class="item"> *@
+		@* 							<a class="link wellcome-name" asp-controller="UserRoles" asp-action="Index"> *@
+		@* 								@if (String.Compare(DateTime.Now.ToString("t"), "12:00") < 0) *@
+		@* 								{ *@
+		@* 									<text>Bună diminea, @User.Identity.Name</text> *@
+		@* 								} *@
+		@* 								else if (String.Compare(DateTime.Now.ToString("t"), "18:00") > 0) *@
+		@* 								{ *@
+		@* 									<text>Bună seara, @User.Identity.Name</text> *@
+		@* 								} *@
+		@* 								else *@
+		@* 								{ *@
+		@* 									<text>Bună ziua, @User.Identity.Name</text> *@
+		@* 								} *@
+		@* 							</a> *@
+		@* 						</li> *@
+		@* *@
+		@* 						<li class="item"> *@
+		@* 							<a class="btn btn-outline-danger"asp-controller="Account" asp-action="Logout">Deconectare</a> *@
+		@* 						</li> *@
+		@* 					</ul> *@
+		@* 				</div> *@
+		@* 			</div> *@
+		@* 		} *@
+		@* 		else *@
+		@* 		{ *@
+		@* 			<ul class="nav pills"> *@
+		@* 				<li class="item"> *@
+		@* 					<a class="item" asp-controller="Account" asp-action="Login">Conectare</a> *@
+		@* 				</li> *@
+		@* 				<li class="item"> *@
+		@* 					<a class="item" asp-controller="Account" asp-action="Register">Register</a> *@
+		@* 				</li> *@
+		@* 			</ul> *@
+		@* 		} *@
+		@* 	</div> *@
+		@* </header> *@
+		@* <footer class="border-top footer text-muted"> *@
+		@*     <div class="container main-footer text-center"> *@
+		@*         &copy; 2021 - Agenda online, Clinica Esderm - <a class="main-footer"asp-controller="Home" asp-action="Privacy">Privacy</a> *@
+		@*     </div> *@
+		@* </footer> *@
 
-                        
-                        
-                    </div>
-                    
-                    <div class="col-auto">
-                        <ul class="nav nav-pills">
-                            
-                            <li class="nav-item">
-                                <img class="wellcome-image" src="https://imgix.bustle.com/uploads/image/2021/7/16/07062a59-9fd1-41f8-9c99-e4c0f5d80c05-06546552-d025-4a16-ab18-d252ff01fa90-getty-1205000579.jpeg?w=800&fit=crop&crop=focalpoint&auto=format%2Ccompress&fp-x=0.4587&fp-y=0.754">
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link wellcome-name" asp-controller="UserRoles" asp-action="Index">
-                                    @if (String.Compare(DateTime.Now.ToString("t"),"12:00") < 0)
-                                    {
-                                        <text>Bună diminea, @User.Identity.Name</text>
-                                    }
-                                    else if (String.Compare(DateTime.Now.ToString("t"),"18:00") > 0)
-                                    {
-                                        <text>Bună seara, @User.Identity.Name</text>
-                                    }
-                                    else
-                                    {
-                                        <text>Bună ziua, @User.Identity.Name</text>
-                                    }
-                                </a>
-							</li>
 
-                            <li class="nav-item">
-                                <a class="btn btn-outline-danger" asp-area="" asp-controller="Account" asp-action="Logout">Deconectare</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+		<script src="~/lib/jquery/dist/jquery.min.js"></script>
+		<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="~/js/site.js" asp-append-version="true"></script>
+		<!-- Syncfusion Essential JS 2 ScriptManager -->
+		<ejs-scripts></ejs-scripts>
 
-            }
-            else
-            {
-                <ul class="nav nav-pills">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Conectare</a>
-                    </li>
-                    <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
-                </ul>
-            }
-        </div>
-    </header>
-
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container main-footer text-center">
-            &copy; 2021 - Agenda online, Clinica Esderm - <a class="main-footer" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    
-    
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <!-- Syncfusion Essential JS 2 ScriptManager -->
-    <ejs-scripts></ejs-scripts>
-
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+		@await RenderSectionAsync("Scripts", required: false)
+	</body>
 </html>

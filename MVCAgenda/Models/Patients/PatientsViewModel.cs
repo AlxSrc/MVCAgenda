@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Models.Patients
 {
@@ -19,10 +20,14 @@ namespace MVCAgenda.Models.Patients
         #endregion
 
         #region Param for search
+
+        [Display(Name = "Numele de familie")]
         public string SearchByName { get; set; }
 
+        [Display(Name = "Numar de telefon")]
         public string SearchByPhoneNumber { get; set; }
 
+        [Display(Name = "Adresa de e-mail")]
         public string SearchByEmail { get; set; }
         #endregion
     }

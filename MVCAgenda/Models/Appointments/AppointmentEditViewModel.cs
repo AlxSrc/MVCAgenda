@@ -10,6 +10,8 @@ namespace MVCAgenda.Models.Appointments
         [DisplayName("Pacient")]
         public int PatientId { get; set; }
 
+        public string PatientName { get; set; }
+
         [DisplayName("Medic")]
         public int MedicId { get; set; }
 

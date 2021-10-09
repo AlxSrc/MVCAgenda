@@ -1,48 +1,97 @@
-﻿
+﻿@model MVCAgenda.Models.Consultations.ConsultationDetailsViewModel
+
 @{
-    ViewData["Title"] = "Details";
+	var pageTitle = "Detalii consultație";
+
+	ViewData["Title"] = pageTitle;
 }
-@if (User.Identity.IsAuthenticated)
+
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Home</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Patients">
+				<i class="fas fa-user-friends"></i>
+				<span>Pacienți</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Details" asp-controller="Patients" asp-route-id="in pla ca nu este id-ul pacientului">
+				<i class="fas fa-hospital-user"></i>
+				@* <span>@Model.FirstName.ToUpper() @Model.SecondName</span> *@
+				Cum draq ai legat o fisa a pacientului de un pacient?
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Details" asp-controller="PatientSheets" asp-route-id="@Model.SheetPatientId">
+				<i class="fas fa-file-medical-alt"></i>
+				<span>Fisa pacientului</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
+
+<section class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-stethoscope"></i>
+			@pageTitle
+		</strong>
+		<div class="actions">
+			<form asp-action="Delete" asp-route-id="@Model.Id">
+				<button type="submit" class="btn btn-outline-primary" id="DeleteConsultation">
+					<i class="far fa-trash-alt"></i>
+					Sterge
+				</button>
+			</form>
+			<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+				<i class="far fa-edit"></i>
+				Modifică consultatia
+			</a>
+		</div>
+	</header>
+	<div class="content">
+		<div class="data">
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.CreationDate)</span>
+				<input asp-for="CreationDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.CreationDate)" aria-describedby="basic-addon" readonly>
+			</div>
+
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Symptoms)</span>
+				<textarea asp-for="Symptoms" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Symptoms)" aria-describedby="basic-addon" readonly></textarea>
+			</div>
+
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Diagnostic)</span>
+				<textarea asp-for="Diagnostic" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Diagnostic)" aria-describedby="basic-addon" readonly></textarea>
+			</div>
+			<div class="input-group">
+				<span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Prescriptions)</span>
+				<textarea asp-for="Prescriptions" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Prescriptions)" aria-describedby="basic-addon" readonly></textarea>
+			</div>
+		</div>
+	</div>
+</section>
+
+@section Scripts
 {
-    @model MVCAgenda.Models.Consultations.ConsultationDetailsViewModel
-    <div class="main box">
-        <div class="container g-0">
-            <div class="row justify-content-between">
-                <div class="col-auto">
-                        <h1 class="mb-3 text-center text-color">Detalii consultație</h1>
-                </div>
-                <div class="col-auto">
-                    <div class=" mt-3 d-lg-flex justify-content-lg-center">
-                        <div class="btn-group" role="group" aria-label="Optiuni">
-                            <a asp-action="Details" asp-controller="PatientSheets" asp-route-id="@Model.SheetPatientId" class="btn btn-outline-secondary">Detalii fisa pacient</a>
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifică consultația</a>
-                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Sterge consultație</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <dl class="row">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.CreationDate)</span>
-                    <input asp-for="CreationDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.CreationDate)" aria-describedby="basic-addon" readonly>
-                </div>
+	<script>
+		$(function (){
+			$('#DeleteConsultation').click(function(e){
+				e.preventDefault();
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Symptoms)</span>
-                    <textarea asp-for="Symptoms" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Symptoms)" aria-describedby="basic-addon" readonly></textarea>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Diagnostic)</span>
-                    <textarea asp-for="Diagnostic" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Diagnostic)" aria-describedby="basic-addon" readonly></textarea>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Prescriptions)</span>
-                    <textarea asp-for="Prescriptions" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Prescriptions)" aria-describedby="basic-addon" readonly></textarea>
-                </div>
-            </dl>
-        </div>
-    </div>
+				if(window.confirm('Sunteți sigur că doriți să ștergeți acesta consultatie?'))
+					$(this).parent('form').submit();
+			});
+		});
+	</script>
 }

@@ -1,144 +1,193 @@
-﻿
+﻿@model MVCAgenda.Models.PatientSheets.PatientSheetDetailsViewModel
+
 @{
-    ViewData["Title"] = "Detalii";
+	var pageTitle = $"Fisa pacientului";
+
+	ViewData["Title"] = "Detalii";
 }
 
-@if (User.Identity.IsAuthenticated)
-{
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Home</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Patients">
+				<i class="fas fa-user-friends"></i>
+				<span>Pacienți</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.PatientId">
+				<i class="fas fa-hospital-user"></i>
+				<span>@Model.FirstName.ToUpper() @Model.SecondName</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
-    @model MVCAgenda.Models.PatientSheets.PatientSheetDetailsViewModel
+<section class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-file-medical-alt"></i>
+			@pageTitle
+		</strong>
+		<div class="actions">
+			<a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.PatientId" class="btn btn-outline-primary">
+				<i class="fas fa-hospital-user"></i>
+				Detalii pacient
+			</a>
+			<div class="vr-left">
+				<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+					<i class="far fa-edit"></i>
+					Modifică fișa pacientului
+				</a>
+			</div>
+		</div>
+	</header>
+	<div class="content">
+		<div class="data">
+			<div class="row mb-3">
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.FirstName)</span>
+						<input asp-for="FirstName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.FirstName)" readonly>
+					</div>
+				</div>
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.SecondName)</span>
+						<input asp-for="SecondName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.SecondName)" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.Town)</span>
+						<input asp-for="Town" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Town)" readonly>
+					</div>
+				</div>
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.Street)</span>
+						<input asp-for="Street" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Street)" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.NationalIdentificationNumber)</span>
+						<input asp-for="NationalIdentificationNumber" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.NationalIdentificationNumber)" readonly>
+					</div>
+				</div>
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.Gender)</span>
+						<input asp-for="Gender" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Gender)" readonly>
+					</div>
+				</div>
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
+						<input asp-for="DateOfBirth" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.DateOfBirth)" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsH)</span>
+						<input asp-for="AntecedentsH" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsP)</span>
+						<input asp-for="AntecedentsP" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col">
+					<div class="input-group">
+						<span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhysicalExamination)</span>
+						<input asp-for="PhysicalExamination" type="text" class="form-control" aria-label="Examen fizic" aria-describedby="basic-addon3" readonly>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 
-    <div class="main box">
-        <div class="mt-3 d-lg-flex justify-content-lg-center">
-            <div>
-                <div class="container">
-                    <div class="row justify-content-between">
-                        <div class="col-auto">
-                            <h2 class="mb-3 text-color">Fișa medicală</h2>
-                        </div>
-                        <div class="col-auto">
-                            <div class="btn-group" role="group" aria-label="Optiuni">
-                                <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Detalii pacient</a>
-                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Modifică fișa pacientului</a>
-                                <a asp-action="Create" asp-controller="Consultations" asp-route-id="@Model.Id" class="btn btn-main-color-filled">Adaugă o consultație</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <dl class="row">
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text">@Html.DisplayNameFor(model => model.FirstName)</span>
-                                <input asp-for="FirstName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.FirstName)" readonly>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text">@Html.DisplayNameFor(model => model.SecondName)</span>
-                                <input asp-for="SecondName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.SecondName)" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text">@Html.DisplayNameFor(model => model.Town)</span>
-                                <input asp-for="Town" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Town)" readonly>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text">@Html.DisplayNameFor(model => model.Street)</span>
-                                <input asp-for="Street" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Street)" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text">@Html.DisplayNameFor(model => model.NationalIdentificationNumber)</span>
-                                <input asp-for="NationalIdentificationNumber" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.NationalIdentificationNumber)" readonly>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text">@Html.DisplayNameFor(model => model.Gender)</span>
-                                <input asp-for="Gender" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Gender)" readonly>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
-                                <input asp-for="DateOfBirth" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.DateOfBirth)" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3"></div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsH)</span>
-                                <input asp-for="AntecedentsH" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text" id="basic-addon1">@Html.DisplayNameFor(model => model.AntecedentsP)</span>
-                                <input asp-for="AntecedentsP" type="text" class="form-control" aria-label="Antecedente" aria-describedby="basic-addon1" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="input-group">
-                                <span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.PhysicalExamination)</span>
-                                <input asp-for="PhysicalExamination" type="text" class="form-control" aria-label="Examen fizic" aria-describedby="basic-addon3" readonly>
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-
-                <h3 class="text-color mb-3">Consultații</h3>
-                <table class="table fixed-layout">
-                    <thead class="borderless-table">
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Consultations[0].Symptoms)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Consultations[0].Diagnostic)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Consultations[0].Prescriptions)
-                            </th>
-                            <th class="col-sm-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Consultations)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Symptoms)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Diagnostic)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Prescriptions)
-                                </td>
-                                <td class="col-sm-1">
-                                    <a asp-action="Details" asp-controller="Consultations" asp-route-id="@item.Id" class="text-color">Detalii</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-}
+<div class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-stethoscope"></i>
+			Consultații
+		</strong>
+		<div class="actions">
+			<a asp-action="Create" asp-controller="Consultations" asp-route-id="@Model.Id" class="btn btn-primary">
+				<i class="fas fa-plus"></i>
+				Adaugă o consultație
+			</a>
+		</div>
+	</header>
+	<div class="content">
+		<table class="table fixed-layout">
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.Consultations[0].Symptoms)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Consultations[0].Diagnostic)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Consultations[0].Prescriptions)
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.Consultations.Count > 0)
+				{
+					@foreach (var item in Model.Consultations)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Symptoms)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Diagnostic)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Prescriptions)
+							</td>
+							<td class="col-sm-1">
+								<a asp-action="Details" asp-controller="Consultations" asp-route-id="@item.Id" class="text-color">Detalii</a>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr class="no-hover">
+						<td colspan="5" class="text-center">
+							Nu s-au gasit date pentru filtrele aplicate
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

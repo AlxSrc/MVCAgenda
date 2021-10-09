@@ -10,6 +10,8 @@ namespace MVCAgenda.Models.PatientSheets
     public class PatientSheetDetailsViewModel : BaseModel
     {
 
+        public int PatientId { get; set; }
+
         [DisplayName("Nume")]
         public string FirstName { get; set; }
 
@@ -18,11 +20,11 @@ namespace MVCAgenda.Models.PatientSheets
         public string SecondName { get; set; }
 
 
-        [DisplayName("Antecedente: Heredo-colaterale")] 
+        [DisplayName("Antecedente: Heredo-colaterale")]
         public string AntecedentsH { get; set; }
 
 
-        [DisplayName("Antecedente: Personale")] 
+        [DisplayName("Antecedente: Personale")]
         public string AntecedentsP { get; set; }
 
 
@@ -46,7 +48,7 @@ namespace MVCAgenda.Models.PatientSheets
 
 
         [DataType(DataType.Date)]
-        [DisplayName("Data nașterii")] 
+        [DisplayName("Data nașterii")]
         public DateTime DateOfBirth { get; set; }
 
         [DisplayName("Consultații")]

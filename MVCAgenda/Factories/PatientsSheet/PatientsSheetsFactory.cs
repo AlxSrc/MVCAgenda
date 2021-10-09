@@ -3,17 +3,26 @@ using MVCAgenda.Models.Consultations;
 using MVCAgenda.Models.PatientSheets;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MVCAgenda.Service.Patients;
 
 namespace MVCAgenda.Factories.PatientsSheet
 {
     public class PatientsSheetsFactory : IPatientsSheetsFactory
     {
+        private readonly IPatientService _patientService;
+
+        public PatientsSheetsFactory(IPatientService patientService)
+        {
+            _patientService = patientService;
+        }
+
         public PatientSheetDetailsViewModel PreperePatientSheetDetailsViewModel(PatientSheet model, Patient patient, List
             <ConsultationViewModel> consultations)
         {
             PatientSheetDetailsViewModel preparedView = new PatientSheetDetailsViewModel()
             {
                 Id = model.Id,
+                PatientId = patient.Id,
                 FirstName = patient.FirstName,
                 SecondName = patient.LastName,
                 AntecedentsH = model.AntecedentsH,

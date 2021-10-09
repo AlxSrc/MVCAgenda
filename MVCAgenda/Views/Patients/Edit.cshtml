@@ -1,72 +1,84 @@
-﻿
+﻿@model MVCAgenda.Models.Patients.PatientViewModel
+
 @{
-    ViewData["Title"] = "Edit";
+	var pageTitle = "Modifică pacientul";
+
+	ViewData["Title"] = "Edit";
 }
-@if (User.Identity.IsAuthenticated)
-{
-    @model MVCAgenda.Models.Patients.PatientViewModel
 
-    <div class="main box">
-        <div class=" mt-3 d-lg-flex justify-content-lg-center">
-            <div class="col-md-8">
-                <form asp-action="Edit">
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Home</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Patients">
+				<i class="fas fa-user-friends"></i>
+				<span>Pacienți</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id">
+				<i class="fas fa-hospital-user"></i>
+				<span>@Model.FirstName.ToUpper() @Model.LastName</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
+<form asp-action="Edit">
+	<section class="section">
+		<header>
+			<strong class="title">
+				<i class="fas fa-user-friends"></i>
+				@pageTitle
+			</strong>
+			<div class="actions">
+				<button type="submit" class="btn btn-primary">
+					<i class="far fa-save"></i>
+					Salveaza
+				</button>
+			</div>
+		</header>
+		<div class="content">
+			<div class="data">
+				<input type="hidden" asp-for="Id"/>
+				<input type="hidden" asp-for="SheetPatientId"/>
+				<input type="hidden" asp-for="Hidden"/>
 
-                    <div class="container g-0">
-                        <div class="row justify-content-between">
-                            <div class="col-auto">
-                                <h2 class="mb-3 text-color text-center">Modifică pacientul</h2>
-                            </div>
-                            <div class="col-auto">
-                                <div class="form-group btn-group" role="group" aria-label="Optiuni">
-                                    <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Anulează</a>
-                                    <input type="submit" value="Salvează modificările" class="btn btn-main-color-filled" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="SheetPatientId" />
-
-                    <div class="form-floating mb-3">
-                        <input asp-for="FirstName" class="form-control" id="floatingInput" placeholder="Nume">
-                        <label for="floatingInput" asp-for="FirstName"></label>
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input asp-for="LastName" class="form-control" id="floatingInput" placeholder="Prenume">
-                        <label for="floatingInput" asp-for="LastName"></label>
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input asp-for="PhoneNumber" class="form-control" id="floatingInput" placeholder="0740 123 123">
-                        <label for="floatingInput" asp-for="PhoneNumber"></label>
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input asp-for="Mail" class="form-control" id="floatingInput" placeholder="E-mail">
-                        <label for="floatingInput" asp-for="Mail"></label>
-                        <span asp-validation-for="Mail" class="text-danger"></span>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0" type="checkbox" asp-for="Blacklist" aria-label="Checkbox for following text input">
-                        </div>
-                        <input type="text" value="Lista neagra" class="form-control" aria-label="Text input with checkbox" readonly>
-                    </div>
-
-                    <input type="hidden" asp-for="Hidden" />
-                </form>
-            </div>
-        </div>
-        @section Scripts {
-            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        }
-    </div>
-}
+				<div class="form-floating mb-3">
+					<input asp-for="FirstName" class="form-control" id="floatingInput" placeholder="Nume">
+					<label for="floatingInput" asp-for="FirstName"></label>
+					<span asp-validation-for="FirstName" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<input asp-for="LastName" class="form-control" id="floatingInput" placeholder="Prenume">
+					<label for="floatingInput" asp-for="LastName"></label>
+					<span asp-validation-for="LastName" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<input asp-for="PhoneNumber" class="form-control" id="floatingInput" placeholder="0740 123 123">
+					<label for="floatingInput" asp-for="PhoneNumber"></label>
+					<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<input asp-for="Mail" class="form-control" id="floatingInput" placeholder="E-mail">
+					<label for="floatingInput" asp-for="Mail"></label>
+					<span asp-validation-for="Mail" class="text-danger"></span>
+				</div>
+				<div class="input-group mb-3">
+					<div class="input-group-text">
+						<input class="form-check-input mt-0" type="checkbox" asp-for="Blacklist" aria-label="Checkbox for following text input">
+					</div>
+					<input type="text" value="Lista neagra" class="form-control" aria-label="Text input with checkbox" readonly>
+				</div>
+			</div>
+		</div>
+	</section>
+</form>

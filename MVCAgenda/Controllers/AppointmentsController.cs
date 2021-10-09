@@ -102,16 +102,16 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Read
-        public async Task<IActionResult> Index(string SearchByName = null, 
-            string SearchByPhoneNumber = null, 
-            string SearchByEmail = null, 
-            DateTime? SearchByAppointmentStartDate = null, 
-            DateTime? SearchByAppointmentEndDate = null, 
-            int? SearchByRoom = null, 
-            int? SearchByMedic = null, 
-            string SearchByProcedure = null, 
-            int? Id = null, 
-            bool? Daily = null, 
+        public async Task<IActionResult> Index(string SearchByName = null,
+            string SearchByPhoneNumber = null,
+            string SearchByEmail = null,
+            DateTime? SearchByAppointmentStartDate = null,
+            DateTime? SearchByAppointmentEndDate = null,
+            int? SearchByRoom = null,
+            int? SearchByMedic = null,
+            string SearchByProcedure = null,
+            int? Id = null,
+            bool? Daily = null,
             bool? Hidden = null)
         {
             if (User.Identity.IsAuthenticated)
@@ -120,7 +120,7 @@ namespace MVCAgenda.Controllers
                 ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
                 var ast = User.Identity.Name;
-                
+
                 return View(await _appointmentsManager.GetListAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
             }
             else
@@ -192,17 +192,6 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Delete
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _appointmentsManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

@@ -1,182 +1,203 @@
-﻿@{
-    ViewData["Title"] = "Lista cu programari";
+﻿@model MVCAgenda.Models.Appointments.AppointmentsViewModel
+
+@{
+	var pageTitle = Model.Blacklist ?? false ?
+		"Programări neefectuate" :
+		Model.Hidden ?? false ?
+			"Programări sterse" :
+			"Programări";
+
+	ViewData["Title"] = pageTitle;
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-    @model MVCAgenda.Models.Appointments.AppointmentsViewModel
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Home</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
-    <div class="container g-0">
-        <div class="row justify-content-between">
-            <div class="col-auto">
-                @if (Model.Blacklist == true)
-                {<text><h2 class="text-color mb-3 text-center">Programări neefectuate</h2></text>}
-                @if (Model.Hidden == true)
-                {<text><h2 class="text-color mb-3 text-center">Programări sterse</h2></text>}
-                @if (Model.Hidden == false && Model.Blacklist == false)
-                {<text><h2 class="text-color mb-3 text-center">Programări</h2></text>}
-            </div>
-            <div class="col-auto">
-                <a asp-action="Create" class="btn btn-main-second-color-filled">Adaugă o programare</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="main box">
-        <form asp-controller="Appointments" asp-action="Index" method="get">
-            <div class="container">
-                <div class="row mb-2">
-                    <div class="col same-size">
-                        <input class="form-control" aria-label="Text" asp-for="SearchByAppointmentStartDate" />
-                    </div>
-                    <div class="col same-size">
-                        <input class="form-control" aria-label="Text" asp-for="SearchByAppointmentEndDate" />
-                    </div>
-                    <div class="col same-size">
-                        <select class="form-control" placeholder="Medic" asp-for="SearchByMedic" asp-items="ViewBag.MedicId">
-                            <option disabled selected>Medic</option>
-                        </select>
-                    </div>
-                    <div class="col same-size">
-                        <select class="form-control" placeholder="Camera" asp-for="SearchByRoom" asp-items="ViewBag.RoomId">
-                            <option disabled selected>Cameră</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col same-size">
-                        <input type="text" class="form-control"
-                               placeholder="Numele de familie" aria-label="Recipient" asp-for="SearchByName" />
-                    </div>
-                    <div class="col same-size">
-                        <input type="text" class="form-control"
-                               placeholder="Numar de telefon" aria-label="Recipient" asp-for="SearchByPhoneNumber" />
-                    </div>
-                    <div class="col same-size">
-                        <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient" asp-for="SearchByEmail" />
-                    </div>
-                    <div class="col same-size">
-                        <input type="text" class="form-control" placeholder="Procedura" aria-label="Recipient" asp-for="SearchByProcedure" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="input-group mb-3">
-                        <input class="btn btn-main-color-filled" type="submit" value="Caută" />
-                        <div class="dropdown">
-                            <button class="btn btn-main-color dropdown-toggle btn-no-left-border-radius" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                Opțiuni
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li>
-                                    @if (Model.Hidden == false)
-                                    {
-                                        <text>
-                                            <a asp-action="Index" asp-route-Hidden="true" class="dropdown-item link-danger">Programări șterse</a>
-                                        </text>
-                                    }
-                                </li>
-                                <li>
-                                    @if (Model.Blacklist == true || Model.Hidden == true)
-                                    {
-                                        <text>
-                                            <a asp-action="Index" class="dropdown-item text-color">Programări</a>
-                                        </text>
-                                    }
-                                </li>
-                                <li>
-                                    @if (Model.Daily == true)
-                                    {
-                                        <text>
-                                            <a asp-action="Index" asp-route-Daily="false" class="dropdown-item text-color">Toate programările</a>
-                                        </text>
-                                    }
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-        <table class="table">
-            <thead class="borderless-table">
-                <tr>
-                    <th class="center-content">
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
-                    </th>
-
-                    <th class="column-center">
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].PhoneNumber)
-                    </th>
-
-                    <th class="column-center">
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].Medic)
-                    </th>
-
-                    <th class="column-center">
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].Room)
-                    </th>
-
-                    <th class="column-center">
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].StartDate)
-                    </th>
-
-                    <th class="column-center">
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].EndDate)
-                    </th>
-
-                    <th>
-                        @Html.DisplayNameFor(model => model.AppointmentsList[0].Procedure)
-                    </th>
-
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.AppointmentsList)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td>
-
-                        <td class="column-center">
-                            @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        </td>
-
-                        <td class="column-center">
-                            @Html.DisplayFor(modelItem => item.Medic)
-                        </td>
-
-                        <td class="column-center">
-                            @Html.DisplayFor(modelItem => item.Room)
-                        </td>
-
-                        <td class="column-center">
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-
-                        <td class="column-center">
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-
-                        <td>
-                            @Html.Raw(item.Procedure)
-                        </td>
-                        <td class="text-end">
-                            <div class="dropdown d-inline-block">
-                                <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Detalii
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item text-color" asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Detalii pacient</a></li>
-                                    <li><a class="dropdown-item text-color" asp-action="Details" asp-route-id="@item.Id">Detalii programare</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+<div class="section">
+	<header>
+		<strong class="title">
+			<i class="far fa-calendar-check"></i>
+			@pageTitle
+		</strong>
+		<div class="actions">
+			@if (Model.Hidden == false)
+			{
+				<a asp-action="Index" asp-route-Hidden="true" class="btn btn-outline-primary">
+					<i class="far fa-calendar-times"></i>
+					Programări șterse
+				</a>
+			}
+			@if (Model.Blacklist == true || Model.Hidden == true)
+			{
+				<a asp-action="Index" class="btn btn-outline-primary">
+					<i class="far fa-calendar-alt"></i>
+					Programări
+				</a>
+			}
+			@if (Model.Daily == true)
+			{
+				<a asp-action="Index" asp-route-Daily="false" class="btn btn-outline-primary">
+					<i class="fas fa-calendar-day"></i>
+					Toate programările
+				</a>
+			}
+			<div class="vr-left">
+				<a asp-action="Create" class="btn btn-primary">
+					<i class="fas fa-plus"></i>
+					Adaugă o programare
+				</a>
+			</div>
+		</div>
+	</header>
+	<div class="filters">
+		<form asp-controller="Appointments" asp-action="Index" method="get">
+			<header class="mb-3">
+				<div class="title">
+					<i class="fas fa-filter"></i>
+					<strong>Filtre</strong>
+				</div>
+				<div class="actions">
+					<button type="submit" class="btn btn-outline-primary">
+						<i class="fas fa-search"></i>
+						Caută programare
+					</button>
+				</div>
+			</header>
+			<div class="row">
+				<div class="col-3">
+					<label asp-for="SearchByAppointmentStartDate"></label>
+					<input class="form-control" aria-label="Text" asp-for="SearchByAppointmentStartDate"/>
+				</div>
+				<div class="col-3">
+					<label asp-for="SearchByAppointmentEndDate"></label>
+					<input class="form-control" aria-label="Text" asp-for="SearchByAppointmentEndDate"/>
+				</div>
+				<div class="col-3">
+					<label asp-for="SearchByMedic"></label>
+					<select class="form-control" asp-for="SearchByMedic" asp-items="ViewBag.MedicId">
+						<option disabled selected>Medic</option>
+					</select>
+				</div>
+				<div class="col-3">
+					<label asp-for="SearchByRoom"></label>
+					<select class="form-control" asp-for="SearchByRoom" asp-items="ViewBag.RoomId">
+						<option disabled selected>Cameră</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label asp-for="SearchByName"></label>
+					<input type="text" class="form-control" aria-label="Recipient" asp-for="SearchByName"/>
+				</div>
+				<div class="col-3">
+					<label asp-for="SearchByPhoneNumber"></label>
+					<input type="text" class="form-control" aria-label="Recipient" asp-for="SearchByPhoneNumber"/>
+				</div>
+				<div class="col-3">
+					<label asp-for="SearchByEmail"></label>
+					<input type="text" class="form-control" aria-label="Recipient" asp-for="SearchByEmail"/>
+				</div>
+				<div class="col-3">
+					<label asp-for="SearchByProcedure"></label>
+					<input type="text" class="form-control" aria-label="Recipient" asp-for="SearchByProcedure"/>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="content">
+		<table>
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.AppointmentsList[0].FirstName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.AppointmentsList[0].PhoneNumber)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.AppointmentsList[0].Medic)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.AppointmentsList[0].Room)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.AppointmentsList[0].StartDate)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.AppointmentsList[0].EndDate)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.AppointmentsList[0].Procedure)
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.AppointmentsList.Count > 0)
+				{
+					@foreach (var item in Model.AppointmentsList)
+					{
+						<tr>
+							<td>
+								@item.FirstName.ToUpper()
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.PhoneNumber)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Medic)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Room)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.StartDate)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.EndDate)
+							</td>
+							<td>
+								@Html.Raw(item.Procedure)
+							</td>
+							<td class="text-end">
+								<div class="dropdown d-inline-block">
+									<button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+										Detalii
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+										<li>
+											<a class="dropdown-item text-color" asp-action="Details" asp-controller="Patients" asp-route-id="@item.PatientId">Detalii pacient</a>
+										</li>
+										<li>
+											<a class="dropdown-item text-color" asp-action="Details" asp-route-id="@item.Id">Detalii programare</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr class="no-hover">
+						<td colspan="8" class="text-center">
+							Nu s-au gasit date pentru filtrele aplicate
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

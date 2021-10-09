@@ -1,54 +1,78 @@
-﻿
+﻿@model MVCAgenda.Models.Consultations.ConsultationCreateViewModel
+
 @{
-    ViewData["Title"] = "Create";
+	var pageTitle = "Adaugă o consultație";
+
+	ViewData["Title"] = "Create";
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-    @model MVCAgenda.Models.Consultations.ConsultationCreateViewModel
-    <div class="main box">
-        <div class="row">
-            <div>
-                <form asp-action="Create">
-                    <div class="container g-0">
-                        <div class="row justify-content-between">
-                            <div class="col-auto">
-                                <h1 class="mb-3 text-color">Adaugă o consultație</h1>
-                            </div>
-                            <div class="col-auto">
-                                <div class="mb-3 d-lg-flex justify-content-lg-center">
-                                    <div class="form-group btn-group" role="group" aria-label="Optiuni">
-                                        <a asp-action="Details" asp-controller="PatientSheets" asp-route-id="@Model.SheetPatientId" class="btn btn-outline-secondary">Anulează</a>
-                                        <input type="submit" value="Adaugă o consultație" class="btn btn-main-color-filled" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="SheetPatientId" />
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Home</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Patients">
+				<i class="fas fa-user-friends"></i>
+				<span>Pacienți</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Details" asp-controller="Patients" asp-route-id="in pla ca nu este id-ul pacientului">
+				<i class="fas fa-hospital-user"></i>
+				@* <span>@Model.FirstName.ToUpper() @Model.SecondName</span> *@
+				Cum draq ai legat o fisa a pacientului de un pacient?
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Details" asp-controller="PatientSheets" asp-route-id="@Model.SheetPatientId">
+				<i class="fas fa-file-medical-alt"></i>
+				<span>Fisa pacientului</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
-                    <div class="form-floating mb-3">
-                        <textarea asp-for="Symptoms" class="form-control" id="floatingTextarea1" placeholder="text" class="form-control resizable"></textarea>
-                        <label for="floatingTextarea1" asp-for="Symptoms"></label>
-                        <span asp-validation-for="Symptoms" class="text-danger"></span>
-                    </div>
+<form asp-action="Create">
+	<section class="section">
+		<header>
+			<strong class="title">
+				<i class="fas fa-stethoscope"></i>
+				@pageTitle
+			</strong>
+			<div class="actions">
+				<button type="submit" class="btn btn-primary">
+					<i class="far fa-save"></i>
+					Salveaza
+				</button>
+			</div>
+		</header>
+		<div class="content">
+			<div class="data">
+				<input type="hidden" asp-for="SheetPatientId"/>
 
-                    <div class="form-floating mb-3">
-                        <textarea asp-for="Diagnostic" class="form-control" id="floatingTextarea2" placeholder="text" class="form-control resizable"></textarea>
-                        <label for="floatingTextarea2" asp-for="Diagnostic"></label>
-                        <span asp-validation-for="Diagnostic" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <textarea asp-for="Prescriptions" class="form-control" id="floatingTextarea3" placeholder="text" class="form-control resizable"></textarea>
-                        <label for="floatingTextarea3" asp-for="Prescriptions"></label>
-                        <span asp-validation-for="Prescriptions" class="text-danger"></span>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    
-}
+				<div class="form-floating mb-3">
+					<textarea asp-for="Symptoms" class="form-control resizable" id="floatingTextarea1"></textarea>
+					<label for="floatingTextarea1" asp-for="Symptoms"></label>
+					<span asp-validation-for="Symptoms" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<textarea asp-for="Diagnostic" class="form-control resizable" id="floatingTextarea2"></textarea>
+					<label for="floatingTextarea2" asp-for="Diagnostic"></label>
+					<span asp-validation-for="Diagnostic" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<textarea asp-for="Prescriptions" class="form-control resizable" id="floatingTextarea3"></textarea>
+					<label for="floatingTextarea3" asp-for="Prescriptions"></label>
+					<span asp-validation-for="Prescriptions" class="text-danger"></span>
+				</div>
+			</div>
+		</div>
+	</section>
+</form>

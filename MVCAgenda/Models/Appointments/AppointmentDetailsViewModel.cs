@@ -7,6 +7,8 @@ namespace MVCAgenda.Models.Appointments
 {
     public class AppointmentDetailsViewModel : BaseModel
     {
+        public int PatientId { get; set; }
+
         [DisplayName("Nume")]
         public string FirstName { get; set; }
 

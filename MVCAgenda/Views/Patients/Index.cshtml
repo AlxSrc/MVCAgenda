@@ -1,123 +1,165 @@
-﻿@{
-    ViewData["Title"] = "Lista cu pacienti";
+﻿@model MVCAgenda.Models.Patients.PatientsViewModel
+
+
+@{
+	var pageTitle = Model.Blacklist ?? false ?
+		"Lista neagră cu pacienti" :
+		Model.Hidden ?? false ?
+			"Lista cu pacienți șterși" :
+			"Pacienți";
+
+	ViewData["Title"] = pageTitle;
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-    @model MVCAgenda.Models.Patients.PatientsViewModel
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Home</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
-    <div class="container g-0">
-        <div class="row justify-content-between">
-            <div class="col-auto">
-                @if (Model.Blacklist == true)
-                {<text><h2 class="text-color mb-3 text-center">Lista neagră cu pacienti</h2></text>}
-                @if (Model.Hidden == true)
-                {<text><h2 class="text-color mb-3 text-center">Lista cu pacienți șterși</h2></text>}
-                @if (Model.Hidden == false && Model.Blacklist == false)
-                {<text><h2 class="text-color mb-3 text-center">Pacienți</h2></text>}
-            </div>
-            <div class="col-auto mb-0 pb-0">
-                <a asp-action="Create" class="btn btn-main-second-color-filled">Adaugă un pacient</a>
-            </div>
-        </div>
-    </div>
-    <div class="main box">
-        <form asp-controller="Patients" asp-action="Index" method="get">
-            <div class="input-group  mb-3">
-                <input type="text" class="form-control" placeholder="Numele de familie" aria-label="Recipient's username with two button addons" asp-for="SearchByName" />
-                <input type="text" class="form-control" placeholder="Numar de telefon" aria-label="Recipient's username with two button addons" asp-for="SearchByPhoneNumber" />
-                <input type="text" class="form-control" placeholder="Adresa de e-mail" aria-label="Recipient's username with two button addons" asp-for="SearchByEmail" />
+<section class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-user-friends"></i>
+			@pageTitle
+		</strong>
+		<div class="actions">
+			@if (Model.Hidden == false)
+			{
+				<a asp-action="Index" asp-route-isDeleted="true" class="btn btn-outline-primary">
+					<i class="fas fa-user-slash"></i>
+					Pacienți șterși
+				</a>
+			}
+			@if (Model.Blacklist == false)
+			{
+				<a asp-action="Index" asp-route-includeBlackList="true" class="btn btn-outline-primary">
+					<i class="fas fas fa-user-times"></i>
+					Lista neagră
+				</a>
+			}
+			@if (Model.Blacklist == true || Model.Hidden == true)
+			{
+				<a asp-action="Index" class="btn btn-outline-primary">
+					<i class="fas fa-users"></i>
+					Pacienți
+				</a>
+			}
+			<div class="vr-left">
+				<a asp-action="Create" class="btn btn-primary">
+					<i class="fas fa-plus"></i>
+					Adaugă un pacient
+				</a>
+			</div>
+		</div>
+	</header>
+	<div class="filters">
+		<form asp-controller="Patients" asp-action="Index" method="get">
+			<header class="mb-3">
+				<div class="title">
+					<i class="fas fa-filter"></i>
+					<strong>Filtre</strong>
+				</div>
+				<div class="actions">
+					<button type="submit" class="btn btn-outline-primary">
+						<i class="fas fa-search"></i>
+						Caută pacienti
+					</button>
+				</div>
+			</header>
+			<div class="row">
+				<div class="col-3">
+					<label asp-for="SearchByName"></label>
+					<input type="text" class="form-control" asp-for="SearchByName"/>
+				</div>
+				<div class="col-3">
+					<label asp-for="SearchByPhoneNumber"></label>
 
-                <input class="btn btn-main-color-filled" type="submit" value="Caută" />
-                <div class="dropdown">
-                    <button class="btn btn-main-color dropdown-toggle btn-no-left-border-radius" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Opțiuni
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                            @if (Model.Hidden == false)
-                            {
-                                <text>
-                                    <a asp-action="Index" asp-route-isDeleted="true" class="dropdown-item link-warning">Pacienți șterși</a>
-                                </text>
-                            }
-                        </li>
-                        <li>
-                            @if (Model.Blacklist == false)
-                            {
-                                <text>
-                                    <a asp-action="Index" asp-route-includeBlackList="true" class="dropdown-item link-danger">Lista neagră</a>
-                                </text>
-                            }
-                        </li>
-                        <li>
-                            @if (Model.Blacklist == true || Model.Hidden == true)
-                            {
-                                <text>
-                                    <a asp-action="Index" class="dropdown-item text-color">Pacienți</a>
-                                </text>
-                            }
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </form>
-
-        <table class="table">
-            <thead class="borderless-table">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PatientsList[0].FirstName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PatientsList[0].LastName)
-                    </th>
-                    <th class="column-center">
-                        @Html.DisplayNameFor(model => model.PatientsList[0].PhoneNumber)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PatientsList[0].Mail)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.PatientsList)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastName)
-                        </td>
-                        <td class="column-center">
-                            @Html.Raw(item.PhoneNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Mail)
-                        </td>
-                        <td class="text-end">
-                            <div class="dropdown d-inline-block">
-                                <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Opțiuni
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a asp-action="Create" class="dropdown-item text-color" asp-controller="Appointments" asp-route-id="@item.Id">Adaugă programare</a>
-                                    </li>
-                                    <li>
-                                        <a asp-action="Details" class="dropdown-item text-color" asp-route-id="@item.Id">Detalii</a>
-                                    </li>
-                                    <li>
-                                        <a asp-action="Details" asp-controller="PatientSheets" class="dropdown-item text-color" asp-route-id="@item.SheetPatientId">Fișa medicală</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+					<input type="text" class="form-control" asp-for="SearchByPhoneNumber"/>
+				</div>
+				<div class="col-3">
+					<label asp-for="SearchByEmail"></label>
+					<input type="text" class="form-control" asp-for="SearchByEmail"/>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="content">
+		<table>
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.PatientsList[0].FirstName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.PatientsList[0].LastName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.PatientsList[0].Mail)
+					</th>
+					<th class="text-center">
+						@Html.DisplayNameFor(model => model.PatientsList[0].PhoneNumber)
+					</th>
+					<th>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.PatientsList.Count > 0)
+				{
+					@foreach (var item in Model.PatientsList)
+					{
+						<tr>
+							<td>
+								@item.FirstName.ToUpper()
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.LastName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Mail)
+							</td>
+							<td class="text-center">
+								@Html.Raw(item.PhoneNumber)
+							</td>
+							<td class="text-end">
+								<div class="dropdown d-inline-block">
+									<button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+										Opțiuni
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+										<li>
+											<a asp-action="Create" class="dropdown-item text-color" asp-controller="Appointments" asp-route-id="@item.Id">Adaugă programare</a>
+										</li>
+										<li>
+											<a asp-action="Details" class="dropdown-item text-color" asp-route-id="@item.Id">Detalii</a>
+										</li>
+										<li>
+											<a asp-action="Details" asp-controller="PatientSheets" class="dropdown-item text-color" asp-route-id="@item.SheetPatientId">Fișa medicală</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr class="no-hover">
+						<td colspan="5" class="text-center">
+							Nu s-au gasit date pentru filtrele aplicate
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</section>

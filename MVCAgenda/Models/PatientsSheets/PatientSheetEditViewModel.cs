@@ -9,6 +9,9 @@ namespace MVCAgenda.Models.PatientSheets
 {
     public class PatientSheetEditViewModel : BaseModel
     {
+        public int PatientId { get; set; }
+        public string PatientName { get; set; }
+
         [DisplayName("Antecedente: Heredo-colaterale")]
         public string AntecedentsH { get; set; }
 

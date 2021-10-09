@@ -109,17 +109,6 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Delete
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _consultationManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

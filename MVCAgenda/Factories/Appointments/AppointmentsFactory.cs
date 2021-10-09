@@ -1,11 +1,19 @@
 ﻿using MVCAgenda.Core.Domain;
 using MVCAgenda.Models.Appointments;
 using System.Threading.Tasks;
+using MVCAgenda.Service.Patients;
 
 namespace MVCAgenda.Factories.Appointments
 {
     public class AppointmentsFactory : IAppointmentsFactory
     {
+        private readonly IPatientService _patientService;
+
+        public AppointmentsFactory(IPatientService patientService)
+        {
+            _patientService = patientService;
+        }
+
         public async Task<AppointmentViewModel> PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room)
         {
             var viewModel = new AppointmentViewModel()
@@ -50,7 +58,7 @@ namespace MVCAgenda.Factories.Appointments
 
             return viewModel;
         }
-        
+
         public async Task<AppointmentListItemViewModel> PrepereAppointmentListItemViewModel(Appointment model, Patient patient, Medic medic, Room room)
         {
             var viewModel = new AppointmentListItemViewModel()
@@ -80,6 +88,7 @@ namespace MVCAgenda.Factories.Appointments
             var viewModel = new AppointmentDetailsViewModel()
             {
                 Id = model.Id,
+                PatientId = patient.Id,
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
                 PhoneNumber = patient.PhoneNumber,
@@ -118,10 +127,13 @@ namespace MVCAgenda.Factories.Appointments
 
         public async Task<AppointmentEditViewModel> PrepereAppointmentEditDetailsViewModel(Appointment model)
         {
+            var patient = await _patientService.GetAsync(model.PatientId);
+
             var viewModel = new AppointmentEditViewModel()
             {
                 Id = model.Id,
                 PatientId = model.PatientId,
+                PatientName = $"{patient.FirstName.ToUpper()} {patient.LastName}",
                 MedicId = model.MedicId,
                 RoomId = model.RoomId,
                 Made = model.Made,
