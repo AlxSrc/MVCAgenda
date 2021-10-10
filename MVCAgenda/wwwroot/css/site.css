@@ -1,3 +1,7 @@
+#ej2LicWarning {
+    display: none;
+}
+
 :root {
     --main-color: #7f73bb;
     --main-color-darker: #6c629e;
