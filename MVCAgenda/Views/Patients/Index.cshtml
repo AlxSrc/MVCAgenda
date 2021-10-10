@@ -123,6 +123,10 @@
 						<tr>
 							<td>
 								@item.FirstName.ToUpper()
+								@if (item.Blacklist)
+								{
+									<span class="badge bg-danger">Blacklist</span>
+								}
 							</td>
 							<td>
 								@Html.DisplayFor(modelItem => item.LastName)
@@ -131,7 +135,7 @@
 								@Html.DisplayFor(modelItem => item.Mail)
 							</td>
 							<td class="text-center">
-								@Html.Raw(item.PhoneNumber)
+								@Html.DisplayFor(modelItem => item.PhoneNumber)
 							</td>
 							<td class="text-end">
 								<div class="dropdown d-inline-block">

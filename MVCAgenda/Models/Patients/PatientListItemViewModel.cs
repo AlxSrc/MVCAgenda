@@ -19,5 +19,7 @@ namespace MVCAgenda.Models.Patients
 
         [DisplayName("E-mail")]
         public string Mail { get; set; }
+
+        public bool Blacklist { get; set; }
     }
 }

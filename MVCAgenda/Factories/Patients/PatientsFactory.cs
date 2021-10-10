@@ -47,12 +47,9 @@ namespace MVCAgenda.Factories.Patients
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
                 Mail = patient.Mail,
+                PhoneNumber = patient.PhoneNumber,
+                Blacklist = patient.Blacklist
             };
-            
-            if (patient.Blacklist == false)
-                viewModel.PhoneNumber = $"<span class=\"text-success\">{patient.PhoneNumber}</span>";
-            else
-                viewModel.PhoneNumber = $"<span class=\"text-danger\">{patient.PhoneNumber}</span>";
 
             return viewModel;
         }
