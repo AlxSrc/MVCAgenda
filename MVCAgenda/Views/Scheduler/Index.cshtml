@@ -1,62 +1,64 @@
 ﻿@{
-    ViewData["Title"] = "Lista cu programari";
+	ViewData["Title"] = "Lista cu programari";
 }
 @if (User.Identity.IsAuthenticated)
 {
-    @model MVCAgenda.Models.SyncfusionScheduler.ScheduleList
+	@model MVCAgenda.Models.SyncfusionScheduler.ScheduleList
 
-    <div class="main box">
 
-        @using Syncfusion.EJ2.Schedule
-        @using Syncfusion.EJ2.Buttons
-        @using MVCAgenda.Models.SyncfusionScheduler
 
-        @{
-            var validationRules = new Dictionary<string, object>() { { "required", true } };
-            var locationValidationRules = new Dictionary<string, object>() { { "required", true }, { "regex", new string[] { "^[a-zA-Z0-9- ]*$", "Special character(s) not allowed in this field" } } };
-            var descriptionValidationRules = new Dictionary<string, object>() { { "required", true }, { "minLength", 5 }, { "maxLength", 500 } };
-        }
+	<div class="main box">
 
-        <ejs-schedule 
-            id="schedule" height="650px" 
-            startHour="06:00" endHour="20:00" showQuickInfo="true"
-            firstDayOfWeek=1 currentView="Day" selectedDate="@DateTime.Now.Date"
-            resourceHeaderTemplate="#resource-template" 
-            actionBegin="onActionBegin" actionComplete="onActionComplete" 
-            popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate">
+		@using Syncfusion.EJ2.Schedule
+		@using Syncfusion.EJ2.Buttons
+		@using MVCAgenda.Models.SyncfusionScheduler
 
-            <e-schedule-eventsettings>
+		@{
+			var validationRules = new Dictionary<string, object>() { { "required", true } };
+			var locationValidationRules = new Dictionary<string, object>() { { "required", true }, { "regex", new string[] { "^[a-zA-Z0-9- ]*$", "Special character(s) not allowed in this field" } } };
+			var descriptionValidationRules = new Dictionary<string, object>() { { "required", true }, { "minLength", 5 }, { "maxLength", 500 } };
+		}
 
-                <e-data-manager url="@Url.Action("LoadData", "Scheduler")" adaptor="WebMethodAdaptor"></e-data-manager>
+		<ejs-schedule
+			id="schedule" height="650px"
+			startHour="06:00" endHour="20:00" showQuickInfo="true"
+			firstDayOfWeek=1 currentView="Day" selectedDate="@DateTime.Now.Date"
+			resourceHeaderTemplate="#resource-template"
+			actionBegin="onActionBegin" actionComplete="onActionComplete"
+			popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate">
 
-                <e-eventsettings-fields>
-                    <e-field-subject name="Subject" validation="validationRules"></e-field-subject>
-                    <e-field-starttime name="StartTime" validation="validationRules"></e-field-starttime>
-                    <e-field-endtime name="EndTime" validation="validationRules"></e-field-endtime>
-                </e-eventsettings-fields>
+			<e-schedule-eventsettings>
 
-            </e-schedule-eventsettings>
+				<e-data-manager url="@Url.Action("LoadData", "Scheduler")" adaptor="WebMethodAdaptor"></e-data-manager>
 
-            <e-schedule-quickinfotemplates header="#header-template" content="#content-template" footer="#footer-template">
-            </e-schedule-quickinfotemplates>
+				<e-eventsettings-fields>
+					<e-field-subject name="Subject" validation="validationRules"></e-field-subject>
+					<e-field-starttime name="StartTime" validation="validationRules"></e-field-starttime>
+					<e-field-endtime name="EndTime" validation="validationRules"></e-field-endtime>
+				</e-eventsettings-fields>
 
-            <e-schedule-group enableCompactView="false" resources="@ViewBag.Resources"></e-schedule-group>
-            <e-schedule-resources>
-                <e-schedule-resource dataSource="@ViewBag.Employees" field="MedicId" title="Employees" 
-                    name="Employee" textField="name" idField="id" groupIDField="id" allowMultiple="true">
-                </e-schedule-resource>
-            </e-schedule-resources>
+			</e-schedule-eventsettings>
 
-            <e-schedule-views>
-                <e-schedule-view option="Day" eventTemplate="#day-event-template"></e-schedule-view>
-                <e-schedule-view option="Week" eventTemplate="#week-event-template"></e-schedule-view>
-                <e-schedule-view option="TimelineWeek" eventTemplate="#timeline-event-template"></e-schedule-view>
-                @*<e-schedule-view option="WorkWeek"></e-schedule-view>*@
-                <e-schedule-view option="Month" eventTemplate="#month-event-template"></e-schedule-view>
-            </e-schedule-views>
-        </ejs-schedule>
+			<e-schedule-quickinfotemplates header="#header-template" content="#content-template" footer="#footer-template">
+			</e-schedule-quickinfotemplates>
 
-        <script language="javascript" type="text/javascript">
+			<e-schedule-group enableCompactView="false" resources="@ViewBag.Resources"></e-schedule-group>
+			<e-schedule-resources>
+				<e-schedule-resource dataSource="@ViewBag.Employees" field="MedicId" title="Employees"
+				                     name="Employee" textField="name" idField="id" groupIDField="id" allowMultiple="true">
+				</e-schedule-resource>
+			</e-schedule-resources>
+
+			<e-schedule-views>
+				<e-schedule-view option="Day" eventTemplate="#day-event-template"></e-schedule-view>
+				<e-schedule-view option="Week" eventTemplate="#week-event-template"></e-schedule-view>
+				<e-schedule-view option="TimelineWeek" eventTemplate="#timeline-event-template"></e-schedule-view>
+				@*<e-schedule-view option="WorkWeek"></e-schedule-view>*@
+				<e-schedule-view option="Month" eventTemplate="#month-event-template"></e-schedule-view>
+			</e-schedule-views>
+		</ejs-schedule>
+
+		<script language="javascript" type="text/javascript">
             var instance = new ej.base.Internationalization();
 
             var buttonClickActions = function (e) {
@@ -79,7 +81,7 @@
                     addObj.MedicId = quickPopup.querySelector('#MedicId').ej2_instances[0].value;
                     addObj.RoomId = quickPopup.querySelector('#RoomId').ej2_instances[0].value;
                     return addObj;
-                }
+                };
 
                 if (e.target.id === 'add') {
                     var addObj = getSlotData();
@@ -168,13 +170,13 @@
                 var scheduleObj = document.getElementById('schedule').ej2_instances[0];
 
                 if (args.requestType === "eventCreated") {
-                
-                    let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');;
+
+                    let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
                     args.data[0].StartTime = formatted_start_date;
 
-                    let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');;
+                    let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
                     args.data[0].EndTime = formatted_end_date;
-                
+
                     $.ajax({
                         url: "@Url.Action("AddData", "Scheduler")",
                         data: args.data[0],
@@ -204,13 +206,13 @@
                         }});
                 }
                 if (args.requestType === "eventChanged") {
-                
-                    let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');;
+
+                    let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
                     args.data[0].StartTime = formatted_start_date;
 
-                    let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');;
+                    let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
                     args.data[0].EndTime = formatted_end_date;
-                
+
                     $.ajax({
                         url: "@Url.Action("EditData", "Scheduler")",
                         data: args.data[0],
@@ -279,9 +281,9 @@
                 return value.resourceData.designation;
                 }
         </script>
-        
-        @*Capul la tabel cu medici*@
-        <script id="resource-template" type="text/x-template">
+
+		@*Capul la tabel cu medici*@
+		<script id="resource-template" type="text/x-template">
             <div class="template-wrap">
                 <div class="employee-category">
                     @*${getEmployeeImage(data)}*@
@@ -291,8 +293,8 @@
             </div>
         </script>
 
-        @*Templaturi pt vizualizare tabelului pe perioade*@
-        <script id="day-event-template" type="text/x-template">
+		@*Templaturi pt vizualizare tabelului pe perioade*@
+		<script id="day-event-template" type="text/x-template">
             <div class="template-wrap" style="background:${PrimaryColor}">
                 <div class="subject" style="background:${PrimaryColor}">${Subject}</div>
                 <div class="description" style="background:${SecondaryColor}">Camera: <b>${Room}</b></div>
@@ -301,7 +303,7 @@
             </div>
         </script>
 
-        <script id="week-event-template" type="text/x-template">
+		<script id="week-event-template" type="text/x-template">
             <div class='template-wrap' style='background:${SecondaryColor}'>
                 <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
                 <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
@@ -311,7 +313,7 @@
             </div>
         </script>
 
-        <script id="timeline-event-template" type="text/x-template">
+		<script id="timeline-event-template" type="text/x-template">
             <div class="template-wrap" style="background:${PrimaryColor}">
                 <div class="subject" style="background:${PrimaryColor}">${Subject}</div>
                 <div class="description" style="background:${SecondaryColor}">${Room}</div>
@@ -320,14 +322,14 @@
             </div>
         </script>
 
-        <script id="month-event-template" type="text/x-template">
+		<script id="month-event-template" type="text/x-template">
             <div class="template-wrap" style="background:${PrimaryColor}">
                 <div class="subject" style="font-size: 13px">${Subject}</div>
             </div>
         </script>
-        
-        @*Templaturi pt vizualizare informatiilor*@
-        <script id="header-template" type="text/x-template">
+
+		@*Templaturi pt vizualizare informatiilor*@
+		<script id="header-template" type="text/x-template">
             <div class="quick-info-header">
                 <div class="quick-info-header-content" style='${getHeaderStyles(data)}'>
                     <div class="quick-info-title">${if (elementType == "cell")}Adaugă o programare${else}Procedura: ${Subject}${/if}</div>
@@ -336,7 +338,7 @@
             </div>
         </script>
 
-        <script id="content-template" type="text/x-template">
+		<script id="content-template" type="text/x-template">
             <div class="quick-info-content">
                 ${if (elementType == "cell")}
                 <div class="e-cell-content">
@@ -409,7 +411,7 @@
                 </div>
                 ${else}
                 <div class="event-content">
-                    
+
                     <div class="meeting-type-wrap">
                         <label>Medicul</label>:
                         <span>${Medic}</span>
@@ -435,7 +437,7 @@
             </div>
         </script>
 
-        <script id="footer-template" type="text/x-template">
+		<script id="footer-template" type="text/x-template">
             <div class="quick-info-footer">
                 ${if (elementType == "cell")}
                 <div class="cell-footer">
@@ -451,8 +453,8 @@
             </div>
         </script>
 
-        @*Templaturi pt adaugare date*@
-        <script id="EventEditorTemplate" type="text/x-template">
+		@*Templaturi pt adaugare date*@
+		<script id="EventEditorTemplate" type="text/x-template">
             @*@Html.PartialAsync("_SchedulerPopUp",modelPrecompletat)*@
             <table class="custom-event-editor" width="100%" cellpadding="5">
                 <tbody>
@@ -520,10 +522,21 @@
                 </tbody>
             </table>
         </script>
-    </div>
+	</div>
 
-    @section Styles
-    {
-        <link rel="stylesheet" href="~/css/scheduler.css" />
-    }
+@section Styles
+{
+	<!-- Syncfusion Essential JS 2 Styles -->
+	<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/bootstrap4.css"/>
+
+	<link rel="stylesheet" href="~/css/scheduler.css"/>
 }
+
+@section Scripts
+{
+	<!-- Syncfusion Essential JS 2 Scripts -->
+	<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+
+	<!-- Syncfusion Essential JS 2 ScriptManager -->
+	<ejs-scripts></ejs-scripts>
+}}
