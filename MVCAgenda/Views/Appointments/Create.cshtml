@@ -15,17 +15,20 @@
 			</a>
 		</li>
 		<li class="breadcrumb-item">
-			<a asp-action="Index" asp-controller="Patients">
+			<a asp-action="Index" asp-controller="Appointments">
 				<i class="fas fa-user-friends"></i>
 				<span>Programări</span>
 			</a>
 		</li>
-		<li class="breadcrumb-item">
-			<a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.PatientId">
-				<i class="fas fa-hospital-user"></i>
-				<span>@Model.FirstName.ToUpper() @Model.LastName</span>
-			</a>
-		</li>
+		@if (Model.PatientId > 0)
+		{
+			<li class="breadcrumb-item">
+				<a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.PatientId">
+					<i class="fas fa-hospital-user"></i>
+					<span>@Model.FirstName.ToUpper() @Model.LastName</span>
+				</a>
+			</li>
+		}
 		<li class="breadcrumb-item active">
 			<span>@pageTitle</span>
 		</li>
