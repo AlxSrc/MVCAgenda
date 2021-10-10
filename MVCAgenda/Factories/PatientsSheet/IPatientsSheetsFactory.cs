@@ -9,6 +9,7 @@ namespace MVCAgenda.Factories.PatientsSheet
     {
         PatientSheetDetailsViewModel PreperePatientSheetDetailsViewModel(PatientSheet model, Patient patient, List
             <ConsultationViewModel> consultations);
+
         PatientSheetEditViewModel PreperePatientSheetEditViewModel(PatientSheet model);
     }
 }

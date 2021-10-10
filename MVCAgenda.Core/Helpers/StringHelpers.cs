@@ -9,6 +9,7 @@
         {
             return SuccesMessage + " " + message;
         }
+
         public static string MakeFailMessage(string message)
         {
             return FailMessage + " " + message;

@@ -7,7 +7,7 @@ namespace MVCAgenda.Service.Rooms
     public interface IRoomService
     {
         Task<bool> CreateAsync(Room room);
-        
+
         Task<Room> GetAsync(int id);
         Task<List<Room>> GetListAsync();
 

@@ -8,6 +8,7 @@ namespace MVCAgenda.Models.Logging
         {
             Logs = new List<LogListItemViewModel>();
         }
-        public List<LogListItemViewModel> Logs {  get; set; }
+
+        public List<LogListItemViewModel> Logs { get; set; }
     }
 }

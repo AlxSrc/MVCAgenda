@@ -17,18 +17,23 @@ namespace MVCAgenda.Managers.Appointments
 {
     public class AppointmentsManager : IAppointmentsManager
     {
-        string user = "admin"; 
+        string user = "admin";
 
         #region Fields
+
         private readonly IAppointmentService _appointmentServices;
         private readonly IAppointmentsFactory _appointmentsFactory;
         private readonly IPatientService _patientServices;
         private readonly IRoomService _roomServices;
         private readonly IMedicService _medicServices;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /***********************************************************************************/
+
         #region Constructor
+
         public AppointmentsManager(
             IAppointmentService appointmentServices,
             IAppointmentsFactory appointmentsFactory,
@@ -44,9 +49,13 @@ namespace MVCAgenda.Managers.Appointments
             _medicServices = medicServices;
             _logger = loggerServices;
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Methods
+
         public async Task<string> CreateAsync(AppointmentCreateViewModel appointmentViewModel)
         {
             try
@@ -66,6 +75,7 @@ namespace MVCAgenda.Managers.Appointments
                     {
                         return "Error. Not found.";
                     }
+
                     patientId = patient.Id;
                 }
                 else
@@ -113,7 +123,7 @@ namespace MVCAgenda.Managers.Appointments
                 return "Nu s-a putut adauga programarea.";
             }
         }
-        
+
         public async Task<AppointmentsViewModel> GetListAsync(string SearchByName = null,
             string SearchByPhoneNumber = null,
             string SearchByEmail = null,
@@ -129,7 +139,7 @@ namespace MVCAgenda.Managers.Appointments
             try
             {
                 var appointmentsList = await _appointmentServices.GetFiltredListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden);
-                
+
                 var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
                 foreach (var appointment in appointmentsList)
                     appointmentsListViewModel.Add(await _appointmentsFactory.PrepereAppointmentListItemViewModel(appointment, await _patientServices.GetAsync(appointment.PatientId), await _medicServices.GetAsync(appointment.MedicId), await _roomServices.GetAsync(appointment.RoomId)));
@@ -152,7 +162,7 @@ namespace MVCAgenda.Managers.Appointments
                 return new AppointmentsViewModel();
             }
         }
-        
+
         public async Task<AppointmentDetailsViewModel> GetDetailsAsync(int id)
         {
             try
@@ -171,6 +181,7 @@ namespace MVCAgenda.Managers.Appointments
                 return null;
             }
         }
+
         public async Task<AppointmentEditViewModel> GetEditDetailsAsync(int id)
         {
             try
@@ -184,7 +195,7 @@ namespace MVCAgenda.Managers.Appointments
                 return new AppointmentEditViewModel();
             }
         }
-        
+
         public async Task<string> UpdateAsync(AppointmentEditViewModel appointmentViewModel)
         {
             try
@@ -231,7 +242,7 @@ namespace MVCAgenda.Managers.Appointments
                 return "Pacientul nu a putut fi adaugat, contacteaza administratorul.";
             }
         }
-        
+
         public async Task<string> DeleteAsync(int id)
         {
             try
@@ -243,7 +254,7 @@ namespace MVCAgenda.Managers.Appointments
                 else
                 {
                     var response = await _appointmentServices.HideAsync(id);
-                    if(response == false)
+                    if (response == false)
                     {
                         return "Programarea nu a putut fi stearsa.";
                     }
@@ -253,9 +264,7 @@ namespace MVCAgenda.Managers.Appointments
                         await _logger.CreateAsync(msg, null, null, LogLevel.Information);
                         return StringHelpers.SuccesMessage;
                     }
-                    
                 }
-
             }
             catch (Exception exception)
             {
@@ -264,9 +273,13 @@ namespace MVCAgenda.Managers.Appointments
                 return "Programarea nu a putut fi stersa.";
             }
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Utils
+
         private async Task<bool> CheckExist(int id)
         {
             var model = await _appointmentServices.GetAsync(id);
@@ -276,6 +289,7 @@ namespace MVCAgenda.Managers.Appointments
 
             return true;
         }
+
         #endregion
     }
 }

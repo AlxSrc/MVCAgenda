@@ -6,6 +6,6 @@ namespace MVCAgenda.Factories.Scheduler
 {
     public interface ISchedulerFactory
     {
-        Task<ScheduleEventData> PrepereScheduleItemListViewModel(Appointment appointment, Patient patient, Medic medic,Room room);
+        Task<ScheduleEventData> PrepereScheduleItemListViewModel(Appointment appointment, Patient patient, Medic medic, Room room);
     }
 }

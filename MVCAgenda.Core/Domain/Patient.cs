@@ -7,12 +7,13 @@ namespace MVCAgenda.Core.Domain
     public class Patient : BaseEntityDomain
     {
         public int PatientSheetId { get; set; }
-        [ForeignKey("SheetPatientId")] 
+
+        [ForeignKey("SheetPatientId")]
         public virtual PatientSheet SheetPatient { get; set; }
 
 
         [StringLength(60, MinimumLength = 1)]
-        [Required] 
+        [Required]
         public string FirstName { get; set; }
 
 
@@ -21,7 +22,7 @@ namespace MVCAgenda.Core.Domain
 
 
         [StringLength(20, MinimumLength = 1)]
-        [Required] 
+        [Required]
         public string PhoneNumber { get; set; }
 
 
@@ -29,7 +30,7 @@ namespace MVCAgenda.Core.Domain
         public string Mail { get; set; }
 
 
-        [Required] 
+        [Required]
         public bool Blacklist { get; set; }
     }
 }

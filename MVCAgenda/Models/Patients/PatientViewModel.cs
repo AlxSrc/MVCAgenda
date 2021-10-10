@@ -6,13 +6,13 @@ namespace MVCAgenda.Models.Patients
 {
     public class PatientViewModel : BaseModel
     {
-        [DisplayName("Detalii pacient")] 
+        [DisplayName("Detalii pacient")]
         public int SheetPatientId { get; set; }
 
 
         [StringLength(60, MinimumLength = 1)]
         [DisplayName("Nume")]
-        [Required] 
+        [Required]
         public string FirstName { get; set; }
 
 
@@ -24,7 +24,7 @@ namespace MVCAgenda.Models.Patients
         [StringLength(20, MinimumLength = 1)]
         [DisplayName("Număr de telefon")]
         [Phone(ErrorMessage = "Numar de telefon invalit")]
-        [Required] 
+        [Required]
         public string PhoneNumber { get; set; }
 
 

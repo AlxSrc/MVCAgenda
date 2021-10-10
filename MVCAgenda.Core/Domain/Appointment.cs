@@ -8,14 +8,17 @@ namespace MVCAgenda.Core.Domain
     public class Appointment : BaseEntityDomain
     {
         public int PatientId { get; set; }
+
         [ForeignKey("PatientId")]
         public virtual Patient Patient { get; set; }
 
         public int RoomId { get; set; }
+
         [ForeignKey("RoomId")]
         public virtual Room Room { get; set; }
 
         public int MedicId { get; set; }
+
         [ForeignKey("MedicId")]
         public virtual Medic Medic { get; set; }
 

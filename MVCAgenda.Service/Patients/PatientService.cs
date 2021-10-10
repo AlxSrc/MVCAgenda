@@ -13,21 +13,31 @@ namespace MVCAgenda.Service.Patients
     public class PatientService : IPatientService
     {
         private string user = "TestUser";
+
         #region Fields
+
         private string msg;
         private readonly AgendaContext _context;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public PatientService(AgendaContext context, ILoggerService logger)
         {
             _context = context;
             _logger = logger;
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Create
+
         public async Task<bool> CreateAsync(Patient patient)
         {
             try
@@ -49,6 +59,7 @@ namespace MVCAgenda.Service.Patients
                 return false;
             }
         }
+
         public async Task<int> CheckExistentPatientAsync(Patient patient)
         {
             try
@@ -91,9 +102,13 @@ namespace MVCAgenda.Service.Patients
                 return -1;
             }
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Read
+
         public async Task<Patient> GetAsync(int Id, bool GetPatientByPatientSheetId = false)
         {
             try
@@ -144,11 +159,14 @@ namespace MVCAgenda.Service.Patients
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return null;
             }
-            
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Update
+
         public async Task<bool> UpdateAsync(Patient patient)
         {
             try
@@ -165,9 +183,13 @@ namespace MVCAgenda.Service.Patients
                 return false;
             }
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Delete
+
         public async Task<bool> HideAsync(int id)
         {
             try
@@ -190,6 +212,7 @@ namespace MVCAgenda.Service.Patients
                 return false;
             }
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -206,8 +229,8 @@ namespace MVCAgenda.Service.Patients
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
-            
         }
+
         #endregion
     }
 }

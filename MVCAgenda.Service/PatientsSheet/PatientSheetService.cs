@@ -11,21 +11,31 @@ namespace MVCAgenda.Service.PatientsSheet
     public class PatientSheetService : IPatientSheetService
     {
         private string user = "TestUser";
+
         #region Fields
+
         private string msg;
         private readonly AgendaContext _context;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public PatientSheetService(AgendaContext context, ILoggerService logger)
         {
             _context = context;
             _logger = logger;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Methods
+
         public async Task<PatientSheet> GetAsync(int Id)
         {
             try
@@ -39,7 +49,7 @@ namespace MVCAgenda.Service.PatientsSheet
                 return null;
             }
         }
-       
+
         public async Task<bool> UpdateAsync(PatientSheet patientSheet)
         {
             try
@@ -55,6 +65,7 @@ namespace MVCAgenda.Service.PatientsSheet
                 return false;
             }
         }
+
         #endregion
     }
 }

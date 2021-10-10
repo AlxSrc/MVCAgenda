@@ -9,20 +9,30 @@ namespace MVCAgenda.Managers.Logging
     public class LoggingManager : ILoggingManager
     {
         #region Fields
+
         private readonly ILoggerService _logServices;
         private readonly ILoggingFactory _logFactory;
+
         #endregion
+
         /**********************************************************************************/
+
         #region Constructor
+
         public LoggingManager(ILoggerService logServices, ILoggingFactory logFactory)
         {
             _logServices = logServices;
             _logFactory = logFactory;
         }
+
         #endregion
+
         /**********************************************************************************/
+
         #region Methods
+
         #endregion
+
         public async Task<LogsViewModel> GetLogsListViewModel()
         {
             try

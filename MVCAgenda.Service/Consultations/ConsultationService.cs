@@ -13,21 +13,31 @@ namespace MVCAgenda.Service.Consultations
     public class ConsultationService : IConsultationService
     {
         private string user = "TestUser";
+
         #region Fields
+
         private string msg;
         private readonly AgendaContext _context;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public ConsultationService(AgendaContext context, ILoggerService logger)
         {
             _context = context;
             _logger = logger;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Methods
+
         public async Task<bool> CreateAsync(Consultation consultation)
         {
             try
@@ -43,7 +53,7 @@ namespace MVCAgenda.Service.Consultations
                 return false;
             }
         }
-        
+
         public async Task<Consultation> GetAsync(int id)
         {
             try
@@ -57,6 +67,7 @@ namespace MVCAgenda.Service.Consultations
                 return new Consultation();
             }
         }
+
         public async Task<List<Consultation>> GetListAsync(int id)
         {
             try
@@ -71,7 +82,7 @@ namespace MVCAgenda.Service.Consultations
                 return new List<Consultation>();
             }
         }
-       
+
         public async Task<bool> UpdateAsync(Consultation consultation)
         {
             try
@@ -87,7 +98,7 @@ namespace MVCAgenda.Service.Consultations
                 return false;
             }
         }
-        
+
         public async Task<bool> HideAsync(int id)
         {
             try
@@ -104,8 +115,8 @@ namespace MVCAgenda.Service.Consultations
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
-            
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -121,6 +132,7 @@ namespace MVCAgenda.Service.Consultations
                 return false;
             }
         }
+
         #endregion
     }
 }

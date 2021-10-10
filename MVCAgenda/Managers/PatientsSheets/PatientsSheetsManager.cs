@@ -20,21 +20,26 @@ namespace MVCAgenda.Managers.PatientsSheets
         private string user = "admin";
 
         #region Fields
+
         private readonly IPatientsSheetsFactory _patientSheetFactory;
         private readonly IPatientSheetService _patientSheetServices;
         private readonly IPatientService _patientServices;
         private readonly IConsultationService _consultationServices;
         private readonly IConsultationsFactory _consultationFactory;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /***********************************************************************************/
+
         #region Constructor
+
         public PatientsSheetsManager(
             IPatientSheetService patientSheetServices,
             IPatientsSheetsFactory patientSheetFactory,
-            IPatientService patientServices, 
-            IConsultationService consultationServices, 
-            IConsultationsFactory consultationFactory, 
+            IPatientService patientServices,
+            IConsultationService consultationServices,
+            IConsultationsFactory consultationFactory,
             ILoggerService loggerServices)
         {
             _patientSheetServices = patientSheetServices;
@@ -44,9 +49,13 @@ namespace MVCAgenda.Managers.PatientsSheets
             _consultationFactory = consultationFactory;
             _logger = loggerServices;
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Methods
+
         public async Task<PatientSheetDetailsViewModel> GetDetailsAsync(int id)
         {
             try
@@ -107,7 +116,7 @@ namespace MVCAgenda.Managers.PatientsSheets
                     };
 
                     var result = await _patientSheetServices.UpdateAsync(patientSheet);
-                    if(result == false)
+                    if (result == false)
                         return "Fisa pacientului nu a putut fi editata.";
                     else
                     {
@@ -116,7 +125,6 @@ namespace MVCAgenda.Managers.PatientsSheets
                         return StringHelpers.SuccesMessage;
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -124,11 +132,14 @@ namespace MVCAgenda.Managers.PatientsSheets
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Fisa pacientului nu a putut fi editata.";
             }
-
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Utils
+
         private async Task<bool> CheckExist(int id)
         {
             var model = await _patientSheetServices.GetAsync(id);
@@ -138,6 +149,7 @@ namespace MVCAgenda.Managers.PatientsSheets
 
             return true;
         }
+
         #endregion
     }
 }

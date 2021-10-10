@@ -14,6 +14,6 @@ namespace MVCAgenda.Core.Domain
 
         public string Description { get; set; }
 
-        public string Designation {  get; set; }
+        public string Designation { get; set; }
     }
 }

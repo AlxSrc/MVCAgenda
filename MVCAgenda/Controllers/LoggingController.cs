@@ -10,17 +10,26 @@ namespace MVCAgenda.Controllers
     public class LoggingController : Controller
     {
         #region Fields
+
         private readonly ILoggingManager _loggingManager;
+
         #endregion
+
         /******************************************************************************************/
+
         #region Constructor
+
         public LoggingController(ILoggingManager loggingManager)
         {
             _loggingManager = loggingManager;
         }
+
         #endregion
+
         /******************************************************************************************/
+
         #region Methods
+
         public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -32,7 +41,7 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
-        
     }
 }

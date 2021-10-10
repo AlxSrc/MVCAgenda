@@ -8,13 +8,17 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Managers.ManageAccount
 {
-    public class ManageAccountManager : UserManager<IdentityUser>,IManageAccountManager
+    public class ManageAccountManager : UserManager<IdentityUser>, IManageAccountManager
     {
         #region Fields
+
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+
         #endregion
+
         /*******************************************************************************************/
+
         #region Constructor
 
         public ManageAccountManager(
@@ -33,9 +37,13 @@ namespace MVCAgenda.Managers.ManageAccount
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
         #endregion
+
         /*******************************************************************************************/
+
         #region Methods
+
         public async Task<ProfileViewModel> GetUserProfileAsync(string accountId)
         {
             var profile = new ProfileViewModel();
@@ -54,7 +62,7 @@ namespace MVCAgenda.Managers.ManageAccount
                 return null;
             }
         }
-        #endregion
 
+        #endregion
     }
 }

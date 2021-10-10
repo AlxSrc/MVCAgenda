@@ -10,17 +10,26 @@ namespace MVCAgenda.Controllers
     public class RoomsController : Controller
     {
         #region Fields
+
         private readonly IRoomsManager _roomManager;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructors
+
         public RoomsController(IRoomsManager roomManager)
         {
             _roomManager = roomManager;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Create
+
         public IActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
@@ -44,6 +53,7 @@ namespace MVCAgenda.Controllers
                     var result = await _roomManager.CreateAsync(room);
                     return RedirectToAction("Manage", "Home");
                 }
+
                 return View(room);
             }
             else
@@ -53,8 +63,11 @@ namespace MVCAgenda.Controllers
         }
 
         #endregion
+
         /**************************************************************************************/
+
         #region Read
+
         public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -66,8 +79,11 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Update
 
         public async Task<IActionResult> Edit(int id)
@@ -98,6 +114,7 @@ namespace MVCAgenda.Controllers
                     await _roomManager.UpdateAsync(room);
                     return RedirectToAction("Manage", "Home");
                 }
+
                 return View(room);
             }
             else
@@ -107,8 +124,11 @@ namespace MVCAgenda.Controllers
         }
 
         #endregion
+
         /**************************************************************************************/
+
         #region Delete
+
         public async Task<IActionResult> Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -135,6 +155,7 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
     }
 }

@@ -7,7 +7,7 @@ namespace MVCAgenda.Service.Consultations
     public interface IConsultationService
     {
         Task<bool> CreateAsync(Consultation consultation);
-        
+
         Task<Consultation> GetAsync(int id);
         Task<List<Consultation>> GetListAsync(int id);
 

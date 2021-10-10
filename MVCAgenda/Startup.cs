@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Factories.Appointments;
 using MVCAgenda.Factories.Consultations;
@@ -53,8 +52,8 @@ namespace MVCAgenda
 
             services.AddControllersWithViews();
 
-            services.AddDbContext<AgendaContext>(options => 
-            options.UseSqlServer(Configuration.GetConnectionString("AgendaContext")));
+            services.AddDbContext<AgendaContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("AgendaContext")));
 
 
             string connectionString = Configuration.GetConnectionString("AgendaContext");
@@ -111,6 +110,7 @@ namespace MVCAgenda
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

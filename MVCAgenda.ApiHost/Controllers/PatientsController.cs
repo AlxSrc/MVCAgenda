@@ -23,12 +23,16 @@ namespace MVCAgenda.ApiHost.Controllers
     public class PatientsController : Controller
     {
         #region Fields
+
         private readonly AgendaContext _context;
         private readonly IPatientService _patientService;
         private readonly IPatientsFactory _patientFactory;
         IJsonFieldsSerializer _jsonFieldsSerializer;
+
         #endregion
+
         #region Constructor
+
         public PatientsController(AgendaContext context,
             IPatientService patientService,
             IPatientsFactory patientFactory)
@@ -37,6 +41,7 @@ namespace MVCAgenda.ApiHost.Controllers
             _patientService = patientService;
             _patientFactory = patientFactory;
         }
+
         #endregion
 
         [HttpGet]
@@ -52,7 +57,8 @@ namespace MVCAgenda.ApiHost.Controllers
                 foreach (var patient in patients)
                     patientsAsDtos.Add(_patientFactory.PreperePatientDTO(patient));
 
-                var patientsRoot = new PatientsRootObject() { 
+                var patientsRoot = new PatientsRootObject()
+                {
                     Patients = patientsAsDtos
                 };
 

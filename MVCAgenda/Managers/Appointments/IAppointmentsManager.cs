@@ -7,7 +7,7 @@ namespace MVCAgenda.Managers.Appointments
     public interface IAppointmentsManager
     {
         Task<string> CreateAsync(AppointmentCreateViewModel appointmentViewModel);
-        
+
         Task<AppointmentsViewModel> GetListAsync(string SearchByName = null,
             string SearchByPhoneNumber = null,
             string SearchByEmail = null,
@@ -24,7 +24,7 @@ namespace MVCAgenda.Managers.Appointments
         Task<AppointmentEditViewModel> GetEditDetailsAsync(int id);
 
         Task<string> UpdateAsync(AppointmentEditViewModel appointmentViewModel);
-        
+
         Task<string> DeleteAsync(int id);
     }
 }

@@ -31,11 +31,11 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-
             }
         }
+
         public static async Task SeedModeratorAdminAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             try
@@ -54,12 +54,12 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                         await userManager.CreateAsync(moderatorUser, "{Al@ka#9A#s&KA|");
                         await userManager.AddToRoleAsync(moderatorUser, Roles.Administrator.ToString());
                     }
+
                     await roleManager.SeedClaimsForModeratorAdmin();
                 }
             }
             catch (Exception ex)
             {
-
             }
         }
 

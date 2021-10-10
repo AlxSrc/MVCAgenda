@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Factories.Medics
 {
-    public class MedicsFactory: IMedicsFactory
+    public class MedicsFactory : IMedicsFactory
     {
         public async Task<MedicViewModel> PrepereMedicViewModel(Medic medic)
         {
@@ -20,7 +20,8 @@ namespace MVCAgenda.Factories.Medics
                 Designation = medic.Designation,
                 Description = medic.Description,
                 Hidden = medic.Hidden
-            }; ;
+            };
+            ;
         }
     }
 }

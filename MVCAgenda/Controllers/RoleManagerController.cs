@@ -12,17 +12,26 @@ namespace MVCAgenda.Controllers
     public class RoleManagerController : Controller
     {
         #region Fields
+
         private readonly RoleManager<IdentityRole> _roleManager;
+
         #endregion
+
         /******************************************************************************************/
+
         #region Constructor
+
         public RoleManagerController(RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
         }
+
         #endregion
+
         /******************************************************************************************/
+
         #region Methods
+
         public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -36,6 +45,7 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> AddRole(string roleName)
         {
@@ -43,6 +53,7 @@ namespace MVCAgenda.Controllers
             {
                 await _roleManager.CreateAsync(new IdentityRole(roleName.Trim()));
             }
+
             return RedirectToAction("Index");
         }
 
@@ -70,6 +81,7 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
     }
 }

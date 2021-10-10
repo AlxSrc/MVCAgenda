@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Managers.Appointments;
@@ -18,13 +17,18 @@ namespace MVCAgenda.Controllers
     public class AppointmentsController : Controller
     {
         #region Fields
+
         private readonly IAppointmentsManager _appointmentsManager;
         private readonly IPatientService _patientServices;
         private readonly IRoomService _roomServices;
         private readonly IMedicService _medicServices;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public AppointmentsController(
             IAppointmentsManager appointmentsManager,
             IPatientService patientServices,
@@ -36,8 +40,11 @@ namespace MVCAgenda.Controllers
             _roomServices = roomServices;
             _medicServices = medicServices;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Create
 
         public async Task<IActionResult> Create(int id)
@@ -83,7 +90,7 @@ namespace MVCAgenda.Controllers
                 {
                     string result = await _appointmentsManager.CreateAsync(model);
                     if (result == StringHelpers.SuccesMessage)
-                        return RedirectToAction(nameof(Index),new { Daily = true });
+                        return RedirectToAction(nameof(Index), new { Daily = true });
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
@@ -100,8 +107,11 @@ namespace MVCAgenda.Controllers
         }
 
         #endregion
+
         /**************************************************************************************/
+
         #region Read
+
         public async Task<IActionResult> Index(string SearchByName = null,
             string SearchByPhoneNumber = null,
             string SearchByEmail = null,
@@ -130,7 +140,9 @@ namespace MVCAgenda.Controllers
         }
 
         #endregion
+
         /**************************************************************************************/
+
         #region Update
 
         public async Task<IActionResult> Edit(int id)
@@ -160,7 +172,7 @@ namespace MVCAgenda.Controllers
                 {
                     string result = await _appointmentsManager.UpdateAsync(model);
                     if (result == StringHelpers.SuccesMessage)
-                        return RedirectToAction(nameof(Index),new { Daily = true });
+                        return RedirectToAction(nameof(Index), new { Daily = true });
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
@@ -175,9 +187,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Details
+
         public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -189,8 +205,11 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Delete
 
         [HttpPost, ActionName("Delete")]

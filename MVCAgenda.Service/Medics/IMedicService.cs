@@ -7,7 +7,7 @@ namespace MVCAgenda.Service.Medics
     public interface IMedicService
     {
         Task<bool> CreateAsync(Medic medic);
-        
+
         Task<Medic> GetAsync(int id);
         Task<List<Medic>> GetListAsync();
 

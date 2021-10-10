@@ -19,7 +19,8 @@ namespace MVCAgenda.ApiHost.Controllers
         public BaseApiController(
             IJsonFieldsSerializer jsonFieldsSerializer)
         {
-            JsonFieldsSerializer = jsonFieldsSerializer;;
+            JsonFieldsSerializer = jsonFieldsSerializer;
+            ;
         }
 
         protected IActionResult Error(HttpStatusCode statusCode = (HttpStatusCode)422, string propertyKey = "", string errorMessage = "")
@@ -29,9 +30,9 @@ namespace MVCAgenda.ApiHost.Controllers
             if (!string.IsNullOrEmpty(errorMessage) && !string.IsNullOrEmpty(propertyKey))
             {
                 var errorsList = new List<string>
-                                 {
-                                     errorMessage
-                                 };
+                {
+                    errorMessage
+                };
                 errors.Add(propertyKey, errorsList);
             }
 

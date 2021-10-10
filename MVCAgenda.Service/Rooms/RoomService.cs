@@ -14,21 +14,31 @@ namespace MVCAgenda.Service.Rooms
     public class RoomService : IRoomService
     {
         private string user = "TestUser";
+
         #region Fields
+
         private string msg;
         private readonly AgendaContext _context;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public RoomService(AgendaContext context, ILoggerService logger)
         {
             _context = context;
             _logger = logger;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Methods
+
         public async Task<bool> CreateAsync(Room room)
         {
             try
@@ -44,7 +54,7 @@ namespace MVCAgenda.Service.Rooms
                 return false;
             }
         }
-        
+
         public async Task<Room> GetAsync(int id)
         {
             try
@@ -58,6 +68,7 @@ namespace MVCAgenda.Service.Rooms
                 return null;
             }
         }
+
         public async Task<List<Room>> GetListAsync()
         {
             try
@@ -71,14 +82,14 @@ namespace MVCAgenda.Service.Rooms
                 return null;
             }
         }
-        
+
         public async Task<bool> UpdateAsync(Room room)
         {
             try
             {
                 _context.Rooms.Update(room);
                 await _context.SaveChangesAsync();
-               
+
                 return true;
             }
             catch (Exception exception)
@@ -88,7 +99,7 @@ namespace MVCAgenda.Service.Rooms
                 return false;
             }
         }
-        
+
         public async Task<bool> HideAsync(int id)
         {
             try
@@ -106,6 +117,7 @@ namespace MVCAgenda.Service.Rooms
                 return false;
             }
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -121,6 +133,7 @@ namespace MVCAgenda.Service.Rooms
                 return false;
             }
         }
+
         #endregion
     }
 }

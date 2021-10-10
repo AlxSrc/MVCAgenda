@@ -16,21 +16,30 @@ namespace MVCAgenda.Controllers
     public class SchedulerController : Controller
     {
         #region Services
+
         private readonly ISchedulerManager _schedulerManager;
         private readonly IRoomsManager _roomsManager;
         private readonly IMedicsManager _medicsManager;
+
         #endregion
+
         /*********************************************************************************/
+
         #region Constructor
+
         public SchedulerController(ISchedulerManager schedulerManager, IRoomsManager roomsManager, IMedicsManager medicsManager)
         {
             _schedulerManager = schedulerManager;
             _roomsManager = roomsManager;
             _medicsManager = medicsManager;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Create
+
         [HttpPost]
         public async Task<JsonResult> AddData(ScheduleEventData ScheduleData)
         {
@@ -52,9 +61,13 @@ namespace MVCAgenda.Controllers
                 }, new JsonSerializerOptions());
             }
         }
+
         #endregion
+
         /*********************************************************************************/
+
         #region Read
+
         public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -80,7 +93,6 @@ namespace MVCAgenda.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-
         }
 
         public async Task<JsonResult> LoadData()
@@ -103,6 +115,7 @@ namespace MVCAgenda.Controllers
                     });
                 }
             }
+
             {
                 var ressult = "Trebuie sa fiti conectati.";
                 return new JsonResult(new
@@ -111,8 +124,11 @@ namespace MVCAgenda.Controllers
                 }, new JsonSerializerOptions());
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Update
 
         [HttpPost]
@@ -127,6 +143,7 @@ namespace MVCAgenda.Controllers
                     result = ressult,
                 }, new JsonSerializerOptions());
             }
+
             {
                 var ressult = "Trebuie sa fiti conectati.";
                 return new JsonResult(new
@@ -135,9 +152,13 @@ namespace MVCAgenda.Controllers
                 }, new JsonSerializerOptions());
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Delete
+
         [HttpPost]
         public async Task<JsonResult> DeleteData(ScheduleEventData ScheduleData)
         {
@@ -149,6 +170,7 @@ namespace MVCAgenda.Controllers
                     result = ressult,
                 }, new JsonSerializerOptions());
             }
+
             {
                 var ressult = "Trebuie sa fiti conectati.";
                 return new JsonResult(new
@@ -157,6 +179,7 @@ namespace MVCAgenda.Controllers
                 }, new JsonSerializerOptions());
             }
         }
+
         #endregion
     }
 }

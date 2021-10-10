@@ -14,21 +14,31 @@ namespace MVCAgenda.Service.Medics
     public class MedicService : IMedicService
     {
         private string user = "TestUser";
+
         #region Fields
+
         private string msg;
         private readonly AgendaContext _context;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public MedicService(AgendaContext context, ILoggerService logger)
         {
             _context = context;
             _logger = logger;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Methods
+
         public async Task<bool> CreateAsync(Medic medic)
         {
             try
@@ -37,14 +47,14 @@ namespace MVCAgenda.Service.Medics
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }
         }
-        
+
         public async Task<Medic> GetAsync(int id)
         {
             try
@@ -58,6 +68,7 @@ namespace MVCAgenda.Service.Medics
                 return new Medic();
             }
         }
+
         public async Task<List<Medic>> GetListAsync()
         {
             try
@@ -71,7 +82,7 @@ namespace MVCAgenda.Service.Medics
                 return null;
             }
         }
-        
+
         public async Task<bool> UpdateAsync(Medic medic)
         {
             try
@@ -87,7 +98,7 @@ namespace MVCAgenda.Service.Medics
                 return false;
             }
         }
-        
+
         public async Task<bool> HideAsync(int id)
         {
             try
@@ -105,6 +116,7 @@ namespace MVCAgenda.Service.Medics
                 return false;
             }
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -120,6 +132,7 @@ namespace MVCAgenda.Service.Medics
                 return false;
             }
         }
+
         #endregion
     }
 }

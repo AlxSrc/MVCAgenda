@@ -11,22 +11,31 @@ namespace MVCAgenda.Controllers
     public class ConsultationsController : Controller
     {
         #region Fields
+
         private readonly IConsultationsManager _consultationManager;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public ConsultationsController(IConsultationsManager consultationManager)
         {
             _consultationManager = consultationManager;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Create
+
         public IActionResult Create(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(new ConsultationCreateViewModel() { SheetPatientId = id});
+                return View(new ConsultationCreateViewModel() { SheetPatientId = id });
             }
             else
             {
@@ -43,9 +52,10 @@ namespace MVCAgenda.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = await _consultationManager.CreateAsync(consultation);
-                    if(result == StringHelpers.SuccesMessage)
+                    if (result == StringHelpers.SuccesMessage)
                         return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId });
                 }
+
                 return View(consultation);
             }
             else
@@ -53,9 +63,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Read
+
         public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -67,9 +81,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Edit
+
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -99,6 +117,7 @@ namespace MVCAgenda.Controllers
                     if (result == StringHelpers.SuccesMessage)
                         return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId });
                 }
+
                 return View(consultation);
             }
             else
@@ -106,8 +125,11 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Delete
 
         [HttpPost, ActionName("Delete")]
@@ -117,10 +139,10 @@ namespace MVCAgenda.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var result = await _consultationManager.DeleteAsync(id);
-                if(result == StringHelpers.SuccesMessage)
+                if (result == StringHelpers.SuccesMessage)
                 {
                     var consultation = await _consultationManager.GetDetailsAsync(id);
-                    return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId});
+                    return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId });
                 }
                 else
                     return RedirectToAction("Details", "Consultations", new { id = id });
@@ -130,6 +152,7 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace MVCAgenda.Service.Appointments
     public interface IAppointmentService
     {
         Task<bool> CreateAsync(Appointment appointment);
-        
+
         Task<Appointment> GetAsync(int Id);
 
         Task<List<Appointment>> GetFiltredListAsync(DateTime? searchByAppointmentStartDate = null,
@@ -24,7 +24,7 @@ namespace MVCAgenda.Service.Appointments
 
         Task<bool> HideAsync(int id);
         Task<bool> DeleteAsync(int id);
-        
+
         Task<string> SearchAppointmentAsync(int MedicId, int RoomId, DateTime startDate, DateTime endDate);
     }
 }

@@ -13,11 +13,13 @@ namespace MVCAgenda.Models.Appointments
         }
 
         #region Param
+
         public List<AppointmentListItemViewModel> AppointmentsList { get; set; }
 
         public bool? Hidden { get; set; }
         public bool? Blacklist { get; set; }
         public bool? Daily { get; set; }
+
         #endregion
 
         #region Param for search
@@ -47,6 +49,7 @@ namespace MVCAgenda.Models.Appointments
 
         [Display(Name = "Procedura")]
         public string SearchByProcedure { get; set; }
+
         #endregion
     }
 }

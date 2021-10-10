@@ -11,7 +11,9 @@ namespace MVCAgenda.Models.Accounts.Roles
         }
 
         #region Param
+
         public List<IdentityRole> RolesList { get; set; }
+
         #endregion
     }
 }

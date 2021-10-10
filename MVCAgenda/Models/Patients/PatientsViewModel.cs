@@ -11,12 +11,16 @@ namespace MVCAgenda.Models.Patients
         }
 
         #region Lists
+
         public List<PatientListItemViewModel> PatientsList { get; set; }
+
         #endregion
 
         #region ViewControllers
+
         public bool? Hidden { get; set; }
         public bool? Blacklist { get; set; }
+
         #endregion
 
         #region Param for search
@@ -29,6 +33,7 @@ namespace MVCAgenda.Models.Patients
 
         [Display(Name = "Adresa de e-mail")]
         public string SearchByEmail { get; set; }
+
         #endregion
     }
 }

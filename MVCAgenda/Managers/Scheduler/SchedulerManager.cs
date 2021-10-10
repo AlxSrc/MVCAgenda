@@ -17,16 +17,22 @@ namespace MVCAgenda.Managers.Scheduler
     public class SchedulerManager : ISchedulerManager
     {
         string user = "User";
+
         #region Fields
+
         private readonly IAppointmentService _appointmentServices;
         private readonly ISchedulerFactory _schedulerFactory;
         private readonly IPatientService _patientServices;
         private readonly IRoomService _roomServices;
         private readonly IMedicService _medicServices;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /***********************************************************************************/
+
         #region Constructor
+
         public SchedulerManager(
             IAppointmentService appointmentServices,
             ISchedulerFactory schedulerFactory,
@@ -42,9 +48,13 @@ namespace MVCAgenda.Managers.Scheduler
             _medicServices = medicServices;
             _logger = loggerServices;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Methods
+
         public async Task<string> CreateAsync(ScheduleEventData ScheduleData)
         {
             string User = "alexandru";
@@ -65,6 +75,7 @@ namespace MVCAgenda.Managers.Scheduler
                     {
                         return "Error. Not found.";
                     }
+
                     patientId = patient.Id;
                 }
                 else
@@ -105,7 +116,6 @@ namespace MVCAgenda.Managers.Scheduler
                     await _logger.CreateAsync(msg, null, null, LogLevel.Error);
                     return StringHelpers.SuccesMessage;
                 }
-
             }
             catch (Exception exception)
             {
@@ -123,9 +133,9 @@ namespace MVCAgenda.Managers.Scheduler
                 var appointments = await _appointmentServices.GetFiltredListAsync();
                 foreach (var appointment in appointments)
                     items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(
-                        appointment, 
-                        await _patientServices.GetAsync(appointment.PatientId), 
-                        await _medicServices.GetAsync(appointment.MedicId), 
+                        appointment,
+                        await _patientServices.GetAsync(appointment.PatientId),
+                        await _medicServices.GetAsync(appointment.MedicId),
                         await _roomServices.GetAsync(appointment.RoomId)));
 
                 return new ScheduleList() { AppointmentsSchedule = items };
@@ -194,6 +204,7 @@ namespace MVCAgenda.Managers.Scheduler
                 return StringHelpers.MakeFailMessage(Exception.Message);
             }
         }
+
         #endregion
     }
 }

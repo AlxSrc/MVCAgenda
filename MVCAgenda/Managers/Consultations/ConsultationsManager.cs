@@ -13,22 +13,32 @@ namespace MVCAgenda.Managers.Consultations
     public class ConsultationsManager : IConsultationsManager
     {
         string user = "admin";
+
         #region Fields
+
         private readonly IConsultationService _consultationServices;
         private readonly IConsultationsFactory _consultationFactory;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /***********************************************************************************/
+
         #region Constructor
+
         public ConsultationsManager(IConsultationService consultationServices, IConsultationsFactory consultationFactory, ILoggerService loggerServices)
         {
             _consultationServices = consultationServices;
             _consultationFactory = consultationFactory;
             _logger = loggerServices;
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Methods
+
         public async Task<string> CreateAsync(ConsultationCreateViewModel consultationViewModel)
         {
             try
@@ -74,6 +84,7 @@ namespace MVCAgenda.Managers.Consultations
                 return new ConsultationDetailsViewModel();
             }
         }
+
         public async Task<ConsultationEditViewModel> GetEditDetailsAsync(int id)
         {
             try
@@ -87,7 +98,7 @@ namespace MVCAgenda.Managers.Consultations
                 return new ConsultationEditViewModel();
             }
         }
-        
+
         public async Task<string> UpdateAsync(ConsultationEditViewModel consultationViewModel)
         {
             try
@@ -110,7 +121,7 @@ namespace MVCAgenda.Managers.Consultations
                     };
 
                     var result = await _consultationServices.UpdateAsync(consultation);
-                    if(result == false)
+                    if (result == false)
                         return "Consultatia nu a putut fi editata.";
                     else
                     {
@@ -119,7 +130,6 @@ namespace MVCAgenda.Managers.Consultations
                         return StringHelpers.SuccesMessage;
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -127,9 +137,8 @@ namespace MVCAgenda.Managers.Consultations
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Consultatia nu a putut fi editata.";
             }
-
         }
-        
+
         public async Task<string> DeleteAsync(int id)
         {
             try
@@ -140,7 +149,6 @@ namespace MVCAgenda.Managers.Consultations
                 }
                 else
                 {
-                   
                     var result = await _consultationServices.HideAsync(id);
                     if (result == false)
                         return "Consultatia nu a putut fi stearsa.";
@@ -151,7 +159,6 @@ namespace MVCAgenda.Managers.Consultations
                         return StringHelpers.SuccesMessage;
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -160,9 +167,13 @@ namespace MVCAgenda.Managers.Consultations
                 return "Consultatia nu a putut fi stearsa.";
             }
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Utils
+
         private async Task<bool> CheckExist(int id)
         {
             var model = await _consultationServices.GetAsync(id);
@@ -172,6 +183,7 @@ namespace MVCAgenda.Managers.Consultations
 
             return true;
         }
+
         #endregion
     }
 }

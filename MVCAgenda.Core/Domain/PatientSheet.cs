@@ -17,7 +17,7 @@ namespace MVCAgenda.Core.Domain
         public string AntecedentsP { get; set; }
 
 
-        [StringLength(20, MinimumLength = 1)] 
+        [StringLength(20, MinimumLength = 1)]
         public string NationalIdentificationNumber { get; set; }
 
 

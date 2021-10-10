@@ -11,17 +11,26 @@ namespace MVCAgenda.Controllers
     public class PatientSheetsController : Controller
     {
         #region Fields
+
         private readonly IPatientsSheetsManager _patientSheetManager;
+
         #endregion
+
         /*********************************************************************************/
+
         #region Constructor
+
         public PatientSheetsController(IPatientsSheetsManager patientSheetManager)
         {
             _patientSheetManager = patientSheetManager;
         }
+
         #endregion
+
         /*********************************************************************************/
+
         #region Details
+
         public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -33,9 +42,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /*********************************************************************************/
+
         #region Edit
+
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -67,6 +80,7 @@ namespace MVCAgenda.Controllers
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
+
                 return View(patientsheet);
             }
             else
@@ -74,6 +88,7 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
     }
 }

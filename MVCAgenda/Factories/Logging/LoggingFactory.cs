@@ -16,7 +16,7 @@ namespace MVCAgenda.Factories.Logging
                 CreatedOnUtc = log.CreatedOnUtc
             };
 
-            switch(log.LogLevel)
+            switch (log.LogLevel)
             {
                 case LogLevel.Information:
                     viewModel.LogLevel = "<span class=\"badge rounded-pill bg-info\">Action</span>";

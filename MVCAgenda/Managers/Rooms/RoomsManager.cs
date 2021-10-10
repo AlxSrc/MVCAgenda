@@ -16,21 +16,30 @@ namespace MVCAgenda.Managers.Rooms
         string user = "admin";
 
         #region Fields
+
         private readonly IRoomService _roomsServices;
         private readonly IRoomsFactory _roomsFactory;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /***********************************************************************************/
+
         #region Constructor
+
         public RoomsManager(IRoomService roomsServices, IRoomsFactory roomsFactory, ILoggerService loggerServices)
         {
             _roomsServices = roomsServices;
             _roomsFactory = roomsFactory;
             _logger = loggerServices;
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Methods
+
         public async Task<string> CreateAsync(RoomViewModel model)
         {
             try
@@ -69,7 +78,7 @@ namespace MVCAgenda.Managers.Rooms
                 var rooms = await _roomsServices.GetListAsync();
                 var roomsViewModel = new List<RoomViewModel>();
                 foreach (var room in rooms)
-                    if(room.Hidden == false)
+                    if (room.Hidden == false)
                         roomsViewModel.Add(await _roomsFactory.PrepereRoomViewModel(room));
 
                 return roomsViewModel;
@@ -117,7 +126,7 @@ namespace MVCAgenda.Managers.Rooms
                     };
 
                     var result = await _roomsServices.UpdateAsync(room);
-                    if(result == false)
+                    if (result == false)
                         return "Camera nu a putut fi editata.";
                     else
                     {
@@ -126,7 +135,6 @@ namespace MVCAgenda.Managers.Rooms
                         return StringHelpers.SuccesMessage;
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -134,7 +142,6 @@ namespace MVCAgenda.Managers.Rooms
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Camera nu a putut fi editata.";
             }
-
         }
 
         public async Task<string> DeleteAsync(int id)
@@ -157,7 +164,6 @@ namespace MVCAgenda.Managers.Rooms
                         return StringHelpers.SuccesMessage;
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -166,10 +172,14 @@ namespace MVCAgenda.Managers.Rooms
                 return "Camera nu a putut fi stearsa.";
             }
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Utils
-        private async  Task<bool> CheckExist(int id)
+
+        private async Task<bool> CheckExist(int id)
         {
             var model = await _roomsServices.GetAsync(id);
 
@@ -178,6 +188,7 @@ namespace MVCAgenda.Managers.Rooms
 
             return true;
         }
+
         #endregion
     }
 }

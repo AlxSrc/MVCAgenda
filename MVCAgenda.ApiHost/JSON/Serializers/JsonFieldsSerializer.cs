@@ -63,13 +63,13 @@ namespace MVCAgenda.ApiHost.JSON.Serializers
         private IList<string> GetPropertiesIntoList(string fields)
         {
             IList<string> properties = fields.ToLowerInvariant()
-                                             .Split(new[]
-                                                    {
-                                                        ','
-                                                    }, StringSplitOptions.RemoveEmptyEntries)
-                                             .Select(x => x.Trim())
-                                             .Distinct()
-                                             .ToList();
+                .Split(new[]
+                {
+                    ','
+                }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.Trim())
+                .Distinct()
+                .ToList();
 
             return properties;
         }

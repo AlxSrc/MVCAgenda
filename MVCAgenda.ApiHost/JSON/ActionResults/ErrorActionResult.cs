@@ -19,20 +19,19 @@ namespace MVCAgenda.ApiHost.JSON.ActionResults
         }
 
         public override void ExecuteResult(ActionContext context)
-        {            
+        {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var response = context.HttpContext.Response;            
-            response.StatusCode = (int) _statusCode;
+            var response = context.HttpContext.Response;
+            response.StatusCode = (int)_statusCode;
             response.ContentType = "application/json";
             using (TextWriter writer = new HttpResponseStreamWriter(response.Body, Encoding.UTF8))
             {
                 writer.Write(_jsonString);
             }
-
         }
     }
 }

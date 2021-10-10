@@ -11,17 +11,26 @@ namespace MVCAgenda.Service.Logins
     public class LoggerService : ILoggerService
     {
         #region Fields
+
         private readonly AgendaContext _context;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public LoggerService(AgendaContext context)
         {
             _context = context;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Methods
+
         public async Task<bool> CreateAsync(Log log)
         {
             try
@@ -35,8 +44,8 @@ namespace MVCAgenda.Service.Logins
             {
                 return false;
             }
-
         }
+
         public async Task<bool> CreateAsync(string message, string fullMessage, string ipAdress, LogLevel logLevel)
         {
             try
@@ -54,11 +63,10 @@ namespace MVCAgenda.Service.Logins
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
-
         }
 
         public async Task<Log> GetAsync(int id)
@@ -72,6 +80,7 @@ namespace MVCAgenda.Service.Logins
                 return null;
             }
         }
+
         public async Task<List<Log>> GetListAsync()
         {
             try
@@ -83,7 +92,7 @@ namespace MVCAgenda.Service.Logins
                 return null;
             }
         }
-        
+
         public async Task<bool> UpdateAsync(Log log)
         {
             try
@@ -97,7 +106,7 @@ namespace MVCAgenda.Service.Logins
                 return false;
             }
         }
-       
+
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -111,6 +120,7 @@ namespace MVCAgenda.Service.Logins
                 return false;
             }
         }
+
         #endregion
     }
 }

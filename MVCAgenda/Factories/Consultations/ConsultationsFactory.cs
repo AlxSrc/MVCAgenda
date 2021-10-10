@@ -35,6 +35,7 @@ namespace MVCAgenda.Factories.Consultations
             };
             return consultationViewModel;
         }
+
         public async Task<ConsultationEditViewModel> PrepereConsultationEditDetailsViewModel(Consultation consultation)
         {
             var consultationViewModel = new ConsultationEditViewModel()

@@ -12,17 +12,26 @@ namespace MVCAgenda.Controllers
     public class PatientsController : Controller
     {
         #region Fields
+
         private readonly IPatientsManager _patientManager;
+
         #endregion
+
         /*********************************************************************************/
+
         #region Constructor
+
         public PatientsController(IPatientsManager patientManager)
         {
             _patientManager = patientManager;
         }
+
         #endregion
+
         /*********************************************************************************/
+
         #region Create
+
         public IActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
@@ -49,6 +58,7 @@ namespace MVCAgenda.Controllers
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
+
                 return View(patient);
             }
             else
@@ -56,9 +66,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /*********************************************************************************/
+
         #region Read
+
         [HttpPost]
         public string Index(string searchString)
         {
@@ -88,9 +102,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /*********************************************************************************/
+
         #region Edit
+
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -122,6 +140,7 @@ namespace MVCAgenda.Controllers
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
+
                 return View(patientViewModel);
             }
             else
@@ -129,8 +148,11 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /*********************************************************************************/
+
         #region Delete
 
         // POST: Pacienti/Delete/5
@@ -154,6 +176,7 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
     }
 }

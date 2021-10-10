@@ -15,18 +15,26 @@ namespace MVCAgenda.Controllers
     public class MedicsController : Controller
     {
         #region Fields
+
         private readonly IMedicsManager _medicsManager;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructors
+
         public MedicsController(IMedicsManager medicsManager)
         {
             _medicsManager = medicsManager;
         }
 
         #endregion
+
         /**************************************************************************************/
+
         #region Create
+
         public IActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
@@ -48,11 +56,12 @@ namespace MVCAgenda.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = await _medicsManager.CreateAsync(medic);
-                    if(result == StringHelpers.SuccesMessage)
+                    if (result == StringHelpers.SuccesMessage)
                         return RedirectToAction("Manage", "Home");
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
+
                 return View(medic);
             }
             else
@@ -60,9 +69,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Read
+
         public async Task<IActionResult> Details(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -74,9 +87,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Update
+
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -95,7 +112,6 @@ namespace MVCAgenda.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-
                 if (ModelState.IsValid)
                 {
                     var result = await _medicsManager.UpdateAsync(medic);
@@ -104,6 +120,7 @@ namespace MVCAgenda.Controllers
                     else
                         ModelState.AddModelError(string.Empty, result);
                 }
+
                 return View(medic);
             }
             else
@@ -111,9 +128,13 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Delete
+
         public async Task<IActionResult> Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -146,6 +167,7 @@ namespace MVCAgenda.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
         #endregion
     }
 }

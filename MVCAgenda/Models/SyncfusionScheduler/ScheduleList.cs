@@ -13,7 +13,9 @@ namespace MVCAgenda.Models.SyncfusionScheduler
         }
 
         #region Lists
+
         public List<ScheduleEventData> AppointmentsSchedule { get; set; }
+
         #endregion
     }
 }

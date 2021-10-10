@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.EntityFrameworkCore;
-
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
@@ -16,21 +14,31 @@ namespace MVCAgenda.Service.Appointments
     public class AppointmentService : IAppointmentService
     {
         private string user = "TestUser";
+
         #region Fields
+
         private string msg;
         private readonly AgendaContext _context;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /**************************************************************************************/
+
         #region Constructor
+
         public AppointmentService(AgendaContext context, ILoggerService logger)
         {
             _context = context;
             _logger = logger;
         }
+
         #endregion
+
         /**************************************************************************************/
+
         #region Methods
+
         public async Task<bool> CreateAsync(Appointment appointment)
         {
             try
@@ -39,10 +47,10 @@ namespace MVCAgenda.Service.Appointments
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Create.ToString()}";
-                await _logger.CreateAsync(msg, ex.Message, null,LogLevel.Error);
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
         }
@@ -73,13 +81,13 @@ namespace MVCAgenda.Service.Appointments
         /// <param name="Daily">Get daily appointments where start date = system.date</param>
         /// <param name="Hidden">Get deleted appointments</param>
         /// <returns></returns>
-        public async Task<List<Appointment>> GetFiltredListAsync(DateTime? searchByAppointmentStartDate = null, 
-            DateTime? searchByAppointmentEndDate = null, 
-            int? searchByRoom = null, 
-            int? searchByMedic = null, 
-            string searchByProcedure = null, 
-            int? id = null, 
-            bool? Daily = null, 
+        public async Task<List<Appointment>> GetFiltredListAsync(DateTime? searchByAppointmentStartDate = null,
+            DateTime? searchByAppointmentEndDate = null,
+            int? searchByRoom = null,
+            int? searchByMedic = null,
+            string searchByProcedure = null,
+            int? id = null,
+            bool? Daily = null,
             bool? Hidden = null)
         {
             try
@@ -123,7 +131,7 @@ namespace MVCAgenda.Service.Appointments
                 return new List<Appointment>();
             }
         }
-        
+
         public async Task<bool> UpdateAsync(Appointment appointment)
         {
             try
@@ -139,7 +147,7 @@ namespace MVCAgenda.Service.Appointments
                 return false;
             }
         }
-        
+
         public async Task<bool> HideAsync(int id)
         {
             try
@@ -175,19 +183,22 @@ namespace MVCAgenda.Service.Appointments
         }
 
         #endregion
+
         /**************************************************************************************/
+
         #region Utils
+
         public async Task<string> SearchAppointmentAsync(int medicId, int roomId, DateTime startDate, DateTime endDate)
         {
             string foundAppointment = StringHelpers.SuccesMessage;
 
             //Search a medic, date, h
             var appointmentsM = await _context.Appointments
-                        .Where(p => p.MedicId == medicId)
-                        .Where(p => p.StartDate == startDate)
-                        //.Where(p => p.EndDate == endDate)
-                        .Where(p => p.Hidden == false)
-                        .ToListAsync();
+                .Where(p => p.MedicId == medicId)
+                .Where(p => p.StartDate == startDate)
+                //.Where(p => p.EndDate == endDate)
+                .Where(p => p.Hidden == false)
+                .ToListAsync();
 
             if (appointmentsM.Count >= 1)
             {
@@ -198,11 +209,11 @@ namespace MVCAgenda.Service.Appointments
 
             //Search a room, date, h
             var appointmentsR = await _context.Appointments
-                        .Where(p => p.RoomId == roomId)
-                        .Where(p => p.StartDate == startDate)
-                        //.Where(p => p.EndDate == endDate)
-                        .Where(p => p.Hidden == false)
-                        .ToListAsync();
+                .Where(p => p.RoomId == roomId)
+                .Where(p => p.StartDate == startDate)
+                //.Where(p => p.EndDate == endDate)
+                .Where(p => p.Hidden == false)
+                .ToListAsync();
 
             if (appointmentsR.Count >= 1)
             {
@@ -213,6 +224,7 @@ namespace MVCAgenda.Service.Appointments
 
             return foundAppointment;
         }
+
         #endregion
     }
 }

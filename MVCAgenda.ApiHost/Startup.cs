@@ -32,24 +32,20 @@ namespace MVCAgenda.ApiHost
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
             services.AddDbContext<AgendaContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("AgendaContext")));
+                options.UseSqlServer(Configuration.GetConnectionString("AgendaContext")));
 
             string connectionString = Configuration.GetConnectionString("AgendaContext");
             services.AddDbContext<AgendaContext>(c => c.UseSqlServer(connectionString));
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MVCAgenda.ApiHost", Version = "v1" });
-            });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "MVCAgenda.ApiHost", Version = "v1" }); });
 
             //services
             services.AddScoped<ILoggerService, LoggerService>();
             services.AddScoped<IPatientService, PatientService>();
-            services.AddScoped<IJsonFieldsSerializer, JsonFieldsSerializer>(); 
+            services.AddScoped<IJsonFieldsSerializer, JsonFieldsSerializer>();
 
             //Factories
             services.AddScoped<IPatientsFactory, PatientsFactory>();
@@ -71,10 +67,7 @@ namespace MVCAgenda.ApiHost
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

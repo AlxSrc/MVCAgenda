@@ -10,7 +10,9 @@ namespace MVCAgenda.Models.Accounts.Roles
         }
 
         #region Param
+
         public List<UserRolesViewModel> Users { get; set; }
+
         #endregion
     }
 }

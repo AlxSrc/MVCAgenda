@@ -10,7 +10,7 @@ namespace MVCAgenda.ApiHost.Factories.Patients
             PatientDto patientDTO = new PatientDto()
             {
                 Id = patient.Id,
-                PatientSheetId  = patient.PatientSheetId,
+                PatientSheetId = patient.PatientSheetId,
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
                 PhoneNumber = patient.PhoneNumber,

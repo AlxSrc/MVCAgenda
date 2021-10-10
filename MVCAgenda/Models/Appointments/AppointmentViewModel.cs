@@ -65,12 +65,12 @@ namespace MVCAgenda.Models.Appointments
 
 
         [DisplayName("Procedura")]
-        [Required] 
+        [Required]
         public string Procedure { get; set; }
 
 
         [DisplayName("Efectuată")]
-        [Required] 
+        [Required]
         public bool Made { get; set; }
 
         [DisplayName("Efectuată")]
@@ -78,12 +78,12 @@ namespace MVCAgenda.Models.Appointments
 
         [StringLength(30, MinimumLength = 1)]
         [DisplayName("Programare realizată de")]
-        [Required] 
+        [Required]
         public string ResponsibleForAppointment { get; set; }
 
 
         [DisplayName("Data creeare programare")]
-        [Required] 
+        [Required]
         public DateTime AppointmentCreationDate { get; set; }
 
 

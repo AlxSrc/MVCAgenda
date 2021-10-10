@@ -11,10 +11,12 @@ namespace MVCAgenda.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
+
         public UsersController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
         }
+
         public async Task<IActionResult> Index()
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);

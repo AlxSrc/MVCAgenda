@@ -1,7 +1,5 @@
 ﻿var scheduler = (function ($) {
 
-    return {
-
-    }
+    return {}
 
 })(jQuery);

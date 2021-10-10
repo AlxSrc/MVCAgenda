@@ -16,21 +16,30 @@ namespace MVCAgenda.Managers.Patients
         string user = "TestLogging";
 
         #region Fields
+
         private readonly IPatientService _patientServices;
         private readonly IPatientsFactory _patientFactory;
         private readonly ILoggerService _logger;
+
         #endregion
+
         /***********************************************************************************/
+
         #region Constructor
+
         public PatientsManager(IPatientService patientServices, IPatientsFactory patientFactory, ILoggerService loggerServices)
         {
             _patientServices = patientServices;
             _patientFactory = patientFactory;
             _logger = loggerServices;
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Methods
+
         public async Task<string> CreateAsync(PatientViewModel patientViewModel)
         {
             try
@@ -57,14 +66,14 @@ namespace MVCAgenda.Managers.Patients
                     };
 
                     var result = await _patientServices.CreateAsync(patient);
-                    if(result == false)
+                    if (result == false)
                         return "Pacientul nu a putut fi adaugat.";
                     else
                     {
                         msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Create}, Patient: {patient.Id}";
                         await _logger.CreateAsync(msg, null, null, LogLevel.Information);
                         return StringHelpers.SuccesMessage;
-                    }    
+                    }
                 }
             }
             catch (Exception exception)
@@ -74,7 +83,7 @@ namespace MVCAgenda.Managers.Patients
                 return "Pacientul nu a putut fi adaugat.";
             }
         }
-        
+
         public async Task<PatientsViewModel> GetListAsync(string searchByName = null, string searchByPhoneNumber = null, string searchByEmail = null, bool? includeBlackList = null, bool? isDeleted = null)
         {
             try
@@ -93,14 +102,14 @@ namespace MVCAgenda.Managers.Patients
                 };
                 return patientsViewModel;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientsViewModel();
             }
         }
-        
+
         public async Task<PatientViewModel> GetDetailsAsync(int id)
         {
             try
@@ -108,17 +117,18 @@ namespace MVCAgenda.Managers.Patients
                 return _patientFactory.PreperePatientViewModel(await _patientServices.GetAsync(id));
             }
             catch (Exception exception)
-            {                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}: {id}";
+            {
+                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientViewModel();
             }
         }
-        
+
         public async Task<string> UpdateAsync(PatientViewModel patientViewModel)
         {
             try
             {
-                if(await CheckExist(patientViewModel.Id) != true)
+                if (await CheckExist(patientViewModel.Id) != true)
                 {
                     return "Pacientul nu a putut fi gasit.";
                 }
@@ -146,7 +156,6 @@ namespace MVCAgenda.Managers.Patients
                         return StringHelpers.SuccesMessage;
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -154,9 +163,8 @@ namespace MVCAgenda.Managers.Patients
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi editat.";
             }
-            
         }
-        
+
         public async Task<string> DeleteAsync(int id)
         {
             try
@@ -167,7 +175,6 @@ namespace MVCAgenda.Managers.Patients
                 }
                 else
                 {
-                    
                     var result = await _patientServices.HideAsync(id);
                     if (result == false)
                         return "Pacientul nu a putut fi sters.";
@@ -178,7 +185,6 @@ namespace MVCAgenda.Managers.Patients
                         return StringHelpers.SuccesMessage;
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -187,9 +193,13 @@ namespace MVCAgenda.Managers.Patients
                 return "Pacientul nu a putut fi sters.";
             }
         }
+
         #endregion
+
         /***********************************************************************************/
+
         #region Utils
+
         private async Task<bool> CheckExist(int id)
         {
             var model = await _patientServices.GetAsync(id);
@@ -199,6 +209,7 @@ namespace MVCAgenda.Managers.Patients
 
             return true;
         }
+
         #endregion
     }
 }
