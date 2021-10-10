@@ -63,10 +63,15 @@
 						<i class="fas fa-bars"></i>
 					</div>
 					<div class="user-menu">
-						<a href="#">
+						<a href="#" data-bs-toggle="dropdown">
 							<span>@User.Identity.Name</span>
 							<i class="fas fa-caret-down"></i>
 						</a>
+						<ul class="dropdown-menu dropdown-menu-end">
+							<li>
+								<a asp-action="Logout" asp-controller="Account" class="dropdown-item">Deconectare</a>
+							</li>
+						</ul>
 					</div>
 				</header>
 				<main class="container-fluid" role="main">

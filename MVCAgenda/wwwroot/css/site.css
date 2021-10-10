@@ -238,14 +238,14 @@ body .vr-left {
     margin-left: auto;
 }
 
-#AppContent .main-header .user-menu a {
+#AppContent .main-header .user-menu > a {
     display: block;
     height: 60px;
     line-height: 60px;
     text-decoration: none;
 }
 
-#AppContent .main-header .user-menu a i {
+#AppContent .main-header .user-menu a > i {
     width: 10px;
     height: 10px;
     line-height: 10px;
@@ -255,11 +255,11 @@ body .vr-left {
     transition: var(--transition);
 }
 
-#AppContent .main-header .user-menu a span {
+#AppContent .main-header .user-menu a > span {
     vertical-align: middle;
 }
 
-#AppContent .main-header .user-menu a:hover i {
+#AppContent .main-header .user-menu > a:hover i {
     opacity: 1;
     transition: var(--transition);
 }
