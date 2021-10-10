@@ -60,7 +60,8 @@
 
 .input-group input,
 .input-group select,
-.input-group textarea {
+.input-group textarea,
+.input-group-text {
     border-color: #f7f7f7;
 }
 
@@ -104,6 +105,7 @@ body .vr-left {
 
 #AppContent {
     display: flex;
+    /* height: 100vh; */
 }
 
 #AppContent > .sidebar {

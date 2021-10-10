@@ -1,5 +1,4 @@
 ﻿@using MVCAgenda.Extensions
-@using MVCAgenda.Controllers
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -15,9 +14,6 @@
 		<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/bootstrap4.css"/>
 		<!-- Syncfusion Essential JS 2 Scripts -->
 		<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
-
-
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
 		@await RenderSectionAsync("Styles", required: false)
 	</head>
@@ -81,69 +77,6 @@
 				</footer>
 			</div>
 		</div>
-		@* <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom"> *@
-		@* 	<div class="container g-0 custom-header"> *@
-		@* 		@if (User.Identity.IsAuthenticated) *@
-		@* 		{ *@
-		@* 			<div class="row justify-content-between"> *@
-		@* 				<div class="col-auto"> *@
-		@* 					<ul class="nav pills"> *@
-		@* *@
-		@* 					</ul> *@
-		@* *@
-		@* *@
-		@* 				</div> *@
-		@* *@
-		@* 				<div class="col-auto"> *@
-		@* 					<ul class="nav pills"> *@
-		@* *@
-		@* 						<li class="item"> *@
-		@* 							<img class="wellcome-image" src="https://imgix.bustle.com/uploads/image/2021/7/16/07062a59-9fd1-41f8-9c99-e4c0f5d80c05-06546552-d025-4a16-ab18-d252ff01fa90-getty-1205000579.jpeg?w=800&fit=crop&crop=focalpoint&auto=format%2Ccompress&fp-x=0.4587&fp-y=0.754"> *@
-		@* 						</li> *@
-		@* 						<li class="item"> *@
-		@* 							<a class="link wellcome-name" asp-controller="UserRoles" asp-action="Index"> *@
-		@* 								@if (String.Compare(DateTime.Now.ToString("t"), "12:00") < 0) *@
-		@* 								{ *@
-		@* 									<text>Bună diminea, @User.Identity.Name</text> *@
-		@* 								} *@
-		@* 								else if (String.Compare(DateTime.Now.ToString("t"), "18:00") > 0) *@
-		@* 								{ *@
-		@* 									<text>Bună seara, @User.Identity.Name</text> *@
-		@* 								} *@
-		@* 								else *@
-		@* 								{ *@
-		@* 									<text>Bună ziua, @User.Identity.Name</text> *@
-		@* 								} *@
-		@* 							</a> *@
-		@* 						</li> *@
-		@* *@
-		@* 						<li class="item"> *@
-		@* 							<a class="btn btn-outline-danger"asp-controller="Account" asp-action="Logout">Deconectare</a> *@
-		@* 						</li> *@
-		@* 					</ul> *@
-		@* 				</div> *@
-		@* 			</div> *@
-		@* 		} *@
-		@* 		else *@
-		@* 		{ *@
-		@* 			<ul class="nav pills"> *@
-		@* 				<li class="item"> *@
-		@* 					<a class="item" asp-controller="Account" asp-action="Login">Conectare</a> *@
-		@* 				</li> *@
-		@* 				<li class="item"> *@
-		@* 					<a class="item" asp-controller="Account" asp-action="Register">Register</a> *@
-		@* 				</li> *@
-		@* 			</ul> *@
-		@* 		} *@
-		@* 	</div> *@
-		@* </header> *@
-		@* <footer class="border-top footer text-muted"> *@
-		@*     <div class="container main-footer text-center"> *@
-		@*         &copy; 2021 - Agenda online, Clinica Esderm - <a class="main-footer"asp-controller="Home" asp-action="Privacy">Privacy</a> *@
-		@*     </div> *@
-		@* </footer> *@
-
-
 		<script src="~/lib/jquery/dist/jquery.min.js"></script>
 		<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="~/js/site.js" asp-append-version="true"></script>
