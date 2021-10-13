@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.Factories.Logging;
 using MVCAgenda.Managers.Logging;
 using MVCAgenda.Models.Logging;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace MVCAgenda.Controllers
         #region Fields
 
         private readonly ILoggingManager _loggingManager;
+        private readonly ILoggingFactory _loggingFactory;
 
         #endregion
 
@@ -19,9 +21,10 @@ namespace MVCAgenda.Controllers
 
         #region Constructor
 
-        public LoggingController(ILoggingManager loggingManager)
+        public LoggingController(ILoggingManager loggingManager, ILoggingFactory loggingFactory)
         {
             _loggingManager = loggingManager;
+            _loggingFactory = loggingFactory;
         }
 
         #endregion
@@ -32,14 +35,7 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _loggingManager.GetLogsListViewModel());
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _loggingFactory.GetViewModel());
         }
 
         #endregion

@@ -43,10 +43,34 @@
 							<span>Calendar</span>
 						</a>
 					</li>
-					<li class="item @(Html.IsSelected("Home", "Manage") ? "active" : null)">
-						<a asp-controller="Home" asp-action="Manage" class="text">
+					<li class="item @(Html.IsSelected("Manage,Medics,Rooms,RoleManager,UserRoles,Logging", "Manage") ? "active" : null)">
+						<a asp-controller="Manage" asp-action="Manage" class="text">
 							<i class="fas fa-cogs"></i>
 							<span>Administrare</span>
+						</a>
+					</li>
+					<li class="item @(Html.IsSelected("Medics", null) ? "active" : null)">
+						<a asp-controller="Medics" asp-action="Index" class="text">
+							<i class="fas fa-user-md"></i>
+							<span>Personalul</span>
+						</a>
+					</li>
+					<li class="item @(Html.IsSelected("Rooms", null) ? "active" : null)">
+						<a asp-controller="Rooms" asp-action="Index" class="text">
+							<i class="fas fa-tag"></i>
+							<span>Camere</span>
+						</a>
+					</li>
+					<li class="item @(Html.IsSelected("RoleManager,UserRoles", null) ? "active" : null)">
+						<a asp-controller="RoleManager" asp-action="Index" class="text">
+							<i class="fas fa-user-tag"></i>
+							<span>Administrarea rorulilor</span>
+						</a>
+					</li>
+					<li class="item @(Html.IsSelected("Logging", null) ? "active" : null)">
+						<a asp-controller="Logging" asp-action="Index" class="text">
+							<i class="fas fa-info-circle"></i>
+							<span>Loguri</span>
 						</a>
 					</li>
 				</ul>

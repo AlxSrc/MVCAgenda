@@ -18,7 +18,6 @@ namespace MVCAgenda.Managers.Patients
         #region Fields
 
         private readonly IPatientService _patientServices;
-        private readonly IPatientsFactory _patientFactory;
         private readonly ILoggerService _logger;
 
         #endregion
@@ -27,10 +26,9 @@ namespace MVCAgenda.Managers.Patients
 
         #region Constructor
 
-        public PatientsManager(IPatientService patientServices, IPatientsFactory patientFactory, ILoggerService loggerServices)
+        public PatientsManager(IPatientService patientServices, ILoggerService loggerServices)
         {
             _patientServices = patientServices;
-            _patientFactory = patientFactory;
             _logger = loggerServices;
         }
 
@@ -81,46 +79,6 @@ namespace MVCAgenda.Managers.Patients
                 var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi adaugat.";
-            }
-        }
-
-        public async Task<PatientsViewModel> GetListAsync(string searchByName = null, string searchByPhoneNumber = null, string searchByEmail = null, bool? includeBlackList = null, bool? isDeleted = null)
-        {
-            try
-            {
-                var patientsListViewModel = new List<PatientListItemViewModel>();
-                var patientsList = await _patientServices.GetListAsync(searchByName, searchByPhoneNumber, searchByEmail, includeBlackList, isDeleted);
-
-                foreach (var patient in patientsList)
-                    patientsListViewModel.Add(_patientFactory.PreperePatientListItemViewModel(patient));
-
-                var patientsViewModel = new PatientsViewModel()
-                {
-                    PatientsList = patientsListViewModel,
-                    Hidden = isDeleted,
-                    Blacklist = includeBlackList
-                };
-                return patientsViewModel;
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new PatientsViewModel();
-            }
-        }
-
-        public async Task<PatientViewModel> GetDetailsAsync(int id)
-        {
-            try
-            {
-                return _patientFactory.PreperePatientViewModel(await _patientServices.GetAsync(id));
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}: {id}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new PatientViewModel();
             }
         }
 

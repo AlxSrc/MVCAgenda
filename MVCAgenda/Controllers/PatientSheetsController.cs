@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Core.Helpers;
+using MVCAgenda.Factories.PatientsSheet;
 using MVCAgenda.Managers.PatientsSheets;
 using MVCAgenda.Models.PatientSheets;
 
@@ -13,6 +14,7 @@ namespace MVCAgenda.Controllers
         #region Fields
 
         private readonly IPatientsSheetsManager _patientSheetManager;
+        private readonly IPatientsSheetsFactory _patientSheetFactory;
 
         #endregion
 
@@ -20,9 +22,10 @@ namespace MVCAgenda.Controllers
 
         #region Constructor
 
-        public PatientSheetsController(IPatientsSheetsManager patientSheetManager)
+        public PatientSheetsController(IPatientsSheetsManager patientSheetManager, IPatientsSheetsFactory patientSheetFactory)
         {
             _patientSheetManager = patientSheetManager;
+            patientSheetFactory = _patientSheetFactory;
         }
 
         #endregion
@@ -33,14 +36,8 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _patientSheetManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _patientSheetFactory.PrepereDetailsViewModelAsync(id));
+
         }
 
         #endregion
@@ -51,42 +48,29 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _patientSheetManager.GetEditDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _patientSheetFactory.PrepereEditViewModelAsync(id));
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PatientSheetEditViewModel patientsheet)
         {
-            if (User.Identity.IsAuthenticated)
+            if (id != patientsheet.Id)
             {
-                if (id != patientsheet.Id)
-                {
-                    return NotFound();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    var result = await _patientSheetManager.UpdateAsync(patientsheet);
-                    if (result == StringHelpers.SuccesMessage)
-                        return RedirectToAction("Details", "PatientSheet", new { id = patientsheet.Id });
-                    else
-                        ModelState.AddModelError(string.Empty, result);
-                }
-
-                return View(patientsheet);
+                return NotFound();
             }
-            else
+
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Login", "Account");
+                var result = await _patientSheetManager.UpdateAsync(patientsheet);
+                if (result == StringHelpers.SuccesMessage)
+                    return RedirectToAction("Details", "PatientSheet", new { id = patientsheet.Id });
+                else
+                    ModelState.AddModelError(string.Empty, result);
             }
+
+            return View(patientsheet);
         }
 
         #endregion

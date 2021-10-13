@@ -71,34 +71,6 @@ namespace MVCAgenda.Managers.Consultations
             }
         }
 
-        public async Task<ConsultationDetailsViewModel> GetDetailsAsync(int id)
-        {
-            try
-            {
-                return await _consultationFactory.PrepereConsultationDetailsViewModel(await _consultationServices.GetAsync(id));
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new ConsultationDetailsViewModel();
-            }
-        }
-
-        public async Task<ConsultationEditViewModel> GetEditDetailsAsync(int id)
-        {
-            try
-            {
-                return await _consultationFactory.PrepereConsultationEditDetailsViewModel(await _consultationServices.GetAsync(id));
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new ConsultationEditViewModel();
-            }
-        }
-
         public async Task<string> UpdateAsync(ConsultationEditViewModel consultationViewModel)
         {
             try

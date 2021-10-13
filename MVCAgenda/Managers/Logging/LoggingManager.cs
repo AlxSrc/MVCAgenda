@@ -11,7 +11,6 @@ namespace MVCAgenda.Managers.Logging
         #region Fields
 
         private readonly ILoggerService _logServices;
-        private readonly ILoggingFactory _logFactory;
 
         #endregion
 
@@ -19,10 +18,9 @@ namespace MVCAgenda.Managers.Logging
 
         #region Constructor
 
-        public LoggingManager(ILoggerService logServices, ILoggingFactory logFactory)
+        public LoggingManager(ILoggerService logServices)
         {
             _logServices = logServices;
-            _logFactory = logFactory;
         }
 
         #endregion
@@ -32,23 +30,5 @@ namespace MVCAgenda.Managers.Logging
         #region Methods
 
         #endregion
-
-        public async Task<LogsViewModel> GetLogsListViewModel()
-        {
-            try
-            {
-                var logsViewModel = new List<LogListItemViewModel>();
-                var logs = await _logServices.GetListAsync();
-
-                foreach (var log in logs)
-                    logsViewModel.Add(_logFactory.PrepereLogViewModel(log));
-
-                return new LogsViewModel() { Logs = logsViewModel };
-            }
-            catch
-            {
-                return new LogsViewModel() { Logs = new List<LogListItemViewModel>() };
-            }
-        }
     }
 }

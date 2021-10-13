@@ -72,40 +72,6 @@ namespace MVCAgenda.Managers.Medics
             }
         }
 
-        public async Task<List<MedicViewModel>> GetListAsync()
-        {
-            try
-            {
-                var medics = await _medicsServices.GetListAsync();
-                var MedicsViewModel = new List<MedicViewModel>();
-                foreach (var medic in medics)
-                    if (medic.Hidden == false)
-                        MedicsViewModel.Add(await _medicsFactory.PrepereMedicViewModel(medic));
-
-                return MedicsViewModel;
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new List<MedicViewModel>();
-            }
-        }
-
-        public async Task<MedicViewModel> GetDetailsAsync(int id)
-        {
-            try
-            {
-                return await _medicsFactory.PrepereMedicViewModel(await _medicsServices.GetAsync(id));
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new MedicViewModel();
-            }
-        }
-
         public async Task<string> UpdateAsync(MedicViewModel model)
         {
             try

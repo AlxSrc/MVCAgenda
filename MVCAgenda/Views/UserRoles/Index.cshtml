@@ -1,22 +1,50 @@
-﻿@{
-	ViewData["Title"] = "Index";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model MVCAgenda.Models.Accounts.Roles.UsersRolesViewModel
+
+@{
+	var pageTitle = "Rolurile utilizatorilor";
+
+	ViewData["Title"] = pageTitle;
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-	@model MVCAgenda.Models.Accounts.Roles.UsersRolesViewModel
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Acasa</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Manage" asp-controller="Manage">
+				<i class="fas fa-cogs"></i>
+				<span>Administreaza</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
-    
-	<h2 class="text-color m-3">Rolurile utilizatorilor</h2>
-	<div class="main box">
-		<table class="table">
-			<thead class="borderless-table">
+
+<section class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-user-tag"></i>
+			Rolurile utilizatorilor
+		</strong>
+		<div class="actions">
+			
+		</div>
+	</header>
+	<div class="content">
+		<table>
+			<thead>
 				<tr>
 					<th>
 						@Html.DisplayNameFor(model => model.Users[0].Email)
 					</th>
-					<th class="column-center">
+					<th>
 						@Html.DisplayNameFor(model => model.Users[0].Roles)
 					</th>
 					<th></th>
@@ -40,4 +68,4 @@
 			</tbody>
 		</table>
 	</div>
-}
+</section>

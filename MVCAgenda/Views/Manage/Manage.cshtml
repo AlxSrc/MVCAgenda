@@ -23,7 +23,7 @@
 <section class="section">
 	<header>
 		<strong class="title">
-			<i class="fas fa-user-friends"></i>
+			<i class="fas fa-user-md"></i>
 			Personalul
 		</strong>
 		<div class="actions">
@@ -57,10 +57,10 @@
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 										<li>
-											<a class="dropdown-item" asp-action="Edit" asp-controller="Medics" asp-route-id="@item.Id">Modifică medicul</a>
+											<a class="dropdown-item" asp-action="Edit" asp-controller="Medics" asp-route-id="@item.Id">Modifică</a>
 										</li>
 										<li>
-											<a class="dropdown-item" asp-action="Delete" asp-controller="Medics" asp-route-id="@item.Id">Șterge medicul</a>
+											<a class="dropdown-item" asp-action="Details" asp-controller="Medics" asp-route-id="@item.Id">Detalii medic</a>
 										</li>
 									</ul>
 								</div>
@@ -118,10 +118,10 @@
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 										<li>
-											<a class="dropdown-item" asp-action="Edit" asp-controller="Medics" asp-route-id="@item.Id">Modifică camera</a>
+											<a class="dropdown-item" asp-action="Edit" asp-controller="Rooms" asp-route-id="@item.Id">Modifică camera</a>
 										</li>
 										<li>
-											<a class="dropdown-item" asp-action="Delete" asp-controller="Medics" asp-route-id="@item.Id">Șterge camera</a>
+											<a class="dropdown-item" asp-action="Details" asp-controller="Rooms" asp-route-id="@item.Id">Detalii camera</a>
 										</li>
 									</ul>
 								</div>
@@ -142,38 +142,39 @@
 	</div>
 </section>
 
-<div class="main box">
+@if (User.IsInRole("Admin"))
+{
+	<section class="section">
+		<header>
+			<strong class="title">
+				<i class="fas fa-user-tag"></i>
+				Administrarea rorulilor
+			</strong>
+			<div class="actions">
+				<a asp-action="Index" asp-controller="UserRoles" class="btn btn-primary">
+					<i class="fas fa-tools"></i>
+					Modifică rolurile conturilor
+				</a>
+				<a asp-action="Index" asp-controller="RoleManager" class="btn btn-primary">
+					<i class="fas fa-users-cog"></i>
+					Modifică rolurile
+				</a>
+			</div>
+		</header>
+	</section>
 
-	<div class="container g-0">
-		<div class="row justify-content-between">
-			<div class="col-auto">
-				<h2 class="mb-3 text-center text-color">Administrarea rorulilor</h2>
+	<section class="section">
+		<header>
+			<strong class="title">
+				<i class="fas fa-info-circle"></i>
+				Loguri
+			</strong>
+			<div class="actions">
+				<a asp-action="Index" asp-controller="Logging" class="btn btn-primary">
+					<i class="fas fa-history"></i>
+					Lista cu loguri
+				</a>
 			</div>
-			<div class="col-auto">
-				<div class="btn-group" role="group" aria-label="Opțiuni">
-					@if (User.IsInRole("Admin"))
-					{
-						<a class="btn btn-main-color-filled" asp-controller="RoleManager" asp-action="Index">Modifică rolurile</a>
-					}
-					<a class="btn btn-main-color-filled" asp-controller="UserRoles" asp-action="Index">Modifică rolurile conturilor</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	@if (User.IsInRole("Admin"))
-	{
-		<div class="container g-0">
-			<div class="row justify-content-between">
-				<div class="col-auto">
-					<h2 class="mb-3 text-center text-color">Logs</h2>
-				</div>
-				<div class="col-auto">
-					<div class="btn-group" role="group" aria-label="Opțiuni">
-						<a class="btn btn-main-color-filled" asp-controller="Logging" asp-action="Index">List of Logs</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	}
-
-</div>
+		</header>
+	</section>
+}

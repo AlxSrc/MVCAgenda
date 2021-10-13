@@ -8,9 +8,6 @@ namespace MVCAgenda.Managers.Medics
     {
         Task<string> CreateAsync(MedicViewModel model);
 
-        Task<List<MedicViewModel>> GetListAsync();
-        Task<MedicViewModel> GetDetailsAsync(int id);
-
         Task<string> UpdateAsync(MedicViewModel model);
 
         Task<string> DeleteAsync(int id);

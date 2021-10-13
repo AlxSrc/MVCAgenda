@@ -71,40 +71,6 @@ namespace MVCAgenda.Managers.Rooms
             }
         }
 
-        public async Task<List<RoomViewModel>> GetListAsync()
-        {
-            try
-            {
-                var rooms = await _roomsServices.GetListAsync();
-                var roomsViewModel = new List<RoomViewModel>();
-                foreach (var room in rooms)
-                    if (room.Hidden == false)
-                        roomsViewModel.Add(await _roomsFactory.PrepereRoomViewModel(room));
-
-                return roomsViewModel;
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new List<RoomViewModel>();
-            }
-        }
-
-        public async Task<RoomViewModel> GetDetailsAsync(int id)
-        {
-            try
-            {
-                return await _roomsFactory.PrepereRoomViewModel(await _roomsServices.GetAsync(id));
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new RoomViewModel();
-            }
-        }
-
         public async Task<string> UpdateAsync(RoomViewModel model)
         {
             try

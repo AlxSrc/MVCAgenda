@@ -1,32 +1,58 @@
-﻿@{
-	ViewData["Title"] = "Lista of loggs";
+﻿@model MVCAgenda.Models.Logging.LogsViewModel
+
+@{
+	var pageTitle = "Lista cu loguri";
+
+	ViewData["Title"] = pageTitle;
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-	@model MVCAgenda.Models.Logging.LogsViewModel
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Acasa</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Manage" asp-controller="Manage">
+				<i class="fas fa-cogs"></i>
+				<span>Administreaza</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
-    
-	<div class="container g-0">
-		<div class="row justify-content-between">
-			<h2 class="text-color ms-4">Logs</h2>
+<section class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-info-circle"></i>
+			Loguri
+		</strong>
+		<div class="actions">
+			<button type="submit" class="btn btn-outline-primary" id="DeleteLogs">
+				<i class="far fa-trash-alt"></i>
+				Sterge logurile
+			</button>
 		</div>
-	</div>
-
-	<div class="main box">
-		<table class="table">
-			<thead class="borderless-table">
+	</header>
+	<div class="content">
+		<table>
+			<thead>
 				<tr>
-					<th class="center-content column-center">
+					<th>
 						@Html.DisplayNameFor(model => model.Logs[0].LogLevel)
 					</th>
-					<th class="column-center">
+					<th>
 						@Html.DisplayNameFor(model => model.Logs[0].CreatedOnUtc)
 					</th>
 					<th>
 						@Html.DisplayNameFor(model => model.Logs[0].ShortMessage)
 					</th>
-					<th class="column-center">
+					<th>
 						@Html.DisplayNameFor(model => model.Logs[0].IpAddress)
 					</th>
 					<th></th>
@@ -65,4 +91,4 @@
 			</tbody>
 		</table>
 	</div>
-}
+</section>

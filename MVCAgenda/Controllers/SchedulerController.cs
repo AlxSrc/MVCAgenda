@@ -3,6 +3,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.Factories.Medics;
+using MVCAgenda.Factories.Rooms;
 using MVCAgenda.Managers.Medics;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Managers.Scheduler;
@@ -20,6 +22,8 @@ namespace MVCAgenda.Controllers
         private readonly ISchedulerManager _schedulerManager;
         private readonly IRoomsManager _roomsManager;
         private readonly IMedicsManager _medicsManager;
+        private readonly IRoomsFactory _roomsFactory;
+        private readonly IMedicsFactory _medicsFactory;
 
         #endregion
 
@@ -27,11 +31,17 @@ namespace MVCAgenda.Controllers
 
         #region Constructor
 
-        public SchedulerController(ISchedulerManager schedulerManager, IRoomsManager roomsManager, IMedicsManager medicsManager)
+        public SchedulerController(ISchedulerManager schedulerManager, 
+            IRoomsManager roomsManager, 
+            IMedicsManager medicsManager,
+            IRoomsFactory roomsFactory,
+            IMedicsFactory medicsFactory)
         {
             _schedulerManager = schedulerManager;
             _roomsManager = roomsManager;
             _medicsManager = medicsManager;
+            _roomsFactory = roomsFactory;
+            _medicsFactory = medicsFactory;
         }
 
         #endregion
@@ -43,23 +53,12 @@ namespace MVCAgenda.Controllers
         [HttpPost]
         public async Task<JsonResult> AddData(ScheduleEventData ScheduleData)
         {
-            if (User.Identity.IsAuthenticated)
+            ScheduleData.User = User.Identity.Name;
+            var ressult = await _schedulerManager.CreateAsync(ScheduleData);
+            return new JsonResult(new
             {
-                ScheduleData.User = User.Identity.Name;
-                var ressult = await _schedulerManager.CreateAsync(ScheduleData);
-                return new JsonResult(new
-                {
-                    result = ressult,
-                }, new JsonSerializerOptions());
-            }
-            else
-            {
-                var ressult = "Pentru a adauga o programare trebuie sa fiti autenificat.";
-                return new JsonResult(new
-                {
-                    result = ressult,
-                }, new JsonSerializerOptions());
-            }
+                result = ressult,
+            }, new JsonSerializerOptions());
         }
 
         #endregion
@@ -70,58 +69,40 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (User.Identity.IsAuthenticated)
+            ViewData["RoomId"] = JsonConvert.SerializeObject(await _roomsFactory.PrepereListViewModelAsync(), new JsonSerializerSettings
             {
-                ViewData["RoomId"] = JsonConvert.SerializeObject(await _roomsManager.GetListAsync(), new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-                ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsManager.GetListAsync(), new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-
-                ViewBag.Employees = JsonConvert.SerializeObject(await _medicsManager.GetListAsync(), new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-
-                ViewBag.Resources = new string[] { "Employee" };
-                return View();
-            }
-            else
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+            ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(), new JsonSerializerSettings
             {
-                return RedirectToAction("Login", "Account");
-            }
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+
+            ViewBag.Employees = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(), new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+
+            ViewBag.Resources = new string[] { "Employee" };
+            return View();
         }
 
         public async Task<JsonResult> LoadData()
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                try
-                {
-                    var appointmentsList = await _schedulerManager.GetAsync();
-                    return new JsonResult(new
-                    {
-                        result = appointmentsList.AppointmentsSchedule,
-                    }, new JsonSerializerOptions());
-                }
-                catch
-                {
-                    return new JsonResult(new
-                    {
-                        Items = new List<ScheduleEventData>(),
-                    });
-                }
-            }
-
-            {
-                var ressult = "Trebuie sa fiti conectati.";
+                var appointmentsList = await _schedulerManager.GetAsync();
                 return new JsonResult(new
                 {
-                    result = ressult,
+                    result = appointmentsList.AppointmentsSchedule,
                 }, new JsonSerializerOptions());
+            }
+            catch
+            {
+                return new JsonResult(new
+                {
+                    Items = new List<ScheduleEventData>(),
+                });
             }
         }
 
@@ -134,23 +115,12 @@ namespace MVCAgenda.Controllers
         [HttpPost]
         public async Task<JsonResult> EditData(ScheduleEventData ScheduleData)
         {
-            if (User.Identity.IsAuthenticated)
+            ScheduleData.User = User.Identity.Name;
+            var ressult = await _schedulerManager.UpdateAsync(ScheduleData);
+            return new JsonResult(new
             {
-                ScheduleData.User = User.Identity.Name;
-                var ressult = await _schedulerManager.UpdateAsync(ScheduleData);
-                return new JsonResult(new
-                {
-                    result = ressult,
-                }, new JsonSerializerOptions());
-            }
-
-            {
-                var ressult = "Trebuie sa fiti conectati.";
-                return new JsonResult(new
-                {
-                    result = ressult,
-                }, new JsonSerializerOptions());
-            }
+                result = ressult,
+            }, new JsonSerializerOptions());
         }
 
         #endregion
@@ -162,22 +132,11 @@ namespace MVCAgenda.Controllers
         [HttpPost]
         public async Task<JsonResult> DeleteData(ScheduleEventData ScheduleData)
         {
-            if (User.Identity.IsAuthenticated)
+            var ressult = await _schedulerManager.HideAsync(ScheduleData.Id);
+            return new JsonResult(new
             {
-                var ressult = await _schedulerManager.HideAsync(ScheduleData.Id);
-                return new JsonResult(new
-                {
-                    result = ressult,
-                }, new JsonSerializerOptions());
-            }
-
-            {
-                var ressult = "Trebuie sa fiti conectati.";
-                return new JsonResult(new
-                {
-                    result = ressult,
-                }, new JsonSerializerOptions());
-            }
+                result = ressult,
+            }, new JsonSerializerOptions());
         }
 
         #endregion

@@ -2,14 +2,14 @@
 using MVCAgenda.Models.Consultations;
 using MVCAgenda.Models.PatientSheets;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MVCAgenda.Factories.PatientsSheet
 {
     public interface IPatientsSheetsFactory
     {
-        PatientSheetDetailsViewModel PreperePatientSheetDetailsViewModel(PatientSheet model, Patient patient, List
-            <ConsultationViewModel> consultations);
+        Task<PatientSheetDetailsViewModel> PrepereDetailsViewModelAsync(int id);
 
-        PatientSheetEditViewModel PreperePatientSheetEditViewModel(PatientSheet model);
+        Task<PatientSheetEditViewModel> PrepereEditViewModelAsync(int id);
     }
 }

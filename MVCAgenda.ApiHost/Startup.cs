@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MVCAgenda.ApiHost.Factories.Patients;
 using MVCAgenda.ApiHost.JSON.Serializers;
+using MVCAgenda.ApiHost.Maps;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Service.Patients;
@@ -34,6 +35,8 @@ namespace MVCAgenda.ApiHost
         {
             services.AddControllers();
 
+            //services.AddControllers().AddNewtonsoftJson();
+
             services.AddDbContext<AgendaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AgendaContext")));
 
@@ -46,6 +49,7 @@ namespace MVCAgenda.ApiHost
             services.AddScoped<ILoggerService, LoggerService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IJsonFieldsSerializer, JsonFieldsSerializer>();
+            services.AddScoped<IJsonPropertyMapper, JsonPropertyMapper>(); 
 
             //Factories
             services.AddScoped<IPatientsFactory, PatientsFactory>();

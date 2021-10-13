@@ -34,16 +34,9 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var viewModel = new RolesManagerViewModel();
-                viewModel.RolesList = await _roleManager.Roles.ToListAsync();
-                return View(viewModel);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            var viewModel = new RolesManagerViewModel();
+            viewModel.RolesList = await _roleManager.Roles.ToListAsync();
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -61,25 +54,18 @@ namespace MVCAgenda.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string userId)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                IdentityRole role = await _roleManager.FindByIdAsync(userId);
+            IdentityRole role = await _roleManager.FindByIdAsync(userId);
 
-                if (role != null)
-                {
-                    IdentityResult result = await _roleManager.DeleteAsync(role);
-                    if (result.Succeeded)
-                        return RedirectToAction("Index");
-                    else
-                        return null;
-                }
+            if (role != null)
+            {
+                IdentityResult result = await _roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                    return RedirectToAction("Index");
                 else
                     return null;
             }
             else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+                return null;
         }
 
         #endregion

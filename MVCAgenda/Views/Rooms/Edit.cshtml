@@ -1,117 +1,80 @@
-﻿@{
-	ViewData["Title"] = "Edit";
+﻿@model MVCAgenda.Models.Rooms.RoomViewModel
+
+@{
+	var pageTitle = "Modifică camera";
+
+	ViewData["Title"] = pageTitle;
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-	@model MVCAgenda.Models.Rooms.RoomViewModel
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Acasa</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Manage" asp-controller="Manage">
+				<i class="fas fa-cogs"></i>
+				<span>Administreaza</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
-    
-	<div class="main box">
-		<div class=" mt-3 d-lg-flex justify-content-lg-center">
-			<div class="col-md-12">
-				<form asp-action="Edit">
+<form asp-action="Edit">
+	<section class="section">
+		<header>
+			<strong class="title">
+				<i class="fas fa-tag"></i>
+				@pageTitle
+			</strong>
+			<div class="actions">
+				<button type="submit" class="btn btn-primary">
+					<i class="far fa-save"></i>
+					Salveaza
+				</button>
+			</div>
+		</header>
+		<div class="content">
+			<div class="data">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-					<div class="container g-0">
-						<div class="row justify-content-between">
-							<div class="col-auto">
-								<h1 class="text-color text-center mb-3">Modifică camera</h1>
-							</div>
-							<div class="col-auto">
-								<div class="form-group btn-group">
-									<a asp-action="Manage" asp-controller="Home" class="btn btn-outline-secondary">Anulează</a>
-									<input type="submit" value="Salvează modificările" class="btn btn-main-color-filled"/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<input type="hidden" asp-for="Id"/>
+				<input type="hidden" asp-for="Hidden"/>
 
-					<input type="hidden" asp-for="Id"/>
-					<input type="hidden" asp-for="Hidden"/>
+				<div class="form-floating mb-3">
+					<input asp-for="Name" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
+					<label for="floatingInput1" asp-for="Name"></label>
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
 
-					<div class="form-floating mb-3">
-						<input asp-for="Name" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
-						<label for="floatingInput1" asp-for="Name"></label>
-						<span asp-validation-for="Name" class="text-danger"></span>
-					</div>
+				<div class="form-floating mb-3">
+					<input asp-for="PrimaryColor" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
+					<label for="floatingInput1" asp-for="PrimaryColor"></label>
+					<span asp-validation-for="PrimaryColor" class="text-danger"></span>
+				</div>
 
-					<div class="form-floating mb-3">
-						<input asp-for="PrimaryColor" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
-						<label for="floatingInput1" asp-for="PrimaryColor"></label>
-						<span asp-validation-for="PrimaryColor" class="text-danger"></span>
-					</div>
+				<div class="form-floating mb-3">
+					<input asp-for="SecondaryColor" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
+					<label for="floatingInput1" asp-for="SecondaryColor"></label>
+					<span asp-validation-for="SecondaryColor" class="text-danger"></span>
+				</div>
 
-					<div class="form-floating mb-3">
-						<input asp-for="SecondaryColor" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
-						<label for="floatingInput1" asp-for="SecondaryColor"></label>
-						<span asp-validation-for="SecondaryColor" class="text-danger"></span>
-					</div>
-
-					<div class="form-floating mb-3">
-						<input asp-for="Description" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
-						<label for="floatingInput1" asp-for="Description"></label>
-						<span asp-validation-for="Description" class="text-danger"></span>
-					</div>
-				</form>
+				<div class="form-floating mb-3">
+					<input asp-for="Description" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
+					<label for="floatingInput1" asp-for="Description"></label>
+					<span asp-validation-for="Description" class="text-danger"></span>
+				</div>
 			</div>
 		</div>
-	</div>
+	</section>
+</form>
 
-	<script language="javascript" type="text/javascript">
-        var colorArray = [];
-        const pickr5 = new Pickr({
-          el: '#color-picker-5',
-          default: "030303",
-          useAsButton: true,
-          components: {
-            preview: true,
-            opacity: true,
-            hue: true,
-
-            interaction: {
-              hex: true,
-              rgba: true,
-              hsla: true,
-              hsva: true,
-              cmyk: true,
-              input: true,
-              clear: true,
-              save: true
-            }
-          },
-
-          onSave(hsva, instance) {
-            colorArray.push({
-              hex: hsva.toHEX().toString(),
-              rgba: hsva.toRGBA().toString(),
-              hsla: hsva.toHSLA().toString(),
-              hsva: hsva.toHSVA().toString(),
-              cmyk: hsva.toCMYK().toString()
-            });
-            copyToClipboard();
-          }
-        });
-
-        function copyToClipboard() {
-
-          const el = document.createElement('textarea');
-          colorArray.forEach(function (elem) {
-            el.value += '{';
-            el.value += 'hex: ' + "'" + elem.hex + "'" + ', ';
-            el.value += 'rgba: ' + "'" + elem.rgba + "'" + ', ';
-            el.value += 'hsla: ' + "'" + elem.hsla + "'" + ', ';
-            el.value += 'hsva: ' + "'" + elem.hsva + "'" + ', ';
-            el.value += 'cmyk: ' + "'" + elem.cmyk + "'";
-            el.value += '}, ';
-          });
-          $(el).attr('readonly', '');
-          $(el).css('position', 'absolute');
-          $(el).css('left', '-9999px');
-          $(el).appendTo(document.body);
-          el.select();
-          document.execCommand('copy');
-          document.body.removeChild(el);
-        }     
-    </script>
+@section Scripts {
+	@await Html.PartialAsync("_ValidationScriptsPartial")
 }

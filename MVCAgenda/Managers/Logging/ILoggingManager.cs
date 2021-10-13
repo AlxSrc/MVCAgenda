@@ -5,6 +5,5 @@ namespace MVCAgenda.Managers.Logging
 {
     public interface ILoggingManager
     {
-        Task<LogsViewModel> GetLogsListViewModel();
     }
 }

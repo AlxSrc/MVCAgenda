@@ -62,57 +62,41 @@ namespace MVCAgenda.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Register()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View();
         }
 
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-
-            if (User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                MailAddress address = new MailAddress(model.Email);
+                string userName = address.User;
+                var user = new ApplicationUser
                 {
-                    MailAddress address = new MailAddress(model.Email);
-                    string userName = address.User;
-                    var user = new ApplicationUser
-                    {
-                        UserName = userName,
-                        Email = model.Email
-                    };
+                    UserName = userName,
+                    Email = model.Email
+                };
 
-                    var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
-                    if (result.Succeeded)
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
-                        return RedirectToAction("index", "Home");
-                    }
-
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-
-                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
+                    return RedirectToAction("index", "Home");
                 }
-                return View(model);
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+
             }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            
+            return View(model);
         }
         #endregion
         /**************************************************************************************/

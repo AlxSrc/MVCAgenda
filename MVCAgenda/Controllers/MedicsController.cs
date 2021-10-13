@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Factories.Medics;
 using MVCAgenda.Managers.Medics;
 using MVCAgenda.Models.Medics;
 
@@ -17,6 +18,7 @@ namespace MVCAgenda.Controllers
         #region Fields
 
         private readonly IMedicsManager _medicsManager;
+        private readonly IMedicsFactory _medicsFactory;
 
         #endregion
 
@@ -24,9 +26,10 @@ namespace MVCAgenda.Controllers
 
         #region Constructors
 
-        public MedicsController(IMedicsManager medicsManager)
+        public MedicsController(IMedicsManager medicsManager, IMedicsFactory medicsFactory)
         {
             _medicsManager = medicsManager;
+            _medicsFactory = medicsFactory;
         }
 
         #endregion
@@ -51,23 +54,16 @@ namespace MVCAgenda.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MedicViewModel medic)
         {
-            if (User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var result = await _medicsManager.CreateAsync(medic);
-                    if (result == StringHelpers.SuccesMessage)
-                        return RedirectToAction("Manage", "Home");
-                    else
-                        ModelState.AddModelError(string.Empty, result);
-                }
+                var result = await _medicsManager.CreateAsync(medic);
+                if (result == StringHelpers.SuccesMessage)
+                    return RedirectToAction("Manage", "Manage");
+                else
+                    ModelState.AddModelError(string.Empty, result);
+            }
 
-                return View(medic);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(medic);
         }
 
         #endregion
@@ -78,14 +74,7 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _medicsManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _medicsFactory.PrepereDetailsViewModel(id));
         }
 
         #endregion
@@ -96,37 +85,24 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _medicsManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _medicsFactory.PrepereDetailsViewModel(id));
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, MedicViewModel medic)
         {
-            if (User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var result = await _medicsManager.UpdateAsync(medic);
-                    if (result == StringHelpers.SuccesMessage)
-                        return RedirectToAction("Manage", "Home");
-                    else
-                        ModelState.AddModelError(string.Empty, result);
-                }
+                var result = await _medicsManager.UpdateAsync(medic);
+                if (result == StringHelpers.SuccesMessage)
+                    return RedirectToAction("Manage", "Manage");
+                else
+                    ModelState.AddModelError(string.Empty, result);
+            }
 
-                return View(medic);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(medic);
         }
 
         #endregion
@@ -135,36 +111,17 @@ namespace MVCAgenda.Controllers
 
         #region Delete
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _medicsManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var result = await _medicsManager.DeleteAsync(id);
-                if (result == StringHelpers.SuccesMessage)
-                    return RedirectToAction("Manage", "Home");
-                else
-                {
-                    ModelState.AddModelError(string.Empty, result);
-                    return RedirectToAction("Delete", "Medics", new { id = id });
-                }
-            }
+            var result = await _medicsManager.DeleteAsync(id);
+            if (result == StringHelpers.SuccesMessage)
+                return RedirectToAction("Manage", "Manage");
             else
             {
-                return RedirectToAction("Login", "Account");
+                ModelState.AddModelError(string.Empty, result);
+                return RedirectToAction("Details", "Medics", new { id = id });
             }
         }
 

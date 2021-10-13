@@ -7,9 +7,6 @@ namespace MVCAgenda.Managers.Consultations
     {
         Task<string> CreateAsync(ConsultationCreateViewModel consultationViewModel);
 
-        Task<ConsultationDetailsViewModel> GetDetailsAsync(int id);
-        Task<ConsultationEditViewModel> GetEditDetailsAsync(int id);
-
         Task<string> UpdateAsync(ConsultationEditViewModel consultationViewModel);
 
         Task<string> DeleteAsync(int id);

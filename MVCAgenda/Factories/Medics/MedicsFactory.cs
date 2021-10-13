@@ -1,5 +1,8 @@
 ﻿using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Logging;
 using MVCAgenda.Models.Medics;
+using MVCAgenda.Service.Logins;
+using MVCAgenda.Service.Medics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,72 @@ namespace MVCAgenda.Factories.Medics
 {
     public class MedicsFactory : IMedicsFactory
     {
-        public async Task<MedicViewModel> PrepereMedicViewModel(Medic medic)
+        string user = "admin";
+
+        #region Fields
+
+        private readonly IMedicService _medicsServices;
+        private readonly ILoggerService _logger;
+
+        #endregion
+
+        /***********************************************************************************/
+
+        #region Constructor
+
+        public MedicsFactory(IMedicService medicsServices, ILoggerService loggerServices)
+        {
+            _medicsServices = medicsServices;
+            _logger = loggerServices;
+        }
+
+        #endregion
+
+        /***********************************************************************************/
+
+        #region Methods
+
+        public async Task<List<MedicViewModel>> PrepereListModel()
+        {
+            try
+            {
+                var medics = await _medicsServices.GetListAsync();
+                var MedicsViewModel = new List<MedicViewModel>();
+                foreach (var medic in medics)
+                    if (medic.Hidden == false)
+                        MedicsViewModel.Add(PrepereMedicViewModel(medic));
+
+                return MedicsViewModel;
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new List<MedicViewModel>();
+            }
+        }
+
+        public async Task<MedicViewModel> PrepereDetailsViewModel(int id)
+        {
+            try
+            {
+                return PrepereMedicViewModel(await _medicsServices.GetAsync(id));
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new MedicViewModel();
+            }
+        }
+
+        #endregion
+
+        /***********************************************************************************/
+
+        #region Utils
+
+        public static MedicViewModel PrepereMedicViewModel(Medic medic)
         {
             return new MedicViewModel()
             {
@@ -23,5 +91,7 @@ namespace MVCAgenda.Factories.Medics
             };
             ;
         }
+
+        #endregion
     }
 }

@@ -2,64 +2,146 @@
 using MVCAgenda.Models.Appointments;
 using System.Threading.Tasks;
 using MVCAgenda.Service.Patients;
+using MVCAgenda.Service.Appointments;
+using MVCAgenda.Service.Rooms;
+using MVCAgenda.Service.Medics;
+using MVCAgenda.Service.Logins;
+using System;
+using MVCAgenda.Core.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MVCAgenda.Factories.Appointments
 {
     public class AppointmentsFactory : IAppointmentsFactory
     {
-        private readonly IPatientService _patientService;
+        string user = "admin";
 
-        public AppointmentsFactory(IPatientService patientService)
+        #region Fields
+
+        private readonly IAppointmentService _appointmentServices;
+        private readonly IPatientService _patientServices;
+        private readonly IRoomService _roomServices;
+        private readonly IMedicService _medicServices;
+        private readonly ILoggerService _logger;
+
+        #endregion
+
+        /***********************************************************************************/
+
+        #region Constructor
+
+        public AppointmentsFactory(
+            IAppointmentService appointmentServices,
+            IPatientService patientServices,
+            IRoomService roomServices,
+            IMedicService medicServices,
+            ILoggerService loggerServices)
         {
-            _patientService = patientService;
+            _appointmentServices = appointmentServices;
+            _patientServices = patientServices;
+            _roomServices = roomServices;
+            _medicServices = medicServices;
+            _logger = loggerServices;
         }
 
-        public async Task<AppointmentViewModel> PrepereAppointmentViewModel(Appointment model, Patient patient, Medic medic, Room room)
+        #endregion
+
+        /***********************************************************************************/
+
+        #region Methods
+
+        public async Task<AppointmentsViewModel> PrepereListViewModelAsync(string SearchByName = null,
+            string SearchByPhoneNumber = null,
+            string SearchByEmail = null,
+            DateTime? SearchByAppointmentStartDate = null,
+            DateTime? SearchByAppointmentEndDate = null,
+            int? SearchByRoom = null,
+            int? SearchByMedic = null,
+            string SearchByProcedure = null,
+            int? Id = null,
+            bool? Daily = null,
+            bool? Hidden = null)
         {
-            var viewModel = new AppointmentViewModel()
+            try
             {
-                Id = model.Id,
-                PatientId = model.PatientId,
-                FirstName = patient.FirstName,
-                SecondName = patient.LastName,
-                PhonNumber = patient.PhoneNumber,
-                Mail = patient.Mail,
-                Medic = medic.Name,
-                MedicId = medic.Id,
-                Room = room.Name,
-                RoomId = room.Id,
-                StartDate = model.StartDate,
-                Procedure = model.Procedure,
-                ResponsibleForAppointment = model.ResponsibleForAppointment,
-                AppointmentCreationDate = model.AppointmentCreationDate,
-                Comments = model.Comments,
-                Hidden = model.Hidden
-            };
+                var appointmentsList = await _appointmentServices.GetFiltredListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden);
 
-            if (model.Made == true)
-            {
-                viewModel.Made = true;
-                viewModel.MadeText = "<span class=\"badge bg-success\">Da</span>";
-            }
-            else
-            {
-                viewModel.Made = false;
-                viewModel.MadeText = "<span class=\"badge bg-danger\">Nu</span>";
-            }
+                var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
+                foreach (var appointment in appointmentsList)
+                    appointmentsListViewModel.Add(PrepereAppointmentListItem(appointment, await _patientServices.GetAsync(appointment.PatientId), await _medicServices.GetAsync(appointment.MedicId), await _roomServices.GetAsync(appointment.RoomId)));
 
-            if (patient.Blacklist == true)
-            {
-                viewModel.Blacklist = "<span class=\"badge bg-Danger\">Da</span>";
+                var app = appointmentsListViewModel
+                    .Where(p => !string.IsNullOrEmpty(SearchByName) ? p.FirstName.ToUpper().Contains(SearchByName.ToUpper()) : true)
+                    .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhoneNumber.Contains(SearchByPhoneNumber) : true).ToList();
+                bool? Blacklist = null;
+                return new AppointmentsViewModel()
+                {
+                    Hidden = Hidden == null ? false : Hidden,
+                    Blacklist = Blacklist == null ? false : Blacklist,
+                    AppointmentsList = appointmentsListViewModel
+                };
             }
-            else if (patient.Blacklist == false)
+            catch (Exception exception)
             {
-                viewModel.Blacklist = "<span class=\"badge bg-success\">Nu</span>";
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new AppointmentsViewModel();
             }
-
-            return viewModel;
         }
 
-        public async Task<AppointmentListItemViewModel> PrepereAppointmentListItemViewModel(Appointment model, Patient patient, Medic medic, Room room)
+        public async Task<AppointmentDetailsViewModel> PrepereDetailsViewModelAsync(int id)
+        {
+            try
+            {
+                var appointment = await _appointmentServices.GetAsync(id);
+                var patient = await _patientServices.GetAsync(appointment.PatientId);
+                var medic = await _medicServices.GetAsync(appointment.MedicId);
+                var room = await _roomServices.GetAsync(appointment.RoomId);
+
+                return PrepereAppointment(appointment, patient, medic, room);
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}, Appointment: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return null;
+            }
+        }
+
+        public async Task<AppointmentEditViewModel> PrepereEditViewModelAsync(int id)
+        {
+            try
+            {
+                var appointment = await _appointmentServices.GetAsync(id);
+                var patient = await _patientServices.GetAsync(appointment.PatientId);
+                return PrepereAppointmentEdit(appointment, patient);
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}, Appointment: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new AppointmentEditViewModel();
+            }
+        }
+
+        #endregion
+
+        /***********************************************************************************/
+
+        #region Utils
+
+        private async Task<bool> CheckExist(int id)
+        {
+            var model = await _appointmentServices.GetAsync(id);
+
+            if (model == null)
+                return false;
+
+            return true;
+        }
+
+        static AppointmentListItemViewModel PrepereAppointmentListItem(Appointment model, Patient patient, Medic medic, Room room)
         {
             var viewModel = new AppointmentListItemViewModel()
             {
@@ -83,7 +165,7 @@ namespace MVCAgenda.Factories.Appointments
             return viewModel;
         }
 
-        public async Task<AppointmentDetailsViewModel> PrepereAppointmentDetailsViewModel(Appointment model, Patient patient, Medic medic, Room room)
+        static AppointmentDetailsViewModel PrepereAppointment(Appointment model, Patient patient, Medic medic, Room room)
         {
             var viewModel = new AppointmentDetailsViewModel()
             {
@@ -125,28 +207,28 @@ namespace MVCAgenda.Factories.Appointments
             return viewModel;
         }
 
-        public async Task<AppointmentEditViewModel> PrepereAppointmentEditDetailsViewModel(Appointment model)
+        static AppointmentEditViewModel PrepereAppointmentEdit(Appointment appointment, Patient patient)
         {
-            var patient = await _patientService.GetAsync(model.PatientId);
-
             var viewModel = new AppointmentEditViewModel()
             {
-                Id = model.Id,
-                PatientId = model.PatientId,
+                Id = appointment.Id,
+                PatientId = appointment.PatientId,
                 PatientName = $"{patient.FirstName.ToUpper()} {patient.LastName}",
-                MedicId = model.MedicId,
-                RoomId = model.RoomId,
-                Made = model.Made,
-                EndDate = model.EndDate,
-                StartDate = model.StartDate,
-                Procedure = model.Procedure,
-                ResponsibleForAppointment = model.ResponsibleForAppointment,
-                AppointmentCreationDate = model.AppointmentCreationDate,
-                Comments = model.Comments,
-                Hidden = model.Hidden
+                MedicId = appointment.MedicId,
+                RoomId = appointment.RoomId,
+                Made = appointment.Made,
+                EndDate = appointment.EndDate,
+                StartDate = appointment.StartDate,
+                Procedure = appointment.Procedure,
+                ResponsibleForAppointment = appointment.ResponsibleForAppointment,
+                AppointmentCreationDate = appointment.AppointmentCreationDate,
+                Comments = appointment.Comments,
+                Hidden = appointment.Hidden
             };
 
             return viewModel;
         }
+
+        #endregion
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
+using MVCAgenda.Factories.Appointments;
 using MVCAgenda.Managers.Appointments;
 using MVCAgenda.Models.Appointments;
 using MVCAgenda.Service.Medics;
@@ -19,6 +20,7 @@ namespace MVCAgenda.Controllers
         #region Fields
 
         private readonly IAppointmentsManager _appointmentsManager;
+        private readonly IAppointmentsFactory _appointmentsFactory;
         private readonly IPatientService _patientServices;
         private readonly IRoomService _roomServices;
         private readonly IMedicService _medicServices;
@@ -31,11 +33,13 @@ namespace MVCAgenda.Controllers
 
         public AppointmentsController(
             IAppointmentsManager appointmentsManager,
+            IAppointmentsFactory appointmentsFactory,
             IPatientService patientServices,
             IRoomService roomServices,
             IMedicService medicServices)
         {
             _appointmentsManager = appointmentsManager;
+            _appointmentsFactory = appointmentsFactory;
             _patientServices = patientServices;
             _roomServices = roomServices;
             _medicServices = medicServices;
@@ -49,61 +53,47 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Create(int id)
         {
-            if (User.Identity.IsAuthenticated)
+            var model = new AppointmentCreateViewModel();
+
+            ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+
+            model.ResponsibleForAppointment = User.Identity.Name;
+            if (id > 0)
             {
-                var model = new AppointmentCreateViewModel();
+                Patient patient = await _patientServices.GetAsync(id);
+                if (patient == null)
+                    return View(model);
 
-                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
-
-                model.ResponsibleForAppointment = User.Identity.Name;
-                if (id > 0)
-                {
-                    Patient patient = await _patientServices.GetAsync(id);
-                    if (patient == null)
-                        return View(model);
-
-                    model.PatientId = id;
-                    model.FirstName = patient.FirstName;
-                    model.LastName = patient.LastName;
-                    model.PhoneNumber = patient.PhoneNumber;
-                    model.Mail = patient.Mail;
-                    model.StartDate = DateTime.Now;
-                    model.EndDate = DateTime.Now.AddMinutes(60);
-                }
-
-                return View(model);
+                model.PatientId = id;
+                model.FirstName = patient.FirstName;
+                model.LastName = patient.LastName;
+                model.PhoneNumber = patient.PhoneNumber;
+                model.Mail = patient.Mail;
+                model.StartDate = DateTime.Now;
+                model.EndDate = DateTime.Now.AddMinutes(60);
             }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AppointmentCreateViewModel model)
         {
-            if (User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    string result = await _appointmentsManager.CreateAsync(model);
-                    if (result == StringHelpers.SuccesMessage)
-                        return RedirectToAction(nameof(Index), new { Daily = true });
-                    else
-                        ModelState.AddModelError(string.Empty, result);
-                }
-
-                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
-
-                return View(model);
+                string result = await _appointmentsManager.CreateAsync(model);
+                if (result == StringHelpers.SuccesMessage)
+                    return RedirectToAction(nameof(Index), new { Daily = true });
+                else
+                    ModelState.AddModelError(string.Empty, result);
             }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+
+            ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+
+            return View(model);
         }
 
         #endregion
@@ -124,19 +114,12 @@ namespace MVCAgenda.Controllers
             bool? Daily = null,
             bool? Hidden = null)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+            ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
-                var ast = User.Identity.Name;
+            var ast = User.Identity.Name;
 
-                return View(await _appointmentsManager.GetListAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _appointmentsFactory.PrepereListViewModelAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
         }
 
         #endregion
@@ -147,45 +130,31 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
-                return View(await _appointmentsManager.GetEditDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+            return View(await _appointmentsFactory.PrepereEditViewModelAsync(id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, AppointmentEditViewModel model)
         {
-            if (User.Identity.IsAuthenticated)
+            if (id != model.Id)
+                return NotFound();
+
+            if (ModelState.IsValid)
             {
-                if (id != model.Id)
-                    return NotFound();
-
-                if (ModelState.IsValid)
-                {
-                    string result = await _appointmentsManager.UpdateAsync(model);
-                    if (result == StringHelpers.SuccesMessage)
-                        return RedirectToAction(nameof(Index), new { Daily = true });
-                    else
-                        ModelState.AddModelError(string.Empty, result);
-                }
-
-                ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-                ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
-
-                return View(model);
+                string result = await _appointmentsManager.UpdateAsync(model);
+                if (result == StringHelpers.SuccesMessage)
+                    return RedirectToAction(nameof(Index), new { Daily = true });
+                else
+                    ModelState.AddModelError(string.Empty, result);
             }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+
+            ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+
+            return View(model);
         }
 
         #endregion
@@ -196,14 +165,7 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _appointmentsManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _appointmentsFactory.PrepereDetailsViewModelAsync(id));
         }
 
         #endregion
@@ -216,15 +178,8 @@ namespace MVCAgenda.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var result = await _appointmentsManager.DeleteAsync(id);
-                return RedirectToAction(nameof(Index), new { Daily = true });
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            var result = await _appointmentsManager.DeleteAsync(id);
+            return RedirectToAction(nameof(Index), new { Daily = true });
         }
 
         #endregion

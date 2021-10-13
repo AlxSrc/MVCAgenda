@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.Factories.Rooms;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Models.Rooms;
 
@@ -12,6 +13,7 @@ namespace MVCAgenda.Controllers
         #region Fields
 
         private readonly IRoomsManager _roomManager;
+        private readonly IRoomsFactory _roomFactory;
 
         #endregion
 
@@ -19,9 +21,10 @@ namespace MVCAgenda.Controllers
 
         #region Constructors
 
-        public RoomsController(IRoomsManager roomManager)
+        public RoomsController(IRoomsManager roomManager, IRoomsFactory roomFactory)
         {
             _roomManager = roomManager;
+            _roomFactory = roomFactory;
         }
 
         #endregion
@@ -32,14 +35,7 @@ namespace MVCAgenda.Controllers
 
         public IActionResult Create()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View();
         }
 
         [HttpPost]
@@ -51,7 +47,7 @@ namespace MVCAgenda.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = await _roomManager.CreateAsync(room);
-                    return RedirectToAction("Manage", "Home");
+                    return RedirectToAction("Manage", "Manage");
                 }
 
                 return View(room);
@@ -70,14 +66,7 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _roomManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _roomFactory.PrepereDetailsViewModelAsync(id));
         }
 
         #endregion
@@ -88,39 +77,25 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _roomManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(await _roomFactory.PrepereDetailsViewModelAsync(id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, RoomViewModel room)
         {
-            if (User.Identity.IsAuthenticated)
+            if (id != room.Id)
             {
-                if (id != room.Id)
-                {
-                    return NotFound();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    await _roomManager.UpdateAsync(room);
-                    return RedirectToAction("Manage", "Home");
-                }
-
-                return View(room);
+                return NotFound();
             }
-            else
+
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Login", "Account");
+                await _roomManager.UpdateAsync(room);
+                return RedirectToAction("Manage", "Manage");
             }
+
+            return View(room);
         }
 
         #endregion
@@ -129,31 +104,12 @@ namespace MVCAgenda.Controllers
 
         #region Delete
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return View(await _roomManager.GetDetailsAsync(id));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var resuult = await _roomManager.DeleteAsync(id);
-                return RedirectToAction("Manage", "Home");
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            var resuult = await _roomManager.DeleteAsync(id);
+            return RedirectToAction("Manage", "Manage");
         }
 
         #endregion

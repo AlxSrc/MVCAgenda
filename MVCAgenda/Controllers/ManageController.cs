@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.Factories.Medics;
+using MVCAgenda.Factories.Rooms;
 using MVCAgenda.Managers.Medics;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Models.Accounts;
@@ -9,13 +11,15 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Controllers
 {
-    [Authorize]
-    public class HomeController : Controller
+    [Authorize(Roles = "Admin")]
+    public class ManageController : Controller
     {
         #region Fields
 
         private readonly IRoomsManager _roomsManager;
+        private readonly IRoomsFactory _roomsFactory;
         private readonly IMedicsManager _medicsManager;
+        private readonly IMedicsFactory _medicsFactory;
 
         #endregion
 
@@ -23,32 +27,35 @@ namespace MVCAgenda.Controllers
 
         #region Constructor
 
-        public HomeController(IRoomsManager roomsManager, IMedicsManager medicsManager)
+        public ManageController(IRoomsManager roomsManager,
+            IRoomsFactory roomsFactory,
+            IMedicsManager medicsManager,
+            IMedicsFactory medicsFactory)
         {
             _roomsManager = roomsManager;
+            _roomsFactory = roomsFactory;
             _medicsManager = medicsManager;
+            _medicsFactory = medicsFactory;
         }
 
         #endregion
 
         /**************************************************************************************/
 
-        #region Index
+        #region Manage
 
-        public IActionResult Index()
+        public async Task<IActionResult> Manage()
         {
-            return View();
-        }
+            var medics = await _medicsFactory.PrepereListModel();
+            var rooms = await _roomsFactory.PrepereListViewModelAsync();
 
-        #endregion
+            var model = new ManageViewModel
+            {
+                Medics = medics,
+                Rooms = rooms
+            };
 
-        /**************************************************************************************/
-
-        #region Informations
-
-        public async Task<IActionResult> Informations()
-        {
-            return View();
+            return View(model);
         }
 
         #endregion

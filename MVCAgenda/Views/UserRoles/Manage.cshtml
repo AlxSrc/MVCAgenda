@@ -1,46 +1,73 @@
-﻿@{
-    ViewData["Title"] = "Manage";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@using MVCAgenda.Models.Accounts.Roles
+@model List<ManageUserRolesViewModel>
+
+@{
+	var pageTitle = $"Modifică rolurile utilizatorului {@ViewBag.UserName}";
+
+	ViewData["Title"] = pageTitle;
 }
 
-@if (User.Identity.IsAuthenticated)
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Acasa</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Manage" asp-controller="Manage">
+				<i class="fas fa-cogs"></i>
+				<span>Administreaza</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="UserRoles">
+				<i class="fas fa-tools"></i>
+				<span>Modifică rolurile conturilor</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
+
+
+<form method="post">
+	<section class="section">
+		<header>
+			<strong class="title">
+				<i class="fas fa-user-friends"></i>
+				@pageTitle
+			</strong>
+			<div class="actions">
+				<button type="submit" class="btn btn-primary">
+					<i class="far fa-save"></i>
+					Salveaza
+				</button>
+			</div>
+		</header>
+		<div class="content">
+			<div class="data">
+				@for (int i = 0; i < Model.Count; i++)
+				{
+					<div class="form-check m-1">
+						<input type="hidden" asp-for="@Model[i].RoleId" />
+						<input type="hidden" asp-for="@Model[i].RoleName" />
+						<input asp-for="@Model[i].Selected" class="form-check-input" />
+						<label class="form-check-label" asp-for="@Model[i].Selected">
+							@Model[i].RoleName
+						</label>
+					</div>
+				}
+				<div asp-validation-summary="All" class="text-danger"></div>
+			</div>
+		</div>
+	</section>
+</form>
+
+@section Scripts
 {
-    @using MVCAgenda.Models.Accounts.Roles
-    @model List<ManageUserRolesViewModel>
-        
-    
-
-    <div class="main box">
-        <form method="post">
-            <div class="container g-0 mb-3">
-                <div class="row justify-content-between">
-                    <div class="col-auto">
-                        <h2 class="text-color">Modifică rolurile pentru utilizatorul @ViewBag.UserName</h2>
-                    </div>
-                    <div class="col-auto">
-                        <div class="d-lg-flex justify-content-lg-center">
-                            <div class="btn-group" role="group" aria-label="Optiuni">
-                                <input type="submit" value="Salvează" class="btn btn-main-color-filled"/>
-                                <a asp-action="Index" class="btn btn-outline-secondary">Anulează</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                <div class="form-check m-1">
-                    <input type="hidden" asp-for="@Model[i].RoleId" />
-                    <input type="hidden" asp-for="@Model[i].RoleName" />
-                    <input asp-for="@Model[i].Selected" class="form-check-input" />
-                    <label class="form-check-label" asp-for="@Model[i].Selected">
-                        @Model[i].RoleName
-                    </label>
-                </div>
-            }
-            <div asp-validation-summary="All" class="text-danger"></div>
-
-
-        </form>
-    </div>
+	@(await Html.PartialAsync("_ValidationScriptsPartial"))
 }

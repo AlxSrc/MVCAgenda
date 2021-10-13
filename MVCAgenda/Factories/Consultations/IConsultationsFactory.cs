@@ -6,9 +6,10 @@ namespace MVCAgenda.Factories.Consultations
 {
     public interface IConsultationsFactory
     {
-        Task<ConsultationViewModel> PrepereConsultationViewModel(Consultation consultation);
+        Task<ConsultationViewModel> PrepereViewModelAsync(Consultation consultation);
 
-        Task<ConsultationDetailsViewModel> PrepereConsultationDetailsViewModel(Consultation consultation);
-        Task<ConsultationEditViewModel> PrepereConsultationEditDetailsViewModel(Consultation consultation);
+        Task<ConsultationDetailsViewModel> PrepereDetailsViewModelAsync(int id);
+
+        Task<ConsultationEditViewModel> PrepereEditViewModelAsync(int id);
     }
 }

@@ -1,11 +1,58 @@
 ﻿using MVCAgenda.Core.Logging;
 using MVCAgenda.Models.Logging;
+using MVCAgenda.Service.Logins;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MVCAgenda.Factories.Logging
 {
     public class LoggingFactory : ILoggingFactory
     {
-        public LogListItemViewModel PrepereLogViewModel(Log log)
+        #region Fields
+
+        private readonly ILoggerService _logServices;
+
+        #endregion
+
+        /**********************************************************************************/
+
+        #region Constructor
+
+        public LoggingFactory(ILoggerService logServices)
+        {
+            _logServices = logServices;
+        }
+
+        #endregion
+
+        /**********************************************************************************/
+
+        #region Methods
+
+        public async Task<LogsViewModel> GetViewModel()
+        {
+            try
+            {
+                var logsViewModel = new List<LogListItemViewModel>();
+                var logs = await _logServices.GetListAsync();
+
+                foreach (var log in logs)
+                    logsViewModel.Add(PrepereLogViewModel(log));
+
+                return new LogsViewModel() { Logs = logsViewModel };
+            }
+            catch
+            {
+                return new LogsViewModel() { Logs = new List<LogListItemViewModel>() };
+            }
+        }
+
+        #endregion
+
+        /**********************************************************************************/
+
+        #region Utils
+        public static LogListItemViewModel PrepereLogViewModel(Log log)
         {
             LogListItemViewModel viewModel = new LogListItemViewModel()
             {
@@ -34,5 +81,7 @@ namespace MVCAgenda.Factories.Logging
 
             return viewModel;
         }
+
+        #endregion
     }
 }

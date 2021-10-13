@@ -5,23 +5,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.8"/>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="2.16.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.8" />
+        <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="2.16.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
-        <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="19.2.0.57"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="19.2.0.57" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MVCAgenda.Core\MVCAgenda.Core.csproj"/>
-        <ProjectReference Include="..\MVCAgenda.Service\MVCAgenda.Service.csproj"/>
+        <ProjectReference Include="..\MVCAgenda.Core\MVCAgenda.Core.csproj" />
+        <ProjectReference Include="..\MVCAgenda.Service\MVCAgenda.Service.csproj" />
     </ItemGroup>
 
 </Project>

@@ -56,41 +56,6 @@ namespace MVCAgenda.Managers.PatientsSheets
 
         #region Methods
 
-        public async Task<PatientSheetDetailsViewModel> GetDetailsAsync(int id)
-        {
-            try
-            {
-                var consultations = await _consultationServices.GetListAsync(id);
-                var consultationsList = new List<ConsultationViewModel>();
-                foreach (var consultation in consultations)
-                    consultationsList.Add(await _consultationFactory.PrepereConsultationViewModel(consultation));
-
-                var patient = await _patientServices.GetAsync(id, true);
-
-                return _patientSheetFactory.PreperePatientSheetDetailsViewModel(await _patientSheetServices.GetAsync(id), patient, consultationsList);
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Read}, PatientSheets: {id}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new PatientSheetDetailsViewModel();
-            }
-        }
-
-        public async Task<PatientSheetEditViewModel> GetEditDetailsAsync(int id)
-        {
-            try
-            {
-                return _patientSheetFactory.PreperePatientSheetEditViewModel(await _patientSheetServices.GetAsync(id));
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Read}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new PatientSheetEditViewModel();
-            }
-        }
-
         public async Task<string> UpdateAsync(PatientSheetEditViewModel model)
         {
             try

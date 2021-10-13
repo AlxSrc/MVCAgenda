@@ -9,6 +9,7 @@ namespace MVCAgenda.Factories.Rooms
 {
     public interface IRoomsFactory
     {
-        Task<RoomViewModel> PrepereRoomViewModel(Room room);
+        Task<RoomViewModel> PrepereDetailsViewModelAsync(int id);
+        Task<List<RoomViewModel>> PrepereListViewModelAsync();
     }
 }
