@@ -57,6 +57,30 @@ namespace MVCAgenda.Factories.Medics
             }
         }
 
+        public async Task<MedicsViewModel> PrepereMedicsListViewModelAsync()
+        {
+            try
+            {
+                var medicsListViewModel = new List<MedicViewModel>();
+                var medics = await _medicsServices.GetListAsync();
+
+                foreach (var medic in medics)
+                    medicsListViewModel.Add(PrepereMedicViewModel(medic));
+
+                var medicsViewModel = new MedicsViewModel()
+                {
+                    MedicsList = medicsListViewModel
+                };
+                return medicsViewModel;
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new MedicsViewModel();
+            }
+        }
+
         public async Task<MedicViewModel> PrepereDetailsViewModel(int id)
         {
             try

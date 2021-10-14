@@ -11,5 +11,6 @@ namespace MVCAgenda.Factories.Rooms
     {
         Task<RoomViewModel> PrepereDetailsViewModelAsync(int id);
         Task<List<RoomViewModel>> PrepereListViewModelAsync();
+        Task<RoomsViewModel> PrepereRoomsViewModelAsync();
     }
 }

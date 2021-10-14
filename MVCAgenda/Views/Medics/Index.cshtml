@@ -1,0 +1,97 @@
+﻿@model MVCAgenda.Models.Medics.MedicsViewModel
+
+@{
+	var pageTitle = "Medici";
+
+	ViewData["Title"] = pageTitle;
+}
+
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Acasa</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
+
+<section class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-user-md"></i>
+			@pageTitle
+		</strong>
+		<div class="actions">
+			<a asp-action="Create" asp-controller="Medics" class="btn btn-primary">
+				<i class="fas fa-plus"></i>
+				Adaugă un medic
+			</a>
+		</div>
+	</header>
+	<div class="content">
+		<table>
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.MedicsList[0].Name)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.MedicsList[0].Mail)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.MedicsList[0].Designation)
+					</th>
+					<th>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.MedicsList.Count > 0)
+				{
+					@foreach (var item in Model.MedicsList)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Mail)
+							</td>
+							<td class="text-center">
+								@Html.DisplayFor(modelItem => item.Designation)
+							</td>
+							<td class="text-end">
+								<div class="dropdown d-inline-block">
+									<button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+										Detalii
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+										<li>
+											<a class="dropdown-item" asp-action="Edit" asp-controller="Medics" asp-route-id="@item.Id">Modifică</a>
+										</li>
+										<li>
+											<a class="dropdown-item" asp-action="Details" asp-controller="Medics" asp-route-id="@item.Id">Detalii medic</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr class="no-hover">
+						<td colspan="5" class="text-center">
+							Nu s-au gasit date pentru filtrele aplicate
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</section>

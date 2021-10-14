@@ -9,5 +9,6 @@ namespace MVCAgenda.Factories.Medics
     {
         Task<List<MedicViewModel>> PrepereListModel();
         Task<MedicViewModel> PrepereDetailsViewModel(int id);
+        Task<MedicsViewModel> PrepereMedicsListViewModelAsync();
     }
 }

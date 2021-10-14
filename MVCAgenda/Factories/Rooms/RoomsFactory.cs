@@ -56,6 +56,30 @@ namespace MVCAgenda.Factories.Rooms
             }
         }
 
+        public async Task<RoomsViewModel> PrepereRoomsViewModelAsync()
+        {
+            try
+            {
+                var roomsListViewModel = new List<RoomViewModel>();
+                var rooms = await _roomsServices.GetListAsync();
+
+                foreach (var room in rooms)
+                    roomsListViewModel.Add(PrepereRoom(room));
+
+                var roomsViewModel = new RoomsViewModel()
+                {
+                    RoomsList = roomsListViewModel
+                };
+                return roomsViewModel;
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new RoomsViewModel();
+            }
+        }
+
         public async Task<RoomViewModel> PrepereDetailsViewModelAsync(int id)
         {
             try

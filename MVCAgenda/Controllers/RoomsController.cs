@@ -63,7 +63,11 @@ namespace MVCAgenda.Controllers
         /**************************************************************************************/
 
         #region Read
+        public async Task<IActionResult> Index()
+        {
+            return View(await _roomFactory.PrepereRoomsViewModelAsync());
 
+        }
         public async Task<IActionResult> Details(int id)
         {
             return View(await _roomFactory.PrepereDetailsViewModelAsync(id));

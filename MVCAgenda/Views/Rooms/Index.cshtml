@@ -1,0 +1,91 @@
+﻿@model MVCAgenda.Models.Rooms.RoomsViewModel
+
+@{
+	var pageTitle = "Camere";
+
+	ViewData["Title"] = pageTitle;
+}
+
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Acasa</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
+
+<section class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-tag"></i>
+			@pageTitle
+		</strong>
+		<div class="actions">
+			<a asp-action="Create" asp-controller="Rooms" class="btn btn-primary">
+				<i class="fas fa-plus"></i>
+				Adaugă o camera
+			</a>
+		</div>
+	</header>
+	<div class="content">
+		<table>
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.RoomsList[0].Name)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.RoomsList[0].Description)
+					</th>
+					<th>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.RoomsList.Count > 0)
+				{
+					@foreach (var item in Model.RoomsList)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Description)
+							</td>
+							<td class="text-end">
+								<div class="dropdown d-inline-block">
+									<button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+										Detalii
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+										<li>
+											<a class="dropdown-item" asp-action="Edit" asp-controller="Rooms" asp-route-id="@item.Id">Modifică camera</a>
+										</li>
+										<li>
+											<a class="dropdown-item" asp-action="Details" asp-controller="Rooms" asp-route-id="@item.Id">Detalii camera</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr class="no-hover">
+						<td colspan="5" class="text-center">
+							Nu s-au gasit date pentru filtrele aplicate
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</section>
