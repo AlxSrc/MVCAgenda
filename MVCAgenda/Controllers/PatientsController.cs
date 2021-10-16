@@ -77,7 +77,6 @@ namespace MVCAgenda.Controllers
         public async Task<IActionResult> Details(int id)
         {
             return View(await _patientFactory.PrepereDetailsViewModelAsync(id));
-
         }
 
         #endregion

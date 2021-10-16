@@ -35,7 +35,12 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _loggingFactory.GetViewModel());
+            return View(await _loggingFactory.PrepereLogsViewModel());
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            return View(await _loggingFactory.PrepereDetailsViewModel(id));
         }
 
         #endregion

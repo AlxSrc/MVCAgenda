@@ -6,6 +6,7 @@ namespace MVCAgenda.Factories.Logging
 {
     public interface ILoggingFactory
     {
-        Task<LogsViewModel> GetViewModel();
+        Task<LogsViewModel> PrepereLogsViewModel();
+        Task<LogListItemViewModel> PrepereDetailsViewModel(int id);
     }
 }

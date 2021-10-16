@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MVCAgenda.ApiHost.Converters;
 using MVCAgenda.ApiHost.Factories.Appointments;
 using MVCAgenda.ApiHost.Factories.Patients;
 using MVCAgenda.ApiHost.JSON.Serializers;
@@ -61,7 +62,11 @@ namespace MVCAgenda.ApiHost
 
             //Factories
             services.AddScoped<IPatientsFactory, PatientsFactory>();
-            services.AddScoped<IAppointmentsFactory, AppointmentsFactory>(); 
+            services.AddScoped<IAppointmentsFactory, AppointmentsFactory>();
+            services.AddScoped<IObjectConverter, ObjectConverter>(); 
+            services.AddScoped<IApiTypeConverter, ApiTypeConverter>(); 
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

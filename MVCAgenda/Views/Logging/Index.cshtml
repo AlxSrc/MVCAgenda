@@ -81,7 +81,7 @@
 								</button>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 									<li>
-										<a class="dropdown-item text-color" asp-route-id="@item.Id">Detalii log</a>
+										<a asp-action="Details" asp-controller="Logging"  class="dropdown-item text-color" asp-route-id="@item.Id">Detalii log</a>
 									</li>
 								</ul>
 							</div>

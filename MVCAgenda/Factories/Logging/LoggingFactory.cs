@@ -29,7 +29,7 @@ namespace MVCAgenda.Factories.Logging
 
         #region Methods
 
-        public async Task<LogsViewModel> GetViewModel()
+        public async Task<LogsViewModel> PrepereLogsViewModel()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace MVCAgenda.Factories.Logging
                 var logs = await _logServices.GetListAsync();
 
                 foreach (var log in logs)
-                    logsViewModel.Add(PrepereLogViewModel(log));
+                    logsViewModel.Add(PrepereLogListItemViewModel(log));
 
                 return new LogsViewModel() { Logs = logsViewModel };
             }
@@ -47,12 +47,24 @@ namespace MVCAgenda.Factories.Logging
             }
         }
 
+        public async Task<LogListItemViewModel> PrepereDetailsViewModel(int id)
+        {
+            try
+            {
+                return PrepereLogListItemViewModel(await _logServices.GetAsync(id));
+            }
+            catch
+            {
+                return new LogListItemViewModel();
+            }
+        }
+
         #endregion
 
         /**********************************************************************************/
 
         #region Utils
-        public static LogListItemViewModel PrepereLogViewModel(Log log)
+        public static LogListItemViewModel PrepereLogListItemViewModel(Log log)
         {
             LogListItemViewModel viewModel = new LogListItemViewModel()
             {
@@ -81,7 +93,6 @@ namespace MVCAgenda.Factories.Logging
 
             return viewModel;
         }
-
         #endregion
     }
 }

@@ -40,7 +40,7 @@ namespace MVCAgenda.ApiHost.Controllers
         [Route("/api/appointments", Name = "GetAppointments")]
         [ProducesResponseType(typeof(AppointmentsRootObject), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<AppointmentsRootObject>> GetPatients()
+        public async Task<ActionResult<AppointmentsRootObject>> GetAppointments()
         {
             try
             {

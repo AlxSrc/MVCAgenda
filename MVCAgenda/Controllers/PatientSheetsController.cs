@@ -25,7 +25,7 @@ namespace MVCAgenda.Controllers
         public PatientSheetsController(IPatientsSheetsManager patientSheetManager, IPatientsSheetsFactory patientSheetFactory)
         {
             _patientSheetManager = patientSheetManager;
-            patientSheetFactory = _patientSheetFactory;
+            _patientSheetFactory = patientSheetFactory;
         }
 
         #endregion
@@ -37,7 +37,6 @@ namespace MVCAgenda.Controllers
         public async Task<IActionResult> Details(int id)
         {
             return View(await _patientSheetFactory.PrepereDetailsViewModelAsync(id));
-
         }
 
         #endregion

@@ -7,6 +7,7 @@ using MVCAgenda.ApiHost.DTOs.Patients;
 using MVCAgenda.ApiHost.Factories.Patients;
 using MVCAgenda.ApiHost.JSON.ActionResults;
 using MVCAgenda.ApiHost.JSON.Serializers;
+using MVCAgenda.ApiHost.Models.Parameters.Patients;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Patients;
@@ -45,7 +46,7 @@ namespace MVCAgenda.ApiHost.Controllers
         [Route("/api/Patients", Name = "GetPatients")]
         [ProducesResponseType(typeof(PatientsRootObject), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<PatientsRootObject>> GetPatients()
+        public async Task<IActionResult> GetPatients(PatientsParametersModel parameters)
         {
             try
             {
