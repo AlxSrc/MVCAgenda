@@ -50,7 +50,7 @@ namespace MVCAgenda
             //services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             //services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddDbContext<AgendaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AgendaContext")));
@@ -72,7 +72,7 @@ namespace MVCAgenda
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IMedicService, MedicService>();
             services.AddScoped<IRoomService, RoomService>();
-            services.AddScoped<ILoggerService, LoggerService>(); 
+            services.AddScoped<ILoggerService, LoggerService>();
 
             //Factories
             services.AddScoped<IPatientsFactory, PatientsFactory>();
@@ -82,7 +82,7 @@ namespace MVCAgenda
             services.AddScoped<IMedicsFactory, MedicsFactory>();
             services.AddScoped<IRoomsFactory, RoomsFactory>();
             services.AddScoped<ISchedulerFactory, SchedulerFactory>();
-            services.AddScoped<ILoggingFactory, LoggingFactory>(); 
+            services.AddScoped<ILoggingFactory, LoggingFactory>();
 
             //Managers
             services.AddScoped<IPatientsManager, PatientsManager>();
@@ -94,7 +94,7 @@ namespace MVCAgenda
             services.AddScoped<ISchedulerManager, SchedulerManager>();
             services.AddScoped<IManageAccountManager, ManageAccountManager>();
             services.AddScoped<IRolesManager, RolesManager>();
-            services.AddScoped<ILoggingManager, LoggingManager>(); 
+            services.AddScoped<ILoggingManager, LoggingManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

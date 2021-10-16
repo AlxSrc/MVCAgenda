@@ -13,7 +13,11 @@
 	</head>
 	<body>
 		<div id="AppContent">
-			<aside class="sidebar">
+			<aside class="sidebar" data-sidebar>
+				<div class="sidebar-toggle d-lg-none" data-sidebar-toggle>
+					<i class="fas fa-chevron-left"></i>
+					Ascunde meniu
+				</div>
 				<div class="brand">
 					<i class="far fa-hospital"></i>
 					<strong>Clinica Esderm</strong>
@@ -43,47 +47,49 @@
 							<span>Calendar</span>
 						</a>
 					</li>
-					<li class="item @(Html.IsSelected("Manage,Medics,Rooms,RoleManager,UserRoles,Logging", "Manage") ? "active" : null)">
-						<a asp-controller="Manage" asp-action="Manage" class="text">
-							<i class="fas fa-cogs"></i>
-							<span>Administrare</span>
-						</a>
-					</li>
 					@if (User.IsInRole("Admin") || User.IsInRole("Administrator"))
 					{
-						<li class="item @(Html.IsSelected("Medics", null) ? "active" : null)">
-							<a asp-controller="Medics" asp-action="Index" class="text">
-								<i class="fas fa-user-md"></i>
-								<span>Medici</span>
+						<li class="item @(Html.IsSelected("Manage,Medics,Rooms,RoleManager,UserRoles,Logging", null) ? "active" : null)">
+							<a href="#AdminSubMenu" class="text" data-bs-toggle="collapse" role="button">
+								<i class="fas fa-cogs"></i>
+								<span>Administrare</span>
 							</a>
+							<ul class="sub-menu @(!Html.IsSelected("Manage,Medics,Rooms,RoleManager,UserRoles,Logging", null) ? "collapse" : null)" id="AdminSubMenu">
+								<li class="item sub-item @(Html.IsSelected("Medics", null) ? "active" : null)">
+									<a asp-controller="Medics" asp-action="Index" class="text">
+										<i class="fas fa-user-md"></i>
+										<span>Medici</span>
+									</a>
+								</li>
+								<li class="item sub-item @(Html.IsSelected("Rooms", null) ? "active" : null)">
+									<a asp-controller="Rooms" asp-action="Index" class="text">
+										<i class="fas fa-tag"></i>
+										<span>Camere</span>
+									</a>
+								</li>
+								@if (User.IsInRole("Admin"))
+								{
+									<li class="item sub-item @(Html.IsSelected("RoleManager,UserRoles", null) ? "active" : null)">
+										<a asp-controller="RoleManager" asp-action="Index" class="text">
+											<i class="fas fa-user-tag"></i>
+											<span>Administrarea rorulilor</span>
+										</a>
+									</li>
+									<li class="item sub-item @(Html.IsSelected("Logging", null) ? "active" : null)">
+										<a asp-controller="Logging" asp-action="Index" class="text">
+											<i class="fas fa-info-circle"></i>
+											<span>Loguri</span>
+										</a>
+									</li>
+								}
+							</ul>
 						</li>
-						<li class="item @(Html.IsSelected("Rooms", null) ? "active" : null)">
-							<a asp-controller="Rooms" asp-action="Index" class="text">
-								<i class="fas fa-tag"></i>
-								<span>Camere</span>
-							</a>
-						</li>
-						@if (User.IsInRole("Admin"))
-						{
-							<li class="item @(Html.IsSelected("RoleManager,UserRoles", null) ? "active" : null)">
-								<a asp-controller="RoleManager" asp-action="Index" class="text">
-									<i class="fas fa-user-tag"></i>
-									<span>Administrarea rorulilor</span>
-								</a>
-							</li>
-							<li class="item @(Html.IsSelected("Logging", null) ? "active" : null)">
-								<a asp-controller="Logging" asp-action="Index" class="text">
-									<i class="fas fa-info-circle"></i>
-									<span>Loguri</span>
-								</a>
-							</li>
-						}
 					}
-			</ul>
+				</ul>
 			</aside>
 			<div class="content">
 				<header class="main-header container-fluid">
-					<div class="sidebar-toggle">
+					<div class="sidebar-toggle d-lg-none" data-sidebar-toggle>
 						<i class="fas fa-bars"></i>
 					</div>
 					<div class="user-menu">

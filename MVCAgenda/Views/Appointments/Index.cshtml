@@ -62,12 +62,16 @@
 	</header>
 	<div class="filters">
 		<form asp-controller="Appointments" asp-action="Index" method="get">
-			<header class="mb-3">
+			<header>
 				<div class="title">
 					<i class="fas fa-filter"></i>
 					<strong>Filtre</strong>
+					<a class="ms-auto d-sm-none" data-bs-toggle="collapse" data-bs-target=".filter-actions" role="button">
+                    	<i class="fas fa-sliders-h"></i>
+                    	Afiseaza/ascunde filtre
+                    </a>
 				</div>
-				<div class="actions">
+				<div class="actions filter-actions collapse">
 					<button type="reset" class="btn btn-outline-primary">
 						<i class="fas fa-eraser"></i>
 						Sterge toate filtrele
@@ -78,42 +82,42 @@
 					</button>
 				</div>
 			</header>
-			<div class="row">
-				<div class="col-3">
+			<div class="row mt-3 filter-actions collapse">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByAppointmentStartDate"></label>
 					<input class="form-control" aria-label="Text" asp-for="SearchByAppointmentStartDate"/>
 				</div>
-				<div class="col-3">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByAppointmentEndDate"></label>
 					<input class="form-control" aria-label="Text" asp-for="SearchByAppointmentEndDate"/>
 				</div>
-				<div class="col-3">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByMedic"></label>
 					<select class="form-control" asp-for="SearchByMedic" asp-items="ViewBag.MedicId">
 						<option disabled selected>Medic</option>
 					</select>
 				</div>
-				<div class="col-3">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByRoom"></label>
 					<select class="form-control" asp-for="SearchByRoom" asp-items="ViewBag.RoomId">
 						<option disabled selected>Cameră</option>
 					</select>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-3">
+			<div class="row filter-actions collapse">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByName"></label>
 					<input type="text" class="form-control" aria-label="Recipient" asp-for="SearchByName"/>
 				</div>
-				<div class="col-3">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByPhoneNumber"></label>
 					<input type="text" class="form-control" aria-label="Recipient" asp-for="SearchByPhoneNumber"/>
 				</div>
-				<div class="col-3">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByEmail"></label>
 					<input type="text" class="form-control" aria-label="Recipient" asp-for="SearchByEmail"/>
 				</div>
-				<div class="col-3">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByProcedure"></label>
 					<input type="text" class="form-control" aria-label="Recipient" asp-for="SearchByProcedure"/>
 				</div>

@@ -9,6 +9,7 @@
     --white: #fff;
     --black: #333;
     --transition: all 150ms linear;
+    --sidebar-width: 320px;
 }
 
 .btn-primary {
@@ -111,15 +112,22 @@ body .vr-left {
 
 #AppContent {
     display: flex;
-    /* height: 100vh; */
+    min-height: 100vh;
 }
 
 #AppContent > .sidebar {
-    width: 360px;
+    min-width: var(--sidebar-width);
+    width: var(--sidebar-width);
     min-height: 100vh;
     background-color: var(--main-color);
     position: relative;
     z-index: 2;
+    transition: margin 150ms linear;
+}
+
+#AppContent > .sidebar.visible {
+    margin-left: 0;
+    transition: margin 150ms linear;
 }
 
 #AppContent > .sidebar .brand {
@@ -140,11 +148,11 @@ body .vr-left {
     overflow: hidden;
 }
 
-#AppContent > .sidebar .navigation .item {
+#AppContent > .sidebar .navigation > .item {
     width: 100%;
 }
 
-#AppContent > .sidebar .navigation .item a {
+#AppContent > .sidebar .navigation > .item > a {
     display: block;
     text-decoration: none !important;
     color: var(--white);
@@ -156,8 +164,8 @@ body .vr-left {
     transition: none;
 }
 
-#AppContent > .sidebar .navigation .item a:before,
-#AppContent > .sidebar .navigation .item a:after {
+#AppContent > .sidebar .navigation .item > a:before,
+#AppContent > .sidebar .navigation .item > a:after {
     content: '';
     position: absolute;
     width: 20px;
@@ -166,7 +174,7 @@ body .vr-left {
     opacity: 0;
 }
 
-#AppContent > .sidebar .navigation .item a:before {
+#AppContent > .sidebar .navigation .item > a:before {
     top: -12px;
     border-right-style: solid;
     border-right-width: 8px;
@@ -176,7 +184,7 @@ body .vr-left {
     border-color: transparent;
 }
 
-#AppContent > .sidebar .navigation .item a:after {
+#AppContent > .sidebar .navigation .item > a:after {
     bottom: -12px;;
     border-right-style: solid;
     border-right-width: 8px;
@@ -186,31 +194,64 @@ body .vr-left {
     border-color: transparent;
 }
 
-#AppContent > .sidebar .navigation .item.active a,
-#AppContent > .sidebar .navigation .item a:hover {
+#AppContent > .sidebar .navigation .item.active > a,
+#AppContent > .sidebar .navigation .item > a:hover {
     background-color: #fdfdfd;
     color: var(--main-color);
     text-shadow: 0 0 1px var(--main-color);
 }
 
-#AppContent > .sidebar .navigation .item.active a:before,
-#AppContent > .sidebar .navigation .item.active a:after,
-#AppContent > .sidebar .navigation .item a:hover:before,
-#AppContent > .sidebar .navigation .item a:hover:after {
+#AppContent > .sidebar .navigation .item.active > a:before,
+#AppContent > .sidebar .navigation .item.active > a:after,
+#AppContent > .sidebar .navigation .item > a:hover:before,
+#AppContent > .sidebar .navigation .item > a:hover:after {
     border-color: #fdfdfd;
     opacity: 1;
 }
 
-#AppContent > .sidebar .navigation .item i {
+#AppContent > .sidebar .navigation > .item i {
     width: 20px;
     text-align: center;
     margin-right: 8px
 }
 
+#AppContent > .sidebar .navigation .sub-menu {
+    list-style: none;
+    padding: 0 10px;
+    margin-left: 23px;
+}
+
+#AppContent > .sidebar .navigation .sub-menu .sub-item {
+    margin-top: 10px;
+}
+
+#AppContent > .sidebar .navigation .sub-menu .sub-item a {
+    display: block;
+    text-decoration: none !important;
+    color: var(--white);
+    padding: 15px;
+    width: 100%;
+    border-radius: 15px;
+    position: relative;
+    transition: none;
+    font-size: 14px;
+}
+
+#AppContent > .sidebar .navigation .sub-menu .sub-item a:before,
+#AppContent > .sidebar .navigation .sub-menu .sub-item a:after {
+    display: none;
+}
+
+#AppContent > .sidebar .navigation .sub-menu .sub-item.active a,
+#AppContent > .sidebar .navigation .sub-menu .sub-item a:hover {
+    color: var(--white);
+    background-color: var(--main-color-darker);
+}
+
 #AppContent > .content {
     width: 100%;
     position: relative;
-    padding-bottom: 44px;
+    padding-bottom: 68px;
 }
 
 #AppContent .main-footer {
@@ -223,7 +264,6 @@ body .vr-left {
     bottom: 0;
     width: 100%;
     z-index: -1;
-    height: 44px;
 }
 
 #AppContent .main-header {
@@ -237,7 +277,12 @@ body .vr-left {
     height: 60px;
     line-height: 60px;
     font-size: 22px;
-    margin-left: 10px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+#AppContent .main-header .sidebar-toggle:hover {
+    color: var(--main-color)
 }
 
 #AppContent .main-header .user-menu {
@@ -300,6 +345,7 @@ body .vr-left {
 
 #AppContent .section header {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     border-bottom: 1px solid #f7f7f7;
 }
@@ -337,10 +383,12 @@ body .vr-left {
 
 #AppContent .section .filters header > .actions {
     margin-left: auto;
+    display: block;
 }
 
 #AppContent .section .filters .row {
     margin-bottom: 20px;
+    display: flex;
 }
 
 #AppContent .section .filters .row:last-child {
@@ -349,6 +397,7 @@ body .vr-left {
 
 #AppContent .section .content {
     padding: 0;
+    overflow: inherit !important;
 }
 
 #AppContent .section .content table {
@@ -375,4 +424,123 @@ body .vr-left {
 
 #AppContent .section .content .data {
     padding: 20px
+}
+
+@media only screen and (max-width: 991px) {
+    #AppContent .main-header {
+        position: fixed;
+    }
+
+    #AppContent main {
+        padding-top: 70px;
+    }
+
+    #AppContent > .sidebar {
+        position: fixed;
+        margin-left: -360px;
+        transition: margin 150ms linear;
+    }
+
+    #AppContent > .sidebar .sidebar-toggle {
+        height: 60px;
+        background-color: var(--white);
+        display: flex;
+        align-items: center;
+        padding-left: 32px;
+        font-weight: bold;
+        transition: color 150ms linear;
+        cursor: pointer;
+    }
+
+    #AppContent > .sidebar .sidebar-toggle:hover {
+        color: var(--main-color);
+        transition: color 150ms linear;
+    }
+
+    #AppContent > .sidebar .sidebar-toggle i {
+        margin-right: 12px;
+        width: 16px;
+    }
+
+    #AppContent > .sidebar.visible {
+    }
+
+    #AppContent > .sidebar.visible + .content:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--black);
+        z-index: 1;
+        opacity: 0.5;
+    }
+
+    #AppContent > .sidebar .navigation {
+        margin-right: 10px;
+    }
+
+    #AppContent > .sidebar .navigation > .item {
+        margin-top: 10px;
+    }
+
+    #AppContent > .sidebar .navigation > .item > a {
+        border-radius: 20px;
+    }
+
+    #AppContent > .sidebar .navigation .item.active > a:before,
+    #AppContent > .sidebar .navigation .item.active > a:after,
+    #AppContent > .sidebar .navigation .item > a:hover:before,
+    #AppContent > .sidebar .navigation .item > a:hover:after {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #AppContent .section header > .title {
+        width: 100%;
+    }
+
+    #AppContent .section header > .actions {
+        margin: 0;
+        width: 100%;
+    }
+
+    #AppContent .section header > .actions a,
+    #AppContent .section header > .actions button,
+    #AppContent .section header > .actions > form {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    #AppContent .section header > .actions .vr-left {
+        border: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    #AppContent .section header > .actions .vr-left > form {
+        width: 100%;
+    }
+
+    #AppContent .section .filters header > .actions:not(.show):not(.collapsing),
+    #AppContent .section .filters .row:not(.show):not(.collapsing) {
+        display: none;
+    }
+
+    #AppContent .section .filters .row {
+        margin-bottom: 0;
+    }
+
+    #AppContent .section .filters .row > [class^="col-"] {
+        margin-bottom: 20px;
+    }
+
+    #AppContent .section .content {
+        min-height: 260px;
+        overflow-x: auto !important;
+    }
 }

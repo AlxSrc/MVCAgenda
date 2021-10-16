@@ -36,55 +36,55 @@
 	</header>
 	<div class="content">
 		<table class="table">
-        <thead class="borderless-table">
-            <tr>
-                <th>
-                    Denumire rol
-                </th>
-                <th>
-                    Id
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.RolesList)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td class="text-end">
-                        <div class="dropdown d-inline-block">
-                            <button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                Opțiuni
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li>
-                                    <form asp-action="Delete" asp-route-userId="@item.Id">
-                                        <div class="btn-group" role="group" aria-label="Optiuni">
-                                            <input type="submit" value="Șterge rolul" class="dropdown-item link-danger" />
-                                        </div>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    
-    <form method="post" asp-action="AddRole" asp-controller="RoleManager">
-		<div class="input-group">
-		    <input name="roleName" placeholder="Introdu denumirea rolului" class="form-control w-25">
-		    <span class="input-group-btn">
-		        <button class="btn btn-main-second-color-filled btn-no-left-border-radius">Adaugă un rol</button>
-		    </span>
-		</div>
-	</form>
+			<thead class="borderless-table">
+				<tr>
+					<th>
+						Denumire rol
+					</th>
+					<th>
+						Id
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model.RolesList)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.Name)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Id)
+						</td>
+						<td class="text-end">
+							<div class="dropdown d-inline-block">
+								<button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+									Opțiuni
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<li>
+										<form asp-action="Delete" asp-route-userId="@item.Id" class="w-100">
+											<div class="btn-group w-100" role="group" aria-label="Optiuni">
+												<input type="submit" value="Șterge rolul" class="dropdown-item"/>
+											</div>
+										</form>
+									</li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+		<form method="post" asp-action="AddRole" asp-controller="RoleManager">
+			<div class="input-group px-3 pb-3">
+				<input name="roleName" placeholder="Introdu denumirea rolului" class="form-control w-25">
+				<span class="input-group-btn">
+					<button class="btn btn-outline-primary">Adaugă un rol</button>
+				</span>
+			</div>
+		</form>
 	</div>
 </section>

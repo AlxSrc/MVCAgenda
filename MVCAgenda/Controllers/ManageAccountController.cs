@@ -30,7 +30,7 @@ namespace MVCAgenda.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var model = User.Identity.Name;
-                return View(_manageAccountManager.GetUserProfileAsync(model));
+                return View(await _manageAccountManager.GetUserProfileAsync(model));
             }
             else
             {
@@ -46,7 +46,7 @@ namespace MVCAgenda.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    
+
                 }
 
                 return View();
