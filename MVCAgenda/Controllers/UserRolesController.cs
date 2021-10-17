@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Models.Accounts.Roles;
+using MVCAgenda.Service.Medics;
 
 namespace MVCAgenda.Controllers
 {
@@ -16,6 +17,7 @@ namespace MVCAgenda.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMedicService _medicsService;
 
         #endregion
 
@@ -23,10 +25,11 @@ namespace MVCAgenda.Controllers
 
         #region Constructor
 
-        public UserRolesController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserRolesController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IMedicService medicsService)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _medicsService = medicsService;
         }
 
         #endregion
@@ -37,6 +40,7 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var medics = _medicsService.GetListAsync();
             var users = await _userManager.Users.ToListAsync();
             var userRolesViewModel = new List<UserRolesViewModel>();
             foreach (var user in users)
@@ -47,6 +51,10 @@ namespace MVCAgenda.Controllers
                 //thisViewModel.FirstName = user.FirstName;
                 //thisViewModel.LastName = user.LastName;
                 thisViewModel.Roles = await GetUserRoles(user);
+
+                //Adding description to user roles
+                
+
                 userRolesViewModel.Add(thisViewModel);
             }
 

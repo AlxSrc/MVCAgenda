@@ -15,6 +15,12 @@
 				<span>Acasa</span>
 			</a>
 		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="UserRoles">
+				<i class="fas fa-cogs"></i>
+				<span>Administreaza rolurile utilizatorilor</span>
+			</a>
+		</li>
 		<li class="breadcrumb-item active">
 			<span>@pageTitle</span>
 		</li>
@@ -28,10 +34,7 @@
 			@pageTitle
 		</strong>
 		<div class="actions">
-			<a asp-action="Index" asp-controller="UserRoles" class="btn btn-primary">
-				<i class="fas fa-tools"></i>
-				Modifică rolurile conturilor
-			</a>
+			
 		</div>
 	</header>
 	<div class="content">

@@ -70,9 +70,9 @@
 								@if (User.IsInRole("Admin"))
 								{
 									<li class="item sub-item @(Html.IsSelected("RoleManager,UserRoles", null) ? "active" : null)">
-										<a asp-controller="RoleManager" asp-action="Index" class="text">
+										<a asp-controller="UserRoles" asp-action="Index" class="text">
 											<i class="fas fa-user-tag"></i>
-											<span>Administrarea rorulilor</span>
+											<span>Administreaza rolueile utilizatorilor</span>
 										</a>
 									</li>
 									<li class="item sub-item @(Html.IsSelected("Logging", null) ? "active" : null)">

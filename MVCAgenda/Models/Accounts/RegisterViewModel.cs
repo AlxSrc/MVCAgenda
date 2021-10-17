@@ -19,5 +19,11 @@ namespace MVCAgenda.Models.Accounts
         [DisplayName("Confirmă parola")]
         [Compare("Password", ErrorMessage = "Parolele nu corespund.")]
         public string ConfirmPassword { get; set; }
+
+        [DisplayName("Medic nou?")]
+        public bool NewMedic { get; set; }
+
+        [DisplayName("Numele medicului")]
+        public string MedicName { get; set; }
     }
 }

@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Core.Users;
+using MVCAgenda.Managers.Medics;
 using MVCAgenda.Models.Accounts;
+using MVCAgenda.Models.Medics;
 
 namespace MVCAgenda.Controllers
 {
@@ -16,15 +18,18 @@ namespace MVCAgenda.Controllers
         #region Fields
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IMedicsManager _medicsManager;
         #endregion
         /**************************************************************************************/
         #region Constructor
         public AccountController(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IMedicsManager medicsManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _medicsManager = medicsManager;
         }
         #endregion
         /**************************************************************************************/
@@ -59,14 +64,14 @@ namespace MVCAgenda.Controllers
         #endregion
         /**************************************************************************************/
         #region Register
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -83,9 +88,19 @@ namespace MVCAgenda.Controllers
 
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
-                    return RedirectToAction("index", "Home");
+                    if (model.NewMedic)
+                    {
+                        await _medicsManager.CreateAsync(new MedicViewModel() { Name = model.MedicName, Mail = model.Email });
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
+                        return RedirectToAction("index", "Home");
+                    }
+                    else
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _userManager.AddToRoleAsync(user, Roles.User.ToString());
+                        return RedirectToAction("index", "Home");
+                    }
                 }
 
                 foreach (var error in result.Errors)

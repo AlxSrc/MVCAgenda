@@ -1,14 +1,54 @@
-﻿
+﻿@model MVCAgenda.Models.Accounts.RegisterViewModel
+
 @{
-	ViewData["Title"] = "Register";
+	var pageTitle = "Adaugă un cont nou";
+
+	ViewData["Title"] = pageTitle;
 }
 
-@model MVCAgenda.Models.Accounts.RegisterViewModel
-<div class="d-lg-flex justify-content-lg-center text-center">
-	<div class="main box">
-		<form asp-action="Register">
-			<h1 class="h3 mb-3 fw-normal main-color">Inregistrează-te</h1>
-			<div asp-validation-summary="All" class="text-danger"></div>
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Acasa</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Manage" asp-controller="Manage">
+				<i class="fas fa-cogs"></i>
+				<span>Administreaza</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="UserRoles">
+				<i class="fas fa-tools"></i>
+				<span>Modifică rolurile conturilor</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
+
+<form asp-action="Register">
+	<section class="section">
+		<header>
+			<strong class="title">
+				<i class="fas fa-user-plus"></i>
+				@pageTitle
+			</strong>
+			<div class="actions">
+				<button type="submit" class="btn btn-primary">
+					<i class="far fa-save"></i>
+					Salveaza
+				</button>
+			</div>
+		</header>
+		<div class="content">
+			<div class="data">
+				<div asp-validation-summary="All" class="text-danger"></div>
 
 			<div class="form-floating mb-3">
 				<input asp-for="Email" class="form-control" id="floatingInput" placeholder="name@example.com">
@@ -28,8 +68,24 @@
 				<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 			</div>
 
-			<button class="w-100 btn btn-lg btn-main-second-color-filled" type="submit">Inregistreaza-te</button>
-			<p class="mt-5 mb-3 text-muted">© 2017–2021</p>
-		</form>
-	</div>
-</div>
+			
+			<div class="input-group mb-3">
+				<div class="input-group-text">
+					<input class="form-check-input mt-0" type="checkbox" asp-for="NewMedic" aria-label="Checkbox for following text input">
+				</div>
+				<input type="text" value="@Html.DisplayNameFor(model => model.NewMedic)" class="form-control" aria-label="Text input with checkbox" readonly>
+			</div>
+			
+			<div class="form-floating mb-3">
+				<input asp-for="MedicName" class="form-control" id="floatingMedicName" placeholder="Numele medicului">
+				<label for="floatingMedicName">@Html.DisplayNameFor(model => model.MedicName)</label>
+				<span asp-validation-for="MedicName" class="text-danger"></span>
+			</div>
+			</div>
+		</div>
+	</section>
+</form>
+
+@section Scripts {
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+}
