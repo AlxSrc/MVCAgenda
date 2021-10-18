@@ -58,7 +58,7 @@ namespace MVCAgenda.Controllers
             {
                 var result = await _medicsManager.CreateAsync(medic);
                 if (result == StringHelpers.SuccesMessage)
-                    return RedirectToAction("Manage", "Manage");
+                    return RedirectToAction("Index", "Medics");
                 else
                     ModelState.AddModelError(string.Empty, result);
             }
@@ -90,7 +90,6 @@ namespace MVCAgenda.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             return View(await _medicsFactory.PrepereDetailsViewModel(id));
-
         }
 
         [HttpPost]
@@ -101,7 +100,7 @@ namespace MVCAgenda.Controllers
             {
                 var result = await _medicsManager.UpdateAsync(medic);
                 if (result == StringHelpers.SuccesMessage)
-                    return RedirectToAction("Manage", "Manage");
+                    return RedirectToAction("Index", "Medics");
                 else
                     ModelState.AddModelError(string.Empty, result);
             }
@@ -121,7 +120,7 @@ namespace MVCAgenda.Controllers
         {
             var result = await _medicsManager.DeleteAsync(id);
             if (result == StringHelpers.SuccesMessage)
-                return RedirectToAction("Manage", "Manage");
+                return RedirectToAction("Index", "Medics");
             else
             {
                 ModelState.AddModelError(string.Empty, result);

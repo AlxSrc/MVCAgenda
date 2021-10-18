@@ -18,6 +18,7 @@ namespace MVCAgenda.Controllers
         #region Fields
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMedicsManager _medicsManager;
         #endregion
         /**************************************************************************************/
@@ -25,10 +26,12 @@ namespace MVCAgenda.Controllers
         public AccountController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             IMedicsManager medicsManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _medicsManager = medicsManager;
         }
         #endregion
@@ -46,6 +49,28 @@ namespace MVCAgenda.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel user)
         {
+            var test = false;
+            if(test)
+            {
+                await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+                MailAddress emailAddress = new MailAddress("moderator_agenda@gmail.com");
+                string userName = emailAddress.User;
+                var userModerator = new ApplicationUser
+                {
+                    UserName = userName,
+                    Email = emailAddress.Address
+                };
+
+                var result = await _userManager.CreateAsync(userModerator, "{Al@ka#9A#s&KA|");
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(userModerator, isPersistent: false);
+                    await _userManager.AddToRoleAsync(userModerator, Roles.Admin.ToString());
+                    return RedirectToAction("Index", "Scheduler");
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, user.RememberMe, false);
@@ -53,7 +78,7 @@ namespace MVCAgenda.Controllers
                 if (result.Succeeded)
                 {
                     //adding user to cache
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Scheduler");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");

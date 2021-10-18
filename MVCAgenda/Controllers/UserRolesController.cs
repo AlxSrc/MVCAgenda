@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -40,27 +41,40 @@ namespace MVCAgenda.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var medics = _medicsService.GetListAsync();
-            var users = await _userManager.Users.ToListAsync();
-            var userRolesViewModel = new List<UserRolesViewModel>();
-            foreach (var user in users)
+            try
             {
-                var thisViewModel = new UserRolesViewModel();
-                thisViewModel.UserId = user.Id;
-                thisViewModel.Email = user.Email;
-                //thisViewModel.FirstName = user.FirstName;
-                //thisViewModel.LastName = user.LastName;
-                thisViewModel.Roles = await GetUserRoles(user);
+                var users = await _userManager.Users.ToListAsync();
+                var userRolesViewModel = new List<UserRolesViewModel>();
 
-                //Adding description to user roles
-                
+                var medics = await _medicsService.GetListAsync();
 
-                userRolesViewModel.Add(thisViewModel);
+                foreach (var user in users)
+                {
+                    var thisViewModel = new UserRolesViewModel();
+                    thisViewModel.UserId = user.Id;
+                    thisViewModel.Email = user.Email;
+                    thisViewModel.Roles = await GetUserRoles(user);
+
+                    //Adding description to user roles
+                    //designation
+                    var medic = medics.FirstOrDefault(m => m.Mail.ToUpper() == user.Email);
+                    if (medic != null)
+                    {
+                        medic.Designation = string.Join(", ", thisViewModel.Roles.ToList());
+                        await _medicsService.UpdateAsync(medic);
+                    }
+                    
+                    userRolesViewModel.Add(thisViewModel);
+                }
+
+                var viewModel = new UsersRolesViewModel() { Users = userRolesViewModel };
+
+                return View(viewModel);
             }
-
-            var viewModel = new UsersRolesViewModel() { Users = userRolesViewModel };
-
-            return View(viewModel);
+            catch (Exception ex)
+            {
+                return View(new UsersRolesViewModel() { Users = new List<UserRolesViewModel>() });
+            }
         }
 
         private async Task<List<string>> GetUserRoles(IdentityUser user)

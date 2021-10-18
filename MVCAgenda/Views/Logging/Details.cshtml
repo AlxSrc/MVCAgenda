@@ -54,7 +54,7 @@
 			</div>
 			<div class="input-group mb-3">
 				<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.FullMessage)</span>
-				<input asp-for="FullMessage" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.FullMessage)" aria-describedby="basic-addon2" readonly>
+				<textarea asp-for="FullMessage" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.FullMessage)" readonly></textarea>
 			</div>
 			<div class="input-group mb-3">
 				<span class="input-group-text" id="basic-addon3">@Html.DisplayNameFor(model => model.IpAddress)</span>

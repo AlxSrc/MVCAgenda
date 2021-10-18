@@ -42,20 +42,13 @@ namespace MVCAgenda.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RoomViewModel room)
         {
-            if (User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var result = await _roomManager.CreateAsync(room);
-                    return RedirectToAction("Manage", "Manage");
-                }
+                var result = await _roomManager.CreateAsync(room);
+                return RedirectToAction("Index", "Rooms");
+            }
 
-                return View(room);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(room);
         }
 
         #endregion
@@ -96,7 +89,7 @@ namespace MVCAgenda.Controllers
             if (ModelState.IsValid)
             {
                 await _roomManager.UpdateAsync(room);
-                return RedirectToAction("Manage", "Manage");
+                return RedirectToAction("Index", "Rooms");
             }
 
             return View(room);
@@ -113,7 +106,7 @@ namespace MVCAgenda.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var resuult = await _roomManager.DeleteAsync(id);
-            return RedirectToAction("Manage", "Manage");
+            return RedirectToAction("Index", "Rooms");
         }
 
         #endregion
