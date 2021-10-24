@@ -40,7 +40,7 @@ namespace MVCAgenda.Service.PatientsSheet
         {
             try
             {
-                return await _context.PatientsSheet.FirstOrDefaultAsync(m => m.Id == Id);
+                return await _context.PatientSheets.FirstOrDefaultAsync(m => m.Id == Id);
             }
             catch (Exception ex)
             {

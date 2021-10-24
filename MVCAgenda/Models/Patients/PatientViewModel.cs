@@ -6,10 +6,6 @@ namespace MVCAgenda.Models.Patients
 {
     public class PatientViewModel : BaseModel
     {
-        [DisplayName("Detalii pacient")]
-        public int SheetPatientId { get; set; }
-
-
         [StringLength(60, MinimumLength = 1)]
         [DisplayName("Nume")]
         [Required]
@@ -37,7 +33,8 @@ namespace MVCAgenda.Models.Patients
         [DisplayName("Lista neagră")]
         public string BlacklistText { get; set; }
 
-        [DisplayName("Lista neagră")]
-        public bool Blacklist { get; set; }
+
+        [DisplayName("Tipul pacientului")]
+        public int StatusCode { get; set; }
     }
 }

@@ -26,8 +26,8 @@ namespace MVCAgenda.ApiHost.DTOs.Patients
         [JsonPropertyName("mail")]
         public string Mail { get; set; }
 
-        [JsonProperty("blacklist")]
-        [JsonPropertyName("blacklist")]
-        public bool Blacklist { get; set; }
+        [JsonProperty("status_code")]
+        [JsonPropertyName("status_code")]
+        public int StatusCode { get; set; }
     }
 }

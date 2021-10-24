@@ -42,7 +42,11 @@ namespace MVCAgenda.ApiHost.Factories.Appointments
                 RoomId = appointment.RoomId,
                 MedicId = appointment.MedicId,
 
-                PatientName = $"{patient.FirstName} {patient.LastName}",
+                FirstName = patient.FirstName, 
+                LastName = patient.LastName,
+                PhoneNumber = patient.PhoneNumber,
+                Mail = patient.Mail,
+
                 MedicName = medic.Name,
                 RoomName = room.Name,
 

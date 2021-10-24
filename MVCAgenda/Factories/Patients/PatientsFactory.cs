@@ -6,6 +6,7 @@ using MVCAgenda.Core.Domain;
 using System;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Core.Logging;
+using MVCAgenda.Core.Status;
 
 namespace MVCAgenda.Factories.Patients
 {
@@ -89,26 +90,26 @@ namespace MVCAgenda.Factories.Patients
             PatientViewModel viewModel = new PatientViewModel()
             {
                 Id = patient.Id,
-                SheetPatientId = patient.PatientSheetId,
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
                 PhoneNumber = patient.PhoneNumber,
                 Mail = patient.Mail,
                 Hidden = patient.Hidden
             };
-            if (patient.Blacklist == true)
+            if (patient.StatusCode == (int)PatientStatus.Blacklist)
             {
-                viewModel.Blacklist = true;
-                viewModel.BlacklistText = "<span class=\"badge bg-danger\">Da</span>";
+                viewModel.StatusCode = (int)PatientStatus.Blacklist;
+                viewModel.BlacklistText = "<span class=\"badge bg-danger\">Blacklist</span>";
             }
-            else if (patient.Blacklist == false)
+            else if (patient.StatusCode == (int)PatientStatus.LoyalPatient)
             {
-                viewModel.Blacklist = false;
-                viewModel.BlacklistText = "<span class=\"badge bg-success\">Nu</span>";
+                viewModel.StatusCode = (int)PatientStatus.LoyalPatient;
+                viewModel.BlacklistText = "<span class=\"badge bg-success\">Pacient fidel</span>";
             }
             else
             {
-                viewModel.BlacklistText = "-";
+                viewModel.StatusCode = (int)PatientStatus.Patient;
+                viewModel.BlacklistText = "Pacient";
             }
 
             return viewModel;
@@ -119,12 +120,11 @@ namespace MVCAgenda.Factories.Patients
             PatientListItemViewModel viewModel = new PatientListItemViewModel()
             {
                 Id = patient.Id,
-                SheetPatientId = patient.PatientSheetId,
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
                 Mail = patient.Mail,
                 PhoneNumber = patient.PhoneNumber,
-                Blacklist = patient.Blacklist
+                StatusCode = patient.StatusCode
             };
 
             return viewModel;

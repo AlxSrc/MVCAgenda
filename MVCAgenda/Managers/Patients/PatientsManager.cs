@@ -59,7 +59,7 @@ namespace MVCAgenda.Managers.Patients
                         LastName = patientViewModel.LastName != null ? $"{patientViewModel.LastName.Substring(0, 1).ToUpper()}{patientViewModel.LastName.Substring(1, patientViewModel.LastName.Length - 1).ToLower()}" : null,
                         PhoneNumber = patientViewModel.PhoneNumber,
                         Mail = patientViewModel.Mail,
-                        Blacklist = patientViewModel.Blacklist,
+                        StatusCode = patientViewModel.StatusCode,
                         Hidden = false
                     };
 
@@ -95,12 +95,11 @@ namespace MVCAgenda.Managers.Patients
                     Patient patient = new Patient()
                     {
                         Id = patientViewModel.Id,
-                        PatientSheetId = patientViewModel.SheetPatientId,
                         FirstName = $"{patientViewModel.FirstName.Substring(0, 1).ToUpper()}{patientViewModel.FirstName.Substring(1, patientViewModel.FirstName.Length - 1).ToLower()}",
                         LastName = patientViewModel.LastName != null ? $"{patientViewModel.LastName.Substring(0, 1).ToUpper()}{patientViewModel.LastName.Substring(1, patientViewModel.LastName.Length - 1).ToLower()}" : null,
                         PhoneNumber = patientViewModel.PhoneNumber,
                         Mail = patientViewModel.Mail,
-                        Blacklist = patientViewModel.Blacklist,
+                        StatusCode = patientViewModel.StatusCode,
                         Hidden = patientViewModel.Hidden
                     };
 

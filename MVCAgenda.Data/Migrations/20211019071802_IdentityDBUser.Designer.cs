@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Data.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20210921120240_IdentityDBUser")]
+    [Migration("20211019071802_IdentityDBUser")]
     partial class IdentityDBUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,9 +149,6 @@ namespace MVCAgenda.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Blacklist")
-                        .HasColumnType("bit");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -168,22 +165,15 @@ namespace MVCAgenda.Data.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("PatientSheetId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("SheetPatientId")
+                    b.Property<int>("StatusCode")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SheetPatientId")
-                        .IsUnique()
-                        .HasFilter("[SheetPatientId] IS NOT NULL");
 
                     b.ToTable("Patients");
                 });
@@ -216,6 +206,9 @@ namespace MVCAgenda.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhysicalExamination")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
@@ -230,7 +223,10 @@ namespace MVCAgenda.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PatientsSheet");
+                    b.HasIndex("PatientId")
+                        .IsUnique();
+
+                    b.ToTable("PatientSheets");
                 });
 
             modelBuilder.Entity("MVCAgenda.Core.Domain.Room", b =>
@@ -505,7 +501,7 @@ namespace MVCAgenda.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MVCAgenda.Core.Domain.Consultation", "Room")
+                    b.HasOne("MVCAgenda.Core.Domain.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -529,13 +525,15 @@ namespace MVCAgenda.Data.Migrations
                     b.Navigation("SheetPatient");
                 });
 
-            modelBuilder.Entity("MVCAgenda.Core.Domain.Patient", b =>
+            modelBuilder.Entity("MVCAgenda.Core.Domain.PatientSheet", b =>
                 {
-                    b.HasOne("MVCAgenda.Core.Domain.PatientSheet", "SheetPatient")
-                        .WithOne("Patient")
-                        .HasForeignKey("MVCAgenda.Core.Domain.Patient", "SheetPatientId");
+                    b.HasOne("MVCAgenda.Core.Domain.Patient", "Patient")
+                        .WithOne("SheetPatient")
+                        .HasForeignKey("MVCAgenda.Core.Domain.PatientSheet", "PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("SheetPatient");
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -589,9 +587,9 @@ namespace MVCAgenda.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MVCAgenda.Core.Domain.PatientSheet", b =>
+            modelBuilder.Entity("MVCAgenda.Core.Domain.Patient", b =>
                 {
-                    b.Navigation("Patient");
+                    b.Navigation("SheetPatient");
                 });
 #pragma warning restore 612, 618
         }

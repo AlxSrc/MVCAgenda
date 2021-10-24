@@ -1,6 +1,7 @@
 ﻿using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
+using MVCAgenda.Core.Status;
 using MVCAgenda.Factories.Appointments;
 using MVCAgenda.Models.Appointments;
 using MVCAgenda.Service.Appointments;
@@ -61,12 +62,13 @@ namespace MVCAgenda.Managers.Appointments
             try
             {
                 int patientId;
-                string message = await _appointmentServices.SearchAppointmentAsync(appointmentViewModel.MedicId, appointmentViewModel.RoomId, appointmentViewModel.StartDate, appointmentViewModel.EndDate);
+                ///validare suprapunere programari
+                //string message = await _appointmentServices.SearchAppointmentAsync(appointmentViewModel.MedicId, appointmentViewModel.RoomId, appointmentViewModel.StartDate, appointmentViewModel.EndDate);
 
-                if (message != StringHelpers.SuccesMessage)
-                {
-                    return message;
-                }
+                //if (message != StringHelpers.SuccesMessage)
+                //{
+                //    return message;
+                //}
 
                 if (appointmentViewModel.PatientId > 0)
                 {
@@ -111,6 +113,18 @@ namespace MVCAgenda.Managers.Appointments
                     return "Nu s-a putut creea programarea.";
                 else
                 {
+                    //folosind id-ul pacientului din programarea adaugata
+                    patientId = newAppointment.PatientId;
+                    //aduc toate programarile pacientului respectiv
+                    var appointments = await _appointmentServices.GetFiltredListAsync(id: patientId, Hidden: false);
+                    //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
+                    if(appointments.Count >= Constants.LoyalAppointmentNumber)
+                    {
+                        var patient = await _patientServices.GetAsync(patientId);
+                        patient.StatusCode = (int)PatientStatus.LoyalPatient;
+                        var updateRessult = await _patientServices.UpdateAsync(patient);
+                    }
+
                     var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}, Appointment: {newAppointment.Id}";
                     await _logger.CreateAsync(msg, null, null, LogLevel.Information);
                     return StringHelpers.SuccesMessage;
@@ -128,12 +142,14 @@ namespace MVCAgenda.Managers.Appointments
         {
             try
             {
-                string message = await _appointmentServices.SearchAppointmentAsync(appointmentViewModel.MedicId, appointmentViewModel.RoomId, appointmentViewModel.StartDate, appointmentViewModel.EndDate);
+                int patientId;
+                ///validare suprapunere programari
+                //string message = await _appointmentServices.SearchAppointmentAsync(appointmentViewModel.MedicId, appointmentViewModel.RoomId, appointmentViewModel.StartDate, appointmentViewModel.EndDate);
 
-                if (message != StringHelpers.SuccesMessage)
-                {
-                    return message;
-                }
+                //if (message != StringHelpers.SuccesMessage)
+                //{
+                //    return message;
+                //}
 
                 var newAppointment = new Appointment
                 {
@@ -158,6 +174,21 @@ namespace MVCAgenda.Managers.Appointments
                 }
                 else
                 {
+                    if(appointmentViewModel.Made == false)
+                    {
+                        //folosind id-ul pacientului din programarea adaugata
+                        patientId = newAppointment.PatientId;
+                        //aduc toate programarile pacientului respectiv
+                        var appointments = await _appointmentServices.GetFiltredListAsync(id: patientId, made:false, Hidden: false);
+                        //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
+                        if (appointments.Count >= Constants.BlacklistMissingAppointmentNumber)
+                        {
+                            var patient = await _patientServices.GetAsync(patientId);
+                            patient.StatusCode = (int)PatientStatus.Blacklist;
+                            var updateRessult = await _patientServices.UpdateAsync(patient);
+                        }
+                    }
+
                     var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Edit}, Appointment: {appointmentViewModel.Id}";
                     await _logger.CreateAsync(msg, null, null, LogLevel.Information);
                     return StringHelpers.SuccesMessage;

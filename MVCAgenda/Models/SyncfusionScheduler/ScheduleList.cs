@@ -17,5 +17,9 @@ namespace MVCAgenda.Models.SyncfusionScheduler
         public List<ScheduleEventData> AppointmentsSchedule { get; set; }
 
         #endregion
+
+        #region Search
+        public string Mail { get; set; }
+        #endregion
     }
 }

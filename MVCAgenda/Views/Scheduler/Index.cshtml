@@ -1,539 +1,604 @@
-﻿@{
-	ViewData["Title"] = "Lista cu programari";
+﻿@model MVCAgenda.Models.SyncfusionScheduler.ScheduleList
+
+@{
+	var pageTitle = "Calendarul cu programări";
+
+	ViewData["Title"] = pageTitle;
 }
-@model MVCAgenda.Models.SyncfusionScheduler.ScheduleList
 
-<div class="main box">
+<nav aria-label="breadcrumb" class="navigation">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a asp-action="Index" asp-controller="Home">
+				<i class="fas fa-home"></i>
+				<span>Acasa</span>
+			</a>
+		</li>
+		<li class="breadcrumb-item active">
+			<span>@pageTitle</span>
+		</li>
+	</ol>
+</nav>
 
+
+
+<div class="section">
+	<header>
+		<strong class="title">
+			<i class="fas fa-calendar-alt"></i>
+			@pageTitle
+		</strong>
+		<div class="actions">
+		</div>
+	</header>
+	<div class="filters">
+		<form asp-controller="Scheduler" asp-action="Index" method="get">
+			<header>
+				<div class="title">
+					<i class="fas fa-filter"></i>
+					<strong>Filtre</strong>
+					<a class="ms-auto d-sm-none" data-bs-toggle="collapse" data-bs-target=".filter-actions" role="button">
+						<i class="fas fa-sliders-h"></i>
+						Afiseaza/ascunde filtre
+					</a>
+				</div>
+				<div class="actions filter-actions collapse">
+					
+					<button type="reset" class="btn btn-outline-primary">
+						<i class="fas fa-eraser"></i>
+						Sterge toate filtrele
+					</button>
+					<button type="submit" class="btn btn-outline-primary">
+						<i class="fas fa-search"></i>
+						Caută programare
+					</button>
+				</div>
+			</header>
+			<div class="row mt-3 filter-actions collapse">
+				
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+					<label asp-for="Mail"></label>
+					<select class="form-control" asp-for="Mail" asp-items="ViewBag.Mails">
+						<option disabled selected>Toate</option>
+					</select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="content">
+		
+	</div>
+</div>
+
+<div>
 	@using Syncfusion.EJ2.Schedule
-	@using Syncfusion.EJ2.Buttons
-	@using MVCAgenda.Models.SyncfusionScheduler
+		@using Syncfusion.EJ2.Buttons
+		@using MVCAgenda.Models.SyncfusionScheduler
 
-	@{
-		var validationRules = new Dictionary<string, object>() { { "required", true } };
-		var locationValidationRules = new Dictionary<string, object>() { { "required", true }, { "regex", new string[] { "^[a-zA-Z0-9- ]*$", "Special character(s) not allowed in this field" } } };
-		var descriptionValidationRules = new Dictionary<string, object>() { { "required", true }, { "minLength", 5 }, { "maxLength", 500 } };
-	}
+		@{
+			var validationRules = new Dictionary<string, object>() { { "required", true } };
+			var locationValidationRules = new Dictionary<string, object>() { { "required", true }, { "regex", new string[] { "^[a-zA-Z0-9- ]*$", "Special character(s) not allowed in this field" } } };
+			var descriptionValidationRules = new Dictionary<string, object>() { { "required", true }, { "minLength", 5 }, { "maxLength", 500 } };
+		}
 
-	<ejs-schedule
-		id="schedule" height="650px"
-		startHour="06:00" endHour="20:00" showQuickInfo="true"
-		firstDayOfWeek=1 currentView="Day" selectedDate="@DateTime.Now.Date"
-		resourceHeaderTemplate="#resource-template"
-		actionBegin="onActionBegin" actionComplete="onActionComplete"
-		popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate">
+		<ejs-schedule id="schedule" height="650px"
+					  startHour="06:00" endHour="20:00" showQuickInfo="true"
+					  firstDayOfWeek=1 currentView="Day" selectedDate="@DateTime.Now.Date"
+					  resourceHeaderTemplate="#resource-template"
+					  actionBegin="onActionBegin" actionComplete="onActionComplete"
+					  popupOpen="onPopupOpen" editorTemplate="#EventEditorTemplate">
 
-		<e-schedule-eventsettings>
+			<e-schedule-eventsettings>
 
-			<e-data-manager url="@Url.Action("LoadData", "Scheduler")" adaptor="WebMethodAdaptor"></e-data-manager>
+				<e-data-manager url="@Url.Action("LoadData", "Scheduler")" adaptor="WebMethodAdaptor"></e-data-manager>
 
-			<e-eventsettings-fields>
-				<e-field-subject name="Subject" validation="validationRules"></e-field-subject>
-				<e-field-starttime name="StartTime" validation="validationRules"></e-field-starttime>
-				<e-field-endtime name="EndTime" validation="validationRules"></e-field-endtime>
-			</e-eventsettings-fields>
+				<e-eventsettings-fields>
+					<e-field-subject name="Subject" validation="validationRules"></e-field-subject>
+					<e-field-starttime name="StartTime" validation="validationRules"></e-field-starttime>
+					<e-field-endtime name="EndTime" validation="validationRules"></e-field-endtime>
+				</e-eventsettings-fields>
 
-		</e-schedule-eventsettings>
+			</e-schedule-eventsettings>
 
-		<e-schedule-quickinfotemplates header="#header-template" content="#content-template" footer="#footer-template">
-		</e-schedule-quickinfotemplates>
+			<e-schedule-quickinfotemplates header="#header-template" content="#content-template" footer="#footer-template">
+			</e-schedule-quickinfotemplates>
 
-		<e-schedule-group enableCompactView="false" resources="@ViewBag.Resources"></e-schedule-group>
-		<e-schedule-resources>
-			<e-schedule-resource dataSource="@ViewBag.Employees" field="MedicId" title="Employees"
-				                    name="Employee" textField="name" idField="id" groupIDField="id" allowMultiple="true">
-			</e-schedule-resource>
-		</e-schedule-resources>
+			<e-schedule-group enableCompactView="false" resources="@ViewBag.Resources"></e-schedule-group>
+			<e-schedule-resources>
+				<e-schedule-resource dataSource="@ViewBag.Employees" field="MedicId" title="Employees"
+									 name="Employee" textField="name" idField="id" groupIDField="id" allowMultiple="true">
+				</e-schedule-resource>
+			</e-schedule-resources>
 
-		<e-schedule-views>
-			<e-schedule-view option="Day" eventTemplate="#day-event-template"></e-schedule-view>
-			<e-schedule-view option="Week" eventTemplate="#week-event-template"></e-schedule-view>
-			<e-schedule-view option="TimelineWeek" eventTemplate="#timeline-event-template"></e-schedule-view>
-			@*<e-schedule-view option="WorkWeek"></e-schedule-view>*@
-			<e-schedule-view option="Month" eventTemplate="#month-event-template"></e-schedule-view>
-		</e-schedule-views>
-	</ejs-schedule>
+			<e-schedule-views>
+				<e-schedule-view option="Day" eventTemplate="#day-event-template" allowVirtualScrolling="true"></e-schedule-view>
+				<e-schedule-view option="Week" eventTemplate="#week-event-template" allowVirtualScrolling="true"></e-schedule-view>
+				<e-schedule-view option="TimelineWeek" eventTemplate="#timeline-event-template" allowVirtualScrolling="true"></e-schedule-view>
+				@*<e-schedule-view option="WorkWeek"></e-schedule-view>*@
+				<e-schedule-view option="Month" eventTemplate="#month-event-template" allowVirtualScrolling="true"></e-schedule-view>
+			</e-schedule-views>
+		</ejs-schedule>
 
 	@*Capul la tabel cu medici*@
 	<script id="resource-template" type="text/x-template">
-        <div class="template-wrap">
-            <div class="employee-category">
-                @*${getEmployeeImage(data)}*@
-                <div class="employee-name">${getEmployeeName(data)}</div>
-                <div class="employee-designation">${getEmployeeDesignation(data)}</div>
-            </div>
-        </div>
-    </script>
+		<div class="template-wrap">
+			<div class="employee-category">
+		@*${getEmployeeImage(data)}*@
+				<div class="employee-name">${getEmployeeName(data)}</div>
+				<div class="employee-designation">${getEmployeeDesignation(data)}</div>
+			</div>
+		</div>
+	</script>
 
 	@*Templaturi pt vizualizare tabelului pe perioade*@
 	<script id="day-event-template" type="text/x-template">
-        <div class="template-wrap" style="background:${PrimaryColor}">
-            <div class="subject" style="background:${PrimaryColor}">${Subject}</div>
-            <div class="description" style="background:${SecondaryColor}">Camera: <b>${Room}</b></div>
-            <div class="description" style="background:${SecondaryColor}">Pacient: <b>${FirstName}</b></div>
-            @*<div class="time">Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>*@
-        </div>
-    </script>
+		<div class="template-wrap" style="background:${PrimaryColor}">
+			<div class="subject" style="background:${PrimaryColor}">${Subject}</div>
+			<div class="description" style="background:${SecondaryColor}">Camera: <b>${Room}</b></div>
+			<div class="description" style="background:${SecondaryColor}">Pacient: <b>${FirstName}</b></div>
+		@*<div class="time">Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>*@
+		</div>
+	</script>
 
 	<script id="week-event-template" type="text/x-template">
-        <div class='template-wrap' style='background:${SecondaryColor}'>
-            <div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
-            <div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
-            <div class="description">${FirstName} - ${PhoneNumber}</div>
-            <div class="description">${Room} - ${Medic}</div>
-            <div class="description">${Description}</div>
-        </div>
-    </script>
+		<div class='template-wrap' style='background:${SecondaryColor}'>
+			<div class="subject" style='background:${PrimaryColor}'>${Subject}</div>
+			<div class="time" style='background:${PrimaryColor}'>Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>
+			<div class="description">${FirstName} - ${PhoneNumber}</div>
+			<div class="description">${Room} - ${Medic}</div>
+			<div class="description">${Description}</div>
+		</div>
+	</script>
 
 	<script id="timeline-event-template" type="text/x-template">
-        <div class="template-wrap" style="background:${PrimaryColor}">
-            <div class="subject" style="background:${PrimaryColor}">${Subject}</div>
-            <div class="description" style="background:${SecondaryColor}">${Room}</div>
-            <div class="description" style="background:${SecondaryColor}">${FirstName}</div>
-            @*<div class="time" style="background:${PrimaryColor}">Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>*@
-        </div>
-    </script>
+		<div class="template-wrap" style="background:${PrimaryColor}">
+			<div class="subject" style="background:${PrimaryColor}">${Subject}</div>
+			<div class="description" style="background:${SecondaryColor}">${Room}</div>
+			<div class="description" style="background:${SecondaryColor}">${FirstName}</div>
+		@*<div class="time" style="background:${PrimaryColor}">Time: ${getTimeString(data.StartTime)} - ${getTimeString(data.EndTime)}</div>*@
+		</div>
+	</script>
 
 	<script id="month-event-template" type="text/x-template">
-        <div class="template-wrap" style="background:${PrimaryColor}">
-            <div class="subject" style="font-size: 13px">${Subject}</div>
-        </div>
-    </script>
+		<div class="template-wrap" style="background:${PrimaryColor}">
+			<div class="subject" style="font-size: 13px">${Subject}</div>
+		</div>
+	</script>
 
 	@*Templaturi pt vizualizare informatiilor*@
 	<script id="header-template" type="text/x-template">
-        <div class="quick-info-header">
-            <div class="quick-info-header-content" style='${getHeaderStyles(data)}'>
-                <div class="quick-info-title">${if (elementType == "cell")}Adaugă o programare${else}Procedura: ${Subject}${/if}</div>
-                <div class="duration-text">${getHeaderDetails(data)}</div>
-            </div>
-        </div>
-    </script>
+		<div class="quick-info-header">
+			<div class="quick-info-header-content" style='${getHeaderStyles(data)}'>
+				<div class="quick-info-title">${if (elementType == "cell")}Adaugă o programare${else}Procedura: ${Subject}${/if}</div>
+				<div class="duration-text">${getHeaderDetails(data)}</div>
+			</div>
+		</div>
+	</script>
 
 	<script id="content-template" type="text/x-template">
-        <div class="quick-info-content">
-            ${if (elementType == "cell")}
-            <div class="e-cell-content">
-                @*<table class="custom-event-editor" width="100%" cellpadding="5">
-                    <tbody>
-                        <tr>
-                            <td class="e-textlabel">Numele*</td>
-                            <td colspan="4">
-                                <input id="FirstName" name="FirstName" class="e-field e-input" type="text" value="" style="width: 100%" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Prenumele</td>
-                            <td colspan="4">
-                                <input id="LastName" name="LastName" class="e-field e-input" type="text" value="" style="width: 100%" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Numar de telefon*</td>
-                            <td colspan="4">
-                                <input id="PhoneNumber" name="PhoneNumber" class="e-field e-input" type="text" value="" style="width: 100%" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Mail</td>
-                            <td colspan="4">
-                                <input id="Mail" name="Mail" class="e-field e-input" type="text" value="" style="width: 100%" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Medicul</td>
-                            <td colspan="4">
-                                <input type="text" id="MedicId" name="MedicId" class="e-field" style="width: 100%" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Camera</td>
-                            <td colspan="4">
-                                <input type="text" id="RoomId" name="RoomId" class="e-field" style="width: 100%" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Incepe pe</td>
-                            <td colspan="4">
-                                <input id="StartTime" class="e-field" type="text" name="StartTime" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Se termina pe</td>
-                            <td colspan="4">
-                                <input id="EndTime" class="e-field" type="text" name="EndTime" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Procedura</td>
-                            <td colspan="4">
-                                <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="e-textlabel">Comentarii</td>
-                            <td colspan="4">
-                                <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
-                                            style="width: 100%; height: 60px !important; resize: vertical"></textarea>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>*@
-                <span>Dublu click pe o celula pentru a adauga o programare, click pe o programare pentru a vizualiza informatii.</span>
-            </div>
-            ${else}
-            <div class="event-content">
+		<div class="quick-info-content">
+			${if (elementType == "cell")}
+			<div class="e-cell-content">
+		@*<table class="custom-event-editor" width="100%" cellpadding="5">
+			<tbody>
+			<tr>
+			<td class="e-textlabel">Numele*</td>
+			<td colspan="4">
+			<input id="FirstName" name="FirstName" class="e-field e-input" type="text" value="" style="width: 100%" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Prenumele</td>
+			<td colspan="4">
+			<input id="LastName" name="LastName" class="e-field e-input" type="text" value="" style="width: 100%" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Numar de telefon*</td>
+			<td colspan="4">
+			<input id="PhoneNumber" name="PhoneNumber" class="e-field e-input" type="text" value="" style="width: 100%" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Mail</td>
+			<td colspan="4">
+			<input id="Mail" name="Mail" class="e-field e-input" type="text" value="" style="width: 100%" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Medicul</td>
+			<td colspan="4">
+			<input type="text" id="MedicId" name="MedicId" class="e-field" style="width: 100%" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Camera</td>
+			<td colspan="4">
+			<input type="text" id="RoomId" name="RoomId" class="e-field" style="width: 100%" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Incepe pe</td>
+			<td colspan="4">
+			<input id="StartTime" class="e-field" type="text" name="StartTime" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Se termina pe</td>
+			<td colspan="4">
+			<input id="EndTime" class="e-field" type="text" name="EndTime" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Procedura</td>
+			<td colspan="4">
+			<input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
+			</td>
+			</tr>
+			<tr>
+			<td class="e-textlabel">Comentarii</td>
+			<td colspan="4">
+			<textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
+			style="width: 100%; height: 60px !important; resize: vertical"></textarea>
+			</td>
+			</tr>
+			</tbody>
+			</table>*@
+				<span>Dublu click pe o celula pentru a adauga o programare, click pe o programare pentru a vizualiza informatii.</span>
+			</div>
+			${else}
+			<div class="event-content">
 
-                <div class="meeting-type-wrap">
-                    <label>Medicul</label>:
-                    <span>${Medic}</span>
-                </div>
-                <div class="meeting-type-wrap">
-                    <label>Camera</label>:
-                    <span>${Room}</span>
-                </div>
-                <div class="meeting-type-wrap">
-                    <label>Numele</label>:
-                    <span>${FirstName}</span>
-                </div>
-                <div class="meeting-type-wrap">
-                    <label>Numar de telefon</label>:
-                    <span>${PhoneNumber}</span>
-                </div>
-                <div class="meeting-type-wrap">
-                    <label>Comentarii</label>:
-                    <span>${Description}</span>
-                </div>
-            </div>
-            ${/if}
-        </div>
-    </script>
+				<div class="meeting-type-wrap">
+					<label>Medicul</label>:
+					<span>${Medic}</span>
+				</div>
+				<div class="meeting-type-wrap">
+					<label>Camera</label>:
+					<span>${Room}</span>
+				</div>
+				<div class="meeting-type-wrap">
+					<label>Numele</label>:
+					<span>${FirstName}</span>
+				</div>
+				<div class="meeting-type-wrap">
+					<label>Numar de telefon</label>:
+					<span>${PhoneNumber}</span>
+				</div>
+				<div class="meeting-type-wrap">
+					<label>Comentarii</label>:
+					<span>${Description}</span>
+				</div>
+			</div>
+			${/if}
+		</div>
+	</script>
 
 	<script id="footer-template" type="text/x-template">
-        <div class="quick-info-footer">
-            ${if (elementType == "cell")}
-            <div class="cell-footer">
-                @*<button id="more-details">Mai multe detalii</button>
-                <button id="add">Adaugă o programare</button>*@
-            </div>
-            ${else}
-            <div class="event-footer d-flex justify-content-end">
-                <button id="delete" class="btn btn-sm btn-outline-danger">Șterge programarea</button>
-                <button id="more-details" class="ml-1 btn btn-sm btn-primary" data-appointment-id="${Id}">Detalii programarea</button>
-            </div>
-            ${/if}
-        </div>
-    </script>
+		<div class="quick-info-footer">
+			${if (elementType == "cell")}
+			<div class="cell-footer">
+		@*<button id="more-details">Mai multe detalii</button>
+			<button id="add">Adaugă o programare</button>*@
+			</div>
+			${else}
+			<div class="event-footer d-flex justify-content-end">
+				<button id="delete" class="btn btn-sm btn-outline-danger">Șterge programarea</button>
+				<button id="more-details" class="ml-1 btn btn-sm btn-primary" data-appointment-id="${Id}">Detalii programarea</button>
+			</div>
+			${/if}
+		</div>
+	</script>
 
 	@*Templaturi pt adaugare date*@
 	<script id="EventEditorTemplate" type="text/x-template">
-        @*@Html.PartialAsync("_SchedulerPopUp",modelPrecompletat)*@
-        <table class="custom-event-editor" width="100%" cellpadding="5">
-            <tbody>
-                <tr>
-                    <td class="e-textlabel">Numele*</td>
-                    <td colspan="4">
-                        <input id="FirstName" name="FirstName" class="e-field e-input" type="text" value="" style="width: 100%" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Prenumele</td>
-                    <td colspan="4">
-                        <input id="LastName" name="LastName" class="e-field e-input" type="text" value="" style="width: 100%" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Numar de telefon*</td>
-                    <td colspan="4">
-                        <input id="PhoneNumber" name="PhoneNumber" class="e-field e-input" type="text" value="" style="width: 100%" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Mail</td>
-                    <td colspan="4">
-                        <input id="Mail" name="Mail" class="e-field e-input" type="text" value="" style="width: 100%" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Medicul</td>
-                    <td colspan="4">
-                        <input type="text" id="MedicId" name="MedicId" class="e-field" style="width: 100%" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Camera</td>
-                    <td colspan="4">
-                        <input type="text" id="RoomId" name="RoomId" class="e-field" style="width: 100%" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Incepe pe</td>
-                    <td colspan="4">
-                        <input id="StartTime" class="e-field" type="text" name="StartTime" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Se termina pe</td>
-                    <td colspan="4">
-                        <input id="EndTime" class="e-field" type="text" name="EndTime" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Procedura*</td>
-                    <td colspan="4">
-                        <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="e-textlabel">Comentarii</td>
-                    <td colspan="4">
-                        <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
-                                    style="width: 100%; height: 60px !important; resize: vertical"></textarea>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </script>
+		@*@Html.PartialAsync("_SchedulerPopUp",modelPrecompletat)*@
+		<table class="custom-event-editor" width="100%" cellpadding="5">
+			<tbody>
+				<tr>
+					<td class="e-textlabel">Numele*</td>
+					<td colspan="4">
+						<input id="FirstName" name="FirstName" class="e-field e-input" type="text" value="" style="width: 100%" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Prenumele</td>
+					<td colspan="4">
+						<input id="LastName" name="LastName" class="e-field e-input" type="text" value="" style="width: 100%" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Numar de telefon*</td>
+					<td colspan="4">
+						<input id="PhoneNumber" name="PhoneNumber" class="e-field e-input" type="text" value="" style="width: 100%" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Mail</td>
+					<td colspan="4">
+						<input id="Mail" name="Mail" class="e-field e-input" type="text" value="" style="width: 100%" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Medicul</td>
+					<td colspan="4">
+						<input type="text" id="MedicId" name="MedicId" class="e-field" style="width: 100%" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Camera</td>
+					<td colspan="4">
+						<input type="text" id="RoomId" name="RoomId" class="e-field" style="width: 100%" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Incepe pe</td>
+					<td colspan="4">
+						<input id="StartTime" class="e-field" type="text" name="StartTime" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Se termina pe</td>
+					<td colspan="4">
+						<input id="EndTime" class="e-field" type="text" name="EndTime" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Procedura*</td>
+					<td colspan="4">
+						<input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
+					</td>
+				</tr>
+				<tr>
+					<td class="e-textlabel">Comentarii</td>
+					<td colspan="4">
+						<textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
+									style="width: 100%; height: 60px !important; resize: vertical"></textarea>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</script>
 </div>
 
 
 @section Styles
 {
-	<!-- Syncfusion Essential JS 2 Styles -->
-	<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/bootstrap4.css"/>
+<!-- Syncfusion Essential JS 2 Styles -->
+<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/bootstrap4.css" />
 
-	<link rel="stylesheet" href="~/css/scheduler.css"/>
+<link rel="stylesheet" href="~/css/scheduler.css" />
 }
 
 @section Scripts
 {
-	<!-- Syncfusion Essential JS 2 Scripts -->
-	<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+<!-- Syncfusion Essential JS 2 Scripts -->
+<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 
-    <script language="javascript" type="text/javascript">
-        var instance = new ej.base.Internationalization();
+<script language="javascript" type="text/javascript">
+	var instance = new ej.base.Internationalization();
 
-        var buttonClickActions = function (e) {
-            var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-            var quickPopup = scheduleObj.element.querySelector('.e-quick-popup-wrapper');
-            var getSlotData = function () {
-                var cellDetails = scheduleObj.getCellDetails(scheduleObj.getSelectedElements());
-                if (ej.base.isNullOrUndefined(cellDetails)) {
-                    cellDetails = scheduleObj.getCellDetails(scheduleObj.activeCellsData.element);
-                }
-                var subject = quickPopup.querySelector('#Subject').ej2_instances[0].value;
-                var notes = quickPopup.querySelector('#Description').ej2_instances[0].value;
-                var addObj = {};
-                addObj.Id = scheduleObj.getEventMaxID();
-                addObj.Subject = ej.base.isNullOrUndefined(subject) ? 'Add title' : subject;
-                addObj.StartTime = new Date(+cellDetails.startTime);
-                addObj.EndTime = new Date(+cellDetails.endTime);
-                addObj.IsAllDay = cellDetails.isAllDay;
-                addObj.Description = ej.base.isNullOrUndefined(notes) ? 'Add notes' : notes;
-                addObj.MedicId = quickPopup.querySelector('#MedicId').ej2_instances[0].value;
-                addObj.RoomId = quickPopup.querySelector('#RoomId').ej2_instances[0].value;
-                return addObj;
-            };
+	var buttonClickActions = function (e) {
+		var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+		var quickPopup = scheduleObj.element.querySelector('.e-quick-popup-wrapper');
+		var getSlotData = function () {
+			var cellDetails = scheduleObj.getCellDetails(scheduleObj.getSelectedElements());
+			if (ej.base.isNullOrUndefined(cellDetails)) {
+				cellDetails = scheduleObj.getCellDetails(scheduleObj.activeCellsData.element);
+			}
+			var subject = quickPopup.querySelector('#Subject').ej2_instances[0].value;
+			var notes = quickPopup.querySelector('#Description').ej2_instances[0].value;
+			var addObj = {};
+			addObj.Id = scheduleObj.getEventMaxID();
+			addObj.Subject = ej.base.isNullOrUndefined(subject) ? 'Add title' : subject;
+			addObj.StartTime = new Date(+cellDetails.startTime);
+			addObj.EndTime = new Date(+cellDetails.endTime);
+			addObj.IsAllDay = cellDetails.isAllDay;
+			addObj.Description = ej.base.isNullOrUndefined(notes) ? 'Add notes' : notes;
+			addObj.MedicId = quickPopup.querySelector('#MedicId').ej2_instances[0].value;
+			addObj.RoomId = quickPopup.querySelector('#RoomId').ej2_instances[0].value;
+			return addObj;
+		};
 
-            if (e.target.id === 'add') {
-                var addObj = getSlotData();
-                scheduleObj.addEvent(addObj);
-            }
-            else if (e.target.id === 'delete') {
-                var eventDetails = scheduleObj.activeEventData.event;
-                var currentAction = void 0;
-                if (eventDetails.RecurrenceRule) {
-                    currentAction = 'DeleteOccurrence';
-                }
-                scheduleObj.deleteEvent(eventDetails, currentAction);
-            }
-            else {
-                var isCellPopup = quickPopup.classList.contains('e-cell-popup');
-                var eventDetail = isCellPopup ? getSlotData() :
-                    scheduleObj.activeEventData.event;
-                var currentActions = isCellPopup ? 'Add' : 'Save';
-                if (eventDetail.RecurrenceRule) {
-                    currentActions = 'EditOccurrence';
-                }
-                scheduleObj.openEditor(eventDetail, currentActions, true);
-            }
-            scheduleObj.closeQuickInfoPopup();
-        };
+		if (e.target.id === 'add') {
+			var addObj = getSlotData();
+			scheduleObj.addEvent(addObj);
+		}
+		else if (e.target.id === 'delete') {
+			var eventDetails = scheduleObj.activeEventData.event;
+			var currentAction = void 0;
+			if (eventDetails.RecurrenceRule) {
+				currentAction = 'DeleteOccurrence';
+			}
+			scheduleObj.deleteEvent(eventDetails, currentAction);
+		}
+		else {
+			var isCellPopup = quickPopup.classList.contains('e-cell-popup');
+			var eventDetail = isCellPopup ? getSlotData() :
+				scheduleObj.activeEventData.event;
+			var currentActions = isCellPopup ? 'Add' : 'Save';
+			if (eventDetail.RecurrenceRule) {
+				currentActions = 'EditOccurrence';
+			}
+			scheduleObj.openEditor(eventDetail, currentActions, true);
+		}
+		scheduleObj.closeQuickInfoPopup();
+	};
 
-        window.getTimeString = function (value) {
-            return instance.formatDate(value, { skeleton: 'hm' });
-        };
+	window.getTimeString = function (value) {
+		return instance.formatDate(value, { skeleton: 'hm' });
+	};
 
-        window.getHeaderDetails = function (data) {
-            return instance.formatDate(data.StartTime, { type: 'date', skeleton: 'full' }) + ' (' +
-                instance.formatDate(data.StartTime, { skeleton: 'hm' }) + ' - ' + instance.formatDate(data.EndTime, { skeleton: 'hm' }) + ')';
-        };
+	window.getHeaderDetails = function (data) {
+		return instance.formatDate(data.StartTime, { type: 'date', skeleton: 'full' }) + ' (' +
+			instance.formatDate(data.StartTime, { skeleton: 'hm' }) + ' - ' + instance.formatDate(data.EndTime, { skeleton: 'hm' }) + ')';
+	};
 
-        window.getHeaderStyles=function (data) {
-            if (data.elementType === 'cell') {
-                return 'align-items: center; color: #919191;';
-            }
-            else {
-                //var resourceData = window.getResourceData(data);
-                return 'background: #7f73bb; color: #FFFFFF;';
-                //return 'background:' + resourceData.PrimaryColor + '; color: #FFFFFF;';
-            }
-        };
+	window.getHeaderStyles=function (data) {
+		if (data.elementType === 'cell') {
+			return 'align-items: center; color: #919191;';
+		}
+		else {
+			//var resourceData = window.getResourceData(data);
+			return 'background: #7f73bb; color: #FFFFFF;';
+			//return 'background:' + resourceData.PrimaryColor + '; color: #FFFFFF;';
+		}
+	};
 
-        window.getEventType = function (data) {
-            var resourceData = window.getResourceData(data);
-            return resourceData.Name;
-        };
+	window.getEventType = function (data) {
+		var resourceData = window.getResourceData(data);
+		return resourceData.Name;
+	};
 
-        window.getSubjectDetails = function (data) {
-            var resourceData = window.getResourceData(data);
-            return resourceData.Subject;
-        };
+	window.getSubjectDetails = function (data) {
+		var resourceData = window.getResourceData(data);
+		return resourceData.Subject;
+	};
 
-        window.getResourceData = function (data) {
-            var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-            var resources = scheduleObj.getResourceCollections().slice(-1)[0];
-            var resourceData = resources.dataSource.filter(function (resource) {
-                return resource.Id === data.RoomId;
-            })[0];
-            return resourceData;
-        };
+	window.getResourceData = function (data) {
+		var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+		var resources = scheduleObj.getResourceCollections().slice(-1)[0];
+		var resourceData = resources.dataSource.filter(function (resource) {
+			return resource.Id === data.RoomId;
+		})[0];
+		return resourceData;
+	};
 
-        $('#schedule').on('click', '#more-details', function(){
-            window.location.href = '@(Url.Action("Details", "Appointments"))/' + $(this).data('appointment-id');
-        });
+	$('#schedule').on('click', '#more-details', function(){
+		window.location.href = '@(Url.Action("Details", "Appointments"))/' + $(this).data('appointment-id');
+	});
 
-        function onActionBegin(args) {
-                if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
-                var data;
-                if (args.requestType === 'eventCreate') {
-                    data = args.data[0];
-                } else if (args.requestType === 'eventChange') {
-                    data = args.data;
-                }
-                var scheduleObj = document.getElementById('schedule').ej2_instances[0];
-                //
-                //if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime) && )
-                //    args.cancel = true;
-                }
-        }
-        function onActionComplete(args) {
-            console.log(args);
-            var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+	function onActionBegin(args) {
+			if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
+			var data;
+			if (args.requestType === 'eventCreate') {
+				data = args.data[0];
+			} else if (args.requestType === 'eventChange') {
+				data = args.data;
+			}
+			var scheduleObj = document.getElementById('schedule').ej2_instances[0];
+			//
+			//if (!scheduleObj.isSlotAvailable(data.StartTime, data.EndTime) && )
+			//    args.cancel = true;
+			}
+	}
+	function onActionComplete(args) {
+		console.log(args);
+		var scheduleObj = document.getElementById('schedule').ej2_instances[0];
 
-            if (args.requestType === "eventCreated") {
+		if (args.requestType === "eventCreated") {
 
-                let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
-                args.data[0].StartTime = formatted_start_date;
+			let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
+			args.data[0].StartTime = formatted_start_date;
 
-                let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
-                args.data[0].EndTime = formatted_end_date;
+			let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
+			args.data[0].EndTime = formatted_end_date;
 
-                $.ajax({
-                    url: "@Url.Action("AddData", "Scheduler")",
-                    data: args.data[0],
-                    type: "POST",
-                    success: function (result)
-                    {
-                        if (result.result === "Succes.") {
-                            scheduleObj.refresh();
-                        }
-                        else
-                        {
-                            alert(result.result);
-                            scheduleObj.refresh();
-                            console.log(result.result);
-                        }
-                    }});
-            }
-            if (args.requestType === "eventRemoved") {
-                $.ajax({
-                    url: "@Url.Action("DeleteData", "Scheduler")",
-                    data: args.data[0],
-                    type: "POST",
-                    success: function (result)
-                    {
-                        scheduleObj.refresh();
-                        console.log(result.result);
-                    }});
-            }
-            if (args.requestType === "eventChanged") {
+			$.ajax({
+				url: "@Url.Action("AddData", "Scheduler")",
+				data: args.data[0],
+				type: "POST",
+				success: function (result)
+				{
+					if (result.result === "Succes.") {
+						scheduleObj.refresh();
+					}
+					else
+					{
+						alert(result.result);
+						scheduleObj.refresh();
+						console.log(result.result);
+					}
+				}});
+		}
+		if (args.requestType === "eventRemoved") {
+			$.ajax({
+				url: "@Url.Action("DeleteData", "Scheduler")",
+				data: args.data[0],
+				type: "POST",
+				success: function (result)
+				{
+					scheduleObj.refresh();
+					console.log(result.result);
+				}});
+		}
+		if (args.requestType === "eventChanged") {
 
-                let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
-                args.data[0].StartTime = formatted_start_date;
+			let formatted_start_date = args.data[0].StartTime.getDate() + "-" + (args.data[0].StartTime.getMonth() + 1) + "-" + args.data[0].StartTime.getFullYear() + " " + args.data[0].StartTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
+			args.data[0].StartTime = formatted_start_date;
 
-                let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
-                args.data[0].EndTime = formatted_end_date;
+			let formatted_end_date = args.data[0].EndTime.getDate() + "-" + (args.data[0].EndTime.getMonth() + 1) + "-" + args.data[0].EndTime.getFullYear() + " " + args.data[0].EndTime.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
+			args.data[0].EndTime = formatted_end_date;
 
-                $.ajax({
-                    url: "@Url.Action("EditData", "Scheduler")",
-                    data: args.data[0],
-                    type: "POST",
-                    success: function (result)
-                    {
-                        scheduleObj.refresh();
-                        console.log(result.result);
-                    }});
-            }
-        }
-        function onPopupOpen(args) {
+			$.ajax({
+				url: "@Url.Action("EditData", "Scheduler")",
+				data: args.data[0],
+				type: "POST",
+				success: function (result)
+				{
+					scheduleObj.refresh();
+					console.log(result.result);
+				}});
+		}
+	}
+	function onPopupOpen(args) {
 
-            if (args.type === 'Editor') {
+		if (args.type === 'Editor') {
 
-                var medicListElement = args.element.querySelector('#MedicId');
-                if (!medicListElement.classList.contains('e-dropdownlist')) {
-                    var dropDownListMedicObject = new ej.dropdowns.DropDownList({
-                        placeholder: 'Alege medicul', value: medicListElement.value,
-                        dataSource: @Html.Raw(ViewData["MedicId"]),
-                        fields: { text: 'name', value: 'id' },
-                        selectedIndex:1,
-                        value: (args.data).EventType
-                    });
-                    dropDownListMedicObject.appendTo(medicListElement);
-                    medicListElement.setAttribute('name', 'MedicId');
-                }
+			var medicListElement = args.element.querySelector('#MedicId');
+			if (!medicListElement.classList.contains('e-dropdownlist')) {
+				var dropDownListMedicObject = new ej.dropdowns.DropDownList({
+					placeholder: 'Alege medicul', value: medicListElement.value,
+					dataSource: @Html.Raw(ViewData["MedicId"]),
+					fields: { text: 'name', value: 'id' },
+					selectedIndex:1,
+					value: (args.data).EventType
+				});
+				dropDownListMedicObject.appendTo(medicListElement);
+				medicListElement.setAttribute('name', 'MedicId');
+			}
 
-                var roomListElement = args.element.querySelector('#RoomId');
-                if (!roomListElement.classList.contains('e-dropdownlist')) {
-                    var dropDownListRoomObject = new ej.dropdowns.DropDownList({
-                        placeholder: 'Alege camera', value: roomListElement.value,
-                        dataSource: @Html.Raw(ViewData["RoomId"]),
-                        fields: { text: 'name', value: 'id'},
-                        selectedIndex:1,
-                        value: (args.data).EventType
-                    });
-                    dropDownListRoomObject.appendTo(roomListElement);
-                    roomListElement.setAttribute('name', 'RoomId');
-                }
+			var roomListElement = args.element.querySelector('#RoomId');
+			if (!roomListElement.classList.contains('e-dropdownlist')) {
+				var dropDownListRoomObject = new ej.dropdowns.DropDownList({
+					placeholder: 'Alege camera', value: roomListElement.value,
+					dataSource: @Html.Raw(ViewData["RoomId"]),
+					fields: { text: 'name', value: 'id'},
+					selectedIndex:1,
+					value: (args.data).EventType
+				});
+				dropDownListRoomObject.appendTo(roomListElement);
+				roomListElement.setAttribute('name', 'RoomId');
+			}
 
-                var startElement = args.element.querySelector('#StartTime');
-                if (!startElement.classList.contains('e-datetimepicker')) {
-                    new ej.calendars.DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
-                }
-                var endElement = args.element.querySelector('#EndTime');
-                if (!endElement.classList.contains('e-datetimepicker')) {
-                    new ej.calendars.DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
-                }
-            }
-        }
+			var startElement = args.element.querySelector('#StartTime');
+			if (!startElement.classList.contains('e-datetimepicker')) {
+				new ej.calendars.DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
+			}
+			var endElement = args.element.querySelector('#EndTime');
+			if (!endElement.classList.contains('e-datetimepicker')) {
+				new ej.calendars.DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
+			}
+		}
+	}
 
-        //Capul la tabel cu medici
-        function getEmployeeName(value) {
-            return value.resourceData[value.resource.textField];
-            }
-        function getEmployeeImage(value) {
-            let resourceName = value.resourceData[value.resource.textField];
-            var path = "@Url.Content("~/css/schedule/images/")";
-            var src = path + resourceName.toLowerCase() + ".png";
-            var src1 = "https://images.unsplash.com/photo-1504257432389-52343af06ae3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80";
-            return '<img class="employee-image" src=' + src1 + '></img>';
-            }
-        function getEmployeeDesignation(value) {
-            let resourceName = value.resourceData[value.resource.Designation];
-            return value.resourceData.designation;
-            }
-    </script>
+	//Capul la tabel cu medici
+	function getEmployeeName(value) {
+		return value.resourceData[value.resource.textField];
+		}
+	function getEmployeeImage(value) {
+		let resourceName = value.resourceData[value.resource.textField];
+		var path = "@Url.Content("~/css/schedule/images/")";
+		var src = path + resourceName.toLowerCase() + ".png";
+		var src1 = "https://images.unsplash.com/photo-1504257432389-52343af06ae3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80";
+		return '<img class="employee-image" src=' + src1 + '></img>';
+		}
+	function getEmployeeDesignation(value) {
+		let resourceName = value.resourceData[value.resource.Designation];
+		return value.resourceData.designation;
+		}
+</script>
 
-	<!-- Syncfusion Essential JS 2 ScriptManager -->
-	<ejs-scripts></ejs-scripts>
+<!-- Syncfusion Essential JS 2 ScriptManager -->
+<ejs-scripts></ejs-scripts>
 }

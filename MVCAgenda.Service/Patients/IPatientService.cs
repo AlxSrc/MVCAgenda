@@ -15,7 +15,7 @@ namespace MVCAgenda.Service.Patients
             bool? includeBlackList = false,
             bool? isDeleted = false);
 
-        Task<Patient> GetAsync(int Id, bool GetPatientByPatientSheetId = false);
+        Task<Patient> GetAsync(int Id);
 
         Task<bool> UpdateAsync(Patient patient);
 

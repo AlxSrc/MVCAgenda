@@ -10,6 +10,7 @@ using System;
 using MVCAgenda.Core.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using MVCAgenda.Core.Status;
 
 namespace MVCAgenda.Factories.Appointments
 {
@@ -65,15 +66,18 @@ namespace MVCAgenda.Factories.Appointments
         {
             try
             {
-                var appointmentsList = await _appointmentServices.GetFiltredListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden);
+                var daily = Daily;
+                var appointmentsList = await _appointmentServices.GetFiltredListAsync(SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, null, Daily, Hidden);
 
                 var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
                 foreach (var appointment in appointmentsList)
-                    appointmentsListViewModel.Add(PrepereAppointmentListItem(appointment, await _patientServices.GetAsync(appointment.PatientId), await _medicServices.GetAsync(appointment.MedicId), await _roomServices.GetAsync(appointment.RoomId)));
+                    appointmentsListViewModel.Add(await PrepereAppointmentListItem(appointment));
 
                 var app = appointmentsListViewModel
                     .Where(p => !string.IsNullOrEmpty(SearchByName) ? p.FirstName.ToUpper().Contains(SearchByName.ToUpper()) : true)
-                    .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhoneNumber.Contains(SearchByPhoneNumber) : true).ToList();
+                    .Where(p => !string.IsNullOrEmpty(SearchByPhoneNumber) ? p.PhoneNumber.Contains(SearchByPhoneNumber) : true)
+                    .Where(p => !string.IsNullOrEmpty(SearchByEmail) ? p.Mail.Contains(SearchByEmail) : true).ToList();
+
                 bool? Blacklist = null;
                 return new AppointmentsViewModel()
                 {
@@ -98,8 +102,48 @@ namespace MVCAgenda.Factories.Appointments
                 var patient = await _patientServices.GetAsync(appointment.PatientId);
                 var medic = await _medicServices.GetAsync(appointment.MedicId);
                 var room = await _roomServices.GetAsync(appointment.RoomId);
+                var viewModel = new AppointmentDetailsViewModel()
+                {
+                    Id = appointment.Id,
+                    PatientId = patient.Id,
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
+                    PhoneNumber = patient.PhoneNumber,
+                    Mail = patient.Mail,
+                    Medic = medic.Name,
+                    Room = room.Name,
+                    EndDate = appointment.EndDate,
+                    StartDate = appointment.StartDate,
+                    Procedure = appointment.Procedure,
+                    ResponsibleForAppointment = appointment.ResponsibleForAppointment,
+                    AppointmentCreationDate = appointment.AppointmentCreationDate,
+                    Comments = appointment.Comments,
+                    Hidden = appointment.Hidden
+                };
 
-                return PrepereAppointment(appointment, patient, medic, room);
+                if (appointment.Made == true)
+                {
+                    viewModel.MadeText = "<span class=\"badge bg-success\">Da</span>";
+                }
+                else
+                {
+                    viewModel.MadeText = "<span class=\"badge bg-danger\">Nu</span>";
+                }
+
+                if (patient.StatusCode == (int)PatientStatus.Blacklist)
+                {
+                    viewModel.Blacklist = "<span class=\"badge bg-Danger\">Lista neagra</span>";
+                }
+                else if (patient.StatusCode == (int)PatientStatus.Patient)
+                {
+                    viewModel.Blacklist = "<span class=\"badge bg-success\">Pacient loial</span>";
+                }
+                else
+                {
+                    viewModel.Blacklist = "<span class=\"badge bg-success\">Pacient</span>";
+                }
+
+                return viewModel;
             }
             catch (Exception exception)
             {
@@ -115,7 +159,24 @@ namespace MVCAgenda.Factories.Appointments
             {
                 var appointment = await _appointmentServices.GetAsync(id);
                 var patient = await _patientServices.GetAsync(appointment.PatientId);
-                return PrepereAppointmentEdit(appointment, patient);
+                var viewModel = new AppointmentEditViewModel()
+                {
+                    Id = appointment.Id,
+                    PatientId = appointment.PatientId,
+                    PatientName = $"{patient.FirstName.ToUpper()} {patient.LastName}",
+                    MedicId = appointment.MedicId,
+                    RoomId = appointment.RoomId,
+                    Made = appointment.Made,
+                    EndDate = appointment.EndDate,
+                    StartDate = appointment.StartDate,
+                    Procedure = appointment.Procedure,
+                    ResponsibleForAppointment = appointment.ResponsibleForAppointment,
+                    AppointmentCreationDate = appointment.AppointmentCreationDate,
+                    Comments = appointment.Comments,
+                    Hidden = appointment.Hidden
+                };
+
+                return viewModel;
             }
             catch (Exception exception)
             {
@@ -141,90 +202,30 @@ namespace MVCAgenda.Factories.Appointments
             return true;
         }
 
-        static AppointmentListItemViewModel PrepereAppointmentListItem(Appointment model, Patient patient, Medic medic, Room room)
+        private async Task<AppointmentListItemViewModel> PrepereAppointmentListItem(Appointment appointment)
         {
+            var patient = await _patientServices.GetAsync(appointment.PatientId);
+            var medic = await _medicServices.GetAsync(appointment.MedicId);
+            var room = await _roomServices.GetAsync(appointment.RoomId);
             var viewModel = new AppointmentListItemViewModel()
             {
-                Id = model.Id,
-                PatientId = model.PatientId,
+                Id = appointment.Id,
+                PatientId = appointment.PatientId,
                 FirstName = patient.FirstName,
-                PhoneNumber = patient.PhoneNumber,
-                Medic = medic.Name,
-                Room = room.Name,
-                StartDate = model.StartDate,
-                EndDate = model.EndDate,
-                Procedure = model.Procedure,
-                Hidden = model.Hidden
-            };
-
-            if (model.Made == true)
-                viewModel.Procedure = $"<span class=\"text-success\">{model.Procedure}</span>";
-            else
-                viewModel.Procedure = $"<span class=\"text-danger\">{model.Procedure}</span>";
-
-            return viewModel;
-        }
-
-        static AppointmentDetailsViewModel PrepereAppointment(Appointment model, Patient patient, Medic medic, Room room)
-        {
-            var viewModel = new AppointmentDetailsViewModel()
-            {
-                Id = model.Id,
-                PatientId = patient.Id,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
                 PhoneNumber = patient.PhoneNumber,
                 Mail = patient.Mail,
                 Medic = medic.Name,
                 Room = room.Name,
-                EndDate = model.EndDate,
-                StartDate = model.StartDate,
-                Procedure = model.Procedure,
-                ResponsibleForAppointment = model.ResponsibleForAppointment,
-                AppointmentCreationDate = model.AppointmentCreationDate,
-                Comments = model.Comments,
-                Hidden = model.Hidden
-            };
-
-            if (model.Made == true)
-            {
-                viewModel.MadeText = "<span class=\"badge bg-success\">Da</span>";
-            }
-            else
-            {
-                viewModel.MadeText = "<span class=\"badge bg-danger\">Nu</span>";
-            }
-
-            if (patient.Blacklist == true)
-            {
-                viewModel.Blacklist = "<span class=\"badge bg-Danger\">Da</span>";
-            }
-            else if (patient.Blacklist == false)
-            {
-                viewModel.Blacklist = "<span class=\"badge bg-success\">Nu</span>";
-            }
-
-            return viewModel;
-        }
-
-        static AppointmentEditViewModel PrepereAppointmentEdit(Appointment appointment, Patient patient)
-        {
-            var viewModel = new AppointmentEditViewModel()
-            {
-                Id = appointment.Id,
-                PatientId = appointment.PatientId,
-                PatientName = $"{patient.FirstName.ToUpper()} {patient.LastName}",
-                MedicId = appointment.MedicId,
-                RoomId = appointment.RoomId,
-                Made = appointment.Made,
-                EndDate = appointment.EndDate,
                 StartDate = appointment.StartDate,
+                EndDate = appointment.EndDate,
                 Procedure = appointment.Procedure,
-                ResponsibleForAppointment = appointment.ResponsibleForAppointment,
-                AppointmentCreationDate = appointment.AppointmentCreationDate,
-                Comments = appointment.Comments,
                 Hidden = appointment.Hidden
             };
+
+            if (appointment.Made == true)
+                viewModel.Procedure = $"<span class=\"text-success\">{appointment.Procedure}</span>";
+            else
+                viewModel.Procedure = $"<span class=\"text-danger\">{appointment.Procedure}</span>";
 
             return viewModel;
         }

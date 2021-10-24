@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MVCAgenda.Core.Helpers;
 using MVCAgenda.Models.Accounts.Roles;
 using MVCAgenda.Service.Medics;
 
@@ -43,7 +44,7 @@ namespace MVCAgenda.Controllers
         {
             try
             {
-                var users = await _userManager.Users.ToListAsync();
+                var users = await _userManager.Users.Where(u => u.Email != Constants.AdminUser).ToListAsync();
                 var userRolesViewModel = new List<UserRolesViewModel>();
 
                 var medics = await _medicsService.GetListAsync();
@@ -57,7 +58,7 @@ namespace MVCAgenda.Controllers
 
                     //Adding description to user roles
                     //designation
-                    var medic = medics.FirstOrDefault(m => m.Mail.ToUpper() == user.Email);
+                    var medic = medics.FirstOrDefault(m => m.Mail.ToUpper() == user.Email.ToUpper());
                     if (medic != null)
                     {
                         medic.Designation = string.Join(", ", thisViewModel.Roles.ToList());

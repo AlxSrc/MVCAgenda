@@ -61,7 +61,7 @@ namespace MVCAgenda.Factories.PatientsSheet
                 foreach (var consultation in consultations)
                     consultationsList.Add(await _consultationFactory.PrepereViewModelAsync(consultation));
 
-                var patient = await _patientServices.GetAsync(id, true);
+                var patient = await _patientServices.GetAsync(id);
                 var patientSheets = await _patientSheetServices.GetAsync(id);
 
                 return PrepereDetails(patientSheets, patient, consultationsList);

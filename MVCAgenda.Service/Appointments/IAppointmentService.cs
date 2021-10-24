@@ -17,6 +17,7 @@ namespace MVCAgenda.Service.Appointments
             int? searchByMedic = null,
             string searchByProcedure = null,
             int? id = null,
+            bool? made = null,
             bool? Daily = null,
             bool? Hidden = null);
 

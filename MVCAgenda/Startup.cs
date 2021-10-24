@@ -32,6 +32,7 @@ using MVCAgenda.Managers.Roles;
 using Microsoft.AspNetCore.Authorization;
 using MVCAgenda.Managers.Logging;
 using MVCAgenda.Factories.Logging;
+using MVCAgenda.Factories.Home;
 
 namespace MVCAgenda
 {
@@ -75,6 +76,7 @@ namespace MVCAgenda
             services.AddScoped<ILoggerService, LoggerService>();
 
             //Factories
+            services.AddScoped<IHomeFactory, HomeFactory>();
             services.AddScoped<IPatientsFactory, PatientsFactory>();
             services.AddScoped<IPatientsSheetsFactory, PatientsSheetsFactory>();
             services.AddScoped<IConsultationsFactory, ConsultationsFactory>();

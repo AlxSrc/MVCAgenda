@@ -23,17 +23,8 @@ namespace MVCAgenda
 
                 try
                 {
-                    //Roles
-                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
                     //BasicData
-                    SeedData.Initialize(services, userManager, roleManager);
-
-
-                    //Task.Run(() => DefaultRoles.SeedAsync(userManager, roleManager));
-                    //Task.Run(() => DefaultUsers.SeedBasicNurseAsync(userManager, roleManager));
-                    //Task.Run(() => DefaultUsers.SeedModeratorAdminAsync(userManager, roleManager));
+                    SeedData.Initialize(services);
 
                     logger.LogInformation("Finished Seeding Default Data");
                     logger.LogInformation("Application Starting");

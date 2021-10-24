@@ -84,24 +84,21 @@ namespace MVCAgenda.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PatientsSheet",
+                name: "Patients",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AntecedentsH = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    AntecedentsP = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    NationalIdentificationNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Gender = table.Column<int>(type: "int", nullable: false),
-                    Town = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    PhysicalExamination = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    StatusCode = table.Column<int>(type: "int", nullable: false),
                     Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PatientsSheet", x => x.Id);
+                    table.PrimaryKey("PK_Patients", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,53 +225,31 @@ namespace MVCAgenda.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Consultations",
+                name: "PatientSheets",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SheetPatientId = table.Column<int>(type: "int", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Symptoms = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    Diagnostic = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    Prescriptions = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    AntecedentsH = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    AntecedentsP = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    NationalIdentificationNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    Town = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    PhysicalExamination = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Consultations", x => x.Id);
+                    table.PrimaryKey("PK_PatientSheets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Consultations_PatientsSheet_SheetPatientId",
-                        column: x => x.SheetPatientId,
-                        principalTable: "PatientsSheet",
+                        name: "FK_PatientSheets_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Patients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientSheetId = table.Column<int>(type: "int", nullable: false),
-                    SheetPatientId = table.Column<int>(type: "int", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Blacklist = table.Column<bool>(type: "bit", nullable: false),
-                    Hidden = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Patients_PatientsSheet_SheetPatientId",
-                        column: x => x.SheetPatientId,
-                        principalTable: "PatientsSheet",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,12 +274,6 @@ namespace MVCAgenda.Data.Migrations
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Appointments_Consultations_RoomId",
-                        column: x => x.RoomId,
-                        principalTable: "Consultations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Appointments_Medics_MedicId",
                         column: x => x.MedicId,
                         principalTable: "Medics",
@@ -314,6 +283,36 @@ namespace MVCAgenda.Data.Migrations
                         name: "FK_Appointments_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Consultations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SheetPatientId = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Symptoms = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    Diagnostic = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    Prescriptions = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Consultations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Consultations_PatientSheets_SheetPatientId",
+                        column: x => x.SheetPatientId,
+                        principalTable: "PatientSheets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -378,11 +377,10 @@ namespace MVCAgenda.Data.Migrations
                 column: "SheetPatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_SheetPatientId",
-                table: "Patients",
-                column: "SheetPatientId",
-                unique: true,
-                filter: "[SheetPatientId] IS NOT NULL");
+                name: "IX_PatientSheets_PatientId",
+                table: "PatientSheets",
+                column: "PatientId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -406,19 +404,16 @@ namespace MVCAgenda.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Logs");
-
-            migrationBuilder.DropTable(
-                name: "Rooms");
-
-            migrationBuilder.DropTable(
                 name: "Consultations");
+
+            migrationBuilder.DropTable(
+                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "Medics");
 
             migrationBuilder.DropTable(
-                name: "Patients");
+                name: "Rooms");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -427,7 +422,10 @@ namespace MVCAgenda.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "PatientsSheet");
+                name: "PatientSheets");
+
+            migrationBuilder.DropTable(
+                name: "Patients");
         }
     }
 }

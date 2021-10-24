@@ -9,6 +9,7 @@ namespace MVCAgenda.Models.PatientSheets
 {
     public class PatientSheetEditViewModel : BaseModel
     {
+        [DisplayName("Detalii pacient")]
         public int PatientId { get; set; }
         public string PatientName { get; set; }
 

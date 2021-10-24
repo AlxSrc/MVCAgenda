@@ -3,6 +3,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MVCAgenda.Core.Helpers;
 using MVCAgenda.Factories.Medics;
 using MVCAgenda.Factories.Rooms;
 using MVCAgenda.Managers.Medics;
@@ -67,35 +69,61 @@ namespace MVCAgenda.Controllers
 
         #region Read
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Mail)
         {
             ViewData["RoomId"] = JsonConvert.SerializeObject(await _roomsFactory.PrepereListViewModelAsync(), new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
+
             ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(), new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
 
-            ViewBag.Employees = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(), new JsonSerializerSettings
+            ViewData["Mails"] = new SelectList(await _medicsFactory.PrepereListModel(), "Mail", "Name");
+
+            ViewBag.Employees = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(Mail), new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
-
             ViewBag.Resources = new string[] { "Employee" };
+
             return View();
         }
 
-        public async Task<JsonResult> LoadData()
+        public async Task<JsonResult> LoadData(string Mail)
         {
             try
             {
-                var appointmentsList = await _schedulerManager.GetAsync();
-                return new JsonResult(new
+                var user = User.Identity.Name;
+                if (user == Constants.UserName)
                 {
-                    result = appointmentsList.AppointmentsSchedule,
-                }, new JsonSerializerOptions());
+                    var appointmentsList = await _schedulerManager.GetAsync(null);
+                    return new JsonResult(new
+                    {
+                        result = appointmentsList.AppointmentsSchedule,
+                    }, new JsonSerializerOptions());
+                }
+                else
+                {
+                    if(Mail == "Toate")
+                    {
+                        var appointmentsList = await _schedulerManager.GetAsync(null);
+                        return new JsonResult(new
+                        {
+                            result = appointmentsList.AppointmentsSchedule,
+                        }, new JsonSerializerOptions());
+                    }
+                    else
+                    {
+                        var appointmentsList = await _schedulerManager.GetAsync(Mail);
+                        return new JsonResult(new
+                        {
+                            result = appointmentsList.AppointmentsSchedule,
+                        }, new JsonSerializerOptions());
+                    }
+                }
             }
             catch
             {

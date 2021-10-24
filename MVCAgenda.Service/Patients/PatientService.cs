@@ -7,6 +7,7 @@ using MVCAgenda.Data.DataBaseManager;
 using System.Threading.Tasks;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Core.Logging;
+using MVCAgenda.Core.Status;
 
 namespace MVCAgenda.Service.Patients
 {
@@ -42,12 +43,11 @@ namespace MVCAgenda.Service.Patients
         {
             try
             {
-                var currentSheetPatient = new PatientSheet();
-                _context.Add(currentSheetPatient);
+                _context.Add(patient);
                 await _context.SaveChangesAsync();
 
-                patient.PatientSheetId = currentSheetPatient.Id;
-                _context.Add(patient);
+                var currentSheetPatient = new PatientSheet() { PatientId = patient.Id};
+                _context.Add(currentSheetPatient);
                 await _context.SaveChangesAsync();
 
                 return true;
@@ -80,16 +80,15 @@ namespace MVCAgenda.Service.Patients
                         LastName = patient.LastName != null ? $"{patient.LastName.Substring(0, 1).ToUpper()}{patient.LastName.Substring(1, patient.LastName.Length - 1).ToLower()}" : null,
                         PhoneNumber = patient.PhoneNumber,
                         Mail = patient.Mail,
-                        Blacklist = false,
+                        StatusCode = (int)PatientStatus.Patient,
                         Hidden = false
                     };
 
-                    var FisaPacientCurent = new PatientSheet();
-                    _context.Add(FisaPacientCurent);
+                    _context.Add(newPatient);
                     await _context.SaveChangesAsync();
 
-                    newPatient.PatientSheetId = FisaPacientCurent.Id;
-                    _context.Add(newPatient);
+                    var FisaPacientCurent = new PatientSheet() { PatientId = newPatient.Id};
+                    _context.Add(FisaPacientCurent);
                     await _context.SaveChangesAsync();
                 }
 
@@ -109,14 +108,11 @@ namespace MVCAgenda.Service.Patients
 
         #region Read
 
-        public async Task<Patient> GetAsync(int Id, bool GetPatientByPatientSheetId = false)
+        public async Task<Patient> GetAsync(int Id)
         {
             try
             {
-                if (GetPatientByPatientSheetId == false)
-                    return await _context.Patients.FirstOrDefaultAsync(p => p.Id == Id);
-                else
-                    return await _context.Patients.FirstOrDefaultAsync(p => p.PatientSheetId == Id);
+                return await _context.Patients.FirstOrDefaultAsync(p => p.Id == Id);
             }
             catch (Exception ex)
             {
@@ -129,8 +125,8 @@ namespace MVCAgenda.Service.Patients
         public async Task<List<Patient>> GetListAsync(string searchByName = null,
             string searchByPhoneNumber = null,
             string searchByEmail = null,
-            bool? includeBlackList = false,
-            bool? isHidden = false)
+            bool? includeBlackList = null,
+            bool? isHidden = null)
         {
             try
             {
@@ -140,7 +136,7 @@ namespace MVCAgenda.Service.Patients
                     query = query.Where(p => p.Hidden == isHidden);
 
                 if (includeBlackList != null)
-                    query = query.Where(p => p.Blacklist == includeBlackList);
+                    query = query.Where(p => p.StatusCode == (int)PatientStatus.Blacklist);
 
                 if (searchByName != null)
                     query = query.Where(p => p.FirstName.ToUpper().Contains(searchByName.ToUpper()));

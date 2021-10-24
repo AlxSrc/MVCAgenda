@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Users;
 using MVCAgenda.Managers.Medics;
 using MVCAgenda.Models.Accounts;
@@ -49,42 +50,59 @@ namespace MVCAgenda.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel user)
         {
-            var test = false;
-            if(test)
+            try
             {
-                await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-                MailAddress emailAddress = new MailAddress("moderator_agenda@gmail.com");
-                string userName = emailAddress.User;
-                var userModerator = new ApplicationUser
+                var initDatabase = false;
+                if (initDatabase)
                 {
-                    UserName = userName,
-                    Email = emailAddress.Address
-                };
+                    //create rolles
+                    var ressultCreateRole = await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Administrator.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.User.ToString()));
 
-                var result = await _userManager.CreateAsync(userModerator, "{Al@ka#9A#s&KA|");
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Doctor.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Nurse.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Receptionist.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.PersonalTrainer.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Kinetotherapist.ToString()));
 
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(userModerator, isPersistent: false);
-                    await _userManager.AddToRoleAsync(userModerator, Roles.Admin.ToString());
-                    return RedirectToAction("Index", "Scheduler");
+                    MailAddress emailAddress = new MailAddress(Constants.AdminUser);
+                    string userName = emailAddress.User;
+                    var userModerator = new ApplicationUser
+                    {
+                        UserName = userName,
+                        Email = emailAddress.Address
+                    };
+
+                    var ressultCreate = await _userManager.CreateAsync(userModerator, "{Al@ka#9A#s&KA|");
+
+                    if (ressultCreate.Succeeded)
+                    {
+                        var ressultaddingRole = await _userManager.AddToRoleAsync(userModerator, Roles.Admin.ToString());
+                        await _signInManager.SignInAsync(userModerator, isPersistent: false);
+                        return RedirectToAction("Index", "Scheduler");
+                    }
                 }
-            }
 
-            if (ModelState.IsValid)
+                if (ModelState.IsValid)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, user.RememberMe, false);
+
+                    if (result.Succeeded)
+                    {
+                        //adding user to cache
+                        return RedirectToAction("Index", "Scheduler");
+                    }
+
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+
+                }
+                return View(user);
+            }catch (Exception ex)
             {
-                var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, user.RememberMe, false);
-
-                if (result.Succeeded)
-                {
-                    //adding user to cache
-                    return RedirectToAction("Index", "Scheduler");
-                }
-
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-
+                return View(user);
             }
-            return View(user);
         }
         #endregion
         /**************************************************************************************/

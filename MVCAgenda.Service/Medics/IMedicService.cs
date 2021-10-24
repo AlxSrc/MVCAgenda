@@ -9,7 +9,8 @@ namespace MVCAgenda.Service.Medics
         Task<bool> CreateAsync(Medic medic);
 
         Task<Medic> GetAsync(int id);
-        Task<List<Medic>> GetListAsync();
+        Task<Medic> GetAsync(string mail);
+        Task<List<Medic>> GetListAsync(string mail = null);
 
         Task<bool> UpdateAsync(Medic medic);
 

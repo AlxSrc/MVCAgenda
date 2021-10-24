@@ -16,6 +16,9 @@ namespace MVCAgenda.Models.Appointments
         [DisplayName("Număr de telefon")]
         public string PhoneNumber { get; set; }
 
+        [DisplayName("Email")]
+        public string Mail { get; set; }
+
 
         [DisplayName("Medic")]
         public string Medic { get; set; }

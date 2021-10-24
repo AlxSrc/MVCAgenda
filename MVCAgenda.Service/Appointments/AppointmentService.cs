@@ -87,6 +87,7 @@ namespace MVCAgenda.Service.Appointments
             int? searchByMedic = null,
             string searchByProcedure = null,
             int? id = null,
+            bool? made = null,
             bool? Daily = null,
             bool? Hidden = null)
         {
@@ -94,12 +95,11 @@ namespace MVCAgenda.Service.Appointments
             {
                 var query = _context.Appointments.AsQueryable();
 
-                //detalii programari
-                if (searchByAppointmentStartDate != null)
-                    query = query.Where(a => a.StartDate == searchByAppointmentStartDate);
-
-                if (searchByAppointmentEndDate != null)
-                    query = query.Where(a => a.EndDate == searchByAppointmentEndDate);
+                if (searchByAppointmentStartDate != null && searchByAppointmentEndDate != null)
+				{
+                    query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
+                    query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
+                }
 
                 if (searchByRoom != null)
                     query = query.Where(a => a.RoomId == searchByRoom);
@@ -114,15 +114,19 @@ namespace MVCAgenda.Service.Appointments
                 if (id != null)
                     query = query.Where(a => a.PatientId == id);
 
+                //programrile neefectuatre
+                if (made != null)
+                    query = query.Where(a => a.Made == made);
+
                 //programrile zilnice
-                if (Daily != null)
+                if (Daily != null && searchByAppointmentStartDate == null && searchByAppointmentEndDate == null)
                     query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
 
                 //programrile sterse
                 if (Hidden != null)
                     query = query.Where(a => a.Hidden == Hidden);
 
-                return await query.ToListAsync();
+                return await query.OrderByDescending(a => a.StartDate).ToListAsync();
             }
             catch (Exception ex)
             {

@@ -8,7 +8,7 @@ namespace MVCAgenda.Managers.Scheduler
     {
         Task<string> CreateAsync(ScheduleEventData ScheduleData);
 
-        Task<ScheduleList> GetAsync();
+        Task<ScheduleList> GetAsync(string Mail);
 
         Task<string> UpdateAsync(ScheduleEventData ScheduleData);
 

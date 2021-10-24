@@ -111,13 +111,13 @@ namespace MVCAgenda.Controllers
             int? SearchByMedic = null,
             string SearchByProcedure = null,
             int? Id = null,
-            bool? Daily = null,
+            bool Daily = true,
             bool? Hidden = null)
         {
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
             ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
-            var ast = User.Identity.Name;
+            //var ast = User.Identity.Name;
 
             return View(await _appointmentsFactory.PrepereListViewModelAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
         }

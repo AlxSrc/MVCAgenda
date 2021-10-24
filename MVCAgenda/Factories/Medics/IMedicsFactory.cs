@@ -7,7 +7,7 @@ namespace MVCAgenda.Factories.Medics
 {
     public interface IMedicsFactory
     {
-        Task<List<MedicViewModel>> PrepereListModel();
+        Task<List<MedicViewModel>> PrepereListModel(string mail = null);
         Task<MedicViewModel> PrepereDetailsViewModel(int id);
         Task<MedicsViewModel> PrepereMedicsListViewModelAsync();
     }

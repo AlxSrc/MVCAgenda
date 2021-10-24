@@ -1,15 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MVCAgenda.Core.Status;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAgenda.Core.Domain
 {
     public class Patient : BaseEntityDomain
     {
-        public int PatientSheetId { get; set; }
-
-        [ForeignKey("SheetPatientId")]
         public virtual PatientSheet SheetPatient { get; set; }
-
 
         [StringLength(60, MinimumLength = 1)]
         [Required]
@@ -29,7 +26,6 @@ namespace MVCAgenda.Core.Domain
         public string Mail { get; set; }
 
 
-        [Required]
-        public bool Blacklist { get; set; }
+        public int StatusCode { get; set; }
     }
 }

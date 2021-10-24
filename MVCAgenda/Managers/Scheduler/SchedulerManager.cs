@@ -125,12 +125,23 @@ namespace MVCAgenda.Managers.Scheduler
             }
         }
 
-        public async Task<ScheduleList> GetAsync()
+        public async Task<ScheduleList> GetAsync(string Mail)
         {
             try
             {
                 var items = new List<ScheduleEventData>();
-                var appointments = await _appointmentServices.GetFiltredListAsync();
+
+                List<Appointment> appointments = new List<Appointment>();
+
+                if (Mail != null)
+                {
+                    var medic = await _medicServices.GetAsync(Mail);
+                    var medicId = medic.Id;
+                    appointments = await _appointmentServices.GetFiltredListAsync(searchByMedic: medicId);
+                }
+                else
+                    appointments = await _appointmentServices.GetFiltredListAsync();
+
                 foreach (var appointment in appointments)
                     items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(
                         appointment,

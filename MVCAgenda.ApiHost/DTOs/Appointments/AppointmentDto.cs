@@ -11,9 +11,21 @@ namespace MVCAgenda.ApiHost.DTOs.Appointments
         [JsonPropertyName("patient_id")]
         public int PatientId { get; set; }
 
-        [JsonProperty("patient_name")]
-        [JsonPropertyName("patient_name")]
-        public string PatientName { get; set; }
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
+
+        [JsonProperty("phone_number")]
+        [JsonPropertyName("phone_number")]
+        public string PhoneNumber { get; set; }
+
+        [JsonProperty("mail")]
+        [JsonPropertyName("mail")]
+        public string Mail { get; set; }
 
         [JsonProperty("room_id")]
         [JsonPropertyName("room_id")]

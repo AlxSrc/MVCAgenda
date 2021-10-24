@@ -20,7 +20,7 @@ namespace MVCAgenda.Data.DataBaseManager
         }
 
         public DbSet<Patient> Patients { get; set; }
-        public DbSet<PatientSheet> PatientsSheet { get; set; }
+        public DbSet<PatientSheet> PatientSheets { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Consultation> Consultations { get; set; }
         public DbSet<Room> Rooms { get; set; }

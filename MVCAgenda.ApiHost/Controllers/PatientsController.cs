@@ -9,6 +9,7 @@ using MVCAgenda.ApiHost.JSON.ActionResults;
 using MVCAgenda.ApiHost.JSON.Serializers;
 using MVCAgenda.ApiHost.Models.Parameters.Patients;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Status;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Patients;
 using Newtonsoft.Json;
@@ -50,7 +51,7 @@ namespace MVCAgenda.ApiHost.Controllers
         {
             try
             {
-                var patients = await _patientService.GetListAsync();
+                var patients = await _patientService.GetListAsync(parameters.SearchByName,parameters.SearchByPhoneNumber,parameters.SearchByEmail, parameters.IncludeBlackList, parameters.IsDeleted);
                 var patientsAsDtos = new List<PatientDto>();
                 foreach (var patient in patients)
                     patientsAsDtos.Add(_patientFactory.PreperePatientDTO(patient));
@@ -123,14 +124,13 @@ namespace MVCAgenda.ApiHost.Controllers
                 var patient = new Patient()
                 {
                     Id = patientDto.Id,
-                    PatientSheetId = patientDto.PatientSheetId,
 
                     FirstName = patientDto.FirstName,
                     LastName = patientDto.LastName,
                     PhoneNumber = patientDto.PhoneNumber,
                     Mail = patientDto.Mail,
 
-                    Blacklist = patientDto.Blacklist,
+                    StatusCode = patientDto.StatusCode,
                     Hidden = false
                 };
                 var ressult = await _patientService.UpdateAsync(patient);
@@ -156,7 +156,7 @@ namespace MVCAgenda.ApiHost.Controllers
                 LastName = patient.LastName,
                 PhoneNumber = patient.PhoneNumber,
                 Mail = patient.Mail,
-                Blacklist = false,
+                StatusCode = (int)PatientStatus.Patient,
                 Hidden = false
             };
             var ressult = await _patientService.CreateAsync(newPatient);

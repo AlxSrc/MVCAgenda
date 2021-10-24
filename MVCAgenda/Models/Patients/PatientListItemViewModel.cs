@@ -5,9 +5,6 @@ namespace MVCAgenda.Models.Patients
 {
     public class PatientListItemViewModel : BaseEntityModel
     {
-        [DisplayName("Detalii pacient")]
-        public int SheetPatientId { get; set; }
-
         [DisplayName("Nume")]
         public string FirstName { get; set; }
 
@@ -20,6 +17,7 @@ namespace MVCAgenda.Models.Patients
         [DisplayName("E-mail")]
         public string Mail { get; set; }
 
-        public bool Blacklist { get; set; }
+        [DisplayName("Tipul pacientului")]
+        public int StatusCode { get; set; }
     }
 }

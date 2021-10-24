@@ -1,11 +1,12 @@
-﻿@model MVCAgenda.Models.Patients.PatientsViewModel
+﻿@using MVCAgenda.Core.Status
+@model MVCAgenda.Models.Patients.PatientsViewModel
 
 @{
 	var pageTitle = Model.Blacklist ?? false ?
-		"Lista neagră cu pacienti" :
-		Model.Hidden ?? false ?
-			"Lista cu pacienți șterși" :
-			"Pacienți";
+				"Lista neagră cu pacienti" :
+				Model.Hidden ?? false ?
+					"Lista cu pacienți șterși" :
+					"Pacienți";
 
 	ViewData["Title"] = pageTitle;
 }
@@ -31,14 +32,19 @@
 			@pageTitle
 		</strong>
 		<div class="actions">
-			@if (Model.Hidden == false)
+
+			@if (User.IsInRole("Admin") || User.IsInRole("Administrator"))
 			{
-				<a asp-action="Index" asp-route-isDeleted="true" class="btn btn-outline-primary">
-					<i class="fas fa-user-slash"></i>
-					Pacienți șterși
-				</a>
+				@if (Model.Hidden == null)
+				{
+					<a asp-action="Index" asp-route-isDeleted="true" class="btn btn-outline-primary">
+						<i class="fas fa-user-slash"></i>
+						Pacienți șterși
+					</a>
+				}
 			}
-			@if (Model.Blacklist == false)
+
+			@if (Model.Blacklist == null)
 			{
 				<a asp-action="Index" asp-route-includeBlackList="true" class="btn btn-outline-primary">
 					<i class="fas fas fa-user-times"></i>
@@ -85,16 +91,15 @@
 			<div class="row mt-3 filter-actions collapse">
 				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByName"></label>
-					<input type="text" class="form-control" asp-for="SearchByName"/>
+					<input type="text" class="form-control" asp-for="SearchByName" />
 				</div>
 				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByPhoneNumber"></label>
-
-					<input type="text" class="form-control" asp-for="SearchByPhoneNumber"/>
+					<input type="text" class="form-control" asp-for="SearchByPhoneNumber" />
 				</div>
 				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByEmail"></label>
-					<input type="text" class="form-control" asp-for="SearchByEmail"/>
+					<input type="text" class="form-control" asp-for="SearchByEmail" />
 				</div>
 			</div>
 		</form>
@@ -109,11 +114,11 @@
 					<th>
 						@Html.DisplayNameFor(model => model.PatientsList[0].LastName)
 					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.PatientsList[0].Mail)
-					</th>
 					<th class="text-center">
 						@Html.DisplayNameFor(model => model.PatientsList[0].PhoneNumber)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.PatientsList[0].Mail)
 					</th>
 					<th>
 					</th>
@@ -127,19 +132,23 @@
 						<tr>
 							<td>
 								@item.FirstName.ToUpper()
-								@if (item.Blacklist)
+								@if (item.StatusCode == (int)PatientStatus.Blacklist)
 								{
 									<span class="badge bg-danger">Blacklist</span>
+								}
+								else if (item.StatusCode == (int)PatientStatus.LoyalPatient)
+								{
+									<span class="badge bg-primary">Pacient fidel</span>
 								}
 							</td>
 							<td>
 								@Html.DisplayFor(modelItem => item.LastName)
 							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Mail)
-							</td>
 							<td class="text-center">
 								@Html.DisplayFor(modelItem => item.PhoneNumber)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Mail)
 							</td>
 							<td class="text-end">
 								<div class="dropdown d-inline-block">
@@ -154,7 +163,7 @@
 											<a asp-action="Details" class="dropdown-item text-color" asp-route-id="@item.Id">Detalii</a>
 										</li>
 										<li>
-											<a asp-action="Details" asp-controller="PatientSheets" class="dropdown-item text-color" asp-route-id="@item.SheetPatientId">Fișa medicală</a>
+											<a asp-action="Details" asp-controller="PatientSheets" class="dropdown-item text-color" asp-route-id="@item.Id">Fișa medicală</a>
 										</li>
 									</ul>
 								</div>

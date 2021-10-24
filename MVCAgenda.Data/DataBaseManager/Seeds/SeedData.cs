@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Status;
 using MVCAgenda.Core.Users;
 using MVCAgenda.Core.Users.AppPermissions;
 using MVCAgenda.Data.DataBaseManager;
@@ -14,17 +15,22 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
 {
     public class SeedData
     {
-        public static async void Initialize(IServiceProvider serviceProvider, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async void Initialize(IServiceProvider serviceProvider)
         {
             try
             {
                 var init = false;
-                using (var context = new AgendaContext(
-                serviceProvider.GetRequiredService<
-                    DbContextOptions<AgendaContext>>()))
+                if (init == true)
                 {
-                    if (init == true)
+                    int ressult; 
+                    var random = new Random();
+                    DateTime startTime;
+
+                    using (var context = new AgendaContext(
+                    serviceProvider.GetRequiredService<
+                        DbContextOptions<AgendaContext>>()))
                     {
+                    
                         if (context.Rooms.Any() == false)
                         {
                             context.Rooms.AddRange(
@@ -101,34 +107,107 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             context.Medics.AddRange(
                             new Medic
                             {
-                                Name = "Doctor Ana-Maria",
+                                Name = "Ana Maria",
                                 Mail = "ana_maria@yahoo.com",
                                 ImagePath = "",
+                                Description = "Simpla descriere",
+                                Designation = "Doctor",
                                 Hidden = false
                             },
                             new Medic
                             {
-                                Name = "Asistent Andrei",
+                                Name = "Andrei",
                                 Mail = "andrei@yahoo.com",
                                 ImagePath = "",
+                                Description = "Se ocupa de programari",
+                                Designation = "Nurse",
                                 Hidden = false
                             },
                             new Medic
                             {
-                                Name = "Asistent Ionela",
+                                Name = "Ionela",
                                 Mail = "ionela@yahoo.com",
                                 ImagePath = "",
+                                Description = "Se ocupa de tratamentele laser",
+                                Designation = "Nurse",
                                 Hidden = false
                             });
 
                             context.SaveChanges();
                         }
 
-                        if (context.PatientsSheet.Any() == false)
+                        if (context.Patients.Any() == false)
                         {
-                            context.PatientsSheet.AddRange(
+                            context.Patients.AddRange(
+                            new Patient
+                            {
+                                FirstName = "Serediuc",
+                                LastName = "Alexandru",
+                                PhoneNumber = "0757541521",
+                                Mail = "",
+                                StatusCode = (int)PatientStatus.LoyalPatient,
+                                Hidden = false
+                            },
+                            new Patient
+                            {
+                                FirstName = "Serediuc",
+                                LastName = "Constantin",
+                                PhoneNumber = "0741241712",
+                                Mail = "Alex.gsa@yahoo.com",
+                                StatusCode = (int)PatientStatus.Blacklist,
+                                Hidden = false
+                            },
+                            new Patient
+                            {
+                                FirstName = "Mircea",
+                                LastName = "Andrei",
+                                PhoneNumber = "0757616511",
+                                Mail = "mirceaand@gmail.com",
+                                StatusCode = (int)PatientStatus.LoyalPatient,
+                                Hidden = false
+                            },
+                            new Patient
+                            {
+                                FirstName = "Rotaru",
+                                LastName = "Andreea",
+                                PhoneNumber = "0757254785",
+                                Mail = "androt@yahoo.com",
+                                StatusCode = (int)PatientStatus.LoyalPatient,
+                                Hidden = false
+                            },
+                            new Patient
+                            {
+                                FirstName = "Andreea",
+                                LastName = "Ana",
+                                PhoneNumber = "0755767254",
+                                Mail = "andana@gmail.com",
+                                StatusCode = (int)PatientStatus.LoyalPatient,
+                                Hidden = true
+                            });
+
+                            for(int i = 0; i< 500;  i++)
+                            {
+                                context.Patients.AddRange(
+                                    new Patient
+                                    {
+                                        FirstName = $"FirstName{i}",
+                                        LastName = $"LastName{i}",
+                                        PhoneNumber = GetRandomPhoneNumber(),
+                                        Mail = $"e_mail_adress{i}@gmail.com",
+                                        StatusCode = (int)PatientStatus.Patient,
+                                        Hidden = false
+                                    });
+                            }
+
+                            context.SaveChanges();
+                        }
+
+                        if (context.PatientSheets.Any() == false)
+                        {
+                            context.PatientSheets.AddRange(
                             new PatientSheet
                             {
+                                PatientId = 1,
                                 NationalIdentificationNumber = "1990713123123",
                                 PhysicalExamination = "Clinic sanatos",
                                 AntecedentsH = "antecedente de la parinti lipsa",
@@ -140,6 +219,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new PatientSheet
                             {
+                                PatientId = 2,
                                 NationalIdentificationNumber = "1990713123321",
                                 PhysicalExamination = "Clinic sanatos",
                                 AntecedentsH = "",
@@ -151,6 +231,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new PatientSheet
                             {
+                                PatientId = 3,
                                 NationalIdentificationNumber = "1990713123098",
                                 PhysicalExamination = "Clinic sanatos",
                                 AntecedentsH = "",
@@ -162,6 +243,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new PatientSheet
                             {
+                                PatientId = 4,
                                 NationalIdentificationNumber = "2990713123322",
                                 PhysicalExamination = "Clinic sanatos",
                                 AntecedentsH = "antecedente de la parinti lipsa",
@@ -173,6 +255,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new PatientSheet
                             {
+                                PatientId = 5,
                                 NationalIdentificationNumber = "2990713123123",
                                 PhysicalExamination = "Clinic sanatos",
                                 AntecedentsH = "",
@@ -182,6 +265,24 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                 Gender = 0,
                                 DateOfBirth = DateTime.Parse("2000-07-24")
                             });
+
+                            for (int i = 0; i < 500; i++)
+                            {
+                                ressult = random.Next(1, 3);
+                                context.PatientSheets.AddRange(
+                                    new PatientSheet
+                                    {
+                                        PatientId = i + 6,
+                                        NationalIdentificationNumber = GetRandomCNP(),
+                                        PhysicalExamination = ressult == 1 ? "Clinic sanatos" : "Pe moarte",
+                                        AntecedentsH = $"Some information {i}",
+                                        AntecedentsP = $"Another Informations {i}",
+                                        Town = ressult == 1 ? "Suceava" : "Falticeni",
+                                        Street = ressult == 1 ? $"Calea Unirii nr. {i}" : $"Calea Eroilor nr. {i}",
+                                        Gender = random.Next(1, 3),
+                                        DateOfBirth = DateTime.Now.AddYears(random.Next(1, 50))
+                                    }) ;
+                            }
 
                             context.SaveChanges();
                         }
@@ -254,63 +355,19 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                 CreationDate = DateTime.Parse("2021-07-24 12:00")
                             });
 
-                            context.SaveChanges();
-                        }
-
-                        if (context.Patients.Any() == false)
-                        {
-                            context.Patients.AddRange(
-                            new Patient
+                            for (int i = 0; i < 900; i++)
                             {
-                                PatientSheetId = 1,
-                                FirstName = "Serediuc",
-                                LastName = "Alexandru",
-                                PhoneNumber = "0757541521",
-                                Mail = "",
-                                Blacklist = false,
-                                Hidden = false
-                            },
-                            new Patient
-                            {
-                                PatientSheetId = 2,
-                                FirstName = "Serediuc",
-                                LastName = "Constantin",
-                                PhoneNumber = "0741241712",
-                                Mail = "Alex.gsa@yahoo.com",
-                                Blacklist = false,
-                                Hidden = false
-                            },
-                            new Patient
-                            {
-                                PatientSheetId = 3,
-                                FirstName = "Mircea",
-                                LastName = "Andrei",
-                                PhoneNumber = "0757616511",
-                                Mail = "mirceaand@gmail.com",
-                                Blacklist = false,
-                                Hidden = false
-                            },
-                            new Patient
-                            {
-                                PatientSheetId = 4,
-                                FirstName = "Rotaru",
-                                LastName = "Andreea",
-                                PhoneNumber = "0757254785",
-                                Mail = "androt@yahoo.com",
-                                Blacklist = false,
-                                Hidden = false
-                            },
-                            new Patient
-                            {
-                                PatientSheetId = 5,
-                                FirstName = "Andreea",
-                                LastName = "Ana",
-                                PhoneNumber = "0755767254",
-                                Mail = "andana@gmail.com",
-                                Blacklist = false,
-                                Hidden = true
-                            });
-
+                                ressult = random.Next(1, 3);
+                                context.Consultations.AddRange(
+                                    new Consultation
+                                    {
+                                        SheetPatientId = random.Next(1, 500),
+                                        Prescriptions = $"sample text Prescriptii{i}",
+                                        Diagnostic = $"sample text Diagnostic {i}",
+                                        Symptoms = $"sample text Simptome {i}",
+                                        CreationDate = DateTime.Now
+                                    });
+                            }
                             context.SaveChanges();
                         }
 
@@ -370,29 +427,27 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                 Hidden = false
                             });
 
+                            for (int i = 0; i < 1500; i++)
+                            {
+                                ressult = random.Next(1, 3);
+                                startTime = GetRandomStartDate();
+                                context.Appointments.AddRange(
+                                    new Appointment
+                                    {
+                                        PatientId = random.Next(1, 500),
+                                        MedicId = random.Next(1, 4),
+                                        RoomId = random.Next(1, 9),
+                                        StartDate = startTime,
+                                        EndDate = GetRandomEndDate(startTime),
+                                        Procedure = $"Procedure test{i}",
+                                        Made = true,
+                                        ResponsibleForAppointment = "Administrator",
+                                        AppointmentCreationDate = DateTime.Now.AddHours(random.Next(1,1000)),
+                                        Hidden = false
+                                    });
+                            }
                             context.SaveChanges();
                         }
-
-                        await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-                        await roleManager.CreateAsync(new IdentityRole(Roles.Administrator.ToString()));
-                        await roleManager.CreateAsync(new IdentityRole(Roles.Doctor.ToString()));
-                        await roleManager.CreateAsync(new IdentityRole(Roles.Nurse.ToString()));
-                        await roleManager.CreateAsync(new IdentityRole(Roles.Receptionist.ToString()));
-                        await roleManager.CreateAsync(new IdentityRole(Roles.PersonalTrainer.ToString()));
-                        await roleManager.CreateAsync(new IdentityRole(Roles.Kinetotherapist.ToString()));
-                        await roleManager.CreateAsync(new IdentityRole(Roles.User.ToString()));
-
-                        var moderatorUser = new IdentityUser
-                        {
-                            UserName = "moderator_agenda@gmail.com",
-                            Email = "moderator_agenda@gmail.com",
-                            EmailConfirmed = true
-                        };
-
-                        await userManager.CreateAsync(moderatorUser, "{Al@ka#9A#s&KA|");
-                        await userManager.AddToRoleAsync(moderatorUser, Roles.Admin.ToString());
-
-                        await SeedClaimsForModeratorAdmin(roleManager);
                     }
                 }
             }
@@ -402,120 +457,43 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
             }
         }
 
-        private static async  Task SeedClaimsForModeratorAdmin(RoleManager<IdentityRole> roleManager)
-        {
-            var adminRole = await roleManager.FindByNameAsync("Moderator");
-            await SeedData.AddPermissionClaim(roleManager, adminRole, "Patients");
-            await SeedData.AddPermissionClaim(roleManager, adminRole, "PatientSheets");
-            await SeedData.AddPermissionClaim(roleManager, adminRole, "Consultations");
-            await SeedData.AddPermissionClaim(roleManager, adminRole, "Appointments");
-            await SeedData.AddPermissionClaim(roleManager, adminRole, "Rooms");
-            await SeedData.AddPermissionClaim(roleManager, adminRole, "Medics");
-        }
+        //private static async  Task SeedClaimsForModeratorAdmin(RoleManager<IdentityRole> roleManager)
+        //{
+        //    var adminRole = await roleManager.FindByNameAsync("Moderator");
+        //    await SeedData.AddPermissionClaim(roleManager, adminRole, "Patients");
+        //    await SeedData.AddPermissionClaim(roleManager, adminRole, "PatientSheets");
+        //    await SeedData.AddPermissionClaim(roleManager, adminRole, "Consultations");
+        //    await SeedData.AddPermissionClaim(roleManager, adminRole, "Appointments");
+        //    await SeedData.AddPermissionClaim(roleManager, adminRole, "Rooms");
+        //    await SeedData.AddPermissionClaim(roleManager, adminRole, "Medics");
+        //}
 
-        public static async Task AddPermissionClaim(RoleManager<IdentityRole> roleManager, IdentityRole role, string module)
-        {
-            var allClaims = await roleManager.GetClaimsAsync(role);
-            var allPermissions = Permissions.GeneratePermissionsForModule(module);
-            foreach (var permission in allPermissions)
-            {
-                if (!allClaims.Any(a => a.Type == "Permission" && a.Value == permission))
-                {
-                    await roleManager.AddClaimAsync(role, new Claim("Permission", permission));
-                }
-            }
-        }
+        //public static async Task AddPermissionClaim(RoleManager<IdentityRole> roleManager, IdentityRole role, string module)
+        //{
+        //    var allClaims = await roleManager.GetClaimsAsync(role);
+        //    var allPermissions = Permissions.GeneratePermissionsForModule(module);
+        //    foreach (var permission in allPermissions)
+        //    {
+        //        if (!allClaims.Any(a => a.Type == "Permission" && a.Value == permission))
+        //        {
+        //            await roleManager.AddClaimAsync(role, new Claim("Permission", permission));
+        //        }
+        //    }
+        //}
 
 
-        private static string GetRandomDate()
-        {
-            var rand = new Random();
-            string date = null;
-            //("2000-07-24")
 
-            string day, month, year;
-            int aux;
-
-            aux = rand.Next(1,29);
-            if (aux > 9)
-                day = $"{aux}";
-            else
-                day = $"0{aux}";
-
-            aux = rand.Next(1, 12);
-            if (aux > 9)
-                month = $"{aux}";
-            else
-                month = $"0{aux}";
-            aux = rand.Next(1, 21);
-            if (aux > 9)
-                year = $"20{aux}";
-            else
-                year = $"200{aux}";
-
-            date = $"{year}-{month}-{day}";
-
-            return date;
-        }
-        private static string GetRandomFullDate()
+        private static DateTime GetRandomStartDate()
         {
             var rand = new Random();
-            string date = null;
-            //"2021-04-14T09:35"
-
-            string day, month, year, ora, min;
-            int aux;
-
-            day = $"{rand.Next(1, 29)}";
-            aux = rand.Next(1, 12);
-            if (aux > 9)
-                month = $"{aux}";
-            else
-                month = $"0{aux}";
-            aux = rand.Next(1, 21);
-            if (aux > 9)
-                year = $"20{aux}";
-            else
-                year = $"200{aux}";
-
-            aux = rand.Next(0, 23);
-            if (aux > 9)
-                ora = $"{aux}";
-            else
-                ora = $"0{aux}";
-            aux = rand.Next(0, 59);
-            if (aux > 9)
-                min = $"{aux}";
-            else
-                min = $"0{aux}";
-
-            date = $"{year}-{month}-{day}T{ora}:{min}";
-
-            return date;
+            DateTime date = DateTime.Now;
+            return date.AddDays(rand.Next(1, 50));
         }
-        private static string GetRandomOra()
+        private static DateTime GetRandomEndDate(DateTime startTime)
         {
             var rand = new Random();
-            string date = null;
-            //"09:35"
-
-            string ora, min;
-            int aux;
-
-            aux = rand.Next(0, 23);
-            if (aux > 9)
-                ora = $"{aux}";
-            else
-                ora = $"0{aux}";
-            aux = rand.Next(0, 59);
-            if (aux > 9)
-                min = $"{aux}";
-            else
-                min = $"0{aux}";
-
-            date = $"{ora}-{min}";
-
-            return date;
+            DateTime date = startTime;
+            return date.AddMinutes(rand.Next(45, 120));
         }
 
         private static string GetRandomCNP()
@@ -529,10 +507,9 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
 
             return cnp;
         }
-        private static string GetRandomNumber()
+        private static string GetRandomPhoneNumber()
         {
             var rand = new Random();
-
 
             string number = $"0";
             for (int i = 1; i <= 9; i++)
@@ -541,31 +518,6 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
             }
 
             return number;
-        }
-        private static string GetRandomMedic()
-        {
-            var rand = new Random();
-            string[] medici = new string[]{"Doctor Ana-maria","Asistent Andrei", "Asistenta Daniela", "Asistenta Ionela" };
-
-            string medic = medici[rand.Next(0, 3)];
-
-            return medic;
-        }
-        private static string GetRandomCamera()
-        {
-            var rand = new Random();
-            string[] camere = new string[] { "Camera 1 Corporal", 
-            "Camera 2 Corporal",
-            "Camera 3 Corporal",
-            "Camera 1 medical",
-            "Camera 2 medical",
-            "Camera 3 medical",
-            "RoomDto 4 medical",
-            "Sala sport" };
-
-            string camera = camere[rand.Next(0, 7)];
-
-            return camera;
         }
     }
 }

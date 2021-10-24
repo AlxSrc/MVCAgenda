@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core.Users;
 using MVCAgenda.Models.Accounts.Roles;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MVCAgenda.Controllers
@@ -35,7 +36,11 @@ namespace MVCAgenda.Controllers
         public async Task<IActionResult> Index()
         {
             var viewModel = new RolesManagerViewModel();
-            viewModel.RolesList = await _roleManager.Roles.ToListAsync();
+            var RolesList = new List<IdentityRole>();
+            RolesList = await _roleManager.Roles.ToListAsync();
+            //RolesList = RolesList.Where
+
+            viewModel.RolesList = RolesList;
             return View(viewModel);
         }
 

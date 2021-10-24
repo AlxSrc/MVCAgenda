@@ -37,11 +37,11 @@ namespace MVCAgenda.Factories.Medics
 
         #region Methods
 
-        public async Task<List<MedicViewModel>> PrepereListModel()
+        public async Task<List<MedicViewModel>> PrepereListModel(string mail = null)
         {
             try
             {
-                var medics = await _medicsServices.GetListAsync();
+                var medics = await _medicsServices.GetListAsync(mail);
                 var MedicsViewModel = new List<MedicViewModel>();
                 foreach (var medic in medics)
                     if (medic.Hidden == false)

@@ -68,12 +68,36 @@ namespace MVCAgenda.Service.Medics
                 return new Medic();
             }
         }
-
-        public async Task<List<Medic>> GetListAsync()
+        public async Task<Medic> GetAsync(string mail)
         {
             try
             {
-                return await _context.Medics.OrderBy(m => m.Name).Where(m => m.Hidden == false).Where(m => m.Mail != Constants.AdminUser).ToListAsync();
+                return await _context.Medics.FirstOrDefaultAsync(m => m.Mail == mail);
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new Medic();
+            }
+        }
+
+        public async Task<List<Medic>> GetListAsync(string mail = null)
+        {
+            try
+            {
+                var query = _context.Medics.AsQueryable();
+
+                query = query.Where(m => m.Hidden == false);
+
+                //query = query.Where(m => m.Mail != Constants.AdminUser);
+
+                if (mail != null)
+                    query = query.Where(m => m.Mail.ToUpper().Contains(mail.ToUpper()));
+
+                query = query.OrderBy(m => m.Name);
+
+                return await query.ToListAsync();
             }
             catch (Exception exception)
             {
