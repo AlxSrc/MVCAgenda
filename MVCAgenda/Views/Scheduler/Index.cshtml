@@ -66,8 +66,8 @@
 		</form>
 	</div>
 	<div class="content">
-		
 	</div>
+
 </div>
 
 <div>
@@ -90,7 +90,7 @@
 
 			<e-schedule-eventsettings>
 
-				<e-data-manager url="@Url.Action("LoadData", "Scheduler")" adaptor="WebMethodAdaptor"></e-data-manager>
+				<e-data-manager url="@Url.Action("LoadData", "Scheduler", new{ Mail = "" })" adaptor="WebMethodAdaptor"></e-data-manager>
 
 				<e-eventsettings-fields>
 					<e-field-subject name="Subject" validation="validationRules"></e-field-subject>
@@ -283,7 +283,6 @@
 			</div>
 			${else}
 			<div class="event-footer d-flex justify-content-end">
-				<button id="delete" class="btn btn-sm btn-outline-danger">Șterge programarea</button>
 				<button id="more-details" class="ml-1 btn btn-sm btn-primary" data-appointment-id="${Id}">Detalii programarea</button>
 			</div>
 			${/if}

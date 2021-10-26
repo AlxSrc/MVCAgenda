@@ -11,7 +11,12 @@ namespace MVCAgenda.Models.PatientSheets
     {
         [DisplayName("Detalii pacient")]
         public int PatientId { get; set; }
-        public string PatientName { get; set; }
+
+        [DisplayName("Nume")]
+        public string FirstName { get; set; }
+
+        [DisplayName("Prenume")]
+        public string LastName { get; set; }
 
         [DisplayName("Antecedente: Heredo-colaterale")]
         public string AntecedentsH { get; set; }
@@ -24,7 +29,7 @@ namespace MVCAgenda.Models.PatientSheets
         [DisplayName("Examen fizic")]
         public string PhysicalExamination { get; set; }
 
-
+        [DisplayName("CNP")]
         public string NationalIdentificationNumber { get; set; }
 
 

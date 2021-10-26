@@ -23,7 +23,7 @@
 		<li class="breadcrumb-item">
 			<a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.PatientId">
 				<i class="fas fa-hospital-user"></i>
-				<span>@Model.FirstName.ToUpper() @Model.SecondName</span>
+				<span>@Model.FirstName.ToUpper() @(Model.LastName != null ? Model.LastName : "")</span> 
 			</a>
 		</li>
 		<li class="breadcrumb-item active">
@@ -62,8 +62,8 @@
 				</div>
 				<div class="col">
 					<div class="input-group">
-						<span class="input-group-text">@Html.DisplayNameFor(model => model.SecondName)</span>
-						<input asp-for="SecondName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.SecondName)" readonly>
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.LastName)</span>
+						<input asp-for="LastName" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.LastName)" readonly>
 					</div>
 				</div>
 			</div>

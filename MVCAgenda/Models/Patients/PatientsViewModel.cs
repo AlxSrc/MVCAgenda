@@ -16,6 +16,13 @@ namespace MVCAgenda.Models.Patients
 
         #endregion
 
+        #region Pagination
+        public int PageIndex { get; set; }
+        public int TotalPages { get; set; }
+        public bool PreviousPage { get { return (PageIndex > 1); } }
+        public bool NextPage { get { return (PageIndex < TotalPages); } }
+        #endregion
+
         #region ViewControllers
 
         public bool? Hidden { get; set; }

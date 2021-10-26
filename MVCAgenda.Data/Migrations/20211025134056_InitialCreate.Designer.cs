@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Data.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20211019071802_IdentityDBUser")]
-    partial class IdentityDBUser
+    [Migration("20211025134056_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,11 +93,14 @@ namespace MVCAgenda.Data.Migrations
                     b.Property<bool>("Hidden")
                         .HasColumnType("bit");
 
+                    b.Property<int>("PatientSheetId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Prescriptions")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("SheetPatientId")
+                    b.Property<int?>("SheetPatientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Symptoms")
@@ -518,9 +521,7 @@ namespace MVCAgenda.Data.Migrations
                 {
                     b.HasOne("MVCAgenda.Core.Domain.PatientSheet", "SheetPatient")
                         .WithMany()
-                        .HasForeignKey("SheetPatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SheetPatientId");
 
                     b.Navigation("SheetPatient");
                 });

@@ -12,6 +12,13 @@ namespace MVCAgenda.Models.Appointments
             AppointmentsList = new List<AppointmentListItemViewModel>();
         }
 
+        #region Pagination
+        public int PageIndex { get; set; }
+        public int TotalPages { get; set; }
+        public bool PreviousPage {  get { return (PageIndex > 1); } } 
+        public bool NextPage { get { return (PageIndex < TotalPages); } }
+        #endregion
+
         #region Param
 
         public List<AppointmentListItemViewModel> AppointmentsList { get; set; }
@@ -19,6 +26,7 @@ namespace MVCAgenda.Models.Appointments
         public bool? Hidden { get; set; }
         public bool? Blacklist { get; set; }
         public bool? Daily { get; set; }
+        public bool? Made { get; set; }
 
         #endregion
 

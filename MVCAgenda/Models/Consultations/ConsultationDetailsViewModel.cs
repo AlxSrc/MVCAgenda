@@ -8,7 +8,13 @@ namespace MVCAgenda.Models.Consultations
     public class ConsultationDetailsViewModel : BaseModel
     {
         [DisplayName("Fișă pacient")]
-        public int SheetPatientId { get; set; }
+        public int PatientSheetId { get; set; }
+
+        [DisplayName("Nume")]
+        public string FirstName { get; set; }
+
+        [DisplayName("Prenume")]
+        public string LastName { get; set; }
 
 
         [DataType(DataType.DateTime)]

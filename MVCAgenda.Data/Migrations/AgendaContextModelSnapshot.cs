@@ -91,11 +91,14 @@ namespace MVCAgenda.Data.Migrations
                     b.Property<bool>("Hidden")
                         .HasColumnType("bit");
 
+                    b.Property<int>("PatientSheetId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Prescriptions")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("SheetPatientId")
+                    b.Property<int?>("SheetPatientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Symptoms")
@@ -516,9 +519,7 @@ namespace MVCAgenda.Data.Migrations
                 {
                     b.HasOne("MVCAgenda.Core.Domain.PatientSheet", "SheetPatient")
                         .WithMany()
-                        .HasForeignKey("SheetPatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SheetPatientId");
 
                     b.Navigation("SheetPatient");
                 });

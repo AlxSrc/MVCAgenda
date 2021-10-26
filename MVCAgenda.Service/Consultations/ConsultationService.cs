@@ -72,7 +72,7 @@ namespace MVCAgenda.Service.Consultations
         {
             try
             {
-                var query = _context.Consultations.Where(p => p.SheetPatientId == id);
+                var query = _context.Consultations.Where(p => p.PatientSheetId == id);
                 return await query.OrderByDescending(c => c.CreationDate).Where(c => c.Hidden == false).ToListAsync();
             }
             catch (Exception ex)

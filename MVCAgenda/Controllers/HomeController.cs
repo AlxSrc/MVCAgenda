@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.Factories.Home;
 using MVCAgenda.Managers.Medics;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Models.Accounts;
@@ -14,8 +15,7 @@ namespace MVCAgenda.Controllers
     {
         #region Fields
 
-        private readonly IRoomsManager _roomsManager;
-        private readonly IMedicsManager _medicsManager;
+        private readonly IHomeFactory _homeFactory;
 
         #endregion
 
@@ -23,10 +23,9 @@ namespace MVCAgenda.Controllers
 
         #region Constructor
 
-        public HomeController(IRoomsManager roomsManager, IMedicsManager medicsManager)
+        public HomeController(IHomeFactory homeFactory)
         {
-            _roomsManager = roomsManager;
-            _medicsManager = medicsManager;
+            _homeFactory = homeFactory;
         }
 
         #endregion
@@ -35,9 +34,9 @@ namespace MVCAgenda.Controllers
 
         #region Index
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _homeFactory.PrepereHomeViewModel(User.Identity.Name));
         }
 
         #endregion

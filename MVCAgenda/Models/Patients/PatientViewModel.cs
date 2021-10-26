@@ -30,7 +30,7 @@ namespace MVCAgenda.Models.Patients
         public string Mail { get; set; }
 
 
-        [DisplayName("Lista neagră")]
+        [DisplayName("Tipul pacientului")]
         public string BlacklistText { get; set; }
 
 

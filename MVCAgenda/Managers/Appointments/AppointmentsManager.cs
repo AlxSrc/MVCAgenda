@@ -115,8 +115,11 @@ namespace MVCAgenda.Managers.Appointments
                 {
                     //folosind id-ul pacientului din programarea adaugata
                     patientId = newAppointment.PatientId;
+
                     //aduc toate programarile pacientului respectiv
-                    var appointments = await _appointmentServices.GetFiltredListAsync(id: patientId, Hidden: false);
+
+                    var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, Hidden: false);
+
                     //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
                     if(appointments.Count >= Constants.LoyalAppointmentNumber)
                     {
@@ -179,7 +182,7 @@ namespace MVCAgenda.Managers.Appointments
                         //folosind id-ul pacientului din programarea adaugata
                         patientId = newAppointment.PatientId;
                         //aduc toate programarile pacientului respectiv
-                        var appointments = await _appointmentServices.GetFiltredListAsync(id: patientId, made:false, Hidden: false);
+                        var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, made:false, Hidden: false);
                         //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
                         if (appointments.Count >= Constants.BlacklistMissingAppointmentNumber)
                         {

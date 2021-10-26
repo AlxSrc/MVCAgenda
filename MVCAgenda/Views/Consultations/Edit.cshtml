@@ -23,12 +23,11 @@
 		<li class="breadcrumb-item">
 			<a asp-action="Details" asp-controller="Patients" asp-route-id="in pla ca nu este id-ul pacientului">
 				<i class="fas fa-hospital-user"></i>
-				@* <span>@Model.FirstName.ToUpper() @Model.SecondName</span> *@
-				Cum draq ai legat o fisa a pacientului de un pacient?
+				<span>@Model.FirstName.ToUpper() @(Model.LastName != null ? Model.LastName : "")</span> 
 			</a>
 		</li>
 		<li class="breadcrumb-item">
-			<a asp-action="Details" asp-controller="PatientSheets" asp-route-id="@Model.SheetPatientId">
+			<a asp-action="Details" asp-controller="PatientSheets" asp-route-id="@Model.PatientSheetId">
 				<i class="fas fa-file-medical-alt"></i>
 				<span>Fisa pacientului</span>
 			</a>
@@ -56,7 +55,7 @@
 		<div class="content">
 			<div class="data">
 				<input type="hidden" asp-for="Id"/>
-				<input type="hidden" asp-for="SheetPatientId"/>
+				<input type="hidden" asp-for="PatientSheetId"/>
 				<input type="hidden" asp-for="CreationDate"/>
 
 				<div class="form-floating mb-3">

@@ -3,7 +3,7 @@
 @{
 	var pageTitle = "Modifică fișa pacientului";
 
-	ViewData["Title"] = "Edit";
+	ViewData["Title"] = pageTitle;
 }
 
 
@@ -24,8 +24,7 @@
 		<li class="breadcrumb-item">
 			<a asp-action="Details" asp-controller="Patients" asp-route-id="in pla ca nu este id-ul pacientului">
 				<i class="fas fa-hospital-user"></i>
-				@* <span>@Model.FirstName.ToUpper() @Model.SecondName</span> *@
-				Cum draq ai legat o fisa a pacientului de un pacient?
+				<span>@Model.FirstName.ToUpper() @(Model.LastName != null ? Model.LastName : "")</span> 
 			</a>
 		</li>
 		<li class="breadcrumb-item active">
@@ -52,7 +51,6 @@
 			<div class="data">
 				<input type="hidden" asp-for="Id"/>
 				<input type="hidden" asp-for="PatientId"/>
-				<input type="hidden" asp-for="DateOfBirth"/>
 				<div class="form-floating mb-3">
 					<input asp-for="AntecedentsH" class="form-control" id="floatingInput1">
 					<label for="floatingInput1" asp-for="AntecedentsH"></label>
@@ -89,6 +87,11 @@
 					<input asp-for="Street" class="form-control" id="floatingInput7">
 					<label for="floatingInput7" asp-for="Street"></label>
 					<span asp-validation-for="Street" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<input asp-for="DateOfBirth" class="form-control" id="floatingInput7">
+					<label for="floatingInput7" asp-for="DateOfBirth"></label>
+					<span asp-validation-for="DateOfBirth" class="text-danger"></span>
 				</div>
 			</div>
 		</div>

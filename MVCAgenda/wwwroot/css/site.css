@@ -6,6 +6,7 @@
     --main-color: #7f73bb;
     --main-color-darker: #6c629e;
     --main-color-shadow: 0 0 0 0.25rem rgba(108, 98, 158, 0.25);
+    --gray: #c5c1c1;
     --white: #fff;
     --black: #333;
     --transition: all 150ms linear;
@@ -89,6 +90,12 @@
     color: #fff;
 }
 
+.btn-primary.disabled {
+    background-color: var(--gray) !important;
+    border-color: var(--gray) !important;
+    color: #fff;
+}
+
 .btn-outline-primary {
     color: var(--main-color);
     border-color: var(--main-color);
@@ -168,6 +175,29 @@ body .vr-left {
     display: inline-block;
     vertical-align: middle;
     font-size: 16px;
+}
+
+body .vr-right {
+    padding-right: 12px;
+    margin-right: 8px;
+    border-right: 1px solid #e2e2e2;
+    height: 90%;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.page-number {
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+.page-link {
+    color: var(--main-color) !important;
+}
+
+.page-item.disabled .page-link {
+    color: var(--gray) !important;
 }
 
 #AppContent {

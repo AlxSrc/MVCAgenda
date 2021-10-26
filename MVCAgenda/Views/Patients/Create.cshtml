@@ -44,6 +44,7 @@
 			<div class="data">
 				<input asp-for="Id" type="hidden"/>
 				<input asp-for="Hidden" type="hidden"/>
+				<input asp-for="StatusCode" type="hidden"/>
 
 				<div class="form-floating mb-3">
 					<input asp-for="FirstName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
@@ -64,12 +65,6 @@
 					<input asp-for="Mail" class="form-control" id="floatingInput4" placeholder="name@example.com">
 					<label for="floatingInput4" asp-for="Mail"></label>
 					<span asp-validation-for="Mail" class="text-danger"></span>
-				</div>
-				<div class="input-group mb-3">
-					<div class="input-group-text">
-						<input class="form-check-input mt-0" type="checkbox" asp-for="StatusCode" aria-label="Checkbox for following text input">
-					</div>
-					<input type="text" value="Lista neagră" class="form-control" aria-label="Text input with checkbox" readonly>
 				</div>
 			</div>
 		</div>

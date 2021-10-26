@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Status;
+using MVCAgenda.Core.Helpers;
 
 namespace MVCAgenda.Service.Patients
 {
@@ -122,7 +123,8 @@ namespace MVCAgenda.Service.Patients
             }
         }
 
-        public async Task<List<Patient>> GetListAsync(string searchByName = null,
+        public async Task<List<Patient>> GetListAsync(int pageIndex,
+            string searchByName = null,
             string searchByPhoneNumber = null,
             string searchByEmail = null,
             bool? includeBlackList = null,
@@ -147,6 +149,11 @@ namespace MVCAgenda.Service.Patients
                 if (searchByEmail != null)
                     query = query.Where(p => p.Mail.ToUpper().Contains(searchByEmail.ToUpper()));
 
+                if (pageIndex != -1)
+                    query = query.Skip((pageIndex - 1) * Constants.TotalItemsOnAPage).Take(Constants.TotalItemsOnAPage);
+
+                query = query.OrderBy(f => f.FirstName);
+
                 return await query.ToListAsync();
             }
             catch (Exception ex)
@@ -154,6 +161,42 @@ namespace MVCAgenda.Service.Patients
                 msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return null;
+            }
+        }
+
+        public async Task<int> GetPatientsNumberAsync(
+            string searchByName = null,
+            string searchByPhoneNumber = null,
+            string searchByEmail = null,
+            bool? includeBlackList = null,
+            bool? isHidden = null)
+        {
+            try
+            {
+                var query = _context.Patients.AsQueryable();
+
+                if (isHidden != null)
+                    query = query.Where(p => p.Hidden == isHidden);
+
+                if (includeBlackList != null)
+                    query = query.Where(p => p.StatusCode == (int)PatientStatus.Blacklist);
+
+                if (searchByName != null)
+                    query = query.Where(p => p.FirstName.ToUpper().Contains(searchByName.ToUpper()));
+
+                if (searchByPhoneNumber != null)
+                    query = query.Where(p => p.PhoneNumber.Contains(searchByPhoneNumber));
+
+                if (searchByEmail != null)
+                    query = query.Where(p => p.Mail.ToUpper().Contains(searchByEmail.ToUpper()));
+
+                return await query.CountAsync();
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return 0;
             }
         }
 

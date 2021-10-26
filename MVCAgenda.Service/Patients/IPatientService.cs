@@ -9,7 +9,15 @@ namespace MVCAgenda.Service.Patients
         Task<bool> CreateAsync(Patient patient);
         Task<int> CheckExistentPatientAsync(Patient patient);
 
-        Task<List<Patient>> GetListAsync(string searchByName = null,
+        Task<List<Patient>> GetListAsync(int pageIndex,
+            string searchByName = null,
+            string searchByPhoneNumber = null,
+            string searchByEmail = null,
+            bool? includeBlackList = false,
+            bool? isDeleted = false);
+
+        Task<int> GetPatientsNumberAsync(
+            string searchByName = null,
             string searchByPhoneNumber = null,
             string searchByEmail = null,
             bool? includeBlackList = false,

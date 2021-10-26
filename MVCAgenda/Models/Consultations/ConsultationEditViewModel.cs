@@ -7,7 +7,13 @@ namespace MVCAgenda.Models.Consultations
 {
     public class ConsultationEditViewModel : BaseModel
     {
-        public int SheetPatientId { get; set; }
+        public int PatientSheetId { get; set; }
+
+        [DisplayName("Nume")]
+        public string FirstName { get; set; }
+
+        [DisplayName("Prenume")]
+        public string LastName { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime CreationDate { get; set; }

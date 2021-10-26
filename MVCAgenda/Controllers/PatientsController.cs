@@ -68,9 +68,14 @@ namespace MVCAgenda.Controllers
             return "From [HttpPost]Index: filter on " + searchString;
         }
 
-        public async Task<IActionResult> Index(string SearchByName, string SearchByPhoneNumber, string SearchByEmail, bool? includeBlackList = null, bool? isDeleted = null)
+        public async Task<IActionResult> Index(int pageIndex = 1,
+            string SearchByName = null, 
+            string SearchByPhoneNumber = null, 
+            string SearchByEmail = null, 
+            bool? includeBlackList = null, 
+            bool? isDeleted = false)
         {
-            return View(await _patientFactory.GetListViewModelAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, includeBlackList, isDeleted));
+            return View(await _patientFactory.GetListViewModelAsync(pageIndex, SearchByName, SearchByPhoneNumber, SearchByEmail, includeBlackList, isDeleted));
 
         }
 

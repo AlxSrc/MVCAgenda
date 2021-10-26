@@ -7,8 +7,13 @@ namespace MVCAgenda.Models.Consultations
 {
     public class ConsultationCreateViewModel
     {
-        public int SheetPatientId { get; set; }
+        public int PatientSheetId { get; set; }
 
+        [DisplayName("Nume")]
+        public string FirstName { get; set; }
+
+        [DisplayName("Prenume")]
+        public string LastName { get; set; }
 
         [StringLength(450, MinimumLength = 1)]
         [DisplayName("Simptome")]

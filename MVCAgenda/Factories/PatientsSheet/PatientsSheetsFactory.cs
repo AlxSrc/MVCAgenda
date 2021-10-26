@@ -56,15 +56,9 @@ namespace MVCAgenda.Factories.PatientsSheet
         {
             try
             {
-                var consultations = await _consultationServices.GetListAsync(id);
-                var consultationsList = new List<ConsultationViewModel>();
-                foreach (var consultation in consultations)
-                    consultationsList.Add(await _consultationFactory.PrepereViewModelAsync(consultation));
-
-                var patient = await _patientServices.GetAsync(id);
                 var patientSheets = await _patientSheetServices.GetAsync(id);
 
-                return PrepereDetails(patientSheets, patient, consultationsList);
+                return await PrepereDetails(patientSheets);
             }
             catch (Exception exception)
             {
@@ -79,9 +73,13 @@ namespace MVCAgenda.Factories.PatientsSheet
             try
             {
                 var patientSheet = await _patientSheetServices.GetAsync(id);
+                var patient = await _patientServices.GetAsync(patientSheet.PatientId);
                 return new PatientSheetEditViewModel()
                 {
                     Id = patientSheet.Id,
+                    PatientId = patient.Id,
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
                     AntecedentsH = patientSheet.AntecedentsH,
                     AntecedentsP = patientSheet.AntecedentsP,
                     PhysicalExamination = patientSheet.PhysicalExamination,
@@ -116,15 +114,21 @@ namespace MVCAgenda.Factories.PatientsSheet
             return true;
         }
 
-        public PatientSheetDetailsViewModel PrepereDetails(PatientSheet patientSheet, Patient patient, List
-            <ConsultationViewModel> consultations)
+        public async Task<PatientSheetDetailsViewModel> PrepereDetails(PatientSheet patientSheet)
         {
+            var consultations = await _consultationServices.GetListAsync(patientSheet.Id);
+            var consultationsList = new List<ConsultationViewModel>();
+            foreach (var consultation in consultations)
+                consultationsList.Add(await _consultationFactory.PrepereViewModelAsync(consultation));
+            
+            var patient = await _patientServices.GetAsync(patientSheet.PatientId);
+
             PatientSheetDetailsViewModel preparedView = new PatientSheetDetailsViewModel()
             {
                 Id = patientSheet.Id,
                 PatientId = patient.Id,
                 FirstName = patient.FirstName,
-                SecondName = patient.LastName,
+                LastName = patient.LastName,
                 AntecedentsH = patientSheet.AntecedentsH,
                 AntecedentsP = patientSheet.AntecedentsP,
                 PhysicalExamination = patientSheet.PhysicalExamination,
@@ -132,7 +136,7 @@ namespace MVCAgenda.Factories.PatientsSheet
                 DateOfBirth = patientSheet.DateOfBirth,
                 Town = patientSheet.Town,
                 Street = patientSheet.Street,
-                Consultations = consultations,
+                Consultations = consultationsList,
                 Hidden = patientSheet.Hidden
             };
 

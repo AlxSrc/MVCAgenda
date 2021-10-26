@@ -78,18 +78,19 @@ namespace MVCAgenda.Service.Appointments
         /// <param name="searchByMedic">Search appointments using medic id</param>
         /// <param name="searchByProcedure">Search appointments using a procedure</param>
         /// <param name="id">Search appointments using patient id</param>
-        /// <param name="Daily">Get daily appointments where start date = system.date</param>
-        /// <param name="Hidden">Get deleted appointments</param>
+        /// <param name="daily">Get daily appointments where start date = system.date</param>
+        /// <param name="hidden">Get deleted appointments</param>
         /// <returns></returns>
-        public async Task<List<Appointment>> GetFiltredListAsync(DateTime? searchByAppointmentStartDate = null,
+        public async Task<List<Appointment>> GetFiltredListAsync(int pageIndex,
+            DateTime? searchByAppointmentStartDate = null,
             DateTime? searchByAppointmentEndDate = null,
             int? searchByRoom = null,
             int? searchByMedic = null,
             string searchByProcedure = null,
             int? id = null,
             bool? made = null,
-            bool? Daily = null,
-            bool? Hidden = null)
+            bool? daily = null,
+            bool? hidden = null)
         {
             try
             {
@@ -119,12 +120,15 @@ namespace MVCAgenda.Service.Appointments
                     query = query.Where(a => a.Made == made);
 
                 //programrile zilnice
-                if (Daily != null && searchByAppointmentStartDate == null && searchByAppointmentEndDate == null)
+                if (daily != null && searchByAppointmentStartDate == null && searchByAppointmentEndDate == null && id == null)
                     query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
 
                 //programrile sterse
-                if (Hidden != null)
-                    query = query.Where(a => a.Hidden == Hidden);
+                if (hidden != null)
+                    query = query.Where(a => a.Hidden == hidden);
+
+                if(pageIndex != -1)
+                    query = query.Skip((pageIndex - 1) * Constants.TotalItemsOnAPage).Take(Constants.TotalItemsOnAPage);
 
                 return await query.OrderByDescending(a => a.StartDate).ToListAsync();
             }
@@ -136,6 +140,61 @@ namespace MVCAgenda.Service.Appointments
             }
         }
 
+        public async Task<int> GetNumberOfFiltredAppointmentsAsync(
+            DateTime? searchByAppointmentStartDate = null,
+            DateTime? searchByAppointmentEndDate = null,
+            int? searchByRoom = null,
+            int? searchByMedic = null,
+            string searchByProcedure = null,
+            int? id = null,
+            bool? made = null,
+            bool? Daily = null,
+            bool? Hidden = null)
+        {
+            try
+            {
+                var query = _context.Appointments.AsQueryable();
+
+                if (searchByAppointmentStartDate != null && searchByAppointmentEndDate != null)
+                {
+                    query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
+                    query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
+                }
+
+                if (searchByRoom != null)
+                    query = query.Where(a => a.RoomId == searchByRoom);
+
+                if (searchByMedic != null)
+                    query = query.Where(a => a.MedicId == searchByMedic);
+
+                if (searchByProcedure != null)
+                    query = query.Where(a => a.Procedure.ToUpper().Contains(searchByProcedure.ToUpper()));
+
+                //programrile unui pacient
+                if (id != null)
+                    query = query.Where(a => a.PatientId == id);
+
+                //programrile neefectuatre
+                if (made != null)
+                    query = query.Where(a => a.Made == made);
+
+                //programrile zilnice
+                if (Daily != null && searchByAppointmentStartDate == null && searchByAppointmentEndDate == null)
+                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
+
+                //programrile sterse
+                if (Hidden != null)
+                    query = query.Where(a => a.Hidden == Hidden);
+
+                return await query.CountAsync();
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return 1;
+            }
+        }
         public async Task<bool> UpdateAsync(Appointment appointment)
         {
             try

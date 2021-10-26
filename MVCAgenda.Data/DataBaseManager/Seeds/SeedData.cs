@@ -279,7 +279,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                         AntecedentsP = $"Another Informations {i}",
                                         Town = ressult == 1 ? "Suceava" : "Falticeni",
                                         Street = ressult == 1 ? $"Calea Unirii nr. {i}" : $"Calea Eroilor nr. {i}",
-                                        Gender = random.Next(1, 3),
+                                        Gender = random.Next(0, 2),
                                         DateOfBirth = DateTime.Now.AddYears(random.Next(1, 50))
                                     }) ;
                             }
@@ -292,7 +292,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             context.Consultations.AddRange(
                             new Consultation
                             {
-                                SheetPatientId = 1,
+                                PatientSheetId = 1,
                                 Prescriptions = "sample text Prescriptii 1",
                                 Diagnostic = "sample text Diagnostic 1",
                                 Symptoms = "sample text Simptome 1",
@@ -300,7 +300,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new Consultation
                             {
-                                SheetPatientId = 1,
+                                PatientSheetId = 1,
                                 Prescriptions = "sample text Prescriptii 2",
                                 Diagnostic = "sample text Diagnostic 2",
                                 Symptoms = "sample text Simptome 2",
@@ -308,7 +308,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new Consultation
                             {
-                                SheetPatientId = 1,
+                                PatientSheetId = 1,
                                 Prescriptions = "sample text Prescriptii 3",
                                 Diagnostic = "sample text Diagnostic 3",
                                 Symptoms = "sample text Simptome 3",
@@ -316,7 +316,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new Consultation
                             {
-                                SheetPatientId = 2,
+                                PatientSheetId = 2,
                                 Prescriptions = "sample text Prescriptii 3",
                                 Diagnostic = "sample text Diagnostic 3",
                                 Symptoms = "sample text Simptome 3",
@@ -324,7 +324,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new Consultation
                             {
-                                SheetPatientId = 3,
+                                PatientSheetId = 3,
                                 Prescriptions = "sample text Prescriptii 3",
                                 Diagnostic = "sample text Diagnostic 3",
                                 Symptoms = "sample text Simptome 3",
@@ -332,7 +332,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new Consultation
                             {
-                                SheetPatientId = 4,
+                                PatientSheetId = 4,
                                 Prescriptions = "sample text Prescriptii 3",
                                 Diagnostic = "sample text Diagnostic 3",
                                 Symptoms = "sample text Simptome 3",
@@ -340,7 +340,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new Consultation
                             {
-                                SheetPatientId = 5,
+                                PatientSheetId = 5,
                                 Prescriptions = "sample text Prescriptii 1",
                                 Diagnostic = "sample text Diagnostic 1",
                                 Symptoms = "sample text Simptome 1",
@@ -348,7 +348,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             },
                             new Consultation
                             {
-                                SheetPatientId = 5,
+                                PatientSheetId = 5,
                                 Prescriptions = "sample text Prescriptii 2",
                                 Diagnostic = "sample text Diagnostic 2",
                                 Symptoms = "sample text Simptome 2",
@@ -361,7 +361,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                 context.Consultations.AddRange(
                                     new Consultation
                                     {
-                                        SheetPatientId = random.Next(1, 500),
+                                        PatientSheetId = random.Next(1, 500),
                                         Prescriptions = $"sample text Prescriptii{i}",
                                         Diagnostic = $"sample text Diagnostic {i}",
                                         Symptoms = $"sample text Simptome {i}",
@@ -430,7 +430,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                             for (int i = 0; i < 1500; i++)
                             {
                                 ressult = random.Next(1, 3);
-                                startTime = GetRandomStartDate();
+                                startTime = GetRandomStartDate().AddMinutes(random.Next(30, 600));
                                 context.Appointments.AddRange(
                                     new Appointment
                                     {

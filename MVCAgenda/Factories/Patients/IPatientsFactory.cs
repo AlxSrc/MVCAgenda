@@ -8,6 +8,11 @@ namespace MVCAgenda.Factories.Patients
     {
         Task<PatientViewModel> PrepereDetailsViewModelAsync(int id);
 
-        Task<PatientsViewModel> GetListViewModelAsync(string searchByName = null, string searchByPhoneNumber = null, string searchByEmail = null, bool? includeBlackList = null, bool? isDeleted = null);
+        Task<PatientsViewModel> GetListViewModelAsync(int pageIndex,
+            string searchByName = null, 
+            string searchByPhoneNumber = null, 
+            string searchByEmail = null, 
+            bool? includeBlackList = null, 
+            bool? isDeleted = null);
     }
 }

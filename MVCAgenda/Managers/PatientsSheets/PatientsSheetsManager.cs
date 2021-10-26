@@ -69,6 +69,7 @@ namespace MVCAgenda.Managers.PatientsSheets
                     var patientSheet = new PatientSheet()
                     {
                         Id = model.Id,
+                        PatientId = model.PatientId,
                         AntecedentsH = model.AntecedentsH,
                         AntecedentsP = model.AntecedentsP,
                         NationalIdentificationNumber = model.NationalIdentificationNumber,

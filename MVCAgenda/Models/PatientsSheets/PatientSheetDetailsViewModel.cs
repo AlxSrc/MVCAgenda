@@ -17,7 +17,7 @@ namespace MVCAgenda.Models.PatientSheets
 
 
         [DisplayName("Prenume")]
-        public string SecondName { get; set; }
+        public string LastName { get; set; }
 
 
         [DisplayName("Antecedente: Heredo-colaterale")]

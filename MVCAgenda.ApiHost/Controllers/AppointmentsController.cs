@@ -50,7 +50,7 @@ namespace MVCAgenda.ApiHost.Controllers
         {
             try
             {
-                var appointments = await _appointmentService.GetFiltredListAsync(Daily: true);
+                var appointments = await _appointmentService.GetFiltredListAsync(-1, Daily: true);
                 var appointmentsAsDtos = new List<AppointmentDto>();
                 foreach (var appointment in appointments)
                     appointmentsAsDtos.Add(await _appointmentsFactory.PrepereAppointmentDTO(appointment));
@@ -161,7 +161,7 @@ namespace MVCAgenda.ApiHost.Controllers
                     //folosind id-ul pacientului din programarea adaugata
                     patientId = newAppointment.PatientId;
                     //aduc toate programarile pacientului respectiv
-                    var appointments = await _appointmentService.GetFiltredListAsync(id: patientId, Hidden: false);
+                    var appointments = await _appointmentService.GetFiltredListAsync(1, id: patientId, Hidden: false);
                     //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
                     if (appointments.Count >= Constants.LoyalAppointmentNumber)
                     {

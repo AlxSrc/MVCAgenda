@@ -133,14 +133,16 @@ namespace MVCAgenda.Managers.Scheduler
 
                 List<Appointment> appointments = new List<Appointment>();
 
+                //ToDo
+
                 if (Mail != null)
                 {
                     var medic = await _medicServices.GetAsync(Mail);
                     var medicId = medic.Id;
-                    appointments = await _appointmentServices.GetFiltredListAsync(searchByMedic: medicId);
+                    appointments = await _appointmentServices.GetFiltredListAsync(-1,searchByMedic: medicId);
                 }
                 else
-                    appointments = await _appointmentServices.GetFiltredListAsync();
+                    appointments = await _appointmentServices.GetFiltredListAsync(-1);
 
                 foreach (var appointment in appointments)
                     items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(

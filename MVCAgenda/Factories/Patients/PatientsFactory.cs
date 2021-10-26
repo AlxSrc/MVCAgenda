@@ -7,6 +7,7 @@ using System;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Status;
+using MVCAgenda.Core.Helpers;
 
 namespace MVCAgenda.Factories.Patients
 {
@@ -38,18 +39,28 @@ namespace MVCAgenda.Factories.Patients
 
         #region Methods
 
-        public async Task<PatientsViewModel> GetListViewModelAsync(string searchByName = null, string searchByPhoneNumber = null, string searchByEmail = null, bool? includeBlackList = null, bool? isDeleted = null)
+        public async Task<PatientsViewModel> GetListViewModelAsync(int pageIndex,
+            string searchByName = null, 
+            string searchByPhoneNumber = null, 
+            string searchByEmail = null, 
+            bool? includeBlackList = null, 
+            bool? isDeleted = null)
         {
             try
             {
-                var patientsListViewModel = new List<PatientListItemViewModel>();
-                var patientsList = await _patientServices.GetListAsync(searchByName, searchByPhoneNumber, searchByEmail, includeBlackList, isDeleted);
+                var patientsList = await _patientServices.GetListAsync(pageIndex, searchByName, searchByPhoneNumber, searchByEmail, includeBlackList, isDeleted);
 
+                var totalPatients = await _patientServices.GetPatientsNumberAsync(searchByName, searchByPhoneNumber, searchByEmail, includeBlackList, isDeleted);
+                var totalPages = (int)Math.Ceiling(totalPatients / (double)Constants.TotalItemsOnAPage);
+
+                var patientsListViewModel = new List<PatientListItemViewModel>();
                 foreach (var patient in patientsList)
                     patientsListViewModel.Add(PrepereListItem(patient));
 
                 var patientsViewModel = new PatientsViewModel()
                 {
+                    PageIndex = pageIndex,
+                    TotalPages = totalPages,
                     PatientsList = patientsListViewModel,
                     Hidden = isDeleted,
                     Blacklist = includeBlackList

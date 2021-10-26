@@ -11,16 +11,18 @@ namespace MVCAgenda.Factories.Appointments
 
         Task<AppointmentDetailsViewModel> PrepereDetailsViewModelAsync(int id);
 
-        Task<AppointmentsViewModel> PrepereListViewModelAsync(string SearchByName = null,
-            string SearchByPhoneNumber = null,
-            string SearchByEmail = null,
-            DateTime? SearchByAppointmentStartDate = null,
-            DateTime? SearchByAppointmentEndDate = null,
-            int? SearchByRoom = null,
-            int? SearchByMedic = null,
-            string SearchByProcedure = null,
-            int? Id = null,
-            bool? Daily = null,
-            bool? Hidden = null);
+        Task<AppointmentsViewModel> PrepereListViewModelAsync(int pageIndex,
+            string searchByName = null,
+            string searchByPhoneNumber = null,
+            string searchByEmail = null,
+            DateTime? searchByAppointmentStartDate = null,
+            DateTime? searchByAppointmentEndDate = null,
+            int? searchByRoom = null,
+            int? searchByMedic = null,
+            string searchByProcedure = null,
+            int? id = null,
+            bool? made = null,
+            bool? daily = null,
+            bool? hidden = null);
     }
 }

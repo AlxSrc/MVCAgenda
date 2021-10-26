@@ -299,7 +299,8 @@ namespace MVCAgenda.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SheetPatientId = table.Column<int>(type: "int", nullable: false),
+                    PatientSheetId = table.Column<int>(type: "int", nullable: false),
+                    SheetPatientId = table.Column<int>(type: "int", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Symptoms = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     Diagnostic = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
@@ -314,7 +315,7 @@ namespace MVCAgenda.Data.Migrations
                         column: x => x.SheetPatientId,
                         principalTable: "PatientSheets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

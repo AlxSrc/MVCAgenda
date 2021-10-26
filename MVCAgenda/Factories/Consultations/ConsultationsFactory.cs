@@ -3,6 +3,8 @@ using MVCAgenda.Core.Logging;
 using MVCAgenda.Models.Consultations;
 using MVCAgenda.Service.Consultations;
 using MVCAgenda.Service.Logins;
+using MVCAgenda.Service.Patients;
+using MVCAgenda.Service.PatientsSheet;
 using System;
 using System.Threading.Tasks;
 
@@ -15,6 +17,8 @@ namespace MVCAgenda.Factories.Consultations
         #region Fields
 
         private readonly IConsultationService _consultationServices;
+        private readonly IPatientService _patientService;
+        private readonly IPatientSheetService _patientSheetService;
         private readonly ILoggerService _logger;
 
         #endregion
@@ -23,9 +27,11 @@ namespace MVCAgenda.Factories.Consultations
 
         #region Constructor
 
-        public ConsultationsFactory(IConsultationService consultationServices, ILoggerService loggerServices)
+        public ConsultationsFactory(IConsultationService consultationServices, ILoggerService loggerServices, IPatientService patientService, IPatientSheetService patientSheetService)
         {
             _consultationServices = consultationServices;
+            _patientService = patientService;
+            _patientSheetService = patientSheetService;
             _logger = loggerServices;
         }
 
@@ -36,10 +42,14 @@ namespace MVCAgenda.Factories.Consultations
         #region Methods
         public async Task<ConsultationViewModel> PrepereViewModelAsync(Consultation consultation)
         {
+            var patientSheet = await _patientSheetService.GetAsync(consultation.PatientSheetId);
+            var patient = await _patientService.GetAsync(patientSheet.PatientId);
             ConsultationViewModel consultationViewModel = new ConsultationViewModel()
             {
                 Id = consultation.Id,
-                SheetPatientId = consultation.SheetPatientId,
+                FirstName = patient.FirstName,
+                LastName = patient.LastName,
+                PatientSheetId = consultation.PatientSheetId,
                 Symptoms = consultation.Symptoms,
                 Diagnostic = consultation.Diagnostic,
                 Prescriptions = consultation.Prescriptions,
@@ -54,10 +64,15 @@ namespace MVCAgenda.Factories.Consultations
             try
             {
                 var consultation = await _consultationServices.GetAsync(id);
+                var patientSheet = await _patientSheetService.GetAsync(consultation.PatientSheetId);
+                var patient = await _patientService.GetAsync(patientSheet.PatientId);
+
                 var consultationViewModel = new ConsultationDetailsViewModel()
                 {
                     Id = consultation.Id,
-                    SheetPatientId = consultation.SheetPatientId,
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
+                    PatientSheetId = consultation.PatientSheetId,
                     Symptoms = consultation.Symptoms,
                     Diagnostic = consultation.Diagnostic,
                     Prescriptions = consultation.Prescriptions,
@@ -74,16 +89,20 @@ namespace MVCAgenda.Factories.Consultations
             }
             
         }
-
         public async Task<ConsultationEditViewModel> PrepereEditViewModelAsync(int id)
         {
             try
             {
                 var consultation = await _consultationServices.GetAsync(id);
+                var patientSheet = await _patientSheetService.GetAsync(consultation.PatientSheetId);
+                var patient = await _patientService.GetAsync(patientSheet.PatientId);
+
                 var consultationViewModel = new ConsultationEditViewModel()
                 {
                     Id = consultation.Id,
-                    SheetPatientId = consultation.SheetPatientId,
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
+                    PatientSheetId = consultation.PatientSheetId,
                     Symptoms = consultation.Symptoms,
                     Diagnostic = consultation.Diagnostic,
                     Prescriptions = consultation.Prescriptions,
@@ -97,6 +116,28 @@ namespace MVCAgenda.Factories.Consultations
                 var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new ConsultationEditViewModel();
+            }
+        }
+        public async Task<ConsultationCreateViewModel> PrepereCreateViewModelAsync(int id)
+        {
+            try
+            {
+                var patientSheet = await _patientSheetService.GetAsync(id);
+                var patient = await _patientService.GetAsync(patientSheet.PatientId);
+
+                var consultationViewModel = new ConsultationCreateViewModel()
+                {
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
+                    PatientSheetId = id,
+                };
+                return consultationViewModel;
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return new ConsultationCreateViewModel();
             }
         }
 

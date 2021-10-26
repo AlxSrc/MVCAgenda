@@ -23,7 +23,7 @@
 		<li class="breadcrumb-item">
 			<a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.Id">
 				<i class="fas fa-hospital-user"></i>
-				<span>@Model.FirstName.ToUpper() @Model.LastName</span>
+				<span>@Model.FirstName.ToUpper() @(Model.LastName != null ? Model.LastName : "")</span> 
 			</a>
 		</li>
 		<li class="breadcrumb-item active">
@@ -50,6 +50,7 @@
 			<div class="data">
 				<input type="hidden" asp-for="Id"/>
 				<input type="hidden" asp-for="Hidden"/>
+				<input type="hidden" asp-for="StatusCode"/>
 
 				<div class="form-floating mb-3">
 					<input asp-for="FirstName" class="form-control" id="floatingInput" placeholder="Nume">
@@ -70,12 +71,6 @@
 					<input asp-for="Mail" class="form-control" id="floatingInput" placeholder="E-mail">
 					<label for="floatingInput" asp-for="Mail"></label>
 					<span asp-validation-for="Mail" class="text-danger"></span>
-				</div>
-				<div class="input-group mb-3">
-					<div class="input-group-text">
-						<input class="form-check-input mt-0" type="checkbox" asp-for="StatusCode" aria-label="Checkbox for following text input">
-					</div>
-					<input type="text" value="Lista neagra" class="form-control" aria-label="Text input with checkbox" readonly>
 				</div>
 			</div>
 		</div>

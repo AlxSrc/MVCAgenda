@@ -45,7 +45,7 @@ namespace MVCAgenda.Managers.Consultations
             {
                 var consultation = new Consultation()
                 {
-                    SheetPatientId = consultationViewModel.SheetPatientId,
+                    PatientSheetId = consultationViewModel.PatientSheetId,
                     Diagnostic = consultationViewModel.Diagnostic,
                     Prescriptions = consultationViewModel.Prescriptions,
                     Symptoms = consultationViewModel.Symptoms,
@@ -84,7 +84,7 @@ namespace MVCAgenda.Managers.Consultations
                     var consultation = new Consultation()
                     {
                         Id = consultationViewModel.Id,
-                        SheetPatientId = consultationViewModel.SheetPatientId,
+                        PatientSheetId = consultationViewModel.PatientSheetId,
                         Diagnostic = consultationViewModel.Diagnostic,
                         Prescriptions = consultationViewModel.Prescriptions,
                         Symptoms = consultationViewModel.Symptoms,

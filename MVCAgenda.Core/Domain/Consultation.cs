@@ -7,7 +7,7 @@ namespace MVCAgenda.Core.Domain
 {
     public class Consultation : BaseEntityDomain
     {
-        public int SheetPatientId { get; set; }
+        public int PatientSheetId { get; set; }
 
         [ForeignKey("SheetPatientId")]
         public virtual PatientSheet SheetPatient { get; set; }

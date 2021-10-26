@@ -34,10 +34,9 @@ namespace MVCAgenda.Controllers
 
         #region Create
 
-        public IActionResult Create(int id)
+        public async Task<IActionResult> Create(int id)
         {
-            return View(new ConsultationCreateViewModel() { SheetPatientId = id });
-
+            return View(await _consultationFactory.PrepereCreateViewModelAsync(id));
         }
 
         [HttpPost]
@@ -48,7 +47,7 @@ namespace MVCAgenda.Controllers
             {
                 var result = await _consultationManager.CreateAsync(consultation);
                 if (result == StringHelpers.SuccesMessage)
-                    return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId });
+                    return RedirectToAction("Details", "PatientSheets", new { id = consultation.PatientSheetId });
             }
 
             return View(consultation);
@@ -89,7 +88,7 @@ namespace MVCAgenda.Controllers
             {
                 var result = await _consultationManager.UpdateAsync(consultation);
                 if (result == StringHelpers.SuccesMessage)
-                    return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId });
+                    return RedirectToAction("Details", "PatientSheets", new { id = consultation.PatientSheetId });
             }
 
             return View(consultation);
@@ -109,7 +108,7 @@ namespace MVCAgenda.Controllers
             if (result == StringHelpers.SuccesMessage)
             {
                 var consultation = await _consultationFactory.PrepereDetailsViewModelAsync(id);
-                return RedirectToAction("Details", "PatientSheets", new { id = consultation.SheetPatientId });
+                return RedirectToAction("Details", "PatientSheets", new { id = consultation.PatientSheetId });
             }
             else
                 return RedirectToAction("Details", "Consultations", new { id = id });

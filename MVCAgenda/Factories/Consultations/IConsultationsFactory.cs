@@ -11,5 +11,7 @@ namespace MVCAgenda.Factories.Consultations
         Task<ConsultationDetailsViewModel> PrepereDetailsViewModelAsync(int id);
 
         Task<ConsultationEditViewModel> PrepereEditViewModelAsync(int id);
+
+        Task<ConsultationCreateViewModel> PrepereCreateViewModelAsync(int id);
     }
 }

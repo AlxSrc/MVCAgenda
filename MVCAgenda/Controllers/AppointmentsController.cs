@@ -102,7 +102,8 @@ namespace MVCAgenda.Controllers
 
         #region Read
 
-        public async Task<IActionResult> Index(string SearchByName = null,
+        public async Task<IActionResult> Index(int pageIndex = 1,
+            string SearchByName = null,
             string SearchByPhoneNumber = null,
             string SearchByEmail = null,
             DateTime? SearchByAppointmentStartDate = null,
@@ -111,15 +112,15 @@ namespace MVCAgenda.Controllers
             int? SearchByMedic = null,
             string SearchByProcedure = null,
             int? Id = null,
+            bool? Made = null,
             bool Daily = true,
-            bool? Hidden = null)
+            bool? Hidden = false)
         {
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
             ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
 
-            //var ast = User.Identity.Name;
 
-            return View(await _appointmentsFactory.PrepereListViewModelAsync(SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Daily, Hidden));
+            return View(await _appointmentsFactory.PrepereListViewModelAsync(pageIndex, SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Made, Daily ,Hidden));
         }
 
         #endregion

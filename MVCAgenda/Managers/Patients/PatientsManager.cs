@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
+using MVCAgenda.Core.Status;
 using MVCAgenda.Factories.Patients;
 using MVCAgenda.Models.Patients;
 using MVCAgenda.Service.Logins;
@@ -44,7 +45,7 @@ namespace MVCAgenda.Managers.Patients
             {
                 string msg;
 
-                var patients = await _patientServices.GetListAsync(patientViewModel.FirstName, patientViewModel.PhoneNumber);
+                var patients = await _patientServices.GetListAsync(-1, patientViewModel.FirstName, patientViewModel.PhoneNumber);
 
                 if (patients.Count >= 1)
                 {
@@ -59,7 +60,7 @@ namespace MVCAgenda.Managers.Patients
                         LastName = patientViewModel.LastName != null ? $"{patientViewModel.LastName.Substring(0, 1).ToUpper()}{patientViewModel.LastName.Substring(1, patientViewModel.LastName.Length - 1).ToLower()}" : null,
                         PhoneNumber = patientViewModel.PhoneNumber,
                         Mail = patientViewModel.Mail,
-                        StatusCode = patientViewModel.StatusCode,
+                        StatusCode = (int)PatientStatus.Patient,
                         Hidden = false
                     };
 
