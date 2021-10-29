@@ -43,6 +43,13 @@ namespace MVCAgenda.Controllers
             return View(await _loggingFactory.PrepereDetailsViewModel(id));
         }
 
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed()
+        {
+            var result = await _loggingManager.DeleteAllAsync();
+            return RedirectToAction(nameof(Index));
+        }
         #endregion
     }
 }

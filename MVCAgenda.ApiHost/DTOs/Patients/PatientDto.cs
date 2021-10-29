@@ -4,12 +4,8 @@ using System.Text.Json.Serialization;
 
 namespace MVCAgenda.ApiHost.DTOs.Patients
 {
-    public class PatientDto : BaseEntity
+    public class PatientDto : BaseEntityDto
     {
-        [JsonProperty("patient_sheet_id")]
-        [JsonPropertyName("patient_sheet_id")]
-        public int PatientSheetId { get; set; }
-
         [JsonProperty("first_name")]
         [JsonPropertyName("first_name")]
         public string FirstName { get; set; }

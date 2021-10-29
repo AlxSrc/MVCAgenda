@@ -10,11 +10,12 @@ namespace MVCAgenda.Service.Medics
 
         Task<Medic> GetAsync(int id);
         Task<Medic> GetAsync(string mail);
-        Task<List<Medic>> GetListAsync(string mail = null);
+        Task<List<Medic>> GetListAsync(string mail = null, bool? hidden = null);
 
         Task<bool> UpdateAsync(Medic medic);
 
         Task<bool> HideAsync(int id);
+        Task<bool> UnHideAsync(int id);
         Task<bool> DeleteAsync(int id);
     }
 }

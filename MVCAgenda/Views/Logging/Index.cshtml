@@ -14,12 +14,12 @@
 				<span>Acasa</span>
 			</a>
 		</li>
-		<li class="breadcrumb-item">
+		@*<li class="breadcrumb-item">
 			<a asp-action="Manage" asp-controller="Manage">
 				<i class="fas fa-cogs"></i>
 				<span>Administreaza</span>
 			</a>
-		</li>
+		</li>*@
 		<li class="breadcrumb-item active">
 			<span>@pageTitle</span>
 		</li>
@@ -33,10 +33,12 @@
 			Loguri
 		</strong>
 		<div class="actions">
-			<button type="submit" class="btn btn-outline-primary" id="DeleteLogs">
-				<i class="far fa-trash-alt"></i>
-				Sterge logurile
-			</button>
+			<form asp-action="Delete">
+				<button type="submit" class="btn btn-outline-primary" id="DeleteLogs">
+					<i class="far fa-trash-alt"></i>
+					Sterge logurile
+				</button>
+			</form>
 		</div>
 	</header>
 	<div class="content">
@@ -59,32 +61,43 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var item in Model.Logs)
+				@if (Model.Logs.Count > 0)
 				{
-					<tr>
-						<td class="column-center">
-							@Html.Raw(item.LogLevel)
-						</td>
-						<td class="column-center">
-							@Html.DisplayFor(modelItem => item.CreatedOnUtc)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.ShortMessage)
-						</td>
-						<td class="column-center">
-							@Html.DisplayFor(modelItem => item.IpAddress)
-						</td>
-						<td class="text-end">
-							<div class="dropdown d-inline-block">
-								<button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-									Detalii
-								</button>
-								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-									<li>
-										<a asp-action="Details" asp-controller="Logging"  class="dropdown-item text-color" asp-route-id="@item.Id">Detalii log</a>
-									</li>
-								</ul>
-							</div>
+					@foreach (var item in Model.Logs)
+					{
+						<tr>
+							<td class="column-center">
+								@Html.Raw(item.LogLevel)
+							</td>
+							<td class="column-center">
+								@Html.DisplayFor(modelItem => item.CreatedOnUtc)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.ShortMessage)
+							</td>
+							<td class="column-center">
+								@Html.DisplayFor(modelItem => item.IpAddress)
+							</td>
+							<td class="text-end">
+								<div class="dropdown d-inline-block">
+									<button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+										Detalii
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+										<li>
+											<a asp-action="Details" asp-controller="Logging" class="dropdown-item text-color" asp-route-id="@item.Id">Detalii log</a>
+										</li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<tr class="no-hover">
+						<td colspan="8" class="text-center">
+							Lista cu loguri este goală.
 						</td>
 					</tr>
 				}
@@ -92,3 +105,16 @@
 		</table>
 	</div>
 </section>
+@section Scripts
+{
+<script>
+	$(function (){
+		$('DeleteLogs').click(function(e){
+			e.preventDefault();
+
+			if(window.confirm('Sunteți sigur că doriți să curățați lista cu loguri?'))
+				$(this).parent('form').submit();
+		});
+	});
+</script>
+}

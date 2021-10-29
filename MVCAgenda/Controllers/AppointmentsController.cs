@@ -25,6 +25,7 @@ namespace MVCAgenda.Controllers
         private readonly IRoomService _roomServices;
         private readonly IMedicService _medicServices;
 
+
         #endregion
 
         /**************************************************************************************/
@@ -56,7 +57,7 @@ namespace MVCAgenda.Controllers
             var model = new AppointmentCreateViewModel();
 
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden:false), "Id", "Name");
 
             model.ResponsibleForAppointment = User.Identity.Name;
             if (id > 0)
@@ -70,6 +71,11 @@ namespace MVCAgenda.Controllers
                 model.LastName = patient.LastName;
                 model.PhoneNumber = patient.PhoneNumber;
                 model.Mail = patient.Mail;
+                model.StartDate = DateTime.Now;
+                model.EndDate = DateTime.Now.AddMinutes(60);
+            }
+            else
+            {
                 model.StartDate = DateTime.Now;
                 model.EndDate = DateTime.Now.AddMinutes(60);
             }
@@ -91,7 +97,7 @@ namespace MVCAgenda.Controllers
             }
 
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden: false), "Id", "Name");
 
             return View(model);
         }
@@ -117,8 +123,9 @@ namespace MVCAgenda.Controllers
             bool? Hidden = false)
         {
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden: false), "Id", "Name");
 
+            var user = User.Identity.Name;
 
             return View(await _appointmentsFactory.PrepereListViewModelAsync(pageIndex, SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Made, Daily ,Hidden));
         }
@@ -132,7 +139,7 @@ namespace MVCAgenda.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden: false), "Id", "Name");
             return View(await _appointmentsFactory.PrepereEditViewModelAsync(id));
         }
 
@@ -153,7 +160,7 @@ namespace MVCAgenda.Controllers
             }
 
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden: false), "Id", "Name");
 
             return View(model);
         }

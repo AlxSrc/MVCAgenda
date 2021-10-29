@@ -33,12 +33,25 @@
 			@pageTitle
 		</strong>
 		<div class="actions">
-			<form asp-action="Delete" asp-route-id="@Model.Id">
-				<button type="submit" class="btn btn-outline-primary" id="DeleteMedic">
-					<i class="far fa-trash-alt"></i>
-					Sterge
-				</button>
-			</form>
+			@if (Model.Hidden == false)
+			{
+				<form asp-action="Delete" asp-route-id="@Model.Id">
+					<button type="submit" class="btn btn-outline-primary" id="DeleteMedic">
+						<i class="far fa-trash-alt"></i>
+						Sterge
+					</button>
+				</form>
+			}
+			else
+			{
+				<form asp-action="Show" asp-route-id="@Model.Id">
+					<button type="submit" class="btn btn-outline-primary" id="ShowMedic">
+						<i class="far fa-eye"></i>
+						Arata
+					</button>
+				</form>
+			}
+
 			<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
 				<i class="far fa-edit"></i>
 				Modifica
@@ -48,41 +61,50 @@
 	<div class="content">
 		<div class="data">
 			<div class="input-group mb-3">
-					<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Name)</span>
-					<input asp-for="Name" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Name)" aria-describedby="basic-addon2" readonly>
-				</div>
+				<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Name)</span>
+				<input asp-for="Name" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Name)" aria-describedby="basic-addon2" readonly>
+			</div>
 
-				<div class="input-group mb-3">
-					<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Mail)</span>
-					<input asp-for="Mail" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Mail)" aria-describedby="basic-addon2" readonly>
-				</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Mail)</span>
+				<input asp-for="Mail" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Mail)" aria-describedby="basic-addon2" readonly>
+			</div>
 
-				<div class="input-group mb-3">
-					<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.ImagePath)</span>
-					<input asp-for="ImagePath" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.ImagePath)" aria-describedby="basic-addon2" readonly>
-				</div>
-				<div class="input-group mb-3">
-					<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Designation)</span>
-					<input asp-for="Designation" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Designation)" aria-describedby="basic-addon2" readonly>
-				</div>
-				<div class="input-group mb-3">
-					<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Description)</span>
-					<input asp-for="Description" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Description)" aria-describedby="basic-addon2" readonly>
-				</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.ImagePath)</span>
+				<input asp-for="ImagePath" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.ImagePath)" aria-describedby="basic-addon2" readonly>
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Designation)</span>
+				<input asp-for="Designation" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Designation)" aria-describedby="basic-addon2" readonly>
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon2">@Html.DisplayNameFor(model => model.Description)</span>
+				<input asp-for="Description" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Description)" aria-describedby="basic-addon2" readonly>
+			</div>
 		</div>
 	</div>
 </section>
 
 @section Scripts
 {
-	<script>
-		$(function (){
-			$('#DeleteMedic').click(function(e){
-				e.preventDefault();
+<script>
+	$(function (){
+		$('#DeleteMedic').click(function(e){
+			e.preventDefault();
 
-				if(window.confirm('Sunteți sigur că doriți să ștergeți acest medic?'))
-					$(this).parent('form').submit();
-			});
+			if(window.confirm('Sunteți sigur că doriți să ștergeți acest medic?'))
+				$(this).parent('form').submit();
 		});
-	</script>
+	});
+
+	$(function (){
+		$('#ShowMedic').click(function(e){
+			e.preventDefault();
+
+			if(window.confirm('Sunteți sigur că doriți să aratati acest medic?'))
+				$(this).parent('form').submit();
+		});
+	});
+</script>
 }

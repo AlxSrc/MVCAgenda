@@ -33,6 +33,8 @@ using Microsoft.AspNetCore.Authorization;
 using MVCAgenda.Managers.Logging;
 using MVCAgenda.Factories.Logging;
 using MVCAgenda.Factories.Home;
+using MVCAgenda.Core;
+using MVCAgenda.Framework;
 
 namespace MVCAgenda
 {
@@ -63,6 +65,8 @@ namespace MVCAgenda
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AgendaContext>();
 
+            services.AddHttpContextAccessor();
+
             //services.AddIdentity<IdentityUser, IdentityRole>()
             //    .AddEntityFrameworkStores<AgendaContext>();
 
@@ -74,6 +78,7 @@ namespace MVCAgenda
             services.AddScoped<IMedicService, MedicService>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<ILoggerService, LoggerService>();
+            services.AddScoped<IWorkContext, WebWorkContext>();
 
             //Factories
             services.AddScoped<IHomeFactory, HomeFactory>();

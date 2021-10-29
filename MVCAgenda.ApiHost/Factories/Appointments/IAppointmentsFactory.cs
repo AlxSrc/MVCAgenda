@@ -6,6 +6,6 @@ namespace MVCAgenda.ApiHost.Factories.Appointments
 {
     public interface IAppointmentsFactory
     {
-        Task<AppointmentDto> PrepereAppointmentDTO(Appointment appointment);
+        Task<AppointmentCompleteDataDto> PrepereAppointmentDTO(Appointment appointment);
     }
 }

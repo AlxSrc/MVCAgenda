@@ -38,7 +38,7 @@
 
 			@if (User.IsInRole("Admin") || User.IsInRole("Administrator"))
 			{
-				@if (Model.Hidden == null)
+				@if (Model.Hidden == false)
 				{
 					<a asp-action="Index" asp-route-isDeleted="true" class="btn btn-outline-primary">
 						<i class="fas fa-user-slash"></i>
@@ -187,23 +187,41 @@
 	</div>
 	<ul class="pagination justify-content-end">
 		<li class="page-item @prevDisabled">
-			<a asp-action="Index" asp-controller="Patients" asp-route-pageIndex="@firstPage" class="page-link">
+			<a asp-action="Index" asp-controller="Patients" asp-route-pageIndex="@firstPage" asp-route-SearchByName="@Model.SearchByName" 
+			asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber" asp-route-SearchByEmail="@Model.SearchByEmail" 
+			asp-route-includeBlackList="@Model.Blacklist"  asp-route-isDeleted="@Model.Hidden" 
+			class="page-link">
 				<span aria-hidden="true">&laquo;</span>
 			</a>
 		</li>
+
 		<li class="page-item @prevDisabled">
-			<a asp-action="Index" asp-controller="Patients" asp-route-pageIndex="@(Model.PageIndex - 1)" class="page-link">
+			<a asp-action="Index" asp-controller="Patients" asp-route-pageIndex="@(Model.PageIndex - 1)" 
+			asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber"
+			asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-includeBlackList="@Model.Blacklist"
+			asp-route-isDeleted="@Model.Hidden" 
+			class="page-link">
 				@(prevDisabled == "" ? Model.PageIndex - 1 : "-")
 			</a>
 		</li>
 		<li class="page-item"><a class="page-link active">@Model.PageIndex</a></li>
+
 		<li class="page-item @nextDisabled">
-			<a asp-action="Index" asp-controller="Patients" asp-route-pageIndex="@(Model.PageIndex + 1)" class="page-link">
+			<a asp-action="Index" asp-controller="Patients" asp-route-pageIndex="@(Model.PageIndex + 1)" 
+			asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber"
+			asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-includeBlackList="@Model.Blacklist"
+			asp-route-isDeleted="@Model.Hidden" 
+			class="page-link">
 				@(nextDisabled == "" ? Model.PageIndex + 1 : "-")
 			</a>
 		</li>
+
 		<li class="page-item @nextDisabled">
-			<a asp-action="Index" asp-controller="Patients" asp-route-pageIndex="@(Model.TotalPages)" class="page-link">
+			<a asp-action="Index" asp-controller="Patients" asp-route-pageIndex="@(Model.TotalPages)" 
+			asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber"
+			asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-includeBlackList="@Model.Blacklist"
+			asp-route-isDeleted="@Model.Hidden" 
+			class="page-link">
 				<span aria-hidden="true">&raquo;</span>
 			</a>
 		</li>

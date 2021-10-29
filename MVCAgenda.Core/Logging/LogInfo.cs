@@ -31,6 +31,11 @@ namespace MVCAgenda.Core.Logging
         /// <summary>
         /// Hide
         /// </summary>
-        Hide = 50
+        Hide = 50,
+
+        /// <summary>
+        /// Hide
+        /// </summary>
+        UnHide = 60
     }
 }

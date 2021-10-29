@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.Factories.Home;
-using MVCAgenda.Managers.Medics;
-using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Models.Accounts;
-using MVCAgenda.Models.Home;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -35,7 +32,7 @@ namespace MVCAgenda.Controllers
         #region Index
 
         public async Task<IActionResult> Index()
-        {
+        { 
             return View(await _homeFactory.PrepereHomeViewModel(User.Identity.Name));
         }
 

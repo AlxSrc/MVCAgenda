@@ -11,5 +11,7 @@ namespace MVCAgenda.Managers.Medics
         Task<string> UpdateAsync(MedicViewModel model);
 
         Task<string> DeleteAsync(int id);
+
+        Task<string> ShowAsync(int id);
     }
 }

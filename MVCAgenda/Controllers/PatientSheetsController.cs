@@ -63,7 +63,10 @@ namespace MVCAgenda.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _patientSheetManager.UpdateAsync(patientsheet);
-                return RedirectToAction("Details", "PatientSheets", new { id = patientsheet.Id });
+                if(result == StringHelpers.SuccesMessage)
+                    return RedirectToAction("Details", "PatientSheets", new { id = patientsheet.Id });
+                else
+                    ModelState.AddModelError(string.Empty, result);
             }
 
             return View(patientsheet);

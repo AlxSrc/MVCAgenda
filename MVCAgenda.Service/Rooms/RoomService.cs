@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MVCAgenda.Core;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
@@ -13,13 +14,12 @@ namespace MVCAgenda.Service.Rooms
 {
     public class RoomService : IRoomService
     {
-        private string user = "TestUser";
-
         #region Fields
 
         private string msg;
         private readonly AgendaContext _context;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -27,10 +27,11 @@ namespace MVCAgenda.Service.Rooms
 
         #region Constructor
 
-        public RoomService(AgendaContext context, ILoggerService logger)
+        public RoomService(AgendaContext context, ILoggerService logger, IWorkContext workContext)
         {
             _context = context;
             _logger = logger;
+            _workContext = workContext;
         }
 
         #endregion
@@ -49,7 +50,7 @@ namespace MVCAgenda.Service.Rooms
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms}, Action: {LogInfo.Create}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms}, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }
@@ -63,7 +64,7 @@ namespace MVCAgenda.Service.Rooms
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms}, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return null;
             }
@@ -77,7 +78,7 @@ namespace MVCAgenda.Service.Rooms
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms}, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return null;
             }
@@ -87,14 +88,14 @@ namespace MVCAgenda.Service.Rooms
         {
             try
             {
-                _context.Rooms.Update(room);
+                var roomToBeEdited = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
+                _context.Entry(roomToBeEdited).CurrentValues.SetValues(room);
                 await _context.SaveChangesAsync();
-
                 return true;
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms}, Action: {LogInfo.Edit}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms}, Action: {LogInfo.Edit}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }
@@ -112,7 +113,25 @@ namespace MVCAgenda.Service.Rooms
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms}, Action: {LogInfo.Hide}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms}, Action: {LogInfo.Hide}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return false;
+            }
+        }
+
+        public async Task<bool> UnHideAsync(int id)
+        {
+            try
+            {
+                var room = await _context.Rooms.FindAsync(id);
+                room.Hidden = false;
+                _context.Rooms.Update(room);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms}, Action: {LogInfo.UnHide}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }
@@ -128,7 +147,7 @@ namespace MVCAgenda.Service.Rooms
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms}, Action: {LogInfo.Delete}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms}, Action: {LogInfo.Delete}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }

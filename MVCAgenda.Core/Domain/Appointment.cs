@@ -23,7 +23,6 @@ namespace MVCAgenda.Core.Domain
         public virtual Medic Medic { get; set; }
 
 
-        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime StartDate { get; set; }
 

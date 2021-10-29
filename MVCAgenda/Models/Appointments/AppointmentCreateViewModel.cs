@@ -1,5 +1,4 @@
-﻿using MVCAgenda.Models.BaseModels;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -46,14 +45,12 @@ namespace MVCAgenda.Models.Appointments
 
 
         [DisplayName("Dată început*")]
-        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime StartDate { get; set; } = DateTime.Now;
 
 
         [DisplayName("Dată sfârșit")]
-        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
-        public DateTime EndDate { get; set; } = DateTime.Now;
+        public DateTime? EndDate { get; set; } = DateTime.Now;
 
 
         [DisplayName("Procedura*")]

@@ -9,17 +9,17 @@ using MVCAgenda.Service.Logins;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Status;
 using MVCAgenda.Core.Helpers;
+using MVCAgenda.Core;
 
 namespace MVCAgenda.Service.Patients
 {
     public class PatientService : IPatientService
     {
-        private string user = "TestUser";
-
         #region Fields
 
         private string msg;
-        private readonly AgendaContext _context;
+        private readonly AgendaContext _context; 
+        private readonly IWorkContext _workContext;
         private readonly ILoggerService _logger;
 
         #endregion
@@ -28,10 +28,11 @@ namespace MVCAgenda.Service.Patients
 
         #region Constructor
 
-        public PatientService(AgendaContext context, ILoggerService logger)
+        public PatientService(AgendaContext context, ILoggerService logger, IWorkContext workContext)
         {
             _context = context;
             _logger = logger;
+            _workContext = workContext;
         }
 
         #endregion
@@ -55,7 +56,7 @@ namespace MVCAgenda.Service.Patients
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Create}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
@@ -68,7 +69,6 @@ namespace MVCAgenda.Service.Patients
                 //To do daca sa valideze doar dupa numar de telefon
                 //Daca suna un pacient de pe numere diferite
                 var newPatient = await _context.Patients
-                    .Where(p => p.FirstName == patient.FirstName)
                     .Where(p => p.PhoneNumber == patient.PhoneNumber)
                     .Where(p => p.Hidden == false)
                     .FirstOrDefaultAsync();
@@ -97,7 +97,7 @@ namespace MVCAgenda.Service.Patients
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Create}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return -1;
             }
@@ -117,7 +117,7 @@ namespace MVCAgenda.Service.Patients
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return null;
             }
@@ -149,16 +149,16 @@ namespace MVCAgenda.Service.Patients
                 if (searchByEmail != null)
                     query = query.Where(p => p.Mail.ToUpper().Contains(searchByEmail.ToUpper()));
 
+                query = query.OrderBy(f => f.Id);
+
                 if (pageIndex != -1)
                     query = query.Skip((pageIndex - 1) * Constants.TotalItemsOnAPage).Take(Constants.TotalItemsOnAPage);
-
-                query = query.OrderBy(f => f.FirstName);
-
+                
                 return await query.ToListAsync();
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return null;
             }
@@ -194,7 +194,7 @@ namespace MVCAgenda.Service.Patients
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return 0;
             }
@@ -210,14 +210,16 @@ namespace MVCAgenda.Service.Patients
         {
             try
             {
-                _context.Update(patient);
+                var patientToBeEdited = await _context.Patients.FirstOrDefaultAsync(p => p.Id == patient.Id);
+                _context.Entry(patientToBeEdited).CurrentValues.SetValues(patient);
+                //_context.Update(patient);
                 await _context.SaveChangesAsync();
 
                 return true;
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Edit}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Edit}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
@@ -246,7 +248,30 @@ namespace MVCAgenda.Service.Patients
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Hide}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Hide}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return false;
+            }
+        }
+
+        public async Task<bool> UnHideAsync(int id)
+        {
+            try
+            {
+                var patient = await _context.Patients.FindAsync(id);
+                patient.Hidden = false;
+                _context.Patients.Update(patient);
+
+                var appointments = _context.Appointments.Where(a => a.PatientId == patient.Id);
+                await appointments.ForEachAsync(x => x.Hidden = false);
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.UnHide}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
@@ -264,7 +289,7 @@ namespace MVCAgenda.Service.Patients
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Patients}, Action: {LogInfo.Delete}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Delete}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }

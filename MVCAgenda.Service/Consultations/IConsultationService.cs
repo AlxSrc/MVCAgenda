@@ -14,6 +14,7 @@ namespace MVCAgenda.Service.Consultations
         Task<bool> UpdateAsync(Consultation consultation);
 
         Task<bool> HideAsync(int id);
+        Task<bool> UnHideAsync(int id);
         Task<bool> DeleteAsync(int id);
     }
 }

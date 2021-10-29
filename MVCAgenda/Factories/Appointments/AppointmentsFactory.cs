@@ -12,13 +12,12 @@ using System.Collections.Generic;
 using System.Linq;
 using MVCAgenda.Core.Status;
 using MVCAgenda.Core.Helpers;
+using MVCAgenda.Core;
 
 namespace MVCAgenda.Factories.Appointments
 {
     public class AppointmentsFactory : IAppointmentsFactory
     {
-        string user = "admin";
-
         #region Fields
 
         private readonly IAppointmentService _appointmentServices;
@@ -26,6 +25,7 @@ namespace MVCAgenda.Factories.Appointments
         private readonly IRoomService _roomServices;
         private readonly IMedicService _medicServices;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -38,13 +38,14 @@ namespace MVCAgenda.Factories.Appointments
             IPatientService patientServices,
             IRoomService roomServices,
             IMedicService medicServices,
-            ILoggerService loggerServices)
+            ILoggerService loggerServices, IWorkContext workContext)
         {
             _appointmentServices = appointmentServices;
             _patientServices = patientServices;
             _roomServices = roomServices;
             _medicServices = medicServices;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -89,14 +90,25 @@ namespace MVCAgenda.Factories.Appointments
                     PageIndex = pageIndex,
                     TotalPages = totalPages,
                     Made = made,
-                    Hidden = hidden == null ? false : hidden,
-                    Blacklist = Blacklist == null ? false : Blacklist,
+                    Daily = daily,
+                    SearchByAppointmentStartDate = searchByAppointmentStartDate,
+                    SearchByAppointmentEndDate = searchByAppointmentEndDate,
+                    SearchByMedic = searchByMedic,
+                    SearchByRoom = searchByRoom,
+                    SearchByProcedure = searchByProcedure,
+                    SearchByPhoneNumber = searchByPhoneNumber,
+                    SearchByEmail = searchByEmail,
+                    SearchByName = searchByName,
+                    Id = id,
+                    Hidden = hidden,
+                    Blacklist = Blacklist,
+
                     AppointmentsList = appointmentsListViewModel
                 };
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new AppointmentsViewModel();
             }
@@ -155,7 +167,7 @@ namespace MVCAgenda.Factories.Appointments
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}, Appointment: {id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}, Appointment: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return null;
             }
@@ -188,7 +200,7 @@ namespace MVCAgenda.Factories.Appointments
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}, Appointment: {id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}, Appointment: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new AppointmentEditViewModel();
             }

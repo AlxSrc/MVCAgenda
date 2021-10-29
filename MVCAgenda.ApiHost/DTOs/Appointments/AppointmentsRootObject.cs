@@ -8,11 +8,11 @@ namespace MVCAgenda.ApiHost.DTOs.Appointments
     {
         public AppointmentsRootObject()
         {
-            Appointments = new List<AppointmentDto>();
+            Appointments = new List<AppointmentCompleteDataDto>();
         }
 
         [JsonProperty("appointments")]
-        public IList<AppointmentDto> Appointments { get; set; }
+        public IList<AppointmentCompleteDataDto> Appointments { get; set; }
 
         public string GetPrimaryPropertyName()
         {
@@ -21,7 +21,7 @@ namespace MVCAgenda.ApiHost.DTOs.Appointments
 
         public Type GetPrimaryPropertyType()
         {
-            return typeof(AppointmentDto);
+            return typeof(AppointmentCompleteDataDto);
         }
     }
 }

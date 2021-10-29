@@ -1,4 +1,5 @@
-﻿using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core;
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Factories.Consultations;
@@ -12,13 +13,12 @@ namespace MVCAgenda.Managers.Consultations
 {
     public class ConsultationsManager : IConsultationsManager
     {
-        string user = "admin";
-
         #region Fields
 
         private readonly IConsultationService _consultationServices;
         private readonly IConsultationsFactory _consultationFactory;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -26,11 +26,15 @@ namespace MVCAgenda.Managers.Consultations
 
         #region Constructor
 
-        public ConsultationsManager(IConsultationService consultationServices, IConsultationsFactory consultationFactory, ILoggerService loggerServices)
+        public ConsultationsManager(IConsultationService consultationServices, 
+            IConsultationsFactory consultationFactory, 
+            ILoggerService loggerServices,
+            IWorkContext workContext)
         {
             _consultationServices = consultationServices;
             _consultationFactory = consultationFactory;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -58,14 +62,15 @@ namespace MVCAgenda.Managers.Consultations
                     return "Consultatia nu a putut fi adaugata.";
                 else
                 {
-                    var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Create}, Consultation: {consultation.Id}";
-                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Create}, Consultation: {consultation.Id}";
+                    //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                     return StringHelpers.SuccesMessage;
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Create}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Information);
                 return "Consultatia nu a putut fi adaugata.";
             }
@@ -97,15 +102,16 @@ namespace MVCAgenda.Managers.Consultations
                         return "Consultatia nu a putut fi editata.";
                     else
                     {
-                        var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Edit}, Consultation: {consultationViewModel.Id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Edit}, Consultation: {consultationViewModel.Id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Edit}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Edit}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Consultatia nu a putut fi editata.";
             }
@@ -126,15 +132,16 @@ namespace MVCAgenda.Managers.Consultations
                         return "Consultatia nu a putut fi stearsa.";
                     else
                     {
-                        var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Delete}, Consultation: {id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Delete}, Consultation: {id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Delete}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Delete}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Consultatia nu a putut fi stearsa.";
             }

@@ -29,13 +29,13 @@ namespace MVCAgenda.ApiHost.Factories.Appointments
 
         #endregion
 
-        public async Task<AppointmentDto> PrepereAppointmentDTO(Appointment appointment)
+        public async Task<AppointmentCompleteDataDto> PrepereAppointmentDTO(Appointment appointment)
         {
             var patient = await _patientService.GetAsync(appointment.PatientId);
             var room = await _roomService.GetAsync(appointment.RoomId);
             var medic = await _medicService.GetAsync(appointment.MedicId);
 
-            var appointmentDto = new AppointmentDto()
+            var appointmentDto = new AppointmentCompleteDataDto()
             {
                 Id = appointment.Id,
                 PatientId = appointment.PatientId,

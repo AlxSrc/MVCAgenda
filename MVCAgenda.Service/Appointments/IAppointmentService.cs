@@ -36,6 +36,7 @@ namespace MVCAgenda.Service.Appointments
          Task<bool> UpdateAsync(Appointment appointment);
 
         Task<bool> HideAsync(int id);
+        Task<bool> UnHideAsync(int id);
         Task<bool> DeleteAsync(int id);
 
         Task<string> SearchAppointmentAsync(int MedicId, int RoomId, DateTime startDate, DateTime endDate);

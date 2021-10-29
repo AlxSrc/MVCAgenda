@@ -1,4 +1,5 @@
-﻿using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core;
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Models.Medics;
 using MVCAgenda.Service.Logins;
@@ -12,12 +13,11 @@ namespace MVCAgenda.Factories.Medics
 {
     public class MedicsFactory : IMedicsFactory
     {
-        string user = "admin";
-
         #region Fields
 
         private readonly IMedicService _medicsServices;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -25,10 +25,11 @@ namespace MVCAgenda.Factories.Medics
 
         #region Constructor
 
-        public MedicsFactory(IMedicService medicsServices, ILoggerService loggerServices)
+        public MedicsFactory(IMedicService medicsServices, ILoggerService loggerServices, IWorkContext workContext)
         {
             _medicsServices = medicsServices;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -37,21 +38,20 @@ namespace MVCAgenda.Factories.Medics
 
         #region Methods
 
-        public async Task<List<MedicViewModel>> PrepereListModel(string mail = null)
+        public async Task<List<MedicViewModel>> PrepereListModel(string mail = null, bool? hidden = null)
         {
             try
             {
-                var medics = await _medicsServices.GetListAsync(mail);
+                var medics = await _medicsServices.GetListAsync(mail, hidden);
                 var MedicsViewModel = new List<MedicViewModel>();
                 foreach (var medic in medics)
-                    if (medic.Hidden == false)
-                        MedicsViewModel.Add(PrepereMedicViewModel(medic));
+                    MedicsViewModel.Add(PrepereMedicViewModel(medic));
 
                 return MedicsViewModel;
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new List<MedicViewModel>();
             }
@@ -75,7 +75,7 @@ namespace MVCAgenda.Factories.Medics
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new MedicsViewModel();
             }
@@ -89,7 +89,7 @@ namespace MVCAgenda.Factories.Medics
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new MedicViewModel();
             }

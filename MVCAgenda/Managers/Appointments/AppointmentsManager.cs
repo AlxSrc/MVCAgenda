@@ -1,4 +1,5 @@
-﻿using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core;
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Status;
@@ -18,8 +19,6 @@ namespace MVCAgenda.Managers.Appointments
 {
     public class AppointmentsManager : IAppointmentsManager
     {
-        string user = "admin";
-
         #region Fields
 
         private readonly IAppointmentService _appointmentServices;
@@ -28,6 +27,7 @@ namespace MVCAgenda.Managers.Appointments
         private readonly IRoomService _roomServices;
         private readonly IMedicService _medicServices;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -41,7 +41,8 @@ namespace MVCAgenda.Managers.Appointments
             IPatientService patientServices,
             IRoomService roomServices,
             IMedicService medicServices,
-            ILoggerService loggerServices)
+            ILoggerService loggerServices,
+            IWorkContext workContext)
         {
             _appointmentServices = appointmentServices;
             _appointmentsFactory = appointmentsFactory;
@@ -49,6 +50,7 @@ namespace MVCAgenda.Managers.Appointments
             _roomServices = roomServices;
             _medicServices = medicServices;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -99,7 +101,7 @@ namespace MVCAgenda.Managers.Appointments
                     MedicId = appointmentViewModel.MedicId,
                     RoomId = appointmentViewModel.RoomId,
                     StartDate = appointmentViewModel.StartDate,
-                    EndDate = appointmentViewModel.EndDate,
+                    EndDate = appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(60),
                     Procedure = appointmentViewModel.Procedure,
                     Made = true,
                     ResponsibleForAppointment = appointmentViewModel.ResponsibleForAppointment,
@@ -128,14 +130,15 @@ namespace MVCAgenda.Managers.Appointments
                         var updateRessult = await _patientServices.UpdateAsync(patient);
                     }
 
-                    var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}, Appointment: {newAppointment.Id}";
-                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}, Appointment: {newAppointment.Id}";
+                    //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                     return StringHelpers.SuccesMessage;
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Nu s-a putut adauga programarea.";
             }
@@ -161,7 +164,7 @@ namespace MVCAgenda.Managers.Appointments
                     MedicId = appointmentViewModel.MedicId,
                     RoomId = appointmentViewModel.RoomId,
                     StartDate = appointmentViewModel.StartDate,
-                    EndDate = appointmentViewModel.EndDate,
+                    EndDate = appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(60),
                     Procedure = appointmentViewModel.Procedure,
                     Made = appointmentViewModel.Made,
                     ResponsibleForAppointment = appointmentViewModel.ResponsibleForAppointment,
@@ -192,14 +195,15 @@ namespace MVCAgenda.Managers.Appointments
                         }
                     }
 
-                    var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Edit}, Appointment: {appointmentViewModel.Id}";
-                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Edit}, Appointment: {appointmentViewModel.Id}";
+                    //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                     return StringHelpers.SuccesMessage;
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Edit}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Edit}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi adaugat, contacteaza administratorul.";
             }
@@ -222,15 +226,16 @@ namespace MVCAgenda.Managers.Appointments
                     }
                     else
                     {
-                        var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Hide}, Appointment: {id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Hide}, Appointment: {id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Hide}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Hide}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Programarea nu a putut fi stersa.";
             }

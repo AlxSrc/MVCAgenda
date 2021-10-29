@@ -14,6 +14,7 @@ namespace MVCAgenda.Service.Rooms
         Task<bool> UpdateAsync(Room room);
 
         Task<bool> HideAsync(int id);
+        Task<bool> UnHideAsync(int id);
         Task<bool> DeleteAsync(int id);
     }
 }

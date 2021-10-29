@@ -69,6 +69,14 @@
     color: var(--white);
 }
 
+.form-check-input:checked {
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+.form-check-input:focus {
+    box-shadow: var(--main-color-shadow) !important;
+    border-color: var(--main-color-darker);
+}
 .bg-primary {
     background-color: var(--main-color) !important;
 }

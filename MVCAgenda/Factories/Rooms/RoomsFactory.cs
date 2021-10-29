@@ -1,4 +1,5 @@
-﻿using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core;
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Models.Rooms;
 using MVCAgenda.Service.Logins;
@@ -11,12 +12,11 @@ namespace MVCAgenda.Factories.Rooms
 {
     public class RoomsFactory : IRoomsFactory
     {
-        string user = "admin";
-
         #region Fields
 
         private readonly IRoomService _roomsServices;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -24,10 +24,11 @@ namespace MVCAgenda.Factories.Rooms
 
         #region Constructor
 
-        public RoomsFactory(IRoomService roomsServices, ILoggerService loggerServices)
+        public RoomsFactory(IRoomService roomsServices, ILoggerService loggerServices, IWorkContext workContext)
         {
             _roomsServices = roomsServices;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -50,7 +51,7 @@ namespace MVCAgenda.Factories.Rooms
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new List<RoomViewModel>();
             }
@@ -74,7 +75,7 @@ namespace MVCAgenda.Factories.Rooms
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new RoomsViewModel();
             }
@@ -88,7 +89,7 @@ namespace MVCAgenda.Factories.Rooms
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new RoomViewModel();
             }
@@ -122,8 +123,5 @@ namespace MVCAgenda.Factories.Rooms
             };
         }
         #endregion
-
-
-
     }
 }

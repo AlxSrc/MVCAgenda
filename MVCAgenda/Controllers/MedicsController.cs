@@ -128,6 +128,20 @@ namespace MVCAgenda.Controllers
             }
         }
 
+        [HttpPost, ActionName("Show")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ShowConfirmed(int id)
+        {
+            var result = await _medicsManager.ShowAsync(id);
+            if (result == StringHelpers.SuccesMessage)
+                return RedirectToAction("Index", "Medics");
+            else
+            {
+                ModelState.AddModelError(string.Empty, result);
+                return RedirectToAction("Details", "Medics", new { id = id });
+            }
+        }
+
         #endregion
     }
 }

@@ -13,8 +13,8 @@ namespace MVCAgenda.Service.Patients
             string searchByName = null,
             string searchByPhoneNumber = null,
             string searchByEmail = null,
-            bool? includeBlackList = false,
-            bool? isDeleted = false);
+            bool? includeBlackList = null,
+            bool? isDeleted = null);
 
         Task<int> GetPatientsNumberAsync(
             string searchByName = null,
@@ -28,6 +28,7 @@ namespace MVCAgenda.Service.Patients
         Task<bool> UpdateAsync(Patient patient);
 
         Task<bool> DeleteAsync(int id);
+        Task<bool> UnHideAsync(int id);
         Task<bool> HideAsync(int id);
     }
 }

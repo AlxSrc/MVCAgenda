@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVCAgenda.Core.Helpers;
 using MVCAgenda.Factories.Rooms;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Models.Rooms;
@@ -88,8 +89,12 @@ namespace MVCAgenda.Controllers
 
             if (ModelState.IsValid)
             {
-                await _roomManager.UpdateAsync(room);
-                return RedirectToAction("Index", "Rooms");
+                var ressult = await _roomManager.UpdateAsync(room);
+
+                if (ressult == StringHelpers.SuccesMessage)
+                    return RedirectToAction("Index", "Rooms");
+                else
+                    ModelState.AddModelError(string.Empty, ressult);
             }
 
             return View(room);

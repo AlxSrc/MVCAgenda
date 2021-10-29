@@ -41,12 +41,10 @@ namespace MVCAgenda.Models.Appointments
         [Display(Name = "Adresa de e-mail")]
         public string SearchByEmail { get; set; }
 
-        [Display(Name = "Data start programare")]
-        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data inceput programare")]
         public DateTime? SearchByAppointmentStartDate { get; set; } = DateTime.Now;
 
         [Display(Name = "Data limita programare")]
-        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? SearchByAppointmentEndDate { get; set; } = DateTime.Now;
 
         [Display(Name = "Medic")]
@@ -57,6 +55,8 @@ namespace MVCAgenda.Models.Appointments
 
         [Display(Name = "Procedura")]
         public string SearchByProcedure { get; set; }
+
+        public int? Id { get; set; } 
 
         #endregion
     }

@@ -49,8 +49,11 @@ namespace MVCAgenda.Factories.Home
                 if (mail != null && mail != Constants.UserName)
                 {
                     var medic = await _medicServices.GetAsync(mail);
-                    var medicId = medic.Id;
-                    dailyPersonalAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(searchByMedic: medicId);
+                    if(medic != null)
+                    {
+                        var medicId = medic.Id;
+                        dailyPersonalAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(searchByMedic: medicId, Daily:true);
+                    }
                 }
 
                 return new HomeViewModel() { DailyAppointments = dailyAppointmentsCount, PersonalDailyAppointments = dailyPersonalAppointmentsCount };

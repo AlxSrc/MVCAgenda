@@ -8,18 +8,17 @@ using MVCAgenda.Service.Logins;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Status;
 using MVCAgenda.Core.Helpers;
+using MVCAgenda.Core;
 
 namespace MVCAgenda.Factories.Patients
 {
     public class PatientsFactory : IPatientsFactory
     {
-
-        string user = "TestLogging";
-
         #region Fields
 
         private readonly IPatientService _patientServices;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -27,10 +26,11 @@ namespace MVCAgenda.Factories.Patients
 
         #region Constructor
 
-        public PatientsFactory(IPatientService patientServices, ILoggerService loggerServices)
+        public PatientsFactory(IPatientService patientServices, ILoggerService loggerServices, IWorkContext workContext)
         {
             _patientServices = patientServices;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -62,6 +62,9 @@ namespace MVCAgenda.Factories.Patients
                     PageIndex = pageIndex,
                     TotalPages = totalPages,
                     PatientsList = patientsListViewModel,
+                    SearchByName= searchByName,
+                    SearchByPhoneNumber= searchByPhoneNumber,
+                    SearchByEmail= searchByEmail,
                     Hidden = isDeleted,
                     Blacklist = includeBlackList
                 };
@@ -69,7 +72,7 @@ namespace MVCAgenda.Factories.Patients
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientsViewModel();
             }
@@ -83,7 +86,7 @@ namespace MVCAgenda.Factories.Patients
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}: {id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientViewModel();
             }

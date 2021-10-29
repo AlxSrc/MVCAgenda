@@ -51,7 +51,7 @@ namespace MVCAgenda.ApiHost.Controllers
             try
             {
                 var appointments = await _appointmentService.GetFiltredListAsync(-1, Daily: true);
-                var appointmentsAsDtos = new List<AppointmentDto>();
+                var appointmentsAsDtos = new List<AppointmentCompleteDataDto>();
                 foreach (var appointment in appointments)
                     appointmentsAsDtos.Add(await _appointmentsFactory.PrepereAppointmentDTO(appointment));
 
@@ -75,7 +75,7 @@ namespace MVCAgenda.ApiHost.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(AppointmentsRootObject), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> PutPatient(int id, AppointmentDto appointment)
+        public async Task<IActionResult> PutPatient(int id, AppointmentCompleteDataDto appointment)
         {
             if (id != appointment.Id)
             {
@@ -122,7 +122,7 @@ namespace MVCAgenda.ApiHost.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(AppointmentsRootObject), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> PostAppointment(AppointmentDto appointment)
+        public async Task<IActionResult> PostAppointment(AppointmentCompleteDataDto appointment)
         {
             try
             {

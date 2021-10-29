@@ -11,13 +11,12 @@ using MVCAgenda.Service.Logins;
 using System;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Helpers;
+using MVCAgenda.Core;
 
 namespace MVCAgenda.Factories.PatientsSheet
 {
     public class PatientsSheetsFactory : IPatientsSheetsFactory
     {
-        private string user = "admin";
-
         #region Fields
 
         private readonly IPatientSheetService _patientSheetServices;
@@ -25,6 +24,7 @@ namespace MVCAgenda.Factories.PatientsSheet
         private readonly IConsultationService _consultationServices;
         private readonly IConsultationsFactory _consultationFactory;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -37,13 +37,15 @@ namespace MVCAgenda.Factories.PatientsSheet
             IPatientService patientServices,
             IConsultationService consultationServices,
             IConsultationsFactory consultationFactory,
-            ILoggerService loggerServices)
+            ILoggerService loggerServices, 
+            IWorkContext workContext)
         {
             _patientSheetServices = patientSheetServices;
             _patientServices = patientServices;
             _consultationServices = consultationServices;
             _consultationFactory = consultationFactory;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -62,7 +64,7 @@ namespace MVCAgenda.Factories.PatientsSheet
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Read}, PatientSheets: {id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Read}, PatientSheets: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientSheetDetailsViewModel();
             }
@@ -92,7 +94,7 @@ namespace MVCAgenda.Factories.PatientsSheet
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new PatientSheetEditViewModel();
             }

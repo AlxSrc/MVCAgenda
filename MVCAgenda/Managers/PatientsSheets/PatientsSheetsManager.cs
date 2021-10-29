@@ -1,4 +1,5 @@
-﻿using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core;
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Factories.Consultations;
@@ -17,8 +18,6 @@ namespace MVCAgenda.Managers.PatientsSheets
 {
     public class PatientsSheetsManager : IPatientsSheetsManager
     {
-        private string user = "admin";
-
         #region Fields
 
         private readonly IPatientsSheetsFactory _patientSheetFactory;
@@ -27,6 +26,7 @@ namespace MVCAgenda.Managers.PatientsSheets
         private readonly IConsultationService _consultationServices;
         private readonly IConsultationsFactory _consultationFactory;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -40,7 +40,8 @@ namespace MVCAgenda.Managers.PatientsSheets
             IPatientService patientServices,
             IConsultationService consultationServices,
             IConsultationsFactory consultationFactory,
-            ILoggerService loggerServices)
+            ILoggerService loggerServices,
+            IWorkContext workContext)
         {
             _patientSheetServices = patientSheetServices;
             _patientSheetFactory = patientSheetFactory;
@@ -48,6 +49,7 @@ namespace MVCAgenda.Managers.PatientsSheets
             _consultationServices = consultationServices;
             _consultationFactory = consultationFactory;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -86,15 +88,16 @@ namespace MVCAgenda.Managers.PatientsSheets
                         return "Fisa pacientului nu a putut fi editata.";
                     else
                     {
-                        var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Edit}, Appointment: {model.Id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Edit}, Appointment: {model.Id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Edit}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.PatientSheets} manager, Action: {LogInfo.Edit}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Fisa pacientului nu a putut fi editata.";
             }

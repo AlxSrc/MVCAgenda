@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MVCAgenda.Core;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
@@ -13,12 +14,11 @@ namespace MVCAgenda.Service.Medics
 {
     public class MedicService : IMedicService
     {
-        private string user = "TestUser";
-
         #region Fields
 
         private string msg;
-        private readonly AgendaContext _context;
+        private readonly AgendaContext _context; 
+        private readonly IWorkContext _workContext;
         private readonly ILoggerService _logger;
 
         #endregion
@@ -27,10 +27,11 @@ namespace MVCAgenda.Service.Medics
 
         #region Constructor
 
-        public MedicService(AgendaContext context, ILoggerService logger)
+        public MedicService(AgendaContext context, ILoggerService logger, IWorkContext workContext)
         {
             _context = context;
             _logger = logger;
+            _workContext = workContext;
         }
 
         #endregion
@@ -49,7 +50,7 @@ namespace MVCAgenda.Service.Medics
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Create}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics}, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }
@@ -63,7 +64,7 @@ namespace MVCAgenda.Service.Medics
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new Medic();
             }
@@ -76,21 +77,20 @@ namespace MVCAgenda.Service.Medics
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new Medic();
             }
         }
 
-        public async Task<List<Medic>> GetListAsync(string mail = null)
+        public async Task<List<Medic>> GetListAsync(string mail = null, bool? hidden = null)
         {
             try
             {
                 var query = _context.Medics.AsQueryable();
 
-                query = query.Where(m => m.Hidden == false);
-
-                //query = query.Where(m => m.Mail != Constants.AdminUser);
+                if (hidden != null)
+                    query = query.Where(m => m.Hidden == hidden);
 
                 if (mail != null)
                     query = query.Where(m => m.Mail.ToUpper().Contains(mail.ToUpper()));
@@ -101,7 +101,7 @@ namespace MVCAgenda.Service.Medics
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics}, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return null;
             }
@@ -111,13 +111,14 @@ namespace MVCAgenda.Service.Medics
         {
             try
             {
-                _context.Update(medic);
+                var medicToBeEdited = await _context.Medics.FirstOrDefaultAsync(m => m.Id == medic.Id);
+                _context.Entry(medicToBeEdited).CurrentValues.SetValues(medic);
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Edit}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics}, Action: {LogInfo.Edit}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }
@@ -135,7 +136,25 @@ namespace MVCAgenda.Service.Medics
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Hide}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics}, Action: {LogInfo.Hide}";
+                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
+                return false;
+            }
+        }
+
+        public async Task<bool> UnHideAsync(int id)
+        {
+            try
+            {
+                var medic = await _context.Medics.FindAsync(id);
+                medic.Hidden = false;
+                _context.Medics.Update(medic);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception exception)
+            {
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics}, Action: {LogInfo.UnHide}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }
@@ -151,7 +170,7 @@ namespace MVCAgenda.Service.Medics
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Medics}, Action: {LogInfo.Delete}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Medics}, Action: {LogInfo.Delete}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return false;
             }

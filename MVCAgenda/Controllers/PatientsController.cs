@@ -76,7 +76,6 @@ namespace MVCAgenda.Controllers
             bool? isDeleted = false)
         {
             return View(await _patientFactory.GetListViewModelAsync(pageIndex, SearchByName, SearchByPhoneNumber, SearchByEmail, includeBlackList, isDeleted));
-
         }
 
         public async Task<IActionResult> Details(int id)

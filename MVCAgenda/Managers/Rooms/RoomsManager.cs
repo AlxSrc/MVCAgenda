@@ -1,4 +1,5 @@
-﻿using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core;
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Factories.Rooms;
@@ -13,13 +14,12 @@ namespace MVCAgenda.Managers.Rooms
 {
     public class RoomsManager : IRoomsManager
     {
-        string user = "admin";
-
         #region Fields
 
         private readonly IRoomService _roomsServices;
         private readonly IRoomsFactory _roomsFactory;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -27,11 +27,15 @@ namespace MVCAgenda.Managers.Rooms
 
         #region Constructor
 
-        public RoomsManager(IRoomService roomsServices, IRoomsFactory roomsFactory, ILoggerService loggerServices)
+        public RoomsManager(IRoomService roomsServices, 
+            IRoomsFactory roomsFactory, 
+            ILoggerService loggerServices,
+            IWorkContext workContext)
         {
             _roomsServices = roomsServices;
             _roomsFactory = roomsFactory;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -58,14 +62,15 @@ namespace MVCAgenda.Managers.Rooms
                     return "Camera nu s-a putut creea";
                 else
                 {
-                    var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}, Room: {room.Id}";
-                    await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                    //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}, Room: {room.Id}";
+                    //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                     return StringHelpers.SuccesMessage;
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Camera nu a putut fi adaugat.";
             }
@@ -96,15 +101,16 @@ namespace MVCAgenda.Managers.Rooms
                         return "Camera nu a putut fi editata.";
                     else
                     {
-                        var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Edit}, Room: {model.Id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Edit}, Room: {model.Id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Edit}, Room: {model.Id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Edit}, Room: {model.Id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Camera nu a putut fi editata.";
             }
@@ -125,15 +131,16 @@ namespace MVCAgenda.Managers.Rooms
                         return "Camera nu a putut fi stearsa.";
                     else
                     {
-                        var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Hide}, Room: {id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Hide}, Room: {id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Hide}, Room: {id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Rooms} manager, Action: {LogInfo.Hide}, Room: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Camera nu a putut fi stearsa.";
             }

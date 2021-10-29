@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MVCAgenda.Core;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
@@ -14,12 +15,11 @@ namespace MVCAgenda.Managers.Patients
 {
     public class PatientsManager : IPatientsManager
     {
-        string user = "TestLogging";
-
         #region Fields
 
         private readonly IPatientService _patientServices;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -27,10 +27,13 @@ namespace MVCAgenda.Managers.Patients
 
         #region Constructor
 
-        public PatientsManager(IPatientService patientServices, ILoggerService loggerServices)
+        public PatientsManager(IPatientService patientServices,
+            ILoggerService loggerServices,
+            IWorkContext workContext)
         {
             _patientServices = patientServices;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -69,15 +72,16 @@ namespace MVCAgenda.Managers.Patients
                         return "Pacientul nu a putut fi adaugat.";
                     else
                     {
-                        msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Create}, Patient: {patient.Id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Create}, Patient: {patient.Id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi adaugat.";
             }
@@ -109,15 +113,16 @@ namespace MVCAgenda.Managers.Patients
                         return "Pacientul nu a putut fi editat.";
                     else
                     {
-                        var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}, Patient: {patient.Id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}, Patient: {patient.Id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Edit}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi editat.";
             }
@@ -138,15 +143,16 @@ namespace MVCAgenda.Managers.Patients
                         return "Pacientul nu a putut fi sters.";
                     else
                     {
-                        var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Delete}, Patient: {id}";
-                        await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+                        //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Delete}, Patient: {id}";
+                        //await _logger.CreateAsync(msg, null, null, LogLevel.Information);
+
                         return StringHelpers.SuccesMessage;
                     }
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Patients} manager, Action: {LogInfo.Delete}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients} manager, Action: {LogInfo.Delete}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi sters.";
             }

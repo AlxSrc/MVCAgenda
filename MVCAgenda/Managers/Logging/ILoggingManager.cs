@@ -5,5 +5,6 @@ namespace MVCAgenda.Managers.Logging
 {
     public interface ILoggingManager
     {
+        Task<string> DeleteAllAsync();
     }
 }

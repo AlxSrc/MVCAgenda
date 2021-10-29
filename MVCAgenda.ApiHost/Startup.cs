@@ -1,28 +1,25 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MVCAgenda.ApiHost.Converters;
 using MVCAgenda.ApiHost.Factories.Appointments;
+using MVCAgenda.ApiHost.Factories.Items;
 using MVCAgenda.ApiHost.Factories.Patients;
 using MVCAgenda.ApiHost.JSON.Serializers;
+using MVCAgenda.ApiHost.Managers;
 using MVCAgenda.ApiHost.Maps;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Appointments;
+using MVCAgenda.Service.Consultations;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Service.Medics;
 using MVCAgenda.Service.Patients;
+using MVCAgenda.Service.PatientsSheet;
 using MVCAgenda.Service.Rooms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MVCAgenda.ApiHost
 {
@@ -40,8 +37,6 @@ namespace MVCAgenda.ApiHost
         {
             services.AddControllers();
 
-            //services.AddControllers().AddNewtonsoftJson();
-
             services.AddDbContext<AgendaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AgendaContext")));
 
@@ -53,6 +48,8 @@ namespace MVCAgenda.ApiHost
             //services
             services.AddScoped<ILoggerService, LoggerService>();
             services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IPatientSheetService, PatientSheetService>();
+            services.AddScoped<IConsultationService, ConsultationService>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IMedicService, MedicService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
@@ -61,12 +58,13 @@ namespace MVCAgenda.ApiHost
             services.AddScoped<IJsonPropertyMapper, JsonPropertyMapper>();
 
             //Factories
+            services.AddScoped<IItemsFactory, ItemsFactory>();
             services.AddScoped<IPatientsFactory, PatientsFactory>();
             services.AddScoped<IAppointmentsFactory, AppointmentsFactory>();
             services.AddScoped<IObjectConverter, ObjectConverter>(); 
-            services.AddScoped<IApiTypeConverter, ApiTypeConverter>(); 
+            services.AddScoped<IApiTypeConverter, ApiTypeConverter>();
 
-
+            services.AddScoped<IItemsManager, ItemsManager>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

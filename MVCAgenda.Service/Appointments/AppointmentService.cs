@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MVCAgenda.Core;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
@@ -13,12 +14,11 @@ namespace MVCAgenda.Service.Appointments
 {
     public class AppointmentService : IAppointmentService
     {
-        private string user = "TestUser";
-
         #region Fields
 
         private string msg;
         private readonly AgendaContext _context;
+        private readonly IWorkContext _workContext;
         private readonly ILoggerService _logger;
 
         #endregion
@@ -27,10 +27,11 @@ namespace MVCAgenda.Service.Appointments
 
         #region Constructor
 
-        public AppointmentService(AgendaContext context, ILoggerService logger)
+        public AppointmentService(AgendaContext context, ILoggerService logger, IWorkContext workContext)
         {
             _context = context;
             _logger = logger;
+            _workContext = workContext;
         }
 
         #endregion
@@ -49,7 +50,7 @@ namespace MVCAgenda.Service.Appointments
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Create.ToString()}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Create.ToString()}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
@@ -63,7 +64,7 @@ namespace MVCAgenda.Service.Appointments
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return new Appointment();
             }
@@ -134,7 +135,7 @@ namespace MVCAgenda.Service.Appointments
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return new List<Appointment>();
             }
@@ -190,22 +191,24 @@ namespace MVCAgenda.Service.Appointments
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return 1;
             }
         }
+
         public async Task<bool> UpdateAsync(Appointment appointment)
         {
             try
             {
-                _context.Appointments.Update(appointment);
+                var appointmentToBeEdited = await _context.Appointments.FirstOrDefaultAsync(a => a.Id == appointment.Id);
+                _context.Entry(appointmentToBeEdited).CurrentValues.SetValues(appointment);
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Edit.ToString()}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Edit.ToString()}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
@@ -223,7 +226,25 @@ namespace MVCAgenda.Service.Appointments
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Hide.ToString()}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Hide.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return false;
+            }
+        }
+
+        public async Task<bool> UnHideAsync(int id)
+        {
+            try
+            {
+                var appointment = await _context.Appointments.FindAsync(id);
+                appointment.Hidden = false;
+                _context.Appointments.Update(appointment);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Hide.ToString()}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }
@@ -239,7 +260,7 @@ namespace MVCAgenda.Service.Appointments
             }
             catch (Exception ex)
             {
-                msg = $"User: {user}, Table:{LogTable.Appointments}, Action: {LogInfo.Delete}";
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Delete}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return false;
             }

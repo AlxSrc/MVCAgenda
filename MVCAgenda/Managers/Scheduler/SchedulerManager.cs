@@ -1,4 +1,5 @@
-﻿using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core;
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Factories.Scheduler;
@@ -16,8 +17,6 @@ namespace MVCAgenda.Managers.Scheduler
 {
     public class SchedulerManager : ISchedulerManager
     {
-        string user = "User";
-
         #region Fields
 
         private readonly IAppointmentService _appointmentServices;
@@ -26,6 +25,7 @@ namespace MVCAgenda.Managers.Scheduler
         private readonly IRoomService _roomServices;
         private readonly IMedicService _medicServices;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -39,7 +39,8 @@ namespace MVCAgenda.Managers.Scheduler
             IPatientService patientServices,
             IRoomService roomServices,
             IMedicService medicServices,
-            ILoggerService loggerServices)
+            ILoggerService loggerServices, 
+            IWorkContext workContext)
         {
             _appointmentServices = appointmentServices;
             _schedulerFactory = schedulerFactory;
@@ -47,6 +48,7 @@ namespace MVCAgenda.Managers.Scheduler
             _roomServices = roomServices;
             _medicServices = medicServices;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -112,14 +114,15 @@ namespace MVCAgenda.Managers.Scheduler
                     return "Nu s-a putut creea programarea";
                 else
                 {
-                    var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}, Appointment: {newAppointment.Id}";
-                    await _logger.CreateAsync(msg, null, null, LogLevel.Error);
+                    //var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}, Appointment: {newAppointment.Id}";
+                    //await _logger.CreateAsync(msg, null, null, LogLevel.Error);
+
                     return StringHelpers.SuccesMessage;
                 }
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Pacientul nu a putut fi adaugat, contacteaza administratorul.";
             }
@@ -155,7 +158,7 @@ namespace MVCAgenda.Managers.Scheduler
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new ScheduleList();
             }
@@ -187,7 +190,7 @@ namespace MVCAgenda.Managers.Scheduler
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Appointments} Schedule manager, Action: {LogInfo.Edit}, Appointment: {scheduleData.Id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} Schedule manager, Action: {LogInfo.Edit}, Appointment: {scheduleData.Id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return "Nu s-a putut modifica programarea";
             }

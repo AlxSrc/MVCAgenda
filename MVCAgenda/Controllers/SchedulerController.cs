@@ -19,13 +19,14 @@ namespace MVCAgenda.Controllers
     [Authorize]
     public class SchedulerController : Controller
     {
-        #region Services
+        #region Fields
 
         private readonly ISchedulerManager _schedulerManager;
         private readonly IRoomsManager _roomsManager;
         private readonly IMedicsManager _medicsManager;
         private readonly IRoomsFactory _roomsFactory;
         private readonly IMedicsFactory _medicsFactory;
+        private string _mail;
 
         #endregion
 
@@ -76,18 +77,20 @@ namespace MVCAgenda.Controllers
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
 
-            ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(), new JsonSerializerSettings
+            ViewData["MedicId"] = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(hidden: false), new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
 
-            ViewData["Mails"] = new SelectList(await _medicsFactory.PrepereListModel(), "Mail", "Name");
+            ViewData["Mails"] = new SelectList(await _medicsFactory.PrepereListModel(hidden: false), "Mail", "Name");
 
-            ViewBag.Employees = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(Mail), new JsonSerializerSettings
+            ViewBag.Employees = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(Mail, false), new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
             ViewBag.Resources = new string[] { "Employee" };
+
+            _mail = Mail;
 
             return View();
         }
@@ -96,6 +99,7 @@ namespace MVCAgenda.Controllers
         {
             try
             {
+                var mail = _mail;
                 var user = User.Identity.Name;
                 if (user == Constants.UserName)
                 {

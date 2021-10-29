@@ -1,4 +1,5 @@
-﻿using MVCAgenda.Core.Domain;
+﻿using MVCAgenda.Core;
+using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Models.Consultations;
 using MVCAgenda.Service.Consultations;
@@ -12,14 +13,13 @@ namespace MVCAgenda.Factories.Consultations
 {
     public class ConsultationsFactory : IConsultationsFactory
     {
-        string user = "admin";
-
         #region Fields
 
         private readonly IConsultationService _consultationServices;
         private readonly IPatientService _patientService;
         private readonly IPatientSheetService _patientSheetService;
         private readonly ILoggerService _logger;
+        private readonly IWorkContext _workContext;
 
         #endregion
 
@@ -27,12 +27,13 @@ namespace MVCAgenda.Factories.Consultations
 
         #region Constructor
 
-        public ConsultationsFactory(IConsultationService consultationServices, ILoggerService loggerServices, IPatientService patientService, IPatientSheetService patientSheetService)
+        public ConsultationsFactory(IConsultationService consultationServices, ILoggerService loggerServices, IPatientService patientService, IPatientSheetService patientSheetService, IWorkContext workContext)
         {
             _consultationServices = consultationServices;
             _patientService = patientService;
             _patientSheetService = patientSheetService;
             _logger = loggerServices;
+            _workContext = workContext;
         }
 
         #endregion
@@ -83,7 +84,7 @@ namespace MVCAgenda.Factories.Consultations
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new ConsultationDetailsViewModel();
             }
@@ -113,7 +114,7 @@ namespace MVCAgenda.Factories.Consultations
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new ConsultationEditViewModel();
             }
@@ -135,7 +136,7 @@ namespace MVCAgenda.Factories.Consultations
             }
             catch (Exception exception)
             {
-                var msg = $"User: {user}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
+                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Consultations} manager, Action: {LogInfo.Read}, Consultation: {id}";
                 await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
                 return new ConsultationCreateViewModel();
             }

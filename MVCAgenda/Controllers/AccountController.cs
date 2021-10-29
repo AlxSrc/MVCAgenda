@@ -120,10 +120,9 @@ namespace MVCAgenda.Controllers
             if (ModelState.IsValid)
             {
                 MailAddress address = new MailAddress(model.Email);
-                string userName = address.User;
                 var user = new ApplicationUser
                 {
-                    UserName = userName,
+                    UserName = model.Email,
                     Email = model.Email
                 };
 

@@ -48,6 +48,8 @@ namespace MVCAgenda.Controllers
                 var result = await _consultationManager.CreateAsync(consultation);
                 if (result == StringHelpers.SuccesMessage)
                     return RedirectToAction("Details", "PatientSheets", new { id = consultation.PatientSheetId });
+                else
+                    ModelState.AddModelError(string.Empty, result);
             }
 
             return View(consultation);
@@ -89,6 +91,8 @@ namespace MVCAgenda.Controllers
                 var result = await _consultationManager.UpdateAsync(consultation);
                 if (result == StringHelpers.SuccesMessage)
                     return RedirectToAction("Details", "PatientSheets", new { id = consultation.PatientSheetId });
+                else
+                    ModelState.AddModelError(string.Empty, result);
             }
 
             return View(consultation);
