@@ -58,6 +58,14 @@
 						<tr>
 							<td>
 								@Html.DisplayFor(modelItem => item.Name)
+								@if (item.Hidden == false)
+								{
+									<span class="badge bg-primary">Vizibil pentru programari</span>
+								}
+								else
+								{
+									<span class="badge bg-secondary">Utilizat la gestionare</span>
+								}
 							</td>
 							<td>
 								@Html.DisplayFor(modelItem => item.Mail)

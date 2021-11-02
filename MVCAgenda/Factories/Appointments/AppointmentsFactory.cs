@@ -79,7 +79,7 @@ namespace MVCAgenda.Factories.Appointments
                 foreach (var appointment in appointmentsList)
                     appointmentsListViewModel.Add(await PrepereAppointmentListItem(appointment));
 
-                var app = appointmentsListViewModel
+                appointmentsListViewModel = appointmentsListViewModel
                     .Where(p => !string.IsNullOrEmpty(searchByName) ? p.FirstName.ToUpper().Contains(searchByName.ToUpper()) : true)
                     .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhoneNumber.Contains(searchByPhoneNumber) : true)
                     .Where(p => !string.IsNullOrEmpty(searchByEmail) ? p.Mail.Contains(searchByEmail) : true).ToList();

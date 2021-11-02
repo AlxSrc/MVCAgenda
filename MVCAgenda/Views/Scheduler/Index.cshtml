@@ -90,7 +90,7 @@
 
 			<e-schedule-eventsettings>
 
-				<e-data-manager url="@Url.Action("LoadData", "Scheduler", new{ Mail = "" })" adaptor="WebMethodAdaptor"></e-data-manager>
+				<e-data-manager url="@Url.Action("LoadData", "Scheduler")" adaptor="WebMethodAdaptor"></e-data-manager>
 
 				<e-eventsettings-fields>
 					<e-field-subject name="Subject" validation="validationRules"></e-field-subject>
@@ -114,7 +114,6 @@
 				<e-schedule-view option="Day" eventTemplate="#day-event-template" allowVirtualScrolling="true"></e-schedule-view>
 				<e-schedule-view option="Week" eventTemplate="#week-event-template" allowVirtualScrolling="true"></e-schedule-view>
 				<e-schedule-view option="TimelineWeek" eventTemplate="#timeline-event-template" allowVirtualScrolling="true"></e-schedule-view>
-				@*<e-schedule-view option="WorkWeek"></e-schedule-view>*@
 				<e-schedule-view option="Month" eventTemplate="#month-event-template" allowVirtualScrolling="true"></e-schedule-view>
 			</e-schedule-views>
 		</ejs-schedule>

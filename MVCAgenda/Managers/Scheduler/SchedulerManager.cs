@@ -57,22 +57,22 @@ namespace MVCAgenda.Managers.Scheduler
 
         #region Methods
 
-        public async Task<string> CreateAsync(ScheduleEventData ScheduleData)
+        public async Task<string> CreateAsync(ScheduleEventData scheduleData)
         {
             string User = "alexandru";
             try
             {
                 int patientId;
-                string ressultSearch = await _appointmentServices.SearchAppointmentAsync(ScheduleData.MedicId, ScheduleData.RoomId, ScheduleData.StartTime, ScheduleData.EndTime);
+                string ressultSearch = await _appointmentServices.SearchAppointmentAsync(scheduleData.MedicId, scheduleData.RoomId, scheduleData.StartTime, scheduleData.EndTime);
 
                 if (ressultSearch != StringHelpers.SuccesMessage)
                 {
                     return ressultSearch;
                 }
 
-                if (ScheduleData.PatientId > 0)
+                if (scheduleData.PatientId > 0)
                 {
-                    var patient = await _patientServices.GetAsync(ScheduleData.PatientId);
+                    var patient = await _patientServices.GetAsync(scheduleData.PatientId);
                     if (patient == null)
                     {
                         return "Error. Not found.";
@@ -84,10 +84,10 @@ namespace MVCAgenda.Managers.Scheduler
                 {
                     var newPatient = new Patient()
                     {
-                        FirstName = ScheduleData.FirstName,
-                        LastName = ScheduleData.LastName,
-                        PhoneNumber = ScheduleData.PhoneNumber,
-                        Mail = ScheduleData.Mail
+                        FirstName = scheduleData.FirstName,
+                        LastName = scheduleData.LastName,
+                        PhoneNumber = scheduleData.PhoneNumber,
+                        Mail = scheduleData.Mail
                     };
 
                     patientId = await _patientServices.CheckExistentPatientAsync(newPatient);
@@ -96,15 +96,15 @@ namespace MVCAgenda.Managers.Scheduler
                 var newAppointment = new Appointment
                 {
                     PatientId = patientId,
-                    MedicId = ScheduleData.MedicId,
-                    RoomId = ScheduleData.RoomId,
-                    StartDate = ScheduleData.StartTime,
-                    EndDate = ScheduleData.EndTime,
-                    Procedure = ScheduleData.Subject,
+                    MedicId = scheduleData.MedicId,
+                    RoomId = scheduleData.RoomId,
+                    StartDate = scheduleData.StartTime,
+                    EndDate = scheduleData.EndTime,
+                    Procedure = scheduleData.Subject,
                     Made = true,
                     ResponsibleForAppointment = User,
                     AppointmentCreationDate = DateTime.Now,
-                    Comments = ScheduleData.Description,
+                    Comments = scheduleData.Description,
                     Hidden = false
                 };
 
@@ -128,7 +128,10 @@ namespace MVCAgenda.Managers.Scheduler
             }
         }
 
-        public async Task<ScheduleList> GetAsync(string Mail)
+        public async Task<ScheduleList> GetAsync(
+            DateTime? searchByAppointmentStartDate = null,
+            DateTime? searchByAppointmentEndDate = null, 
+            string? mail = null)
         {
             try
             {
@@ -138,14 +141,14 @@ namespace MVCAgenda.Managers.Scheduler
 
                 //ToDo
 
-                if (Mail != null)
+                if (mail != null)
                 {
-                    var medic = await _medicServices.GetAsync(Mail);
+                    var medic = await _medicServices.GetAsync(mail);
                     var medicId = medic.Id;
-                    appointments = await _appointmentServices.GetFiltredListAsync(-1,searchByMedic: medicId);
+                    appointments = await _appointmentServices.GetFiltredListAsync(-1, searchByAppointmentStartDate: searchByAppointmentStartDate, searchByAppointmentEndDate: searchByAppointmentEndDate, searchByMedic: medicId);
                 }
                 else
-                    appointments = await _appointmentServices.GetFiltredListAsync(-1);
+                    appointments = await _appointmentServices.GetFiltredListAsync(-1, searchByAppointmentStartDate: searchByAppointmentStartDate, searchByAppointmentEndDate:searchByAppointmentEndDate);
 
                 foreach (var appointment in appointments)
                     items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(

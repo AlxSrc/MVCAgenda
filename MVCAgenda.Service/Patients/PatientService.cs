@@ -149,7 +149,7 @@ namespace MVCAgenda.Service.Patients
                 if (searchByEmail != null)
                     query = query.Where(p => p.Mail.ToUpper().Contains(searchByEmail.ToUpper()));
 
-                query = query.OrderBy(f => f.Id);
+                query = query.OrderBy(f => f.FirstName);
 
                 if (pageIndex != -1)
                     query = query.Skip((pageIndex - 1) * Constants.TotalItemsOnAPage).Take(Constants.TotalItemsOnAPage);

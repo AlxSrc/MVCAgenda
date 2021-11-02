@@ -97,7 +97,9 @@ namespace MVCAgenda.Service.Appointments
             {
                 var query = _context.Appointments.AsQueryable();
 
-                if (searchByAppointmentStartDate != null && searchByAppointmentEndDate != null)
+                if (searchByAppointmentStartDate != null && 
+                    searchByAppointmentEndDate != null && 
+                    searchByAppointmentStartDate < searchByAppointmentEndDate)
 				{
                     query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
                     query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
@@ -121,17 +123,22 @@ namespace MVCAgenda.Service.Appointments
                     query = query.Where(a => a.Made == made);
 
                 //programrile zilnice
-                if (daily != null && searchByAppointmentStartDate == null && searchByAppointmentEndDate == null && id == null)
-                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
+                if (daily != null && id == null && 
+                    searchByAppointmentStartDate == null && 
+                    searchByAppointmentEndDate == null)
+                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date)
+                        .Where(a => a.StartDate >= DateTime.Now.AddMinutes(-60));
 
                 //programrile sterse
                 if (hidden != null)
                     query = query.Where(a => a.Hidden == hidden);
 
-                if(pageIndex != -1)
+                query = query.OrderBy(a => a.StartDate);
+
+                if (pageIndex != -1)
                     query = query.Skip((pageIndex - 1) * Constants.TotalItemsOnAPage).Take(Constants.TotalItemsOnAPage);
 
-                return await query.OrderByDescending(a => a.StartDate).ToListAsync();
+                return await query.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -149,14 +156,16 @@ namespace MVCAgenda.Service.Appointments
             string searchByProcedure = null,
             int? id = null,
             bool? made = null,
-            bool? Daily = null,
-            bool? Hidden = null)
+            bool? daily = null,
+            bool? hidden = null)
         {
             try
             {
                 var query = _context.Appointments.AsQueryable();
 
-                if (searchByAppointmentStartDate != null && searchByAppointmentEndDate != null)
+                if (searchByAppointmentStartDate != null &&
+                    searchByAppointmentEndDate != null &&
+                    searchByAppointmentStartDate < searchByAppointmentEndDate)
                 {
                     query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
                     query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
@@ -180,12 +189,13 @@ namespace MVCAgenda.Service.Appointments
                     query = query.Where(a => a.Made == made);
 
                 //programrile zilnice
-                if (Daily != null && searchByAppointmentStartDate == null && searchByAppointmentEndDate == null)
-                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
+                if (daily != null && searchByAppointmentStartDate == null && searchByAppointmentEndDate == null && id == null)
+                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date)
+                        .Where(a => a.StartDate >= DateTime.Now.AddMinutes(-60));
 
                 //programrile sterse
-                if (Hidden != null)
-                    query = query.Where(a => a.Hidden == Hidden);
+                if (hidden != null)
+                    query = query.Where(a => a.Hidden == hidden);
 
                 return await query.CountAsync();
             }

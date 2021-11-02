@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCAgenda.Core.Helpers;
@@ -13,6 +14,8 @@ using MVCAgenda.Managers.Scheduler;
 using MVCAgenda.Models.SyncfusionScheduler;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Syncfusion.EJ2;
+using Syncfusion.EJ2.Base;
 
 namespace MVCAgenda.Controllers
 {
@@ -26,7 +29,6 @@ namespace MVCAgenda.Controllers
         private readonly IMedicsManager _medicsManager;
         private readonly IRoomsFactory _roomsFactory;
         private readonly IMedicsFactory _medicsFactory;
-        private string _mail;
 
         #endregion
 
@@ -90,20 +92,19 @@ namespace MVCAgenda.Controllers
             });
             ViewBag.Resources = new string[] { "Employee" };
 
-            _mail = Mail;
-
             return View();
         }
 
-        public async Task<JsonResult> LoadData(string Mail)
+        [HttpPost]
+        public async Task<JsonResult> LoadData([FromBody]ScheduleLoadDataInputModel model)
         {
             try
             {
-                var mail = _mail;
                 var user = User.Identity.Name;
                 if (user == Constants.UserName)
                 {
-                    var appointmentsList = await _schedulerManager.GetAsync(null);
+                    var appointmentsList = await _schedulerManager.GetAsync(searchByAppointmentStartDate: model.Value.StartDate, searchByAppointmentEndDate: model.Value.EndDate, null);
+
                     return new JsonResult(new
                     {
                         result = appointmentsList.AppointmentsSchedule,
@@ -111,22 +112,11 @@ namespace MVCAgenda.Controllers
                 }
                 else
                 {
-                    if(Mail == "Toate")
+                    var appointmentsList = await _schedulerManager.GetAsync(searchByAppointmentStartDate: model.Value.StartDate, searchByAppointmentEndDate: model.Value.EndDate, null);
+                    return new JsonResult(new
                     {
-                        var appointmentsList = await _schedulerManager.GetAsync(null);
-                        return new JsonResult(new
-                        {
-                            result = appointmentsList.AppointmentsSchedule,
-                        }, new JsonSerializerOptions());
-                    }
-                    else
-                    {
-                        var appointmentsList = await _schedulerManager.GetAsync(Mail);
-                        return new JsonResult(new
-                        {
-                            result = appointmentsList.AppointmentsSchedule,
-                        }, new JsonSerializerOptions());
-                    }
+                        result = appointmentsList.AppointmentsSchedule,
+                    }, new JsonSerializerOptions());
                 }
             }
             catch
