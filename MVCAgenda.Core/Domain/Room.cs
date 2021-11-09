@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Room : BaseEntityDomain
+    public class Room : BaseSoftDeleteEntity
     {
         [StringLength(25, MinimumLength = 1)]
         [Required]

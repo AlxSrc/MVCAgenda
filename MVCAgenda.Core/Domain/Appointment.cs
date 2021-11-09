@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Appointment : BaseEntityDomain
+    public class Appointment : BaseSoftDeleteEntity
     {
         public int PatientId { get; set; }
 

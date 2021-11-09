@@ -13,6 +13,7 @@ using System.Linq;
 using MVCAgenda.Core.Status;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core;
+using MVCAgenda.Core.Pagination;
 
 namespace MVCAgenda.Factories.Appointments
 {
@@ -70,41 +71,75 @@ namespace MVCAgenda.Factories.Appointments
         {
             try
             {
-                var appointmentsList = await _appointmentServices.GetFiltredListAsync(pageIndex, searchByAppointmentStartDate, searchByAppointmentEndDate, searchByRoom, searchByMedic, searchByProcedure, id, made, daily, hidden);
-
-                var totalAppointments = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(searchByAppointmentStartDate, searchByAppointmentEndDate, searchByRoom, searchByMedic, searchByProcedure, id, made, daily, hidden);
-                var totalPages = (int)Math.Ceiling(totalAppointments / (double)Constants.TotalItemsOnAPage);
-
-                var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
-                foreach (var appointment in appointmentsList)
-                    appointmentsListViewModel.Add(await PrepereAppointmentListItem(appointment));
-
-                appointmentsListViewModel = appointmentsListViewModel
-                    .Where(p => !string.IsNullOrEmpty(searchByName) ? p.FirstName.ToUpper().Contains(searchByName.ToUpper()) : true)
-                    .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhoneNumber.Contains(searchByPhoneNumber) : true)
-                    .Where(p => !string.IsNullOrEmpty(searchByEmail) ? p.Mail.Contains(searchByEmail) : true).ToList();
-
                 bool? Blacklist = null;
-                return new AppointmentsViewModel()
+                var test = true;
+                if (test)
                 {
-                    PageIndex = pageIndex,
-                    TotalPages = totalPages,
-                    Made = made,
-                    Daily = daily,
-                    SearchByAppointmentStartDate = searchByAppointmentStartDate,
-                    SearchByAppointmentEndDate = searchByAppointmentEndDate,
-                    SearchByMedic = searchByMedic,
-                    SearchByRoom = searchByRoom,
-                    SearchByProcedure = searchByProcedure,
-                    SearchByPhoneNumber = searchByPhoneNumber,
-                    SearchByEmail = searchByEmail,
-                    SearchByName = searchByName,
-                    Id = id,
-                    Hidden = hidden,
-                    Blacklist = Blacklist,
+                    var pagination = await _appointmentServices.GetAppointmentsPaginationAsync(pageIndex, searchByName, searchByPhoneNumber, searchByEmail, searchByAppointmentStartDate, searchByAppointmentEndDate, searchByRoom, searchByMedic, searchByProcedure, id, made, daily, hidden);
 
-                    AppointmentsList = appointmentsListViewModel
-                };
+                    var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
+                    foreach (var appointment in pagination.Appointments)
+                        appointmentsListViewModel.Add(await PrepereAppointmentListItemAsync(appointment));
+                    var totalPages = pagination.TotalPages;
+
+                    return new AppointmentsViewModel()
+                    {
+                        PageIndex = pageIndex,
+                        TotalPages = totalPages,
+                        Made = made,
+                        Daily = daily,
+                        SearchByAppointmentStartDate = searchByAppointmentStartDate,
+                        SearchByAppointmentEndDate = searchByAppointmentEndDate,
+                        SearchByMedic = searchByMedic,
+                        SearchByRoom = searchByRoom,
+                        SearchByProcedure = searchByProcedure,
+                        SearchByPhoneNumber = searchByPhoneNumber,
+                        SearchByEmail = searchByEmail,
+                        SearchByName = searchByName,
+                        Id = id,
+                        Hidden = hidden,
+                        Blacklist = Blacklist,
+
+                        AppointmentsList = appointmentsListViewModel
+                    };
+                }
+                else
+                {
+                    var appointmentsList = await _appointmentServices.GetFiltredListAsync(pageIndex, searchByAppointmentStartDate, searchByAppointmentEndDate, searchByRoom, searchByMedic, searchByProcedure, id, made, daily, hidden);
+
+                    var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
+                    foreach (var appointment in appointmentsList)
+                        appointmentsListViewModel.Add(await PrepereAppointmentListItem(appointment));
+
+                    appointmentsListViewModel = appointmentsListViewModel
+                        .Where(p => !string.IsNullOrEmpty(searchByName) ? p.FirstName.ToUpper().Contains(searchByName.ToUpper()) : true)
+                        .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhoneNumber.Contains(searchByPhoneNumber) : true)
+                        .Where(p => !string.IsNullOrEmpty(searchByEmail) ? p.Mail.Contains(searchByEmail) : true).ToList();
+                    var totalAppointments = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(searchByName, searchByPhoneNumber, searchByEmail, searchByAppointmentStartDate, searchByAppointmentEndDate, searchByRoom, searchByMedic, searchByProcedure, id, made, daily, hidden);
+
+                    var totalPages = (int)Math.Ceiling(totalAppointments / (double)Constants.TotalItemsOnAPage);
+
+                    return new AppointmentsViewModel()
+                    {
+                        PageIndex = pageIndex,
+                        TotalPages = totalPages,
+                        Made = made,
+                        Daily = daily,
+                        SearchByAppointmentStartDate = searchByAppointmentStartDate,
+                        SearchByAppointmentEndDate = searchByAppointmentEndDate,
+                        SearchByMedic = searchByMedic,
+                        SearchByRoom = searchByRoom,
+                        SearchByProcedure = searchByProcedure,
+                        SearchByPhoneNumber = searchByPhoneNumber,
+                        SearchByEmail = searchByEmail,
+                        SearchByName = searchByName,
+                        Id = id,
+                        Hidden = hidden,
+                        Blacklist = Blacklist,
+
+                        AppointmentsList = appointmentsListViewModel
+                    };
+                }
             }
             catch (Exception exception)
             {
@@ -236,6 +271,30 @@ namespace MVCAgenda.Factories.Appointments
                 Mail = patient.Mail,
                 Medic = medic.Name,
                 Room = room.Name,
+                StartDate = appointment.StartDate,
+                EndDate = appointment.EndDate,
+                Procedure = appointment.Procedure,
+                Hidden = appointment.Hidden
+            };
+
+            if (appointment.Made == true)
+                viewModel.Procedure = $"<span class=\"text-success\">{appointment.Procedure}</span>";
+            else
+                viewModel.Procedure = $"<span class=\"text-danger\">{appointment.Procedure}</span>";
+
+            return viewModel;
+        }
+        private async Task<AppointmentListItemViewModel> PrepereAppointmentListItemAsync(AppointmentListItem appointment)
+        {
+            var viewModel = new AppointmentListItemViewModel()
+            {
+                Id = appointment.Id,
+                PatientId = appointment.PatientId,
+                FirstName = appointment.FirstName,
+                PhoneNumber = appointment.PhoneNumber,
+                Mail = appointment.Mail,
+                Medic = appointment.Medic,
+                Room = appointment.Room,
                 StartDate = appointment.StartDate,
                 EndDate = appointment.EndDate,
                 Procedure = appointment.Procedure,

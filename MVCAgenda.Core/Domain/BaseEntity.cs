@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVCAgenda.Core
+namespace MVCAgenda.Core.Domain
 {
     public class BaseEntity
     {

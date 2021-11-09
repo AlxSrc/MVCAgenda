@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVCAgenda.Core.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Core.Logging
 {
-    public partial class Log : BaseEntityDomain
+    public partial class Log : BaseSoftDeleteEntity
     {
         /// <summary>
         /// Gets or sets the log level identifier

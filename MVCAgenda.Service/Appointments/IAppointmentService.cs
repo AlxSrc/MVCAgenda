@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Pagination;
 
 namespace MVCAgenda.Service.Appointments
 {
@@ -23,6 +24,9 @@ namespace MVCAgenda.Service.Appointments
             bool? Hidden = null);
 
         Task<int> GetNumberOfFiltredAppointmentsAsync(
+            string searchByName = null,
+            string searchByPhoneNumber = null,
+            string searchByEmail = null,
             DateTime? searchByAppointmentStartDate = null,
             DateTime? searchByAppointmentEndDate = null,
             int? searchByRoom = null,
@@ -31,9 +35,24 @@ namespace MVCAgenda.Service.Appointments
             int? id = null,
             bool? made = null,
             bool? Daily = null,
-            bool? Hidden = null); 
+            bool? Hidden = null);
 
-         Task<bool> UpdateAsync(Appointment appointment);
+        Task<AppointmentsPagination> GetAppointmentsPaginationAsync(
+            int pageIndex,
+            string searchByName = null,
+            string searchByPhoneNumber = null,
+            string searchByEmail = null,
+            DateTime? searchByAppointmentStartDate = null,
+            DateTime? searchByAppointmentEndDate = null,
+            int? searchByRoom = null,
+            int? searchByMedic = null,
+            string searchByProcedure = null,
+            int? id = null,
+            bool? made = null,
+            bool? Daily = null,
+            bool? Hidden = null);
+
+        Task<bool> UpdateAsync(Appointment appointment);
 
         Task<bool> HideAsync(int id);
         Task<bool> UnHideAsync(int id);

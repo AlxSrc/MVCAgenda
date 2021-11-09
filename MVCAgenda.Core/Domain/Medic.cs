@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCAgenda.Core.Domain
 {
-    public class Medic : BaseEntityDomain
+    public class Medic : BaseSoftDeleteEntity
     {
         [Required]
         public string Name { get; set; }

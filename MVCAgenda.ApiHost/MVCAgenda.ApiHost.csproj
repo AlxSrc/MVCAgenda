@@ -26,6 +26,7 @@
         <ProjectReference Include="..\MVCAgenda.Core\MVCAgenda.Core.csproj" />
         <ProjectReference Include="..\MVCAgenda.Data\MVCAgenda.Data.csproj" />
         <ProjectReference Include="..\MVCAgenda.Service\MVCAgenda.Service.csproj" />
+        <ProjectReference Include="..\MVCAgenda\MVCAgenda.csproj" />
     </ItemGroup>
 
 </Project>

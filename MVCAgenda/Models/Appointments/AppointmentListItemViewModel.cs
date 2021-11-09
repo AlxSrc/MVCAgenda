@@ -2,10 +2,11 @@
 using System.ComponentModel;
 using MVCAgenda.Models.BaseModels;
 using System;
+using MVCAgenda.Core;
 
 namespace MVCAgenda.Models.Appointments
 {
-    public class AppointmentListItemViewModel : BaseModel
+    public class AppointmentListItemViewModel : BaseSoftDeleteEntity
     {
         [DisplayName("Pacient")]
         public int PatientId { get; set; }

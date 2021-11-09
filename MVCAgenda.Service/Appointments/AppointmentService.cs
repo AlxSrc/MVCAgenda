@@ -7,6 +7,7 @@ using MVCAgenda.Core;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
+using MVCAgenda.Core.Pagination;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Logins;
 
@@ -149,6 +150,9 @@ namespace MVCAgenda.Service.Appointments
         }
 
         public async Task<int> GetNumberOfFiltredAppointmentsAsync(
+            string searchByName = null,
+            string searchByPhoneNumber = null,
+            string searchByEmail = null,
             DateTime? searchByAppointmentStartDate = null,
             DateTime? searchByAppointmentEndDate = null,
             int? searchByRoom = null,
@@ -189,7 +193,9 @@ namespace MVCAgenda.Service.Appointments
                     query = query.Where(a => a.Made == made);
 
                 //programrile zilnice
-                if (daily != null && searchByAppointmentStartDate == null && searchByAppointmentEndDate == null && id == null)
+                if (daily != null && id == null &&
+                    searchByAppointmentStartDate == null &&
+                    searchByAppointmentEndDate == null)
                     query = query.Where(a => a.StartDate.Date == DateTime.Now.Date)
                         .Where(a => a.StartDate >= DateTime.Now.AddMinutes(-60));
 
@@ -197,13 +203,115 @@ namespace MVCAgenda.Service.Appointments
                 if (hidden != null)
                     query = query.Where(a => a.Hidden == hidden);
 
-                return await query.CountAsync();
+                var list = await query.ToListAsync();
+                var listToCount = new List<ListItem>();
+                foreach (var item in list)
+                {
+                    var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Id == item.PatientId);
+                    listToCount.Add(new ListItem() 
+                    {
+                        FirstName = patient.FirstName,
+                        PhoneNumber = patient.PhoneNumber,
+                        Email = patient.Mail
+                    });
+                }
+                var count = listToCount
+                    .Where(p => !string.IsNullOrEmpty(searchByName) ? p.FirstName.ToUpper().Contains(searchByName.ToUpper()) : true)
+                    .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhoneNumber.Contains(searchByPhoneNumber) : true)
+                    .Where(p => !string.IsNullOrEmpty(searchByEmail) ? p.Email.Contains(searchByEmail) : true).Count();
+                return count;
             }
             catch (Exception ex)
             {
                 msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
                 return 1;
+            }
+        }
+
+        public async Task<AppointmentsPagination> GetAppointmentsPaginationAsync(int pageIndex,
+            string searchByName = null,
+            string searchByPhoneNumber = null,
+            string searchByEmail = null,
+            DateTime? searchByAppointmentStartDate = null,
+            DateTime? searchByAppointmentEndDate = null,
+            int? searchByRoom = null,
+            int? searchByMedic = null,
+            string searchByProcedure = null,
+            int? id = null,
+            bool? made = null,
+            bool? daily = null,
+            bool? hidden = null)
+        {
+            try
+            {
+                int count, totalPages;
+                var appointmentsList = new List<AppointmentListItem>();
+                IEnumerable<AppointmentListItem> appointments;
+                
+
+                var query = _context.Appointments.AsQueryable();
+
+                if (searchByAppointmentStartDate != null &&
+                    searchByAppointmentEndDate != null &&
+                    searchByAppointmentStartDate < searchByAppointmentEndDate)
+                {
+                    query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
+                    query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
+                }
+
+                if (searchByRoom != null)
+                    query = query.Where(a => a.RoomId == searchByRoom);
+
+                if (searchByMedic != null)
+                    query = query.Where(a => a.MedicId == searchByMedic);
+
+                if (searchByProcedure != null)
+                    query = query.Where(a => a.Procedure.ToUpper().Contains(searchByProcedure.ToUpper()));
+
+                //programrile unui pacient
+                if (id != null)
+                    query = query.Where(a => a.PatientId == id);
+
+                //programrile neefectuatre
+                if (made != null)
+                    query = query.Where(a => a.Made == made);
+
+                //programrile zilnice
+                if (daily != null && id == null &&
+                    searchByAppointmentStartDate == null &&
+                    searchByAppointmentEndDate == null)
+                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date)
+                        .Where(a => a.StartDate >= DateTime.Now.AddMinutes(-60));
+
+                //programrile sterse
+                if (hidden != null)
+                    query = query.Where(a => a.Hidden == hidden);
+
+                query = query.OrderBy(a => a.StartDate);
+
+                var queryAppointments = await query.ToListAsync();
+                
+                foreach (var appointment in queryAppointments)
+                    appointmentsList.Add(await PrepereListItemAsync(appointment));
+
+                appointmentsList = appointmentsList
+                    .Where(p => !string.IsNullOrEmpty(searchByName) ? p.FirstName.ToUpper().Contains(searchByName.ToUpper()) : true)
+                    .Where(p => !string.IsNullOrEmpty(searchByPhoneNumber) ? p.PhoneNumber.Contains(searchByPhoneNumber) : true)
+                    .Where(p => !string.IsNullOrEmpty(searchByEmail) ? p.Mail.Contains(searchByEmail) : true).ToList();
+
+                if (pageIndex != -1)
+                    appointments = appointmentsList.Skip((pageIndex - 1) * Constants.TotalItemsOnAPage).Take(Constants.TotalItemsOnAPage);
+                else
+                    appointments = appointmentsList.ToList();
+
+                return new AppointmentsPagination { AppointmentsCount = appointmentsList.Count, TotalPages = (int)Math.Ceiling(appointmentsList.Count / (double)Constants.TotalItemsOnAPage), Appointments = appointments };
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return new AppointmentsPagination { AppointmentsCount = 0, Appointments = null };
             }
         }
 
@@ -317,6 +425,38 @@ namespace MVCAgenda.Service.Appointments
             }
 
             return foundAppointment;
+        }
+
+        public async Task<AppointmentListItem> PrepereListItemAsync(Appointment appointment)
+        {
+            var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Id == appointment.PatientId);
+            var room = await _context.Rooms.FirstOrDefaultAsync(p => p.Id == appointment.RoomId);
+            var medic = await _context.Medics.FirstOrDefaultAsync(p => p.Id == appointment.MedicId);
+
+            return new AppointmentListItem()
+            {
+                Id = appointment.Id,
+                EndDate = appointment.EndDate,
+                StartDate = appointment.StartDate,
+                Procedure = appointment.Procedure,
+                Made = appointment.Made,
+
+                PatientId = appointment.Id,
+                FirstName = patient.FirstName,
+                PhoneNumber = patient.PhoneNumber,
+                Mail = patient.Mail,
+                
+                Medic = medic.Name,
+                Room = room.Name,
+                Hidden = appointment.Hidden
+            };
+        }
+
+        public class ListItem
+        {
+            public string FirstName {  get; set; }
+            public string PhoneNumber {  get; set; }
+            public string Email {  get; set; }
         }
 
         #endregion

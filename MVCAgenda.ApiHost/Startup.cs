@@ -12,7 +12,9 @@ using MVCAgenda.ApiHost.Factories.Patients;
 using MVCAgenda.ApiHost.JSON.Serializers;
 using MVCAgenda.ApiHost.Managers;
 using MVCAgenda.ApiHost.Maps;
+using MVCAgenda.Core;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Framework;
 using MVCAgenda.Service.Appointments;
 using MVCAgenda.Service.Consultations;
 using MVCAgenda.Service.Logins;
@@ -44,6 +46,7 @@ namespace MVCAgenda.ApiHost
             services.AddDbContext<AgendaContext>(c => c.UseSqlServer(connectionString));
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "MVCAgenda.ApiHost", Version = "v1" }); });
+            services.AddHttpContextAccessor();
 
             //services
             services.AddScoped<ILoggerService, LoggerService>();
@@ -53,6 +56,7 @@ namespace MVCAgenda.ApiHost
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IMedicService, MedicService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IWorkContext, WebWorkContext>();
 
             services.AddScoped<IJsonFieldsSerializer, JsonFieldsSerializer>();
             services.AddScoped<IJsonPropertyMapper, JsonPropertyMapper>();
