@@ -13,15 +13,12 @@ namespace MVCAgenda.Core.Domain
         public virtual Patient Patient { get; set; }
 
 
-        [StringLength(450, MinimumLength = 1)]
         public string AntecedentsH { get; set; }
 
 
-        [StringLength(450, MinimumLength = 1)]
         public string AntecedentsP { get; set; }
 
 
-        [StringLength(20, MinimumLength = 1)]
         public string NationalIdentificationNumber { get; set; }
 
 
@@ -32,11 +29,9 @@ namespace MVCAgenda.Core.Domain
         public string Town { get; set; }
 
 
-        [StringLength(60, MinimumLength = 1)]
         public string Street { get; set; }
 
 
-        [StringLength(60, MinimumLength = 1)]
         public string PhysicalExamination { get; set; }
 
 

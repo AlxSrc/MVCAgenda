@@ -37,8 +37,8 @@
 			{
 				<form asp-action="Delete" asp-route-id="@Model.Id">
 					<button type="submit" class="btn btn-outline-primary" id="DeleteMedic">
-						<i class="far fa-trash-alt"></i>
-						Sterge
+						<i class="far fa-window-close"></i>
+						Indisponibil pentru efectuarea programarilor
 					</button>
 				</form>
 			}
@@ -46,8 +46,8 @@
 			{
 				<form asp-action="Show" asp-route-id="@Model.Id">
 					<button type="submit" class="btn btn-outline-primary" id="ShowMedic">
-						<i class="far fa-eye"></i>
-						Arata
+						<i class="far fa-check-square"></i>
+						Disponibil pentru efectuarea programarilor
 					</button>
 				</form>
 			}
@@ -93,7 +93,7 @@
 		$('#DeleteMedic').click(function(e){
 			e.preventDefault();
 
-			if(window.confirm('Sunteți sigur că doriți să ștergeți acest medic?'))
+			if(window.confirm('Sunteți sigur că doriți să macrați ca indisponibil acest medic?'))
 				$(this).parent('form').submit();
 		});
 	});
@@ -102,7 +102,7 @@
 		$('#ShowMedic').click(function(e){
 			e.preventDefault();
 
-			if(window.confirm('Sunteți sigur că doriți să aratati acest medic?'))
+			if(window.confirm('Sunteți sigur că doriți să macrați ca disponibil acest medic?'))
 				$(this).parent('form').submit();
 		});
 	});

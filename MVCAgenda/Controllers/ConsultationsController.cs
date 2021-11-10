@@ -95,7 +95,7 @@ namespace MVCAgenda.Controllers
                     ModelState.AddModelError(string.Empty, result);
             }
 
-            return View(consultation);
+            return RedirectToAction("Edit", "Consultations", new { id = consultation.Id });
         }
 
         #endregion

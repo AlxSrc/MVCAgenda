@@ -90,7 +90,7 @@ namespace MVCAgenda.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Mail = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     StatusCode = table.Column<int>(type: "int", nullable: false),
@@ -107,7 +107,7 @@ namespace MVCAgenda.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: false),
                     PrimaryColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecondaryColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -231,13 +231,13 @@ namespace MVCAgenda.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PatientId = table.Column<int>(type: "int", nullable: false),
-                    AntecedentsH = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    AntecedentsP = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    NationalIdentificationNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    AntecedentsH = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AntecedentsP = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NationalIdentificationNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     Town = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    PhysicalExamination = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhysicalExamination = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -263,9 +263,9 @@ namespace MVCAgenda.Data.Migrations
                     MedicId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Procedure = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
+                    Procedure = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Made = table.Column<bool>(type: "bit", nullable: false),
-                    ResponsibleForAppointment = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ResponsibleForAppointment = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AppointmentCreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hidden = table.Column<bool>(type: "bit", nullable: false)
@@ -302,9 +302,9 @@ namespace MVCAgenda.Data.Migrations
                     PatientSheetId = table.Column<int>(type: "int", nullable: false),
                     SheetPatientId = table.Column<int>(type: "int", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Symptoms = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    Diagnostic = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    Prescriptions = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
+                    Symptoms = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Diagnostic = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Prescriptions = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Data.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20211025134047_IdentityDBUser")]
+    [Migration("20211110110107_IdentityDBUser")]
     partial class IdentityDBUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,13 +51,12 @@ namespace MVCAgenda.Data.Migrations
 
                     b.Property<string>("Procedure")
                         .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ResponsibleForAppointment")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -87,8 +86,7 @@ namespace MVCAgenda.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Diagnostic")
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Hidden")
                         .HasColumnType("bit");
@@ -97,15 +95,13 @@ namespace MVCAgenda.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Prescriptions")
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SheetPatientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Symptoms")
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -161,8 +157,8 @@ namespace MVCAgenda.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Mail")
                         .HasMaxLength(60)
@@ -189,12 +185,10 @@ namespace MVCAgenda.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AntecedentsH")
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AntecedentsP")
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -206,19 +200,16 @@ namespace MVCAgenda.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("NationalIdentificationNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhysicalExamination")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Town")
                         .HasMaxLength(60)
@@ -247,8 +238,8 @@ namespace MVCAgenda.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(45)
+                        .HasColumnType("nvarchar(45)");
 
                     b.Property<string>("PrimaryColor")
                         .HasColumnType("nvarchar(max)");

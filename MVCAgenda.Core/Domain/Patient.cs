@@ -13,7 +13,7 @@ namespace MVCAgenda.Core.Domain
         public string FirstName { get; set; }
 
 
-        [StringLength(60, MinimumLength = 1)]
+        [StringLength(100, MinimumLength = 1)]
         public string LastName { get; set; }
 
 

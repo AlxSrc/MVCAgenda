@@ -5,7 +5,7 @@ namespace MVCAgenda.Core.Domain
 {
     public class Room : BaseSoftDeleteEntity
     {
-        [StringLength(25, MinimumLength = 1)]
+        [StringLength(45, MinimumLength = 1)]
         [Required]
         public string Name { get; set; }
 

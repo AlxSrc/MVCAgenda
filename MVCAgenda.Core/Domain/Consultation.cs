@@ -17,15 +17,12 @@ namespace MVCAgenda.Core.Domain
         public DateTime CreationDate { get; set; }
 
 
-        [StringLength(450, MinimumLength = 1)]
         public string Symptoms { get; set; }
 
 
-        [StringLength(450, MinimumLength = 1)]
         public string Diagnostic { get; set; }
 
 
-        [StringLength(450, MinimumLength = 1)]
         public string Prescriptions { get; set; }
     }
 }

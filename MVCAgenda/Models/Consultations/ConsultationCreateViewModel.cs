@@ -15,17 +15,14 @@ namespace MVCAgenda.Models.Consultations
         [DisplayName("Prenume")]
         public string LastName { get; set; }
 
-        [StringLength(450, MinimumLength = 1)]
         [DisplayName("Simptome")]
         public string Symptoms { get; set; }
 
 
-        [StringLength(450, MinimumLength = 1)]
         [DisplayName("Diagnostic")]
         public string Diagnostic { get; set; }
 
 
-        [StringLength(450, MinimumLength = 1)]
         [DisplayName("Prescripții")]
         public string Prescriptions { get; set; }
     }

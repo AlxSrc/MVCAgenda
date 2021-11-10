@@ -30,7 +30,6 @@ namespace MVCAgenda.Core.Domain
         public DateTime EndDate { get; set; }
 
 
-        [StringLength(75, MinimumLength = 1)]
         [Required]
         public string Procedure { get; set; }
 
@@ -39,7 +38,7 @@ namespace MVCAgenda.Core.Domain
         public bool Made { get; set; } = true;
 
 
-        [StringLength(30, MinimumLength = 1)]
+        [StringLength(100, MinimumLength = 1)]
         [Required]
         public string ResponsibleForAppointment { get; set; }
 
