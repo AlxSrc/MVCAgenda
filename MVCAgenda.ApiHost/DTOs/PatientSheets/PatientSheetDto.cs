@@ -1,6 +1,8 @@
-﻿using MVCAgenda.ApiHost.Models;
+﻿using MVCAgenda.ApiHost.DTOs.Consultations;
+using MVCAgenda.ApiHost.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace MVCAgenda.ApiHost.DTOs.PatientSheets
@@ -10,6 +12,14 @@ namespace MVCAgenda.ApiHost.DTOs.PatientSheets
         [JsonProperty("patient_id")]
         [JsonPropertyName("patient_id")]
         public int PatientId { get; set; }
+
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
 
         [JsonProperty("antecedents_h")]
         [JsonPropertyName("antecedents_h")]
@@ -42,5 +52,9 @@ namespace MVCAgenda.ApiHost.DTOs.PatientSheets
         [JsonProperty("date_of_birth")]
         [JsonPropertyName("date_of_birth")]
         public DateTime DateOfBirth { get; set; }
+
+        [JsonProperty("consultations")]
+        [JsonPropertyName("consultations")]
+        public List<ConsultationDto> Consultations { get; set; }
     }
 }

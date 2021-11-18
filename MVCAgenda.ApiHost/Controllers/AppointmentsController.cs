@@ -64,18 +64,56 @@ namespace MVCAgenda.ApiHost.Controllers
 
                 return new RawJsonActionResult(json);
             }
-            catch(Exception ex)
+             catch(Exception ex)
             {
                 return BadRequest();
             }
         }
+
+        /// <summary>
+        ///     Retrieve patient by specified id
+        /// </summary>
+        /// <param name="id">Id of the category</param>
+        /// <param name="fields">Fields from the patient you want your json to contain</param>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
+        [HttpGet]
+        [Route("/api/appointments/{id}", Name = "GetAppointmentById")]
+        [ProducesResponseType(typeof(AppointmentsRootObject), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetAppointmentById(int id, string fields = "")
+        {
+            try
+            {
+                var appointment = await _appointmentService.GetAsync(id);
+
+                var appointmentsAsDtos = new List<AppointmentCompleteDataDto>();
+                appointmentsAsDtos.Add(await _appointmentsFactory.PrepereAppointmentDTO(appointment));
+
+                var appointmentsRoot = new AppointmentsRootObject()
+                {
+                    Appointments = appointmentsAsDtos
+                };
+
+                var json = JsonConvert.SerializeObject(appointmentsRoot);
+
+                return new RawJsonActionResult(json);
+
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
 
         // PUT: api/Patients/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(AppointmentsRootObject), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> PutPatient(int id, AppointmentCompleteDataDto appointment)
+        public async Task<IActionResult> PutAppointment(int id, AppointmentCompleteDataDto appointment)
         {
             if (id != appointment.Id)
             {
@@ -183,7 +221,7 @@ namespace MVCAgenda.ApiHost.Controllers
         [ProducesResponseType(typeof(AppointmentsRootObject), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> DeletePatient(int id)
+        public async Task<IActionResult> DeleteAppointment(int id)
         {
             var response = await _appointmentService.DeleteAsync(id);
             if (response == true)

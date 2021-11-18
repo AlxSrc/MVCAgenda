@@ -51,7 +51,7 @@ namespace MVCAgenda.ApiHost.Controllers
         {
             try
             {
-                var patients = await _patientService.GetListAsync(-1, parameters.SearchByName,parameters.SearchByPhoneNumber,parameters.SearchByEmail, parameters.IncludeBlackList, parameters.IsDeleted);
+                var patients = await _patientService.GetListAsync(1, parameters.SearchByName,parameters.SearchByPhoneNumber,parameters.SearchByEmail, parameters.IncludeBlackList, parameters.IsDeleted);
                 var patientsAsDtos = new List<PatientDto>();
                 foreach (var patient in patients)
                     patientsAsDtos.Add(_patientFactory.PreperePatientDTO(patient));

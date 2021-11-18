@@ -137,7 +137,7 @@ namespace MVCAgenda.Service.Patients
                 if (isHidden != null)
                     query = query.Where(p => p.Hidden == isHidden);
 
-                if (includeBlackList != null)
+                if (includeBlackList == true)
                     query = query.Where(p => p.StatusCode == (int)PatientStatus.Blacklist);
 
                 if (searchByName != null)

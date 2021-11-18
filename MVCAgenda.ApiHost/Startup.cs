@@ -7,8 +7,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MVCAgenda.ApiHost.Converters;
 using MVCAgenda.ApiHost.Factories.Appointments;
+using MVCAgenda.ApiHost.Factories.Consultations;
 using MVCAgenda.ApiHost.Factories.Items;
+using MVCAgenda.ApiHost.Factories.Medics;
 using MVCAgenda.ApiHost.Factories.Patients;
+using MVCAgenda.ApiHost.Factories.PatientSheets;
+using MVCAgenda.ApiHost.Factories.Rooms;
 using MVCAgenda.ApiHost.JSON.Serializers;
 using MVCAgenda.ApiHost.Managers;
 using MVCAgenda.ApiHost.Maps;
@@ -64,7 +68,11 @@ namespace MVCAgenda.ApiHost
             //Factories
             services.AddScoped<IItemsFactory, ItemsFactory>();
             services.AddScoped<IPatientsFactory, PatientsFactory>();
+            services.AddScoped<IPatientSheetFactory, PatientSheetFactory>();
+            services.AddScoped<IConsultationFactory, ConsultationFactory>();
             services.AddScoped<IAppointmentsFactory, AppointmentsFactory>();
+            services.AddScoped<IMedicsFactory, MedicsFactory>();
+            services.AddScoped<IRoomsFactory, RoomsFactory>();
             services.AddScoped<IObjectConverter, ObjectConverter>(); 
             services.AddScoped<IApiTypeConverter, ApiTypeConverter>();
 
