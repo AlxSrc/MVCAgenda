@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.ApiHost.DTOs.Errors;
 using MVCAgenda.ApiHost.DTOs.PatientSheets;
 using MVCAgenda.ApiHost.Factories.PatientSheets;
@@ -14,6 +15,7 @@ namespace MVCAgenda.ApiHost.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class PatientSheetsController : Controller
     {
         #region Fields

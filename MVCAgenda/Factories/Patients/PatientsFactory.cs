@@ -82,6 +82,7 @@ namespace MVCAgenda.Factories.Patients
         {
             try
             {
+                var ast = await _patientServices.GetAsync(id);
                 return PrepereViewModel(await _patientServices.GetAsync(id));
             }
             catch (Exception exception)

@@ -18,5 +18,8 @@ namespace MVCAgenda.Core.Helpers
 
         //Pagination
         public const int TotalItemsOnAPage = 15;
+
+        //ApyKey
+        public const string ApyKey = "RANDOM_TEXT_FOR_SECRET_KEY_FOR_API!)@(#{*}[$]179328";
     }
 }

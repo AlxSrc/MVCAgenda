@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using MVCAgenda.ApiHost.DTOs.Errors;
 using MVCAgenda.ApiHost.DTOs.Patients;
 using MVCAgenda.ApiHost.Factories.Patients;
@@ -18,6 +19,7 @@ namespace MVCAgenda.ApiHost.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class PatientsController : Controller
     {
         #region Fields
@@ -42,11 +44,11 @@ namespace MVCAgenda.ApiHost.Controllers
 
         #endregion
 
-
         [HttpGet]
         [Route("/api/Patients", Name = "GetPatients")]
         [ProducesResponseType(typeof(PatientsRootObject), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
+        //[AllowAnonymous]
         public async Task<IActionResult> GetPatients(PatientsParametersModel parameters)
         {
             try

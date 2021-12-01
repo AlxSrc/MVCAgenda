@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.ApiHost.DTOs.Errors;
 using MVCAgenda.ApiHost.DTOs.Items;
 using MVCAgenda.ApiHost.Factories.Items;
@@ -14,6 +15,7 @@ namespace MVCAgenda.ApiHost.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class ItemsController : Controller
     {
         #region Fields

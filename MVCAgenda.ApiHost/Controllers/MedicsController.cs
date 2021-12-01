@@ -1,17 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.ApiHost.DTOs.Appointments;
 using MVCAgenda.ApiHost.DTOs.Errors;
 using MVCAgenda.ApiHost.DTOs.Medics;
-using MVCAgenda.ApiHost.Factories.Appointments;
 using MVCAgenda.ApiHost.Factories.Medics;
 using MVCAgenda.ApiHost.JSON.ActionResults;
 using MVCAgenda.ApiHost.JSON.Serializers;
-using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.Helpers;
-using MVCAgenda.Core.Status;
-using MVCAgenda.Service.Appointments;
 using MVCAgenda.Service.Medics;
-using MVCAgenda.Service.Patients;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,6 +17,7 @@ namespace MVCAgenda.ApiHost.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class MedicsController : Controller
     {
 

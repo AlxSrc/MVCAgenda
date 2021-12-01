@@ -441,7 +441,7 @@ namespace MVCAgenda.Service.Appointments
                 Procedure = appointment.Procedure,
                 Made = appointment.Made,
 
-                PatientId = appointment.Id,
+                PatientId = appointment.PatientId,
                 FirstName = patient.FirstName,
                 PhoneNumber = patient.PhoneNumber,
                 Mail = patient.Mail,

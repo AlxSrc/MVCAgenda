@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCAgenda.ApiHost.DTOs.Appointments;
 using MVCAgenda.ApiHost.DTOs.Errors;
 using MVCAgenda.ApiHost.Factories.Appointments;
@@ -19,6 +20,7 @@ namespace MVCAgenda.ApiHost.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class AppointmentsController : Controller
     {
 

@@ -75,12 +75,12 @@ namespace MVCAgenda.Factories.Appointments
                 var test = true;
                 if (test)
                 {
-                    var pagination = await _appointmentServices.GetAppointmentsPaginationAsync(pageIndex, searchByName, searchByPhoneNumber, searchByEmail, searchByAppointmentStartDate, searchByAppointmentEndDate, searchByRoom, searchByMedic, searchByProcedure, id, made, daily, hidden);
+                    var appointments = await _appointmentServices.GetAppointmentsPaginationAsync(pageIndex, searchByName, searchByPhoneNumber, searchByEmail, searchByAppointmentStartDate, searchByAppointmentEndDate, searchByRoom, searchByMedic, searchByProcedure, id, made, daily, hidden);
 
                     var appointmentsListViewModel = new List<AppointmentListItemViewModel>();
-                    foreach (var appointment in pagination.Appointments)
+                    foreach (var appointment in appointments.Appointments)
                         appointmentsListViewModel.Add(await PrepereAppointmentListItemAsync(appointment));
-                    var totalPages = pagination.TotalPages;
+                    var totalPages = appointments.TotalPages;
 
                     return new AppointmentsViewModel()
                     {
