@@ -6,7 +6,7 @@ using MVCAgenda.Core.Domain;
 using System;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Core.Logging;
-using MVCAgenda.Core.Status;
+using MVCAgenda.Core.Enum;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core;
 

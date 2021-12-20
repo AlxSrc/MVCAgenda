@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVCAgenda.Core.Enum;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -46,6 +47,8 @@ namespace MVCAgenda.Core.Domain
         [DataType(DataType.DateTime)]
         [Required]
         public DateTime AppointmentCreationDate { get; set; }
+
+        public int AppointmentType { get; set; }
 
 
         public string Comments { get; set; }

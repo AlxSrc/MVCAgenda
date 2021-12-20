@@ -44,6 +44,8 @@ namespace MVCAgenda.Factories.Home
             try
             {
                 var dailyAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(Daily:true);
+                var dailyPrivateAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(Daily:true, privateAppointment:true);
+                var dailyInsuranceAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(Daily:true, privateAppointment:false);
 
                 var dailyPersonalAppointmentsCount = 0;
                 if (mail != null && mail != Constants.UserName)
@@ -56,7 +58,7 @@ namespace MVCAgenda.Factories.Home
                     }
                 }
 
-                return new HomeViewModel() { DailyAppointments = dailyAppointmentsCount, PersonalDailyAppointments = dailyPersonalAppointmentsCount };
+                return new HomeViewModel() { DailyAppointments = dailyAppointmentsCount, PersonalDailyAppointments = dailyPersonalAppointmentsCount, DailyPrivateAppointments = dailyPrivateAppointmentsCount, DailyInsuranceAppointments = dailyInsuranceAppointmentsCount };
             }
             catch (Exception exception)
             {

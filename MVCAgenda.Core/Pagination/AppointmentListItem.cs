@@ -28,5 +28,7 @@ namespace MVCAgenda.Core.Pagination
         public DateTime EndDate { get; set; }
 
         public string Procedure { get; set; }
+
+        public int AppointmentType { get; set; }
     }
 }

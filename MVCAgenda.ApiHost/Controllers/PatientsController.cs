@@ -10,7 +10,7 @@ using MVCAgenda.ApiHost.JSON.ActionResults;
 using MVCAgenda.ApiHost.JSON.Serializers;
 using MVCAgenda.ApiHost.Models.Parameters.Patients;
 using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.Status;
+using MVCAgenda.Core.Enum;
 using MVCAgenda.Data.DataBaseManager;
 using MVCAgenda.Service.Patients;
 using Newtonsoft.Json;

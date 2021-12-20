@@ -9,7 +9,7 @@ using MVCAgenda.ApiHost.JSON.ActionResults;
 using MVCAgenda.ApiHost.JSON.Serializers;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
-using MVCAgenda.Core.Status;
+using MVCAgenda.Core.Enum;
 using MVCAgenda.Service.Appointments;
 using MVCAgenda.Service.Patients;
 using MVCAgenda.Service.Rooms;

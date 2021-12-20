@@ -5,10 +5,10 @@
         Admin,
         Administrator,
         Doctor,
-        Nurse,
+        Asistenta,
         Receptionist,
         PersonalTrainer,
-        Kinetotherapist,
-        User
+        Kinetotherapeut,
+        Utilizator
     }
 }

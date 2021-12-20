@@ -2,10 +2,10 @@
 
 @{
 	var pageTitle = Model.Blacklist ?? false ?
-																"Programări neefectuate" :
-																Model.Hidden ?? false ?
-																	"Programări sterse" :
-																	"Programări";
+																		"Programări neefectuate" :
+																		Model.Hidden ?? false ?
+																			"Programări sterse" :
+																			"Programări";
 
 	ViewData["Title"] = pageTitle;
 	var prevDisabled = !Model.PreviousPage ? "disabled" : "";
@@ -85,12 +85,12 @@
 					</button>
 				</div>
 			</header>
-			<input asp-for="Made" type="hidden"/>
-			<input asp-for="Hidden" type="hidden"/>
+			<input asp-for="Made" type="hidden" />
+			<input asp-for="Hidden" type="hidden" />
 			<div class="row mt-3 filter-actions collapse">
 				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByAppointmentStartDate"></label>
-					<input class="form-control" aria-label="Text" asp-for="SearchByAppointmentStartDate"/>
+					<input class="form-control" aria-label="Text" asp-for="SearchByAppointmentStartDate" />
 				</div>
 				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 					<label asp-for="SearchByAppointmentEndDate"></label>
@@ -215,51 +215,51 @@
 	</div>
 	<ul class="pagination justify-content-end">
 		<li class="page-item @prevDisabled">
-			<a asp-action="Index" asp-controller="Appointments" asp-route-pageIndex="@firstPage" 
-			asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber" 
-			asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-SearchByAppointmentStartDate="@Model.SearchByAppointmentStartDate" 
-			asp-route-SearchByAppointmentEndDate="@Model.SearchByAppointmentEndDate" asp-route-SearchByRoom="@Model.SearchByRoom" 
-			asp-route-SearchByMedic="@Model.SearchByMedic" asp-route-SearchByProcedure="@Model.SearchByProcedure" 
-			asp-route-Id="@Model.Id" asp-route-Made="@Model.Made" 
-			asp-route-Daily="@Model.Daily" asp-route-Hidden="@Model.Hidden" 
-			class="page-link">
+			<a asp-action="Index" asp-controller="Appointments" asp-route-pageIndex="@firstPage"
+			   asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber"
+			   asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-SearchByAppointmentStartDate="@Model.SearchByAppointmentStartDate"
+			   asp-route-SearchByAppointmentEndDate="@Model.SearchByAppointmentEndDate" asp-route-SearchByRoom="@Model.SearchByRoom"
+			   asp-route-SearchByMedic="@Model.SearchByMedic" asp-route-SearchByProcedure="@Model.SearchByProcedure"
+			   asp-route-Id="@Model.Id" asp-route-Made="@Model.Made"
+			   asp-route-Daily="@Model.Daily" asp-route-Hidden="@Model.Hidden"
+			   class="page-link">
 				<span aria-hidden="true">&laquo;</span>
 			</a>
 		</li>
 		<li class="page-item @prevDisabled">
-			<a asp-action="Index" asp-controller="Appointments" asp-route-pageIndex="@(Model.PageIndex - 1)" 
-			asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber" 
-			asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-SearchByAppointmentStartDate="@Model.SearchByAppointmentStartDate" 
-			asp-route-SearchByAppointmentEndDate="@Model.SearchByAppointmentEndDate" asp-route-SearchByRoom="@Model.SearchByRoom" 
-			asp-route-SearchByMedic="@Model.SearchByMedic" asp-route-SearchByProcedure="@Model.SearchByProcedure" 
-			asp-route-Id="@Model.Id" asp-route-Made="@Model.Made" 
-			asp-route-Daily="@Model.Daily" asp-route-Hidden="@Model.Hidden" 
-			class="page-link">
+			<a asp-action="Index" asp-controller="Appointments" asp-route-pageIndex="@(Model.PageIndex - 1)"
+			   asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber"
+			   asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-SearchByAppointmentStartDate="@Model.SearchByAppointmentStartDate"
+			   asp-route-SearchByAppointmentEndDate="@Model.SearchByAppointmentEndDate" asp-route-SearchByRoom="@Model.SearchByRoom"
+			   asp-route-SearchByMedic="@Model.SearchByMedic" asp-route-SearchByProcedure="@Model.SearchByProcedure"
+			   asp-route-Id="@Model.Id" asp-route-Made="@Model.Made"
+			   asp-route-Daily="@Model.Daily" asp-route-Hidden="@Model.Hidden"
+			   class="page-link">
 				@(prevDisabled == "" ? Model.PageIndex - 1 : "-")
 			</a>
 		</li>
 		<li class="page-item"><a class="page-link active">@Model.PageIndex</a></li>
 		<li class="page-item @nextDisabled">
-			<a asp-action="Index" asp-controller="Appointments" asp-route-pageIndex="@(Model.PageIndex + 1)" 
-			asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber" 
-			asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-SearchByAppointmentStartDate="@Model.SearchByAppointmentStartDate" 
-			asp-route-SearchByAppointmentEndDate="@Model.SearchByAppointmentEndDate" asp-route-SearchByRoom="@Model.SearchByRoom" 
-			asp-route-SearchByMedic="@Model.SearchByMedic" asp-route-SearchByProcedure="@Model.SearchByProcedure" 
-			asp-route-Id="@Model.Id" asp-route-Made="@Model.Made" 
-			asp-route-Daily="@Model.Daily" asp-route-Hidden="@Model.Hidden" 
-			class="page-link">
+			<a asp-action="Index" asp-controller="Appointments" asp-route-pageIndex="@(Model.PageIndex + 1)"
+			   asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber"
+			   asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-SearchByAppointmentStartDate="@Model.SearchByAppointmentStartDate"
+			   asp-route-SearchByAppointmentEndDate="@Model.SearchByAppointmentEndDate" asp-route-SearchByRoom="@Model.SearchByRoom"
+			   asp-route-SearchByMedic="@Model.SearchByMedic" asp-route-SearchByProcedure="@Model.SearchByProcedure"
+			   asp-route-Id="@Model.Id" asp-route-Made="@Model.Made"
+			   asp-route-Daily="@Model.Daily" asp-route-Hidden="@Model.Hidden"
+			   class="page-link">
 				@(nextDisabled == "" ? Model.PageIndex + 1 : "-")
 			</a>
 		</li>
 		<li class="page-item @nextDisabled">
-			<a asp-action="Index" asp-controller="Appointments" asp-route-pageIndex="@(Model.TotalPages)" 
-			asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber" 
-			asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-SearchByAppointmentStartDate="@Model.SearchByAppointmentStartDate" 
-			asp-route-SearchByAppointmentEndDate="@Model.SearchByAppointmentEndDate" asp-route-SearchByRoom="@Model.SearchByRoom" 
-			asp-route-SearchByMedic="@Model.SearchByMedic" asp-route-SearchByProcedure="@Model.SearchByProcedure" 
-			asp-route-Id="@Model.Id" asp-route-Made="@Model.Made" 
-			asp-route-Daily="@Model.Daily" asp-route-Hidden="@Model.Hidden" 
-			class="page-link">
+			<a asp-action="Index" asp-controller="Appointments" asp-route-pageIndex="@(Model.TotalPages)"
+			   asp-route-SearchByName="@Model.SearchByName" asp-route-SearchByPhoneNumber="@Model.SearchByPhoneNumber"
+			   asp-route-SearchByEmail="@Model.SearchByEmail" asp-route-SearchByAppointmentStartDate="@Model.SearchByAppointmentStartDate"
+			   asp-route-SearchByAppointmentEndDate="@Model.SearchByAppointmentEndDate" asp-route-SearchByRoom="@Model.SearchByRoom"
+			   asp-route-SearchByMedic="@Model.SearchByMedic" asp-route-SearchByProcedure="@Model.SearchByProcedure"
+			   asp-route-Id="@Model.Id" asp-route-Made="@Model.Made"
+			   asp-route-Daily="@Model.Daily" asp-route-Hidden="@Model.Hidden"
+			   class="page-link">
 				<span aria-hidden="true">&raquo;</span>
 			</a>
 		</li>

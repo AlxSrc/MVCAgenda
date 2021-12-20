@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVCAgenda.Core.Status
+namespace MVCAgenda.Core.Enum
 {
-    public enum PatientStatus
+    public enum AppointmentType
     {
-        Blacklist = 10,
-        Patient = 20,
-        LoyalPatient = 30
+        Private = 10,
+        Insurance = 20
     }
 }

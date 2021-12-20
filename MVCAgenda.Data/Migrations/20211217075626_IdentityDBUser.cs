@@ -267,6 +267,7 @@ namespace MVCAgenda.Data.Migrations
                     Made = table.Column<bool>(type: "bit", nullable: false),
                     ResponsibleForAppointment = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AppointmentCreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentType = table.Column<int>(type: "int", nullable: false),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hidden = table.Column<bool>(type: "bit", nullable: false)
                 },

@@ -85,6 +85,20 @@
 			<div class="row">
 				<div class="col">
 					<div class="input-group mb-3">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.Blacklist)</span>
+						<label asp-for="Blacklist" class="form-control">@Html.Raw(Model.Blacklist)</label>
+					</div>
+				</div>
+				<div class="col">
+					<div class="input-group mb-3">
+						<span class="input-group-text">@Html.DisplayNameFor(model => model.AppointmentType)</span>
+						<label asp-for="AppointmentType" class="form-control">@Html.Raw(Model.AppointmentType)</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="input-group mb-3">
 						<span class="input-group-text">@Html.DisplayNameFor(model => model.Medic)</span>
 						<input asp-for="Medic" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.Medic)" readonly>
 					</div>

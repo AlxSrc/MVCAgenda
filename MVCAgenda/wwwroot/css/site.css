@@ -6,6 +6,7 @@
     --main-color: #7f73bb;
     --main-color-darker: #6c629e;
     --main-color-shadow: 0 0 0 0.25rem rgba(108, 98, 158, 0.25);
+    --second-color: #FBA87E;
     --gray: #c5c1c1;
     --white: #fff;
     --black: #333;
@@ -84,6 +85,14 @@
 .btn-primary {
     border-color: var(--main-color);
     background-color: var(--main-color);
+}
+
+.appointments-private {
+    color: var(--main-color);
+}
+
+.appointments-insurance {
+    color: var(--second-color);
 }
 
 .btn-primary:hover {

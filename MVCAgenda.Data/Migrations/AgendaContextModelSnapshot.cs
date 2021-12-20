@@ -29,6 +29,9 @@ namespace MVCAgenda.Data.Migrations
                     b.Property<DateTime>("AppointmentCreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("AppointmentType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 

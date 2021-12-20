@@ -35,7 +35,8 @@ namespace MVCAgenda.Service.Appointments
             int? id = null,
             bool? made = null,
             bool? Daily = null,
-            bool? Hidden = null);
+            bool? Hidden = null,
+            bool? privateAppointment = null);
 
         Task<AppointmentsPagination> GetAppointmentsPaginationAsync(
             int pageIndex,

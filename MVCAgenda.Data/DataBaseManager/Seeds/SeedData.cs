@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MVCAgenda.Core.Domain;
-using MVCAgenda.Core.Status;
+using MVCAgenda.Core.Enum;
 using MVCAgenda.Core.Users;
 using MVCAgenda.Core.Users.AppPermissions;
 using MVCAgenda.Data.DataBaseManager;
@@ -20,7 +20,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
             try
             {
                 var init = false;
-                if (init == true)
+                if (init)
                 {
                     int ressult; 
                     var random = new Random();
@@ -385,6 +385,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                 Made = true,
                                 ResponsibleForAppointment = "Administrator",
                                 AppointmentCreationDate = DateTime.Now.AddDays(1),
+                                AppointmentType = (int)AppointmentType.Private,
                                 Hidden = false
                             },
                             new Appointment
@@ -398,6 +399,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                 Made = true,
                                 ResponsibleForAppointment = "Administrator",
                                 AppointmentCreationDate = DateTime.Now.AddDays(3),
+                                AppointmentType = (int)AppointmentType.Private,
                                 Hidden = false
                             },
                             new Appointment
@@ -411,6 +413,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                 Made = true,
                                 ResponsibleForAppointment = "Administrator",
                                 AppointmentCreationDate = DateTime.Now.AddDays(2),
+                                AppointmentType = (int)AppointmentType.Private,
                                 Hidden = false
                             },
                             new Appointment
@@ -424,6 +427,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                 Made = true,
                                 ResponsibleForAppointment = "Administrator",
                                 AppointmentCreationDate = DateTime.Now.AddDays(7),
+                                AppointmentType = (int)AppointmentType.Private,
                                 Hidden = false
                             });
 
@@ -443,6 +447,7 @@ namespace MVCAgenda.Data.DataBaseManager.Seeds
                                         Made = true,
                                         ResponsibleForAppointment = "Administrator",
                                         AppointmentCreationDate = DateTime.Now.AddHours(random.Next(1,1000)),
+                                        AppointmentType = ressult == 1 ? (int)AppointmentType.Private : (int)AppointmentType.Insurance,
                                         Hidden = false
                                     });
                             }

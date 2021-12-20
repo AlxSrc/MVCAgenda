@@ -71,11 +71,13 @@ namespace MVCAgenda.Controllers
                 model.LastName = patient.LastName;
                 model.PhoneNumber = patient.PhoneNumber;
                 model.Mail = patient.Mail;
+                model.PrivateAppointment = true;
                 model.StartDate = DateTime.Now;
                 model.EndDate = DateTime.Now.AddMinutes(60);
             }
             else
             {
+                model.PrivateAppointment = true;
                 model.StartDate = DateTime.Now;
                 model.EndDate = DateTime.Now.AddMinutes(60);
             }

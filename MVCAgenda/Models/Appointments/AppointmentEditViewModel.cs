@@ -33,6 +33,9 @@ namespace MVCAgenda.Models.Appointments
         [Required]
         public string Procedure { get; set; }
 
+        [DisplayName("Programare privată")]
+        public bool PrivateAppointment { get; set; }
+
 
         [DisplayName("Efectuată")]
         [Required]

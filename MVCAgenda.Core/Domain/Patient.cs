@@ -1,4 +1,4 @@
-﻿using MVCAgenda.Core.Status;
+﻿using MVCAgenda.Core.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

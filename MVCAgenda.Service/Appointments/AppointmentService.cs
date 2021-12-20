@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MVCAgenda.Core;
 using MVCAgenda.Core.Domain;
+using MVCAgenda.Core.Enum;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Pagination;
@@ -161,7 +162,8 @@ namespace MVCAgenda.Service.Appointments
             int? id = null,
             bool? made = null,
             bool? daily = null,
-            bool? hidden = null)
+            bool? hidden = null,
+            bool? privateAppointment = null)
         {
             try
             {
@@ -202,6 +204,12 @@ namespace MVCAgenda.Service.Appointments
                 //programrile sterse
                 if (hidden != null)
                     query = query.Where(a => a.Hidden == hidden);
+
+                //programrile private
+                if (privateAppointment != null && privateAppointment == true)
+                    query = query.Where(a => a.AppointmentType == (int)AppointmentType.Private);
+                else if (privateAppointment != null && privateAppointment == false)
+                    query = query.Where(a => a.AppointmentType == (int)AppointmentType.Insurance);
 
                 var list = await query.ToListAsync();
                 var listToCount = new List<ListItem>();
@@ -440,6 +448,7 @@ namespace MVCAgenda.Service.Appointments
                 StartDate = appointment.StartDate,
                 Procedure = appointment.Procedure,
                 Made = appointment.Made,
+                AppointmentType = appointment.AppointmentType,
 
                 PatientId = appointment.PatientId,
                 FirstName = patient.FirstName,

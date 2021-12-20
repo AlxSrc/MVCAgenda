@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MVCAgenda.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Administrator")]
     public class UsersController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;

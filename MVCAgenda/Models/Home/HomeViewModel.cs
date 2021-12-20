@@ -4,7 +4,7 @@
     {
         public int DailyAppointments { get; set; }
         public int PersonalDailyAppointments { get; set; }
-        //public int PatientNumber { get; set; }
-        //public int TotalAppointmentNumber { get; set; }
+        public int DailyPrivateAppointments { get; set; }
+        public int DailyInsuranceAppointments { get; set; }
     }
 }

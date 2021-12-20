@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -143,6 +144,35 @@ namespace MVCAgenda.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == null)
+                {
+                    return null;
+                }
+
+                var user = await _userManager.FindByIdAsync(id);
+                if(user!=null)
+                {
+                var deleteRepsonse = await _userManager.DeleteAsync(user);
+                    if (deleteRepsonse.Succeeded)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         #endregion

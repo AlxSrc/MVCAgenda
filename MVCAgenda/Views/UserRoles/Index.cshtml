@@ -65,6 +65,9 @@
 						</td>
 						<td>
 							<a class="btn btn-main-color-filled" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@item.UserId">Modifică rolurile</a>
+							<form style="display: inline-block" method="post" asp-action="Delete" asp-route-id="@item.UserId">
+								<button class="btn btn-danger" type="submit" class="btn btn-danger">Șterge contul</button>
+							</form>
 						</td>
 					</tr>
 				}

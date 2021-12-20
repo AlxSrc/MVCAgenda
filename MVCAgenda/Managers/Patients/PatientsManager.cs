@@ -5,7 +5,7 @@ using MVCAgenda.Core;
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
-using MVCAgenda.Core.Status;
+using MVCAgenda.Core.Enum;
 using MVCAgenda.Factories.Patients;
 using MVCAgenda.Models.Patients;
 using MVCAgenda.Service.Logins;

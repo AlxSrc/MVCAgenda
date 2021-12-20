@@ -64,19 +64,18 @@ namespace MVCAgenda.Controllers
                     var ressultCreateRole = await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
                     await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
                     await _roleManager.CreateAsync(new IdentityRole(Roles.Administrator.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.User.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Utilizator.ToString()));
 
                     await _roleManager.CreateAsync(new IdentityRole(Roles.Doctor.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Nurse.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Asistenta.ToString()));
                     await _roleManager.CreateAsync(new IdentityRole(Roles.Receptionist.ToString()));
                     await _roleManager.CreateAsync(new IdentityRole(Roles.PersonalTrainer.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Kinetotherapist.ToString()));
+                    await _roleManager.CreateAsync(new IdentityRole(Roles.Kinetotherapeut.ToString()));
 
                     MailAddress emailAddress = new MailAddress(Constants.AdminUser);
-                    string userName = emailAddress.User;
                     var userModerator = new ApplicationUser
                     {
-                        UserName = userName,
+                        UserName = emailAddress.Address,
                         Email = emailAddress.Address
                     };
 
@@ -139,13 +138,13 @@ namespace MVCAgenda.Controllers
                     {
                         await _medicsManager.CreateAsync(new MedicViewModel() { Name = model.MedicName, Mail = model.Email });
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        await _userManager.AddToRoleAsync(user, Roles.Nurse.ToString());
+                        await _userManager.AddToRoleAsync(user, Roles.Asistenta.ToString());
                         return RedirectToAction("index", "Home");
                     }
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        await _userManager.AddToRoleAsync(user, Roles.User.ToString());
+                        await _userManager.AddToRoleAsync(user, Roles.Utilizator.ToString());
                         return RedirectToAction("index", "Home");
                     }
                 }

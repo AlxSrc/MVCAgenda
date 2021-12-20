@@ -2,7 +2,7 @@
 using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
-using MVCAgenda.Core.Status;
+using MVCAgenda.Core.Enum;
 using MVCAgenda.Factories.Appointments;
 using MVCAgenda.Models.Appointments;
 using MVCAgenda.Service.Appointments;
@@ -103,6 +103,7 @@ namespace MVCAgenda.Managers.Appointments
                     StartDate = appointmentViewModel.StartDate,
                     EndDate = appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(60),
                     Procedure = appointmentViewModel.Procedure,
+                    AppointmentType = appointmentViewModel.PrivateAppointment == true ? (int)AppointmentType.Private : (int)AppointmentType.Insurance,
                     Made = true,
                     ResponsibleForAppointment = appointmentViewModel.ResponsibleForAppointment,
                     AppointmentCreationDate = DateTime.Now,
@@ -166,6 +167,7 @@ namespace MVCAgenda.Managers.Appointments
                     StartDate = appointmentViewModel.StartDate,
                     EndDate = appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(60),
                     Procedure = appointmentViewModel.Procedure,
+                    AppointmentType = appointmentViewModel.PrivateAppointment == true ? (int)AppointmentType.Private : (int)AppointmentType.Insurance,
                     Made = appointmentViewModel.Made,
                     ResponsibleForAppointment = appointmentViewModel.ResponsibleForAppointment,
                     AppointmentCreationDate = appointmentViewModel.AppointmentCreationDate,

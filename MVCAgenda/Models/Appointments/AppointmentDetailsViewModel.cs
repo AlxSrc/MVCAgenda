@@ -25,7 +25,7 @@ namespace MVCAgenda.Models.Appointments
         public string Mail { get; set; }
 
 
-        [DisplayName("Lista neagră")]
+        [DisplayName("Tipul pacientului")]
         public string Blacklist { get; set; }
 
 
@@ -53,6 +53,10 @@ namespace MVCAgenda.Models.Appointments
 
         [DisplayName("Efectuată")]
         public string MadeText { get; set; }
+
+
+        [DisplayName("Tipul programării")]
+        public string AppointmentType { get; set; }
 
 
         [DisplayName("Programare realizată de")]

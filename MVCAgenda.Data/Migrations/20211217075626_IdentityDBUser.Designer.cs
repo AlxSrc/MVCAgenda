@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCAgenda.Data.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20211110110119_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211217075626_IdentityDBUser")]
+    partial class IdentityDBUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace MVCAgenda.Data.Migrations
 
                     b.Property<DateTime>("AppointmentCreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("AppointmentType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
