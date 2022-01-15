@@ -14,7 +14,7 @@ using MVCAgenda.Models.Medics;
 namespace MVCAgenda.Controllers
 {
     [Authorize]
-    public class AccountController : Controller 
+    public class AccountController : Controller
     {
         #region Fields
 
@@ -57,38 +57,38 @@ namespace MVCAgenda.Controllers
         {
             try
             {
-                var initDatabase = false;
-                if (initDatabase)
-                {
-                    //create rolles
-                    var ressultCreateRole = await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Administrator.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Utilizator.ToString()));
+                //var initDatabase = await _userManager.FindByEmailAsync(Constants.AdminUser) != null ? false : true;
+                //if (initDatabase)
+                //{
+                //    //create rolles
+                //    var ressultCreateRole = await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+                //    await _roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+                //    await _roleManager.CreateAsync(new IdentityRole(Roles.Administrator.ToString()));
+                //    await _roleManager.CreateAsync(new IdentityRole(Roles.Utilizator.ToString()));
 
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Doctor.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Asistenta.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Receptionist.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.PersonalTrainer.ToString()));
-                    await _roleManager.CreateAsync(new IdentityRole(Roles.Kinetotherapeut.ToString()));
+                //    await _roleManager.CreateAsync(new IdentityRole(Roles.Doctor.ToString()));
+                //    await _roleManager.CreateAsync(new IdentityRole(Roles.Asistenta.ToString()));
+                //    await _roleManager.CreateAsync(new IdentityRole(Roles.Receptionist.ToString()));
+                //    await _roleManager.CreateAsync(new IdentityRole(Roles.PersonalTrainer.ToString()));
+                //    await _roleManager.CreateAsync(new IdentityRole(Roles.Kinetotherapeut.ToString()));
 
-                    MailAddress emailAddress = new MailAddress(Constants.AdminUser);
-                    var userModerator = new ApplicationUser
-                    {
-                        UserName = emailAddress.Address,
-                        Email = emailAddress.Address
-                    };
+                //    MailAddress emailAddress = new MailAddress(Constants.AdminUser);
+                //    var userModerator = new ApplicationUser
+                //    {
+                //        UserName = emailAddress.Address,
+                //        Email = emailAddress.Address
+                //    };
 
-                    var ressultCreate = await _userManager.CreateAsync(userModerator, "{Al@ka#9A#s&KA|");
+                //    var ressultCreate = await _userManager.CreateAsync(userModerator, "}L^h*@KA4gA09(");
 
-                    if (ressultCreate.Succeeded)
-                    {
-                        var ressultaddingRole = await _userManager.AddToRoleAsync(userModerator, Roles.Admin.ToString());
-                        await _signInManager.SignInAsync(userModerator, isPersistent: false);
-                        return RedirectToAction("Index", "Scheduler");
-                    }
-                }
-
+                //    if (ressultCreate.Succeeded)
+                //    {
+                //        var ressultaddingRole = await _userManager.AddToRoleAsync(userModerator, Roles.Admin.ToString());
+                //        await _signInManager.SignInAsync(userModerator, isPersistent: false);
+                //        return RedirectToAction("Index", "Scheduler");
+                //    }
+                //}
+                //else 
                 if (ModelState.IsValid)
                 {
                     var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, user.RememberMe, false);
@@ -103,7 +103,8 @@ namespace MVCAgenda.Controllers
 
                 }
                 return View(user);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return View(user);
             }

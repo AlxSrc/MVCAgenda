@@ -24,10 +24,10 @@ namespace MVCAgenda
                 try
                 {
                     //BasicData
-                    SeedData.Initialize(services);
+                    //SeedData.Initialize(services);
 
-                    logger.LogInformation("Finished Seeding Default Data");
-                    logger.LogInformation("Application Starting");
+                    //logger.LogInformation("Finished Seeding Default Data");
+                    //logger.LogInformation("Application Starting");
                 }
                 catch (Exception ex)
                 {

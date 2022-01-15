@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCAgenda.Core", "MVCAgenda
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{A32EA766-E6DE-4393-81BE-99689A4EBD2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCAgenda.ApiHost", "MVCAgenda.ApiHost\MVCAgenda.ApiHost.csproj", "{BD334EBF-0C7C-4452-918B-1160E0E2E0DD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,10 +35,6 @@ Global
 		{7E71A58D-058F-4184-A579-E16AC31E707E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E71A58D-058F-4184-A579-E16AC31E707E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E71A58D-058F-4184-A579-E16AC31E707E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD334EBF-0C7C-4452-918B-1160E0E2E0DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD334EBF-0C7C-4452-918B-1160E0E2E0DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD334EBF-0C7C-4452-918B-1160E0E2E0DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD334EBF-0C7C-4452-918B-1160E0E2E0DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

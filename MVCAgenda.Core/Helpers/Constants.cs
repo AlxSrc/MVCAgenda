@@ -9,8 +9,8 @@ namespace MVCAgenda.Core.Helpers
     public class Constants
     {
         //Accounts
-        public const string AdminUser = "moderator_agenda@gmail.com"; 
-        public const string UserName = "moderator_agenda";
+        public const string AdminUser = "srd.alexc@gmail.com"; 
+        public const string UserName = "Alexandru";
 
         //Appopintments
         public const int BlacklistMissingAppointmentNumber = 2;

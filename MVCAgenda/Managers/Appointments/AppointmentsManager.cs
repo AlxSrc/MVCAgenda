@@ -101,7 +101,7 @@ namespace MVCAgenda.Managers.Appointments
                     MedicId = appointmentViewModel.MedicId,
                     RoomId = appointmentViewModel.RoomId,
                     StartDate = appointmentViewModel.StartDate,
-                    EndDate = appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(60),
+                    EndDate = appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(30),
                     Procedure = appointmentViewModel.Procedure,
                     AppointmentType = appointmentViewModel.PrivateAppointment == true ? (int)AppointmentType.Private : (int)AppointmentType.Insurance,
                     Made = true,
@@ -121,7 +121,7 @@ namespace MVCAgenda.Managers.Appointments
 
                     //aduc toate programarile pacientului respectiv
 
-                    var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, Hidden: false);
+                    var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, hidden: false);
 
                     //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
                     if(appointments.Count >= Constants.LoyalAppointmentNumber)
@@ -187,7 +187,7 @@ namespace MVCAgenda.Managers.Appointments
                         //folosind id-ul pacientului din programarea adaugata
                         patientId = newAppointment.PatientId;
                         //aduc toate programarile pacientului respectiv
-                        var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, made:false, Hidden: false);
+                        var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, made:false, hidden: false);
                         //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
                         if (appointments.Count >= Constants.BlacklistMissingAppointmentNumber)
                         {

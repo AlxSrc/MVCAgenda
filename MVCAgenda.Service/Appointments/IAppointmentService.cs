@@ -20,8 +20,8 @@ namespace MVCAgenda.Service.Appointments
             string searchByProcedure = null,
             int? id = null,
             bool? made = null,
-            bool? Daily = null,
-            bool? Hidden = null);
+            bool? daily = null,
+            bool? hidden = null);
 
         Task<int> GetNumberOfFiltredAppointmentsAsync(
             string searchByName = null,

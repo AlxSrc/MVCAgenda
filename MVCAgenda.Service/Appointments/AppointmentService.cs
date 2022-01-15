@@ -107,6 +107,9 @@ namespace MVCAgenda.Service.Appointments
                     query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
                 }
 
+                if (searchByAppointmentStartDate != null)
+                    query = query.Where(a => a.StartDate.Date == searchByAppointmentStartDate);
+
                 if (searchByRoom != null)
                     query = query.Where(a => a.RoomId == searchByRoom);
 
@@ -128,8 +131,7 @@ namespace MVCAgenda.Service.Appointments
                 if (daily != null && id == null && 
                     searchByAppointmentStartDate == null && 
                     searchByAppointmentEndDate == null)
-                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date)
-                        .Where(a => a.StartDate >= DateTime.Now.AddMinutes(-60));
+                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
 
                 //programrile sterse
                 if (hidden != null)

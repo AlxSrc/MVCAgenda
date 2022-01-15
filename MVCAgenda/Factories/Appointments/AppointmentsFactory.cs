@@ -221,7 +221,7 @@ namespace MVCAgenda.Factories.Appointments
                 {
                     viewModel.Blacklist = "<span class=\"badge bg-Danger\">Lista neagra</span>";
                 }
-                else if (patient.StatusCode == (int)PatientStatus.Patient)
+                else if (patient.StatusCode == (int)PatientStatus.LoyalPatient)
                 {
                     viewModel.Blacklist = "<span class=\"badge bg-primary\">Pacient loial</span>";
                 }
