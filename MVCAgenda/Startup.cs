@@ -35,6 +35,9 @@ using MVCAgenda.Factories.Logging;
 using MVCAgenda.Factories.Home;
 using MVCAgenda.Core;
 using MVCAgenda.Framework;
+using Nop.Services.Helpers;
+using MVCAgenda.Service.Helpers;
+using MVCAgenda.Core.DateTimeHelper;
 
 namespace MVCAgenda
 {
@@ -79,6 +82,8 @@ namespace MVCAgenda
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<ILoggerService, LoggerService>();
             services.AddScoped<IWorkContext, WebWorkContext>();
+            services.AddScoped<IDateTimeHelper, DateTimeHelper>();
+            services.AddScoped<DateTimeSettings>();
 
             //Factories
             services.AddScoped<IHomeFactory, HomeFactory>();

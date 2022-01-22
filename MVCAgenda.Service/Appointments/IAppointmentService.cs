@@ -12,6 +12,8 @@ namespace MVCAgenda.Service.Appointments
 
         Task<Appointment> GetAsync(int Id);
 
+        Task<List<Appointment>> GetAppointmentListAsync();
+
         Task<List<Appointment>> GetFiltredListAsync(int pageIndex,
             DateTime? searchByAppointmentStartDate = null,
             DateTime? searchByAppointmentEndDate = null,
@@ -21,7 +23,8 @@ namespace MVCAgenda.Service.Appointments
             int? id = null,
             bool? made = null,
             bool? daily = null,
-            bool? hidden = null);
+            bool? hidden = null,
+            bool? privateAppointment = null);
 
         Task<int> GetNumberOfFiltredAppointmentsAsync(
             string searchByName = null,
@@ -34,8 +37,8 @@ namespace MVCAgenda.Service.Appointments
             string searchByProcedure = null,
             int? id = null,
             bool? made = null,
-            bool? Daily = null,
-            bool? Hidden = null,
+            bool? daily = null,
+            bool? hidden = null,
             bool? privateAppointment = null);
 
         Task<AppointmentsPagination> GetAppointmentsPaginationAsync(
@@ -51,7 +54,8 @@ namespace MVCAgenda.Service.Appointments
             int? id = null,
             bool? made = null,
             bool? Daily = null,
-            bool? Hidden = null);
+            bool? Hidden = null,
+            bool? privateAppointment = null);
 
         Task<bool> UpdateAsync(Appointment appointment);
 

@@ -3,6 +3,7 @@ using MVCAgenda.Core.Domain;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Models.Consultations;
 using MVCAgenda.Service.Consultations;
+using MVCAgenda.Service.Helpers;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Service.Patients;
 using MVCAgenda.Service.PatientsSheet;
@@ -20,6 +21,7 @@ namespace MVCAgenda.Factories.Consultations
         private readonly IPatientSheetService _patientSheetService;
         private readonly ILoggerService _logger;
         private readonly IWorkContext _workContext;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         #endregion
 
@@ -27,13 +29,20 @@ namespace MVCAgenda.Factories.Consultations
 
         #region Constructor
 
-        public ConsultationsFactory(IConsultationService consultationServices, ILoggerService loggerServices, IPatientService patientService, IPatientSheetService patientSheetService, IWorkContext workContext)
+        public ConsultationsFactory(
+            IConsultationService consultationServices,
+            ILoggerService loggerServices, 
+            IPatientService patientService, 
+            IPatientSheetService patientSheetService, 
+            IWorkContext workContext,
+            IDateTimeHelper dateTimeHelper)
         {
             _consultationServices = consultationServices;
             _patientService = patientService;
             _patientSheetService = patientSheetService;
             _logger = loggerServices;
             _workContext = workContext;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
@@ -54,7 +63,7 @@ namespace MVCAgenda.Factories.Consultations
                 Symptoms = consultation.Symptoms,
                 Diagnostic = consultation.Diagnostic,
                 Prescriptions = consultation.Prescriptions,
-                CreationDate = consultation.CreationDate,
+                CreationDate = await _dateTimeHelper.ConvertToUserTimeAsync(consultation.CreationDate),
                 Hidden = consultation.Hidden
             };
             return consultationViewModel;
@@ -77,7 +86,7 @@ namespace MVCAgenda.Factories.Consultations
                     Symptoms = consultation.Symptoms,
                     Diagnostic = consultation.Diagnostic,
                     Prescriptions = consultation.Prescriptions,
-                    CreationDate = consultation.CreationDate,
+                    CreationDate = await _dateTimeHelper.ConvertToUserTimeAsync(consultation.CreationDate),
                     Hidden = consultation.Hidden
                 };
                 return consultationViewModel;
@@ -90,6 +99,7 @@ namespace MVCAgenda.Factories.Consultations
             }
             
         }
+
         public async Task<ConsultationEditViewModel> PrepereEditViewModelAsync(int id)
         {
             try
@@ -107,7 +117,7 @@ namespace MVCAgenda.Factories.Consultations
                     Symptoms = consultation.Symptoms,
                     Diagnostic = consultation.Diagnostic,
                     Prescriptions = consultation.Prescriptions,
-                    CreationDate = consultation.CreationDate,
+                    CreationDate = await _dateTimeHelper.ConvertToUserTimeAsync(consultation.CreationDate),
                     Hidden = consultation.Hidden
                 };
                 return consultationViewModel;
@@ -119,6 +129,7 @@ namespace MVCAgenda.Factories.Consultations
                 return new ConsultationEditViewModel();
             }
         }
+
         public async Task<ConsultationCreateViewModel> PrepereCreateViewModelAsync(int id)
         {
             try

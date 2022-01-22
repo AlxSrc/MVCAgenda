@@ -12,7 +12,7 @@ namespace MVCAgenda.Models.Appointments
 
         //Details about Patient
         [StringLength(60, MinimumLength = 1)]
-        [DisplayName("Nume*")]
+        [DisplayName("Nume *")]
         [Required]
         public string FirstName { get; set; }
 
@@ -23,7 +23,7 @@ namespace MVCAgenda.Models.Appointments
 
 
         [StringLength(20, MinimumLength = 1)]
-        [DisplayName("Număr de telefon*")]
+        [DisplayName("Număr de telefon *")]
         [DataType(DataType.PhoneNumber)]
         [Required]
         public string PhoneNumber { get; set; }
@@ -36,15 +36,15 @@ namespace MVCAgenda.Models.Appointments
 
 
         //Details about Medic
-        [DisplayName("Medic")]
+        [DisplayName("Medic *")]
         public int MedicId { get; set; }
 
 
-        [DisplayName("Camera")]
+        [DisplayName("Camera *")]
         public int RoomId { get; set; }
 
 
-        [DisplayName("Dată început*")]
+        [DisplayName("Dată început *")]
         [Required]
         public DateTime StartDate { get; set; } = DateTime.Now;
 
@@ -53,7 +53,7 @@ namespace MVCAgenda.Models.Appointments
         public DateTime? EndDate { get; set; } = DateTime.Now;
 
 
-        [DisplayName("Procedura*")]
+        [DisplayName("Procedura *")]
         [Required]
         public string Procedure { get; set; }
 

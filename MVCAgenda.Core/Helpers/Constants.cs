@@ -11,13 +11,14 @@ namespace MVCAgenda.Core.Helpers
         //Accounts
         public const string AdminUser = "srd.alexc@gmail.com"; 
         public const string UserName = "Alexandru";
+        public const string AdminRole = "Admin";
 
         //Appopintments
         public const int BlacklistMissingAppointmentNumber = 2;
         public const int LoyalAppointmentNumber = 10;
 
         //Pagination
-        public const int TotalItemsOnAPage = 15;
+        public const int TotalItemsOnAPage = 45;
 
         //ApyKey
         public const string ApyKey = "RANDOM_TEXT_FOR_SECRET_KEY_FOR_API!)@(#{*}[$]179328";

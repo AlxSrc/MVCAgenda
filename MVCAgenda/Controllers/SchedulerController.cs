@@ -103,7 +103,7 @@ namespace MVCAgenda.Controllers
                 var user = User.Identity.Name;
                 if (user == Constants.UserName)
                 {
-                    var appointmentsList = await _schedulerManager.GetAsync(searchByAppointmentStartDate: model.Value.StartDate, searchByAppointmentEndDate: model.Value.EndDate, null);
+                    var appointmentsList = await _schedulerManager.GetAsync(searchByAppointmentStartDate: model.Value.StartDate, searchByAppointmentEndDate: model.Value.EndDate,null);
 
                     return new JsonResult(new
                     {

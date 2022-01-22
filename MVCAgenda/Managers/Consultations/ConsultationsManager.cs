@@ -5,6 +5,7 @@ using MVCAgenda.Core.Logging;
 using MVCAgenda.Factories.Consultations;
 using MVCAgenda.Models.Consultations;
 using MVCAgenda.Service.Consultations;
+using MVCAgenda.Service.Helpers;
 using MVCAgenda.Service.Logins;
 using System;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace MVCAgenda.Managers.Consultations
         private readonly IConsultationsFactory _consultationFactory;
         private readonly ILoggerService _logger;
         private readonly IWorkContext _workContext;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         #endregion
 
@@ -29,12 +31,14 @@ namespace MVCAgenda.Managers.Consultations
         public ConsultationsManager(IConsultationService consultationServices, 
             IConsultationsFactory consultationFactory, 
             ILoggerService loggerServices,
-            IWorkContext workContext)
+            IWorkContext workContext,
+            IDateTimeHelper dateTimeHelper)
         {
             _consultationServices = consultationServices;
             _consultationFactory = consultationFactory;
             _logger = loggerServices;
             _workContext = workContext;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
@@ -53,7 +57,7 @@ namespace MVCAgenda.Managers.Consultations
                     Diagnostic = consultationViewModel.Diagnostic,
                     Prescriptions = consultationViewModel.Prescriptions,
                     Symptoms = consultationViewModel.Symptoms,
-                    CreationDate = DateTime.Now,
+                    CreationDate = _dateTimeHelper.ConvertToUtcTime(DateTime.Now),
                     Hidden = false
                 };
 
@@ -93,7 +97,7 @@ namespace MVCAgenda.Managers.Consultations
                         Diagnostic = consultationViewModel.Diagnostic,
                         Prescriptions = consultationViewModel.Prescriptions,
                         Symptoms = consultationViewModel.Symptoms,
-                        CreationDate = consultationViewModel.CreationDate,
+                        CreationDate = _dateTimeHelper.ConvertToUtcTime(consultationViewModel.CreationDate),
                         Hidden = consultationViewModel.Hidden
                     };
 

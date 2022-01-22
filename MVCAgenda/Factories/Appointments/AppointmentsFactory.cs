@@ -11,9 +11,9 @@ using MVCAgenda.Core.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using MVCAgenda.Core.Enum;
-using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core;
 using MVCAgenda.Core.Pagination;
+using MVCAgenda.Service.Helpers;
 
 namespace MVCAgenda.Factories.Appointments
 {
@@ -27,6 +27,7 @@ namespace MVCAgenda.Factories.Appointments
         private readonly IMedicService _medicServices;
         private readonly ILoggerService _logger;
         private readonly IWorkContext _workContext;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         #endregion
 
@@ -39,7 +40,9 @@ namespace MVCAgenda.Factories.Appointments
             IPatientService patientServices,
             IRoomService roomServices,
             IMedicService medicServices,
-            ILoggerService loggerServices, IWorkContext workContext)
+            ILoggerService loggerServices, 
+            IWorkContext workContext,
+            IDateTimeHelper dateTimeHelper)
         {
             _appointmentServices = appointmentServices;
             _patientServices = patientServices;
@@ -47,6 +50,7 @@ namespace MVCAgenda.Factories.Appointments
             _medicServices = medicServices;
             _logger = loggerServices;
             _workContext = workContext;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
@@ -216,7 +220,7 @@ namespace MVCAgenda.Factories.Appointments
                     viewModel.AppointmentType = $"<span>Programare privată</span>";
                 else if (appointment.AppointmentType == (int)AppointmentType.Insurance)
                     viewModel.AppointmentType = $"<span>Programare prin casa de asigurări</span>";
-                
+
                 if (patient.StatusCode == (int)PatientStatus.Blacklist)
                 {
                     viewModel.Blacklist = "<span class=\"badge bg-Danger\">Lista neagra</span>";
@@ -328,8 +332,8 @@ namespace MVCAgenda.Factories.Appointments
                 Mail = appointment.Mail,
                 Medic = appointment.Medic,
                 Room = appointment.Room,
-                StartDate = appointment.StartDate,
-                EndDate = appointment.EndDate,
+                StartDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate),
+                EndDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate),
                 Procedure = appointment.Procedure,
                 Hidden = appointment.Hidden
             };

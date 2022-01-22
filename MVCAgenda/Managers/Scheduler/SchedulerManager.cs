@@ -6,6 +6,7 @@ using MVCAgenda.Core.Logging;
 using MVCAgenda.Factories.Scheduler;
 using MVCAgenda.Models.SyncfusionScheduler;
 using MVCAgenda.Service.Appointments;
+using MVCAgenda.Service.Helpers;
 using MVCAgenda.Service.Logins;
 using MVCAgenda.Service.Medics;
 using MVCAgenda.Service.Patients;
@@ -27,6 +28,7 @@ namespace MVCAgenda.Managers.Scheduler
         private readonly IMedicService _medicServices;
         private readonly ILoggerService _logger;
         private readonly IWorkContext _workContext;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         #endregion
 
@@ -40,8 +42,9 @@ namespace MVCAgenda.Managers.Scheduler
             IPatientService patientServices,
             IRoomService roomServices,
             IMedicService medicServices,
-            ILoggerService loggerServices, 
-            IWorkContext workContext)
+            ILoggerService loggerServices,
+            IWorkContext workContext,
+            IDateTimeHelper dateTimeHelper)
         {
             _appointmentServices = appointmentServices;
             _schedulerFactory = schedulerFactory;
@@ -50,6 +53,7 @@ namespace MVCAgenda.Managers.Scheduler
             _medicServices = medicServices;
             _logger = loggerServices;
             _workContext = workContext;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
@@ -99,8 +103,8 @@ namespace MVCAgenda.Managers.Scheduler
                     PatientId = patientId,
                     MedicId = scheduleData.MedicId,
                     RoomId = scheduleData.RoomId,
-                    StartDate = scheduleData.StartTime,
-                    EndDate = scheduleData.EndTime,
+                    StartDate = _dateTimeHelper.ConvertToUtcTime(scheduleData.StartTime),
+                    EndDate = _dateTimeHelper.ConvertToUtcTime(scheduleData.EndTime),
                     Procedure = scheduleData.Subject,
                     Made = true,
                     ResponsibleForAppointment = User,
@@ -132,7 +136,7 @@ namespace MVCAgenda.Managers.Scheduler
 
         public async Task<ScheduleList> GetAsync(
             DateTime? searchByAppointmentStartDate = null,
-            DateTime? searchByAppointmentEndDate = null, 
+            DateTime? searchByAppointmentEndDate = null,
             string? mail = null)
         {
             try
@@ -150,7 +154,7 @@ namespace MVCAgenda.Managers.Scheduler
                     appointments = await _appointmentServices.GetFiltredListAsync(-1, searchByAppointmentStartDate: searchByAppointmentStartDate, searchByAppointmentEndDate: searchByAppointmentEndDate, searchByMedic: medicId, hidden: false);
                 }
                 else
-                    appointments = await _appointmentServices.GetFiltredListAsync(-1, searchByAppointmentStartDate: searchByAppointmentStartDate, searchByAppointmentEndDate:searchByAppointmentEndDate, hidden:false);
+                    appointments = await _appointmentServices.GetFiltredListAsync(-1, searchByAppointmentStartDate: searchByAppointmentStartDate, searchByAppointmentEndDate: searchByAppointmentEndDate, hidden: false);
 
                 foreach (var appointment in appointments)
                     items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(
@@ -181,8 +185,8 @@ namespace MVCAgenda.Managers.Scheduler
                     RoomId = scheduleData.RoomId,
 
                     Made = scheduleData.Made,
-                    StartDate = scheduleData.StartTime,
-                    EndDate = scheduleData.EndTime,
+                    StartDate = _dateTimeHelper.ConvertToUtcTime(scheduleData.StartTime),
+                    EndDate = _dateTimeHelper.ConvertToUtcTime(scheduleData.EndTime),
                     Procedure = scheduleData.Subject,
                     Comments = scheduleData.Description,
 

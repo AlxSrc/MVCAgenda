@@ -1,5 +1,6 @@
 ﻿using MVCAgenda.Core.Logging;
 using MVCAgenda.Models.Logging;
+using MVCAgenda.Service.Helpers;
 using MVCAgenda.Service.Logins;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace MVCAgenda.Factories.Logging
         #region Fields
 
         private readonly ILoggerService _logServices;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         #endregion
 
@@ -18,9 +20,11 @@ namespace MVCAgenda.Factories.Logging
 
         #region Constructor
 
-        public LoggingFactory(ILoggerService logServices)
+        public LoggingFactory(ILoggerService logServices,
+            IDateTimeHelper dateTimeHelper)
         {
             _logServices = logServices;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
@@ -37,7 +41,7 @@ namespace MVCAgenda.Factories.Logging
                 var logs = await _logServices.GetListAsync();
 
                 foreach (var log in logs)
-                    logsViewModel.Add(PrepereLogListItemViewModel(log));
+                    logsViewModel.Add(await PrepereLogListItemViewModel(log));
 
                 return new LogsViewModel() { Logs = logsViewModel };
             }
@@ -51,7 +55,10 @@ namespace MVCAgenda.Factories.Logging
         {
             try
             {
-                return PrepereLogListItemViewModel(await _logServices.GetAsync(id));
+                var log = await _logServices.GetAsync(id);
+                var model = log;
+                model.CreatedOnUtc = await _dateTimeHelper.ConvertToUserTimeAsync(log.CreatedOnUtc);
+                return await PrepereLogListItemViewModel(model);
             }
             catch
             {
@@ -64,7 +71,7 @@ namespace MVCAgenda.Factories.Logging
         /**********************************************************************************/
 
         #region Utils
-        public static LogListItemViewModel PrepereLogListItemViewModel(Log log)
+        public async Task<LogListItemViewModel> PrepereLogListItemViewModel(Log log)
         {
             LogListItemViewModel viewModel = new LogListItemViewModel()
             {
@@ -72,7 +79,7 @@ namespace MVCAgenda.Factories.Logging
                 IpAddress = log.IpAddress,
                 ShortMessage = log.ShortMessage,
                 FullMessage = log.FullMessage,
-                CreatedOnUtc = log.CreatedOnUtc
+                CreatedOnUtc = await _dateTimeHelper.ConvertToUserTimeAsync(log.CreatedOnUtc)
             };
 
             switch (log.LogLevel)

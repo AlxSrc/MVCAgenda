@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MVCAgenda.Service.Helpers;
 
 namespace MVCAgenda.Managers.Appointments
 {
@@ -28,6 +29,7 @@ namespace MVCAgenda.Managers.Appointments
         private readonly IMedicService _medicServices;
         private readonly ILoggerService _logger;
         private readonly IWorkContext _workContext;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         #endregion
 
@@ -42,7 +44,8 @@ namespace MVCAgenda.Managers.Appointments
             IRoomService roomServices,
             IMedicService medicServices,
             ILoggerService loggerServices,
-            IWorkContext workContext)
+            IWorkContext workContext,
+            IDateTimeHelper dateTimeHelper)
         {
             _appointmentServices = appointmentServices;
             _appointmentsFactory = appointmentsFactory;
@@ -51,6 +54,7 @@ namespace MVCAgenda.Managers.Appointments
             _medicServices = medicServices;
             _logger = loggerServices;
             _workContext = workContext;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
@@ -100,13 +104,13 @@ namespace MVCAgenda.Managers.Appointments
                     PatientId = patientId,
                     MedicId = appointmentViewModel.MedicId,
                     RoomId = appointmentViewModel.RoomId,
-                    StartDate = appointmentViewModel.StartDate,
-                    EndDate = appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(30),
+                    StartDate = _dateTimeHelper.ConvertToUtcTime(appointmentViewModel.StartDate),
+                    EndDate = _dateTimeHelper.ConvertToUtcTime(appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(30)),
                     Procedure = appointmentViewModel.Procedure,
                     AppointmentType = appointmentViewModel.PrivateAppointment == true ? (int)AppointmentType.Private : (int)AppointmentType.Insurance,
                     Made = true,
                     ResponsibleForAppointment = appointmentViewModel.ResponsibleForAppointment,
-                    AppointmentCreationDate = DateTime.Now,
+                    AppointmentCreationDate = _dateTimeHelper.ConvertToUtcTime(DateTime.Now),
                     Comments = appointmentViewModel.Comments,
                     Hidden = false
                 };
@@ -124,7 +128,7 @@ namespace MVCAgenda.Managers.Appointments
                     var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, hidden: false);
 
                     //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
-                    if(appointments.Count >= Constants.LoyalAppointmentNumber)
+                    if (appointments.Count >= Constants.LoyalAppointmentNumber)
                     {
                         var patient = await _patientServices.GetAsync(patientId);
                         patient.StatusCode = (int)PatientStatus.LoyalPatient;
@@ -164,13 +168,13 @@ namespace MVCAgenda.Managers.Appointments
                     PatientId = appointmentViewModel.PatientId,
                     MedicId = appointmentViewModel.MedicId,
                     RoomId = appointmentViewModel.RoomId,
-                    StartDate = appointmentViewModel.StartDate,
-                    EndDate = appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(60),
+                    StartDate = _dateTimeHelper.ConvertToUtcTime(appointmentViewModel.StartDate),
+                    EndDate = _dateTimeHelper.ConvertToUtcTime(appointmentViewModel.EndDate != null && appointmentViewModel.EndDate > appointmentViewModel.StartDate.AddMinutes(5) ? (DateTime)appointmentViewModel.EndDate : appointmentViewModel.StartDate.AddMinutes(30)),
                     Procedure = appointmentViewModel.Procedure,
                     AppointmentType = appointmentViewModel.PrivateAppointment == true ? (int)AppointmentType.Private : (int)AppointmentType.Insurance,
                     Made = appointmentViewModel.Made,
                     ResponsibleForAppointment = appointmentViewModel.ResponsibleForAppointment,
-                    AppointmentCreationDate = appointmentViewModel.AppointmentCreationDate,
+                    AppointmentCreationDate = _dateTimeHelper.ConvertToUtcTime(appointmentViewModel.AppointmentCreationDate),
                     Comments = appointmentViewModel.Comments,
                     Hidden = appointmentViewModel.Hidden
                 };
@@ -182,12 +186,12 @@ namespace MVCAgenda.Managers.Appointments
                 }
                 else
                 {
-                    if(appointmentViewModel.Made == false)
+                    if (appointmentViewModel.Made == false)
                     {
                         //folosind id-ul pacientului din programarea adaugata
                         patientId = newAppointment.PatientId;
                         //aduc toate programarile pacientului respectiv
-                        var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, made:false, hidden: false);
+                        var appointments = await _appointmentServices.GetFiltredListAsync(-1, id: patientId, made: false, hidden: false);
                         //verific daca are 10 programari efectuate si in cazul pozitiv ii dau titlul de pacient fidel
                         if (appointments.Count >= Constants.BlacklistMissingAppointmentNumber)
                         {

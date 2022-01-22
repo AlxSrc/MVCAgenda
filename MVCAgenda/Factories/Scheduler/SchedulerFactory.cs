@@ -1,5 +1,6 @@
 ﻿using MVCAgenda.Core.Domain;
 using MVCAgenda.Models.SyncfusionScheduler;
+using MVCAgenda.Service.Helpers;
 using System;
 using System.Threading.Tasks;
 
@@ -7,6 +8,27 @@ namespace MVCAgenda.Factories.Scheduler
 {
     public class SchedulerFactory : ISchedulerFactory
     {
+        #region Fields
+
+        private readonly IDateTimeHelper _dateTimeHelper;
+
+        #endregion
+
+        /***********************************************************************************/
+
+        #region Constructor
+
+        public SchedulerFactory(
+            IDateTimeHelper dateTimeHelper)
+        {
+            _dateTimeHelper = dateTimeHelper;
+        }
+
+        #endregion
+
+        /***********************************************************************************/
+
+        #region Methods
         public async Task<ScheduleEventData> PrepereScheduleItemListViewModel(Appointment appointment, Patient patient, Medic medic, Room room)
         {
             try
@@ -23,8 +45,8 @@ namespace MVCAgenda.Factories.Scheduler
                     PhoneNumber = patient.PhoneNumber,
                     Mail = patient.Mail,
 
-                    StartTime = appointment.StartDate,
-                    EndTime = appointment.EndDate,
+                    StartTime = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate),
+                    EndTime = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate),
 
                     Medic = medic.Name,
                     Room = room.Name,
@@ -44,5 +66,7 @@ namespace MVCAgenda.Factories.Scheduler
                 return new ScheduleEventData();
             }
         }
+
+        #endregion
     }
 }

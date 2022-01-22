@@ -72,6 +72,23 @@ namespace MVCAgenda.Service.Appointments
             }
         }
 
+        public async Task<List<Appointment>> GetAppointmentListAsync()
+        {
+            try
+            {
+                var query = _context.Appointments.AsQueryable();
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments}, Action: {LogInfo.Read.ToString()}";
+                await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
+                return new List<Appointment>();
+            }
+        }
+
+
         /// <summary>
         /// Get a list of appointments
         /// </summary>
@@ -93,22 +110,22 @@ namespace MVCAgenda.Service.Appointments
             int? id = null,
             bool? made = null,
             bool? daily = null,
-            bool? hidden = null)
+            bool? hidden = null,
+            bool? privateAppointment = null)
         {
             try
             {
                 var query = _context.Appointments.AsQueryable();
 
-                if (searchByAppointmentStartDate != null && 
-                    searchByAppointmentEndDate != null && 
+                if (searchByAppointmentStartDate != null &&
+                    searchByAppointmentEndDate != null &&
                     searchByAppointmentStartDate < searchByAppointmentEndDate)
-				{
+                {
                     query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
                     query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
                 }
-
-                if (searchByAppointmentStartDate != null)
-                    query = query.Where(a => a.StartDate.Date == searchByAppointmentStartDate);
+                else if (searchByAppointmentStartDate != null)
+                    query = query.Where(a => a.StartDate.Date == searchByAppointmentStartDate.Value.Date);
 
                 if (searchByRoom != null)
                     query = query.Where(a => a.RoomId == searchByRoom);
@@ -128,14 +145,20 @@ namespace MVCAgenda.Service.Appointments
                     query = query.Where(a => a.Made == made);
 
                 //programrile zilnice
-                if (daily != null && id == null && 
-                    searchByAppointmentStartDate == null && 
+                if (daily != null && id == null &&
+                    searchByAppointmentStartDate == null &&
                     searchByAppointmentEndDate == null)
                     query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
 
                 //programrile sterse
                 if (hidden != null)
                     query = query.Where(a => a.Hidden == hidden);
+
+                //programrile private
+                if (privateAppointment != null && privateAppointment == true)
+                    query = query.Where(a => a.AppointmentType == (int)AppointmentType.Private);
+                else if (privateAppointment != null && privateAppointment == false)
+                    query = query.Where(a => a.AppointmentType == (int)AppointmentType.Insurance);
 
                 query = query.OrderBy(a => a.StartDate);
 
@@ -200,8 +223,7 @@ namespace MVCAgenda.Service.Appointments
                 if (daily != null && id == null &&
                     searchByAppointmentStartDate == null &&
                     searchByAppointmentEndDate == null)
-                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date)
-                        .Where(a => a.StartDate >= DateTime.Now.AddMinutes(-60));
+                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
 
                 //programrile sterse
                 if (hidden != null)
@@ -218,7 +240,7 @@ namespace MVCAgenda.Service.Appointments
                 foreach (var item in list)
                 {
                     var patient = await _context.Patients.FirstOrDefaultAsync(p => p.Id == item.PatientId);
-                    listToCount.Add(new ListItem() 
+                    listToCount.Add(new ListItem()
                     {
                         FirstName = patient.FirstName,
                         PhoneNumber = patient.PhoneNumber,
@@ -251,14 +273,15 @@ namespace MVCAgenda.Service.Appointments
             int? id = null,
             bool? made = null,
             bool? daily = null,
-            bool? hidden = null)
+            bool? hidden = null,
+            bool? privateAppointment = null)
         {
             try
             {
                 int count, totalPages;
                 var appointmentsList = new List<AppointmentListItem>();
                 IEnumerable<AppointmentListItem> appointments;
-                
+
 
                 var query = _context.Appointments.AsQueryable();
 
@@ -269,6 +292,9 @@ namespace MVCAgenda.Service.Appointments
                     query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
                     query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
                 }
+
+                if (searchByAppointmentStartDate != null)
+                    query = query.Where(a => a.StartDate.Date == searchByAppointmentStartDate.Value.Date);
 
                 if (searchByRoom != null)
                     query = query.Where(a => a.RoomId == searchByRoom);
@@ -291,17 +317,22 @@ namespace MVCAgenda.Service.Appointments
                 if (daily != null && id == null &&
                     searchByAppointmentStartDate == null &&
                     searchByAppointmentEndDate == null)
-                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date)
-                        .Where(a => a.StartDate >= DateTime.Now.AddMinutes(-60));
+                    query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);
 
                 //programrile sterse
                 if (hidden != null)
                     query = query.Where(a => a.Hidden == hidden);
 
+                //programrile private
+                if (privateAppointment != null && privateAppointment == true)
+                    query = query.Where(a => a.AppointmentType == (int)AppointmentType.Private);
+                else if (privateAppointment != null && privateAppointment == false)
+                    query = query.Where(a => a.AppointmentType == (int)AppointmentType.Insurance);
+
                 query = query.OrderBy(a => a.StartDate);
 
                 var queryAppointments = await query.ToListAsync();
-                
+
                 foreach (var appointment in queryAppointments)
                     appointmentsList.Add(await PrepereListItemAsync(appointment));
 
@@ -456,7 +487,7 @@ namespace MVCAgenda.Service.Appointments
                 FirstName = patient.FirstName,
                 PhoneNumber = patient.PhoneNumber,
                 Mail = patient.Mail,
-                
+
                 Medic = medic.Name,
                 Room = room.Name,
                 Hidden = appointment.Hidden
@@ -465,9 +496,9 @@ namespace MVCAgenda.Service.Appointments
 
         public class ListItem
         {
-            public string FirstName {  get; set; }
-            public string PhoneNumber {  get; set; }
-            public string Email {  get; set; }
+            public string FirstName { get; set; }
+            public string PhoneNumber { get; set; }
+            public string Email { get; set; }
         }
 
         #endregion

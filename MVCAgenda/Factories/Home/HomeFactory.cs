@@ -43,9 +43,9 @@ namespace MVCAgenda.Factories.Home
         {
             try
             {
-                var dailyAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(Daily:true);
-                var dailyPrivateAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(Daily:true, privateAppointment:true);
-                var dailyInsuranceAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(Daily:true, privateAppointment:false);
+                var dailyAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(daily:true);
+                var dailyPrivateAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(daily:true, privateAppointment:true);
+                var dailyInsuranceAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(daily:true, privateAppointment:false);
 
                 var dailyPersonalAppointmentsCount = 0;
                 if (mail != null && mail != Constants.UserName)
@@ -54,7 +54,7 @@ namespace MVCAgenda.Factories.Home
                     if(medic != null)
                     {
                         var medicId = medic.Id;
-                        dailyPersonalAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(searchByMedic: medicId, Daily:true);
+                        dailyPersonalAppointmentsCount = await _appointmentServices.GetNumberOfFiltredAppointmentsAsync(searchByMedic: medicId, daily:true);
                     }
                 }
 
