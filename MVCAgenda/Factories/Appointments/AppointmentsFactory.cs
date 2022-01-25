@@ -198,11 +198,11 @@ namespace MVCAgenda.Factories.Appointments
                     Mail = patient.Mail,
                     Medic = medic.Name,
                     Room = room.Name,
-                    EndDate = appointment.EndDate,
-                    StartDate = appointment.StartDate,
+                    EndDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate),
+                    StartDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate),
                     Procedure = appointment.Procedure,
                     ResponsibleForAppointment = appointment.ResponsibleForAppointment,
-                    AppointmentCreationDate = appointment.AppointmentCreationDate,
+                    AppointmentCreationDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.AppointmentCreationDate),
                     Comments = appointment.Comments,
                     Hidden = appointment.Hidden
                 };
@@ -258,8 +258,8 @@ namespace MVCAgenda.Factories.Appointments
                     MedicId = appointment.MedicId,
                     RoomId = appointment.RoomId,
                     Made = appointment.Made,
-                    EndDate = appointment.EndDate,
-                    StartDate = appointment.StartDate,
+                    StartDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate),
+                    EndDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate),
                     Procedure = appointment.Procedure,
                     PrivateAppointment = appointment.AppointmentType == (int)AppointmentType.Private ? true : false,
                     ResponsibleForAppointment = appointment.ResponsibleForAppointment,
@@ -308,8 +308,8 @@ namespace MVCAgenda.Factories.Appointments
                 Mail = patient.Mail,
                 Medic = medic.Name,
                 Room = room.Name,
-                StartDate = appointment.StartDate,
-                EndDate = appointment.EndDate,
+                StartDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate),
+                EndDate = await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate),
                 Procedure = appointment.Procedure,
                 Hidden = appointment.Hidden
             };
@@ -321,6 +321,7 @@ namespace MVCAgenda.Factories.Appointments
 
             return viewModel;
         }
+
         private async Task<AppointmentListItemViewModel> PrepereAppointmentListItemAsync(AppointmentListItem appointment)
         {
             var viewModel = new AppointmentListItemViewModel()

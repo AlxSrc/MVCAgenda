@@ -10,6 +10,7 @@ using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Pagination;
 using MVCAgenda.Data.DataBaseManager;
+using MVCAgenda.Service.Helpers;
 using MVCAgenda.Service.Logins;
 
 namespace MVCAgenda.Service.Appointments
@@ -22,6 +23,7 @@ namespace MVCAgenda.Service.Appointments
         private readonly AgendaContext _context;
         private readonly IWorkContext _workContext;
         private readonly ILoggerService _logger;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         #endregion
 
@@ -29,11 +31,15 @@ namespace MVCAgenda.Service.Appointments
 
         #region Constructor
 
-        public AppointmentService(AgendaContext context, ILoggerService logger, IWorkContext workContext)
+        public AppointmentService(AgendaContext context, 
+            ILoggerService logger, 
+            IWorkContext workContext,
+            IDateTimeHelper dateTimeHelper)
         {
             _context = context;
             _logger = logger;
             _workContext = workContext;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
