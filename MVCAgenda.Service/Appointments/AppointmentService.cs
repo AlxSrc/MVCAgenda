@@ -127,11 +127,11 @@ namespace MVCAgenda.Service.Appointments
                     searchByAppointmentEndDate != null &&
                     searchByAppointmentStartDate < searchByAppointmentEndDate)
                 {
-                    query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
-                    query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
+                    query = query.Where(a => a.StartDate >= _dateTimeHelper.ConvertToUtcTime(searchByAppointmentStartDate.Value));
+                    query = query.Where(a => a.EndDate <= _dateTimeHelper.ConvertToUtcTime(searchByAppointmentEndDate.Value));
                 }
                 else if (searchByAppointmentStartDate != null)
-                    query = query.Where(a => a.StartDate.Date == searchByAppointmentStartDate.Value.Date);
+                    query = query.Where(a => a.StartDate.Date == _dateTimeHelper.ConvertToUtcTime(searchByAppointmentStartDate.Value.Date));
 
                 if (searchByRoom != null)
                     query = query.Where(a => a.RoomId == searchByRoom);
@@ -204,9 +204,12 @@ namespace MVCAgenda.Service.Appointments
                     searchByAppointmentEndDate != null &&
                     searchByAppointmentStartDate < searchByAppointmentEndDate)
                 {
-                    query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
-                    query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
+                    query = query.Where(a => a.StartDate >= _dateTimeHelper.ConvertToUtcTime(searchByAppointmentStartDate.Value));
+                    query = query.Where(a => a.EndDate <= _dateTimeHelper.ConvertToUtcTime(searchByAppointmentEndDate.Value));
                 }
+
+                if (searchByAppointmentStartDate != null)
+                    query = query.Where(a => a.StartDate.Date == _dateTimeHelper.ConvertToUtcTime(searchByAppointmentStartDate.Value.Date));
 
                 if (searchByRoom != null)
                     query = query.Where(a => a.RoomId == searchByRoom);
@@ -288,19 +291,18 @@ namespace MVCAgenda.Service.Appointments
                 var appointmentsList = new List<AppointmentListItem>();
                 IEnumerable<AppointmentListItem> appointments;
 
-
                 var query = _context.Appointments.AsQueryable();
 
                 if (searchByAppointmentStartDate != null &&
                     searchByAppointmentEndDate != null &&
                     searchByAppointmentStartDate < searchByAppointmentEndDate)
                 {
-                    query = query.Where(a => a.StartDate >= searchByAppointmentStartDate);
-                    query = query.Where(a => a.EndDate <= searchByAppointmentEndDate);
+                    query = query.Where(a => a.StartDate >= _dateTimeHelper.ConvertToUtcTime(searchByAppointmentStartDate.Value));
+                    query = query.Where(a => a.EndDate <= _dateTimeHelper.ConvertToUtcTime(searchByAppointmentEndDate.Value));
                 }
 
                 if (searchByAppointmentStartDate != null)
-                    query = query.Where(a => a.StartDate.Date == searchByAppointmentStartDate.Value.Date);
+                    query = query.Where(a => a.StartDate.Date == _dateTimeHelper.ConvertToUtcTime(searchByAppointmentStartDate.Value).Date);
 
                 if (searchByRoom != null)
                     query = query.Where(a => a.RoomId == searchByRoom);
