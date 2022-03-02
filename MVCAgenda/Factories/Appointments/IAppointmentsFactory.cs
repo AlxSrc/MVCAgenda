@@ -11,7 +11,7 @@ namespace MVCAgenda.Factories.Appointments
 
         Task<AppointmentDetailsViewModel> PrepereDetailsViewModelAsync(int id);
 
-        Task<AppointmentsViewModel> PrepereListViewModelAsync(int pageIndex,
+        Task<AppointmentsViewModel> PrepereAppointmentsListAsync(int pageIndex,
             string searchByName = null,
             string searchByPhoneNumber = null,
             string searchByEmail = null,

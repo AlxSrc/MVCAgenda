@@ -127,7 +127,7 @@ namespace MVCAgenda.Controllers
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
             ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden: false), "Id", "Name");
 
-            return View(await _appointmentsFactory.PrepereListViewModelAsync(pageIndex, SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Made, Daily ,Hidden));
+            return View(await _appointmentsFactory.PrepereAppointmentsListAsync(pageIndex, SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Made, Daily ,Hidden));
         }
 
         #endregion

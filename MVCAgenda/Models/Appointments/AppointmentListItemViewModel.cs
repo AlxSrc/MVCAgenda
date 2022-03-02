@@ -30,10 +30,10 @@ namespace MVCAgenda.Models.Appointments
 
         [DisplayName("Dată început")]
         [Required]
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
 
         [DisplayName("Dată sfârșit")]
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
 
         [DisplayName("Procedura")]
         public string Procedure { get; set; }

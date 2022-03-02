@@ -15,7 +15,7 @@ namespace MVCAgenda.Models.Appointments
         [DisplayName("Medic")]
         public int MedicId { get; set; }
 
-        [DisplayName("Room")]
+        [DisplayName("Camera")]
         public int RoomId { get; set; }
 
 

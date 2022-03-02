@@ -24,9 +24,7 @@ namespace MVCAgenda.Controllers
         private readonly IMedicsManager _medicsManager;
 
         #endregion
-
         /**************************************************************************************/
-
         #region Constructor
 
         public AccountController(
@@ -88,7 +86,7 @@ namespace MVCAgenda.Controllers
                 //        return RedirectToAction("Index", "Scheduler");
                 //    }
                 //}
-                //else 
+                //else
                 if (ModelState.IsValid)
                 {
                     var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, user.RememberMe, false);

@@ -41,10 +41,10 @@ namespace MVCAgenda.Models.Appointments
         [Display(Name = "Adresa de e-mail")]
         public string SearchByEmail { get; set; }
 
-        [Display(Name = "Data inceput programare")]
+        [Display(Name = "Dată inceput programare")]
         public DateTime? SearchByAppointmentStartDate { get; set; } = DateTime.Now;
 
-        [Display(Name = "Data limita programare")]
+        [Display(Name = "Dată încheiere programare")]
         public DateTime? SearchByAppointmentEndDate { get; set; } = DateTime.Now;
 
         [Display(Name = "Medic")]

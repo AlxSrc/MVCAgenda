@@ -39,11 +39,11 @@ namespace MVCAgenda.Models.Appointments
 
         [DisplayName("Dată început")]
         [Required]
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
 
 
         [DisplayName("Dată sfârșit")]
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
 
 
         [DisplayName("Procedura")]
@@ -63,9 +63,9 @@ namespace MVCAgenda.Models.Appointments
         public string ResponsibleForAppointment { get; set; }
 
 
-        [DisplayName("Data creeare programare")]
+        [DisplayName("Dată creeare programare")]
         [DataType(DataType.DateTime)]
-        public DateTime AppointmentCreationDate { get; set; }
+        public string AppointmentCreationDate { get; set; }
 
 
         [DisplayName("Comentarii")]

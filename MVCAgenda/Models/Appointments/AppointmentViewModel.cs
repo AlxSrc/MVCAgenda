@@ -48,7 +48,7 @@ namespace MVCAgenda.Models.Appointments
 
         //Details about Room
 
-        [DisplayName("Room")]
+        [DisplayName("Camera")]
         public int RoomId { get; set; }
 
         [DisplayName("Camera")]
