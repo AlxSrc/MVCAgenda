@@ -86,7 +86,7 @@ namespace MVCAgenda.Factories.Consultations
                     Symptoms = consultation.Symptoms,
                     Diagnostic = consultation.Diagnostic,
                     Prescriptions = consultation.Prescriptions,
-                    CreationDate = await _dateTimeHelper.ConvertToUserTimeAsync(consultation.CreationDate),
+                    CreationDate = (await _dateTimeHelper.ConvertToUserTimeAsync(consultation.CreationDate)).ToString("dd/MMMM/yy HH:mm"),
                     Hidden = consultation.Hidden
                 };
                 return consultationViewModel;

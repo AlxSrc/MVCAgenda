@@ -19,7 +19,7 @@ namespace MVCAgenda.Models.Consultations
 
         [DataType(DataType.DateTime)]
         [DisplayName("Dată creeare")]
-        public DateTime CreationDate { get; set; }
+        public string CreationDate { get; set; }
 
 
         [StringLength(450, MinimumLength = 1)]

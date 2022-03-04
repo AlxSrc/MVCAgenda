@@ -29,7 +29,7 @@
 		<li class="breadcrumb-item">
 			<a asp-action="Details" asp-controller="PatientSheets" asp-route-id="@Model.PatientSheetId">
 				<i class="fas fa-file-medical-alt"></i>
-				<span>Fisa pacientului</span>
+				<span>Fișa pacientului</span>
 			</a>
 		</li>
 		<li class="breadcrumb-item active">
@@ -48,33 +48,33 @@
 			<form asp-action="Delete" asp-route-id="@Model.Id">
 				<button type="submit" class="btn btn-outline-primary" id="DeleteConsultation">
 					<i class="far fa-trash-alt"></i>
-					Sterge
+					Șterge
 				</button>
 			</form>
 			<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
 				<i class="far fa-edit"></i>
-				Modifică consultatia
+				Modifică consultația
 			</a>
 		</div>
 	</header>
 	<div class="content">
 		<div class="data">
 			<div class="input-group mb-3">
-				<span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.CreationDate)</span>
+				<span class="input-group-text" style="width: 115px;" id="basic-addon">@Html.DisplayNameFor(model => model.CreationDate)</span>
 				<input asp-for="CreationDate" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.CreationDate)" aria-describedby="basic-addon" readonly>
 			</div>
 
 			<div class="input-group mb-3">
-				<span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Symptoms)</span>
+				<span class="input-group-text" style="width: 115px;" id="basic-addon">@Html.DisplayNameFor(model => model.Symptoms)</span>
 				<textarea asp-for="Symptoms" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Symptoms)" aria-describedby="basic-addon" readonly></textarea>
 			</div>
 
 			<div class="input-group mb-3">
-				<span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Diagnostic)</span>
+				<span class="input-group-text" style="width: 115px;" id="basic-addon">@Html.DisplayNameFor(model => model.Diagnostic)</span>
 				<textarea asp-for="Diagnostic" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Diagnostic)" aria-describedby="basic-addon" readonly></textarea>
 			</div>
 			<div class="input-group">
-				<span class="input-group-text" id="basic-addon">@Html.DisplayNameFor(model => model.Prescriptions)</span>
+				<span class="input-group-text" style="width: 115px;" id="basic-addon">@Html.DisplayNameFor(model => model.Prescriptions)</span>
 				<textarea asp-for="Prescriptions" type="text" class="form-control resizable" aria-label="@Html.DisplayNameFor(model => model.Prescriptions)" aria-describedby="basic-addon" readonly></textarea>
 			</div>
 		</div>
@@ -88,7 +88,7 @@
 			$('#DeleteConsultation').click(function(e){
 				e.preventDefault();
 
-				if(window.confirm('Sunteți sigur că doriți să ștergeți acesta consultatie?'))
+				if(window.confirm('Sunteți sigur că doriți să ștergeți acestă consultație?'))
 					$(this).parent('form').submit();
 			});
 		});
