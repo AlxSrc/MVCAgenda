@@ -3,10 +3,10 @@
 
 @{
 	var pageTitle = Model.Blacklist ?? false ?
-									"Lista neagră cu pacienti" :
-									Model.Hidden ?? false ?
-										"Lista cu pacienți șterși" :
-										"Pacienți";
+		"Lista neagră cu pacienti" :
+		Model.Hidden ?? false ?
+			"Lista cu pacienți șterși" :
+			"Pacienți";
 
 	ViewData["Title"] = pageTitle;
 	var prevDisabled = !Model.PreviousPage ? "disabled" : "";
@@ -19,7 +19,7 @@
 		<li class="breadcrumb-item">
 			<a asp-action="Index" asp-controller="Home">
 				<i class="fas fa-home"></i>
-				<span>Acasa</span>
+				<span>Acasă</span>
 			</a>
 		</li>
 		<li class="breadcrumb-item active">
@@ -77,17 +77,17 @@
 					<strong>Filtre</strong>
 					<a class="ms-auto d-sm-none" data-bs-toggle="collapse" data-bs-target=".filter-actions" role="button">
 						<i class="fas fa-sliders-h"></i>
-						Afiseaza/ascunde filtre
+						Afișează/ascunde filtre
 					</a>
 				</div>
 				<div class="actions filter-actions collapse">
 					<button type="reset" class="btn btn-outline-primary">
 						<i class="fas fa-eraser"></i>
-						Sterge toate filtrele
+						Șterge toate filtrele
 					</button>
 					<button type="submit" class="btn btn-outline-primary">
 						<i class="fas fa-search"></i>
-						Caută pacienti
+						Caută pacienți
 					</button>
 				</div>
 			</header>

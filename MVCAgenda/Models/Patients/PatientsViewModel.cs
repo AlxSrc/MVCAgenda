@@ -35,7 +35,7 @@ namespace MVCAgenda.Models.Patients
         [Display(Name = "Numele de familie")]
         public string SearchByName { get; set; }
 
-        [Display(Name = "Numar de telefon")]
+        [Display(Name = "Număr de telefon")]
         public string SearchByPhoneNumber { get; set; }
 
         [Display(Name = "Adresa de e-mail")]

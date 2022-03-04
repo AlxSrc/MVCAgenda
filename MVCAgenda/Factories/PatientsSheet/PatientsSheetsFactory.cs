@@ -12,6 +12,7 @@ using System;
 using MVCAgenda.Core.Logging;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Core;
+using MVCAgenda.Service.Helpers;
 
 namespace MVCAgenda.Factories.PatientsSheet
 {
@@ -25,6 +26,7 @@ namespace MVCAgenda.Factories.PatientsSheet
         private readonly IConsultationsFactory _consultationFactory;
         private readonly ILoggerService _logger;
         private readonly IWorkContext _workContext;
+        private readonly IDateTimeHelper _dateTimeHelper;
 
         #endregion
 
@@ -38,7 +40,8 @@ namespace MVCAgenda.Factories.PatientsSheet
             IConsultationService consultationServices,
             IConsultationsFactory consultationFactory,
             ILoggerService loggerServices, 
-            IWorkContext workContext)
+            IWorkContext workContext,
+            IDateTimeHelper dateTimeHelper)
         {
             _patientSheetServices = patientSheetServices;
             _patientServices = patientServices;
@@ -46,6 +49,7 @@ namespace MVCAgenda.Factories.PatientsSheet
             _consultationFactory = consultationFactory;
             _logger = loggerServices;
             _workContext = workContext;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
@@ -106,16 +110,6 @@ namespace MVCAgenda.Factories.PatientsSheet
 
         #region Utils
 
-        private async Task<bool> CheckExist(int id)
-        {
-            var model = await _patientSheetServices.GetAsync(id);
-
-            if (model == null)
-                return false;
-
-            return true;
-        }
-
         public async Task<PatientSheetDetailsViewModel> PrepereDetails(PatientSheet patientSheet)
         {
             var consultations = await _consultationServices.GetListAsync(patientSheet.Id);
@@ -135,7 +129,7 @@ namespace MVCAgenda.Factories.PatientsSheet
                 AntecedentsP = patientSheet.AntecedentsP,
                 PhysicalExamination = patientSheet.PhysicalExamination,
                 NationalIdentificationNumber = patientSheet.NationalIdentificationNumber,
-                DateOfBirth = patientSheet.DateOfBirth,
+                DateOfBirth = (await _dateTimeHelper.ConvertToUserTimeAsync(patientSheet.DateOfBirth)).ToString("dd/MMMM/yy"),
                 Town = patientSheet.Town,
                 Street = patientSheet.Street,
                 Consultations = consultationsList,

@@ -32,6 +32,7 @@ namespace MVCAgenda.Models.PatientSheets
         public string PhysicalExamination { get; set; }
 
 
+        [DisplayName("Cod numeric personal")]
         public string NationalIdentificationNumber { get; set; }
 
 
@@ -49,7 +50,7 @@ namespace MVCAgenda.Models.PatientSheets
 
         [DataType(DataType.Date)]
         [DisplayName("Data nașterii")]
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
 
         [DisplayName("Consultații")]
         public List<ConsultationViewModel> Consultations { get; set; }

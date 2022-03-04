@@ -1,7 +1,7 @@
 ﻿@model MVCAgenda.Models.PatientSheets.PatientSheetDetailsViewModel
 
 @{
-	var pageTitle = $"Fisa pacientului";
+	var pageTitle = $"Fișa pacientului";
 
 	ViewData["Title"] = "Detalii";
 }
@@ -11,7 +11,7 @@
 		<li class="breadcrumb-item">
 			<a asp-action="Index" asp-controller="Home">
 				<i class="fas fa-home"></i>
-				<span>Acasa</span>
+				<span>Acasă</span>
 			</a>
 		</li>
 		<li class="breadcrumb-item">
@@ -96,8 +96,16 @@
 				</div>
 				<div class="col">
 					<div class="input-group">
-						<span class="input-group-text">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
-						<input asp-for="DateOfBirth" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.DateOfBirth)" readonly>
+						@if(Model.DateOfBirth != "01-January-01")
+						{
+							<span class="input-group-text">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
+							<input asp-for="DateOfBirth" type="text" class="form-control" aria-label="@Html.DisplayNameFor(model => model.DateOfBirth)" readonly>
+						}
+						else
+						{
+							<span class="input-group-text">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
+							<input placeholder="Necunoscut" type="text" class="form-control" readonly>
+						}
 					</div>
 				</div>
 			</div>

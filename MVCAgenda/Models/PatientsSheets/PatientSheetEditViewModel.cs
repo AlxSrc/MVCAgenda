@@ -29,7 +29,7 @@ namespace MVCAgenda.Models.PatientSheets
         [DisplayName("Examen fizic")]
         public string PhysicalExamination { get; set; }
 
-        [DisplayName("CNP")]
+        [DisplayName("Cod numeri personal")]
         public string NationalIdentificationNumber { get; set; }
 
 
