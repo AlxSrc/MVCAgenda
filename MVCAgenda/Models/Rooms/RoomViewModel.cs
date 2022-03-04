@@ -10,10 +10,10 @@ namespace MVCAgenda.Models.Rooms
         [Required]
         public string Name { get; set; }
 
-        [DisplayName("Culoare principala")]
+        [DisplayName("Culoare principală")]
         public string PrimaryColor { get; set; }
 
-        [DisplayName("Culoare secundara")]
+        [DisplayName("Culoare secundară")]
         public string SecondaryColor { get; set; }
 
         [DisplayName("Descrierea")]

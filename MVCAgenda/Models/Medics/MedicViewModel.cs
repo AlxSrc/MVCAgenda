@@ -20,7 +20,7 @@ namespace MVCAgenda.Models.Medics
         [DisplayName("Descrierea")]
         public string Description { get; set; }
 
-        [DisplayName("Ocupatia")]
+        [DisplayName("Ocupația")]
         public string Designation { get; set; }
     }
 }
