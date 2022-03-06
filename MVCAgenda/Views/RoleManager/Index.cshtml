@@ -18,7 +18,7 @@
 		<li class="breadcrumb-item">
 			<a asp-action="Index" asp-controller="UserRoles">
 				<i class="fas fa-cogs"></i>
-				<span>Administreaza rolurile utilizatorilor</span>
+				<span>Administrează rolurile utilizatorilor</span>
 			</a>
 		</li>
 		<li class="breadcrumb-item active">
@@ -44,9 +44,9 @@
 					<th>
 						Denumire rol
 					</th>
-					<th>
+					@*<th>
 						Id
-					</th>
+					</th>*@
 					<th></th>
 				</tr>
 			</thead>
@@ -57,9 +57,9 @@
 						<td>
 							@Html.DisplayFor(modelItem => item.Name)
 						</td>
-						<td>
+						@*<td>
 							@Html.DisplayFor(modelItem => item.Id)
-						</td>
+						</td>*@
 						<td class="text-end">
 							<div class="dropdown d-inline-block">
 								<button class="btn btn-main-color-filled dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

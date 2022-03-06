@@ -130,8 +130,8 @@ namespace MVCAgenda.Factories.Appointments
                     Mail = patient.Mail,
                     Medic = medic.Name,
                     Room = room.Name,
-                    EndDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate)).ToString("dd/MMMM/yy HH:mm"),
-                    StartDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate)).ToString("dd/MMMM/yy HH:mm"),
+                    StartDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate)).ToString("dd/MMMM/yy HH:mm"),
+                    EndDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate)).ToString("dd/MMMM/yy HH:mm"),
                     Procedure = appointment.Procedure,
                     ResponsibleForAppointment = appointment.ResponsibleForAppointment,
                     AppointmentCreationDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.AppointmentCreationDate)).ToString("dd/MMMM/yy HH:mm"),
@@ -227,8 +227,8 @@ namespace MVCAgenda.Factories.Appointments
                 Mail = appointment.Mail,
                 Medic = appointment.Medic,
                 Room = appointment.Room,
-                StartDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate)).ToString("dd/MM HH:mm"),
-                EndDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate)).ToString("dd/MM HH:mm"),
+                StartDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.StartDate)).ToString("dd-MMMM HH:mm"),
+                EndDate = (await _dateTimeHelper.ConvertToUserTimeAsync(appointment.EndDate)).ToString("dd-MMMM HH:mm"),
                 Procedure = appointment.Procedure,
                 Hidden = appointment.Hidden
             };

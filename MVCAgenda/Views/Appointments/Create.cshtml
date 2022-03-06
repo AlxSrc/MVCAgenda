@@ -55,6 +55,14 @@
 				<input asp-for="PatientId" type="hidden"/>
 				<input asp-for="ResponsibleForAppointment" type="hidden"/>
 				<div class="row">
+					<div class="col-12 mb-3">
+						<div class="input-group">
+							<div class="input-group-text">
+								<input class="form-check-input mt-0" type="checkbox" id="terms_and_conditions" value="1" onclick="terms_changed(this)" aria-label="Checkbox for following text input">
+							</div>
+							<input type="text" value="Avansat" class="form-control" aria-label="Text input with checkbox" readonly>
+						</div>
+					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
 							<input asp-for="FirstName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
@@ -64,7 +72,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<input asp-for="LastName" class="form-control" id="floatingInput2" placeholder="Obligatoriu">
+							<input asp-for="LastName" class="form-control" id="lastNameFloatingInput" placeholder="Obligatoriu" disabled>
 							<label for="floatingInput2" asp-for="LastName"></label>
 							<span asp-validation-for="LastName" class="text-danger"></span>
 						</div>
@@ -78,7 +86,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<input asp-for="Mail" class="form-control" id="floatingInput4" placeholder="Obligatoriu">
+							<input asp-for="Mail" class="form-control" id="mailFloatingInput" placeholder="Obligatoriu" disabled>
 							<label for="floatingInput4" asp-for="Mail"></label>
 							<span asp-validation-for="Mail" class="text-danger"></span>
 						</div>
@@ -106,7 +114,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<input asp-for="EndDate" class="form-control" id="floatingInput8" placeholder="Obligatoriu">
+							<input asp-for="EndDate" class="form-control" id="endDateFloatingInput" placeholder="Obligatoriu" disabled>
 							<label for="floatingInput8" asp-for="EndDate"></label>
 							<span asp-validation-for="EndDate" class="text-danger"></span>
 						</div>
@@ -120,7 +128,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<textarea asp-for="Comments" class="form-control resizable" id="floatingInput8" placeholder="Obligatoriu"></textarea>
+							<textarea asp-for="Comments" class="form-control resizable" id="commentsFloatingInput" placeholder="Obligatoriu" disabled></textarea>
 							<label for="floatingInput8" asp-for="Comments"></label>
 							<span asp-validation-for="Comments" class="text-danger"></span>
 						</div>
@@ -142,4 +150,22 @@
 @section Scripts
 {
 	@(await Html.PartialAsync("_ValidationScriptsPartial"))
+	<script>
+		function terms_changed(termsCheckBox){
+			//If the checkbox has been checked
+			if(termsCheckBox.checked){
+				//Set the disabled property to FALSE and enable the button.
+				document.getElementById("lastNameFloatingInput").disabled = false;
+				document.getElementById("mailFloatingInput").disabled = false;
+				document.getElementById("endDateFloatingInput").disabled = false;
+				document.getElementById("commentsFloatingInput").disabled = false;
+			} else{
+				//Otherwise, disable the submit button.
+				document.getElementById("lastNameFloatingInput").disabled = true;
+				document.getElementById("mailFloatingInput").disabled = true;
+				document.getElementById("endDateFloatingInput").disabled = true;
+				document.getElementById("commentsFloatingInput").disabled = true;
+			}
+		}
+	</script>
 }
