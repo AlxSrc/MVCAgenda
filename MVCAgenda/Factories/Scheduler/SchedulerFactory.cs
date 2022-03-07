@@ -29,6 +29,7 @@ namespace MVCAgenda.Factories.Scheduler
         /***********************************************************************************/
 
         #region Methods
+
         public async Task<ScheduleEventData> PrepereScheduleItemListViewModel(Appointment appointment, Patient patient, Medic medic, Room room)
         {
             try

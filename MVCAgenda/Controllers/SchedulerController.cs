@@ -84,12 +84,13 @@ namespace MVCAgenda.Controllers
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
 
-            ViewData["Mails"] = new SelectList(await _medicsFactory.PrepereListModel(hidden: false), "Mail", "Name");
-
             ViewBag.Employees = JsonConvert.SerializeObject(await _medicsFactory.PrepereListModel(Mail, false), new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
+
+            ViewData["Mails"] = new SelectList(await _medicsFactory.PrepereListModel(hidden: false), "Mail", "Name");
+
             ViewBag.Resources = new string[] { "Employee" };
 
             return View();
