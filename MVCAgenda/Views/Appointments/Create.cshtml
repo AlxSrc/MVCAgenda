@@ -107,14 +107,14 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<input asp-for="StartDate" class="form-control" id="floatingInput7" placeholder="Obligatoriu">
+							<input asp-for="StartDate" class="form-control" id="floatingInput7" asp-format="{0:yyyy-MM-ddTHH:mm}" placeholder="Obligatoriu">
 							<label for="floatingInput7" asp-for="StartDate"></label>
 							<span asp-validation-for="StartDate" class="text-danger"></span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<input asp-for="EndDate" class="form-control" id="endDateFloatingInput" placeholder="Obligatoriu" disabled>
+							<input asp-for="EndDate" class="form-control" id="endDateFloatingInput" asp-format="{0:yyyy-MM-ddTHH:mm}" placeholder="Obligatoriu" disabled>
 							<label for="floatingInput8" asp-for="EndDate"></label>
 							<span asp-validation-for="EndDate" class="text-danger"></span>
 						</div>
