@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCAgenda.Core.Helpers;
 using MVCAgenda.Factories.Medics;
 using MVCAgenda.Factories.Rooms;
+using MVCAgenda.Factories.Scheduler;
 using MVCAgenda.Managers.Medics;
 using MVCAgenda.Managers.Rooms;
 using MVCAgenda.Managers.Scheduler;
@@ -25,6 +26,7 @@ namespace MVCAgenda.Controllers
         #region Fields
 
         private readonly ISchedulerManager _schedulerManager;
+        private readonly ISchedulerFactory _schedulerFactory;
         private readonly IRoomsManager _roomsManager;
         private readonly IMedicsManager _medicsManager;
         private readonly IRoomsFactory _roomsFactory;
@@ -36,13 +38,15 @@ namespace MVCAgenda.Controllers
 
         #region Constructor
 
-        public SchedulerController(ISchedulerManager schedulerManager, 
+        public SchedulerController(ISchedulerManager schedulerManager,
+            ISchedulerFactory schedulerFactory,
             IRoomsManager roomsManager, 
             IMedicsManager medicsManager,
             IRoomsFactory roomsFactory,
             IMedicsFactory medicsFactory)
         {
             _schedulerManager = schedulerManager;
+            _schedulerFactory = schedulerFactory;
             _roomsManager = roomsManager;
             _medicsManager = medicsManager;
             _roomsFactory = roomsFactory;
@@ -104,7 +108,7 @@ namespace MVCAgenda.Controllers
                 var user = User.Identity.Name;
                 if (user == Constants.UserName)
                 {
-                    var appointmentsList = await _schedulerManager.GetAsync(searchByAppointmentStartDate: model.Value.StartDate, searchByAppointmentEndDate: model.Value.EndDate,null);
+                    var appointmentsList = await _schedulerFactory.GetAsync(searchByAppointmentStartDate: model.Value.StartDate, searchByAppointmentEndDate: model.Value.EndDate,null);
 
                     return new JsonResult(new
                     {
@@ -113,7 +117,7 @@ namespace MVCAgenda.Controllers
                 }
                 else
                 {
-                    var appointmentsList = await _schedulerManager.GetAsync(searchByAppointmentStartDate: model.Value.StartDate, searchByAppointmentEndDate: model.Value.EndDate, null);
+                    var appointmentsList = await _schedulerFactory.GetAsync(searchByAppointmentStartDate: model.Value.StartDate, searchByAppointmentEndDate: model.Value.EndDate, null);
                     return new JsonResult(new
                     {
                         result = appointmentsList.AppointmentsSchedule,

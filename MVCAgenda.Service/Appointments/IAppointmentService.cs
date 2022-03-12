@@ -54,7 +54,7 @@ namespace MVCAgenda.Service.Appointments
             int? id = null,
             bool? made = null,
             bool? Daily = null,
-            bool? Hidden = null,
+            bool? hidden = null,
             bool? privateAppointment = null);
 
         Task<bool> UpdateAsync(Appointment appointment);

@@ -134,45 +134,6 @@ namespace MVCAgenda.Managers.Scheduler
             }
         }
 
-        public async Task<ScheduleList> GetAsync(
-            DateTime? searchByAppointmentStartDate = null,
-            DateTime? searchByAppointmentEndDate = null,
-            string? mail = null)
-        {
-            try
-            {
-                var items = new List<ScheduleEventData>();
-
-                List<Appointment> appointments = new List<Appointment>();
-
-                //ToDo
-
-                if (mail != null)
-                {
-                    var medic = await _medicServices.GetAsync(mail);
-                    var medicId = medic.Id;
-                    appointments = await _appointmentServices.GetFiltredListAsync(-1, searchByAppointmentStartDate: searchByAppointmentStartDate, searchByAppointmentEndDate: searchByAppointmentEndDate, searchByMedic: medicId, hidden: false);
-                }
-                else
-                    appointments = await _appointmentServices.GetFiltredListAsync(-1, searchByAppointmentStartDate: searchByAppointmentStartDate, searchByAppointmentEndDate: searchByAppointmentEndDate, hidden: false);
-
-                foreach (var appointment in appointments)
-                    items.Add(await _schedulerFactory.PrepereScheduleItemListViewModel(
-                        appointment,
-                        await _patientServices.GetAsync(appointment.PatientId),
-                        await _medicServices.GetAsync(appointment.MedicId),
-                        await _roomServices.GetAsync(appointment.RoomId)));
-
-                return new ScheduleList() { AppointmentsSchedule = items };
-            }
-            catch (Exception exception)
-            {
-                var msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Appointments} manager, Action: {LogInfo.Read}";
-                await _logger.CreateAsync(msg, exception.Message, null, LogLevel.Error);
-                return new ScheduleList();
-            }
-        }
-
         public async Task<string> UpdateAsync(ScheduleEventData scheduleData)
         {
             try

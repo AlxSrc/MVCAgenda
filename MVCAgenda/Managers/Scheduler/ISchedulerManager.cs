@@ -9,11 +9,6 @@ namespace MVCAgenda.Managers.Scheduler
     {
         Task<string> CreateAsync(ScheduleEventData scheduleData);
 
-        Task<ScheduleList> GetAsync(
-            DateTime? searchByAppointmentStartDate = null,
-            DateTime? searchByAppointmentEndDate = null,
-            string? mail = null);
-
         Task<string> UpdateAsync(ScheduleEventData scheduleData);
 
         Task<string> DeleteAsync(int id);
