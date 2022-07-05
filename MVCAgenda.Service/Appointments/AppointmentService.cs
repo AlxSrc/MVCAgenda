@@ -322,7 +322,8 @@ namespace MVCAgenda.Service.Appointments
                     query = query.Where(a => a.Made == made);
 
                 //programrile zilnice
-                if (daily != null && id == null &&
+                if (daily == true && 
+                    id == null &&
                     searchByAppointmentStartDate == null &&
                     searchByAppointmentEndDate == null)
                     query = query.Where(a => a.StartDate.Date == DateTime.Now.Date);

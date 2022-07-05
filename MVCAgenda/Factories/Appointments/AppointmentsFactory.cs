@@ -76,6 +76,17 @@ namespace MVCAgenda.Factories.Appointments
             try
             {
                 bool? Blacklist = null;
+
+                if (searchByName == null &&
+                    searchByPhoneNumber == null &&
+                    searchByEmail == null &&
+                    id == null &&
+                    made == null &&
+                    hidden == false)
+                    daily = true;
+                else
+                    daily = false;
+
                 var appointments = await _appointmentServices.GetAppointmentsPaginationAsync(pageIndex, searchByName, searchByPhoneNumber, searchByEmail, searchByAppointmentStartDate, searchByAppointmentEndDate, searchByRoom, searchByMedic, searchByProcedure, id, made, daily, hidden);
 
                 var appointmentsListViewModel = new List<AppointmentListItemViewModel>();

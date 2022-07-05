@@ -40,7 +40,7 @@ namespace MVCAgenda.Models.Appointments
         public int MedicId { get; set; }
 
 
-        [DisplayName("Camera *")]
+        [DisplayName("Camera")]
         public int RoomId { get; set; }
 
 
@@ -68,5 +68,7 @@ namespace MVCAgenda.Models.Appointments
 
         [DisplayName("Comentarii")]
         public string Comments { get; set; }
+
+        public DateTime CurrentDate { get; set; }
     }
 }

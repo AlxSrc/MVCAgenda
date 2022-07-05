@@ -68,7 +68,7 @@ namespace MVCAgenda.Managers.Patients
                     };
 
                     var result = await _patientServices.CreateAsync(patient);
-                    if (result == false)
+                    if (result == -1)
                         return "Pacientul nu a putut fi adaugat.";
                     else
                     {

@@ -96,7 +96,10 @@ namespace MVCAgenda.Managers.Appointments
                         Mail = appointmentViewModel.Mail
                     };
 
-                    patientId = await _patientServices.CheckExistentPatientAsync(newPatient);
+                    if(appointmentViewModel.PhoneNumber.Contains('*') == false)
+                        patientId = await _patientServices.CheckExistentPatientAsync(newPatient);
+                    else
+                        patientId = await _patientServices.CreateAsync(newPatient);
                 }
 
                 var newAppointment = new Appointment

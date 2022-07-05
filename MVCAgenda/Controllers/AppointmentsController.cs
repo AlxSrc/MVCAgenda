@@ -52,12 +52,12 @@ namespace MVCAgenda.Controllers
 
         #region Create
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(int id, DateTime startDate)
         {
             var model = new AppointmentCreateViewModel();
 
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
-            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden:false), "Id", "Name");
+            ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden: false), "Id", "Name");
 
             model.ResponsibleForAppointment = User.Identity.Name;
             if (id > 0)
@@ -77,9 +77,16 @@ namespace MVCAgenda.Controllers
             }
             else
             {
-                model.PrivateAppointment = true;
                 model.StartDate = DateTime.Now;
                 model.EndDate = DateTime.Now.AddMinutes(60);
+                model.CurrentDate = startDate;
+                model.PrivateAppointment = true;
+
+                //var date = DateTime.Now;
+                //date = date.AddYears(startDate.Year - date.Year);
+                //date = date.AddMonths(startDate.Month - date.Month);
+                //date = date.AddDays(startDate.Day - date.Day);
+                //var aaaa = startDate.Day - date.Day;
             }
 
             return View(model);
@@ -91,9 +98,13 @@ namespace MVCAgenda.Controllers
         {
             if (ModelState.IsValid)
             {
+                var date = DateTime.Now;
+                if(model.CurrentDate.Year != DateTime.MinValue.Year)
+                    date = model.CurrentDate;
+
                 string result = await _appointmentsManager.CreateAsync(model);
                 if (result == StringHelpers.SuccesMessage)
-                    return RedirectToAction(nameof(Index), new { Daily = true });
+                    return RedirectToAction(nameof(Index), new { Daily = false, SearchByAppointmentStartDate = date });
                 else
                     ModelState.AddModelError(string.Empty, result);
             }
@@ -127,7 +138,7 @@ namespace MVCAgenda.Controllers
             ViewData["RoomId"] = new SelectList(await _roomServices.GetListAsync(), "Id", "Name");
             ViewData["MedicId"] = new SelectList(await _medicServices.GetListAsync(hidden: false), "Id", "Name");
 
-            return View(await _appointmentsFactory.PrepereAppointmentsListAsync(pageIndex, SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Made, Daily ,Hidden));
+            return View(await _appointmentsFactory.PrepereAppointmentsListAsync(pageIndex, SearchByName, SearchByPhoneNumber, SearchByEmail, SearchByAppointmentStartDate, SearchByAppointmentEndDate, SearchByRoom, SearchByMedic, SearchByProcedure, Id, Made, Daily, Hidden));
         }
 
         #endregion

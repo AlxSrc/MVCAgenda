@@ -53,16 +53,17 @@
 			<div class="data">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 				<input asp-for="PatientId" type="hidden"/>
+				<input asp-for="CurrentDate" type="hidden"/>
 				<input asp-for="ResponsibleForAppointment" type="hidden"/>
 				<div class="row">
-					<div class="col-12 mb-3">
+					@*<div class="col-12 mb-3">
 						<div class="input-group">
 							<div class="input-group-text">
 								<input class="form-check-input mt-0" type="checkbox" id="terms_and_conditions" value="1" onclick="terms_changed(this)" aria-label="Checkbox for following text input">
 							</div>
 							<input type="text" value="Avansat" class="form-control" aria-label="Text input with checkbox" readonly>
 						</div>
-					</div>
+					</div>*@
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
 							<input asp-for="FirstName" class="form-control" id="floatingInput1" placeholder="Obligatoriu">
@@ -72,7 +73,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<input asp-for="LastName" class="form-control" id="lastNameFloatingInput" placeholder="Obligatoriu" disabled>
+							<input asp-for="LastName" class="form-control" id="lastNameFloatingInput" placeholder="Obligatoriu">
 							<label for="floatingInput2" asp-for="LastName"></label>
 							<span asp-validation-for="LastName" class="text-danger"></span>
 						</div>
@@ -86,7 +87,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<input asp-for="Mail" class="form-control" id="mailFloatingInput" placeholder="Obligatoriu" disabled>
+							<input asp-for="Mail" class="form-control" id="mailFloatingInput" placeholder="Obligatoriu">
 							<label for="floatingInput4" asp-for="Mail"></label>
 							<span asp-validation-for="Mail" class="text-danger"></span>
 						</div>
@@ -114,7 +115,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<input asp-for="EndDate" class="form-control" id="endDateFloatingInput" asp-format="{0:yyyy-MM-ddTHH:mm}" placeholder="Obligatoriu" disabled>
+							<input asp-for="EndDate" class="form-control" id="endDateFloatingInput" asp-format="{0:yyyy-MM-ddTHH:mm}" placeholder="Obligatoriu">
 							<label for="floatingInput8" asp-for="EndDate"></label>
 							<span asp-validation-for="EndDate" class="text-danger"></span>
 						</div>
@@ -128,7 +129,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
-							<textarea asp-for="Comments" class="form-control resizable" id="commentsFloatingInput" placeholder="Obligatoriu" disabled></textarea>
+							<textarea asp-for="Comments" class="form-control resizable" id="commentsFloatingInput" placeholder="Obligatoriu"></textarea>
 							<label for="floatingInput8" asp-for="Comments"></label>
 							<span asp-validation-for="Comments" class="text-danger"></span>
 						</div>
@@ -147,7 +148,7 @@
 	</section>
 </form>
 
-@section Scripts
+@*@section Scripts
 {
 	@(await Html.PartialAsync("_ValidationScriptsPartial"))
 	<script>
@@ -168,4 +169,4 @@
 			}
 		}
 	</script>
-}
+}*@

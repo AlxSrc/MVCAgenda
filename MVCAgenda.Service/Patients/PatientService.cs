@@ -41,7 +41,7 @@ namespace MVCAgenda.Service.Patients
 
         #region Create
 
-        public async Task<bool> CreateAsync(Patient patient)
+        public async Task<int> CreateAsync(Patient patient)
         {
             try
             {
@@ -52,13 +52,13 @@ namespace MVCAgenda.Service.Patients
                 _context.Add(currentSheetPatient);
                 await _context.SaveChangesAsync();
 
-                return true;
+                return patient.Id;
             }
             catch (Exception ex)
             {
                 msg = $"User: {(await _workContext.GetCurrentUserAsync()).Identity.Name}, Table:{LogTable.Patients}, Action: {LogInfo.Create}";
                 await _logger.CreateAsync(msg, ex.Message, null, LogLevel.Error);
-                return false;
+                return -1;
             }
         }
 

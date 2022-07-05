@@ -6,7 +6,7 @@ namespace MVCAgenda.Service.Patients
 {
     public interface IPatientService
     {
-        Task<bool> CreateAsync(Patient patient);
+        Task<int> CreateAsync(Patient patient);
         Task<int> CheckExistentPatientAsync(Patient patient);
 
         Task<List<Patient>> GetListAsync(int pageIndex,
